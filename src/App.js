@@ -54,19 +54,6 @@ const options = [
   BOOK COMPONENT
 */
 
-function AuthorSearch (props) {
-    return (
-      <tr>
-        <td>
-        <a href = {"https://www.google.com/search?q="+props.value.name}>
-          <button>{"#"+props.value.id+": "+props.value.name.split(",")[0] + ", " + props.value.position +
-            " ("+props.value.birth+"-"+props.value.death/*+", fl. " + props.value.floruit*/+")" }</button>
-          </a>
-        </td>
-      </tr>
-		)
-	
-  }
 
 
 class App extends React.Component {
@@ -84,7 +71,8 @@ class App extends React.Component {
     var data = listOfAuthors;
     var search = this.state.search.toLowerCase();
     search = search.split(" ")
-    for (let i = 0; i<search.length;i++){
+    for (let i = 0; i<search.length;i++){ 
+      //For every element in the search, find a match in the data using a combination of author name, position, country and city
       data = data.filter(
       e=> 
       (e.name+e.position+e.country+e.city).toLowerCase()
@@ -110,9 +98,13 @@ class App extends React.Component {
           {"# search results: " + this.state.data.length}
           <table>
           <tbody>
-          {this.state.data.map((author) => <AuthorSearch value = {author} key={author.id}
-          
-          />)}
+          {this.state.data.map((author) => //<AuthorSearch value = {author} key={author.id}/>
+          //onClick = {console.log("Clicked!!")} just getting the value = click. Click is just an event.
+          <tr><td><a href = {"https://www.google.com/search?q="+author.name}>
+          <button key={author.id}>{"#"+author.id+": "+author.name.split(",")[0] + " - " + author.position +
+            " ("+Math.abs(author.birth)+"-"+author.deathString/*+", fl. " + props.value.floruit*/+")" }</button>
+          </a></td></tr>
+          )}
           </tbody>
           </table>
         </div>
