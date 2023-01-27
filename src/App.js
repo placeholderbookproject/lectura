@@ -1,7 +1,6 @@
 import './App.css';
 import React from 'react';
 import TextField from "@mui/material/TextField";
-import SelectSearch from 'react-select-search';
 import Select from 'react-select';
 import 'react-select-search/style.css';
 
@@ -26,7 +25,7 @@ function authorToDict(data) {
       country: checkNull(dictionary['Country']),
       city: checkNull(dictionary['City/Region']),
       label: "#"+id_int+": "+dictionary.Name.split(",")[0] + " - " + dictionary.Position +
-      " ("+Math.abs(birth)+"-"+deathString/*+", fl. " + props.value.floruit*/+")",
+      " ("+Math.abs(birth)+"-"+deathString/*+", fl. " + author.floruit*/+")" + " (author)",
       value:id_int,
       deathString:deathString,
     }
@@ -42,7 +41,7 @@ function checkNull(data){
   if(data === null) {data = "unknown"}
   return data}
 
-//Options for dropdown
+//Options for language dropdown
 const options = [
   {name: 'Swedish', value: 'sv'},
   {name: 'English', value: 'en'},
@@ -58,6 +57,32 @@ const options = [
   BOOK COMPONENT
 */
 
+function AuthorTable (props){
+  //Creates the author "view"
+  const author = props.data;
+  var name = author.name.split(",");
+  var floruit = "";
+  if (author.birth === ("unknown")|author.death === ("unknown")|author.floruit===("unknown")) {floruit = "floruit: " + author.floruit}
+  var aka = "";
+  var numNames = name.length;
+  if (numNames > 1){aka = "aka. "+name.slice(1,numNames).join(", ")}
+  return (
+    (<table id = "authorTableWindow"><tbody>
+      <tr className = "Header"><td>{name[0]}</td></tr>
+      <tr><td>{aka}</td></tr>
+      <tr>
+        <td>{"born: " +author.birth+" ("+author.city+", "+author.country + ")"}</td>
+      </tr>
+      <tr><td>{"died: "+author.death}</td></tr>
+      <tr><td>{floruit}</td></tr>
+      <tr><td>{""}</td></tr>
+      <tr><td>{author.position}</td></tr>
+      <tr><td>{"For biographical details, see:"}</td></tr>
+      <tr className = "Works"><td>{"List of known works"}</td></tr>
+      </tbody></table>
+    )
+  );
+}
 
 
 class App extends React.Component {
@@ -94,27 +119,42 @@ class App extends React.Component {
     this.setState({data:newData, showDummies:newShowDummies});
   }  
     
+  returnHome = event => {//Remove all windows
+    var newShowDummies = this.state.showDummies;
+    const keys = Object.keys(newShowDummies)
+    for (var n in keys) {newShowDummies[keys[n]] = false}
+    this.setState({showDummies:newShowDummies})
+  }
+
   render() {
   return (
     <div>
-        <div className = "search">
-          <TextField
-            id="outlined-basic"
-            onChange={e => {
-              this.setState({search:e.target.value});
-              this.authorSearch();
-              const newShowDummies = this.state.showDummies;
-              newShowDummies.select = true;
-              if(this.state.search.length>0){this.setState({showDummies:newShowDummies})};
-              }}
-            variant="outlined"
-            //fullwidth
-            label="Search"
-          />
-          {"# search results: " + this.state.data.length}
+        <div className = "siteHeader">
+            <button id = "homeBtn" onClick={()=> this.returnHome()}>{"Home"}</button>
+            <TextField
+              id="outlined-basic"
+              onChange={e => {
+                this.setState({search:e.target.value});
+                this.authorSearch();
+                const newShowDummies = this.state.showDummies;
+                newShowDummies.select = true;
+                newShowDummies.authorView = false;
+                if(this.state.search.length>0){this.setState({showDummies:newShowDummies})};
+                }}
+              variant="outlined"
+              //fullwidth
+              label="Search for a person or a text"
+            />
+            {"# search results: " + this.state.data.length}
+            <button id = "searchDetailBtn">{"Detailed search"}</button>
           {this.state.showDummies.select ? //Show select window if there is a search
           (<Select options={this.state.data} onChange={this.searchSelect}/>):(<div></div>)}
-        </div>
+      </div>
+
+      <div id = "Author">
+          {this.state.showDummies.authorView ? 
+          (<AuthorTable data={this.state.data[0]}/>):(<div></div>)}
+      </div>   
     </div>
   );
 }
