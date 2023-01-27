@@ -2,6 +2,7 @@ import './App.css';
 import React from 'react';
 import TextField from "@mui/material/TextField";
 import SelectSearch from 'react-select-search';
+import Select from 'react-select';
 import 'react-select-search/style.css';
 
 let data = require('./data.json')
@@ -24,6 +25,9 @@ function authorToDict(data) {
       floruit: checkNull(dictionary['Floruit']),
       country: checkNull(dictionary['Country']),
       city: checkNull(dictionary['City/Region']),
+      label: "#"+id_int+": "+dictionary.Name.split(",")[0] + " - " + dictionary.Position +
+      " ("+Math.abs(birth)+"-"+deathString/*+", fl. " + props.value.floruit*/+")",
+      value:id_int,
       deathString:deathString,
     }
 }
@@ -64,6 +68,7 @@ class App extends React.Component {
       data: listOfAuthors.slice(1,1),
       dataToShow: true,
       searchResults: "",
+      showDummies: {select: false, authorView: false, bookView: false},
   }
   };
 
@@ -80,6 +85,14 @@ class App extends React.Component {
       )}
     this.setState({data:data})
     }
+  
+  searchSelect = event => {
+    const newData = listOfAuthors.slice(event.value-1,event.value);
+    const newShowDummies = this.state.showDummies;
+    newShowDummies.select = false;
+    newShowDummies.authorView = true;
+    this.setState({data:newData, showDummies:newShowDummies});
+  }  
     
   render() {
   return (
@@ -90,23 +103,17 @@ class App extends React.Component {
             onChange={e => {
               this.setState({search:e.target.value});
               this.authorSearch();
+              const newShowDummies = this.state.showDummies;
+              newShowDummies.select = true;
+              if(this.state.search.length>0){this.setState({showDummies:newShowDummies})};
               }}
             variant="outlined"
             //fullwidth
             label="Search"
           />
           {"# search results: " + this.state.data.length}
-          <table>
-          <tbody>
-          {this.state.data.map((author) => //<AuthorSearch value = {author} key={author.id}/>
-          //onClick = {console.log("Clicked!!")} just getting the value = click. Click is just an event.
-          <tr><td><a href = {"https://www.google.com/search?q="+author.name}>
-          <button key={author.id}>{"#"+author.id+": "+author.name.split(",")[0] + " - " + author.position +
-            " ("+Math.abs(author.birth)+"-"+author.deathString/*+", fl. " + props.value.floruit*/+")" }</button>
-          </a></td></tr>
-          )}
-          </tbody>
-          </table>
+          {this.state.showDummies.select ? //Show select window if there is a search
+          (<Select options={this.state.data} onChange={this.searchSelect}/>):(<div></div>)}
         </div>
     </div>
   );
