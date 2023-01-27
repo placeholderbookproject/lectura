@@ -3,6 +3,8 @@ import React from 'react';
 import TextField from "@mui/material/TextField";
 import Select from 'react-select';
 import 'react-select-search/style.css';
+import { BrowserRouter, Route, Routes, Link, Navigate } from 'react-router-dom';
+
 
 let data = require('./data.json')
 //Translate author table
@@ -25,7 +27,7 @@ function authorToDict(data) {
       country: checkNull(dictionary['Country']),
       city: checkNull(dictionary['City/Region']),
       label: "#"+id_int+": "+dictionary.Name.split(",")[0] + " - " + dictionary.Position +
-      " ("+Math.abs(birth)+"-"+deathString/*+", fl. " + author.floruit*/+")" + " (author)",
+      " ("+Math.abs(birth)+"-"+deathString/*+", fl. " + author.floruit*/+ ") (author)",
       value:id_int,
       deathString:deathString,
     }
@@ -42,11 +44,11 @@ function checkNull(data){
   return data}
 
 //Options for language dropdown
-const options = [
+/*const options = [
   {name: 'Swedish', value: 'sv'},
   {name: 'English', value: 'en'},
 ];
-
+*/
 
 /*Building a frame for an author:
   Author name tr -> later a popdown
@@ -62,13 +64,13 @@ function AuthorTable (props){
   const author = props.data;
   var name = author.name.split(",");
   var floruit = "";
-  if (author.birth === ("unknown")|author.death === ("unknown")|author.floruit===("unknown")) {floruit = "floruit: " + author.floruit}
+  if ((author.birth === ("unknown")|author.death === ("unknown")) && author.floruit !==("unknown")) {floruit = "floruit: " + author.floruit}
   var aka = "";
   var numNames = name.length;
   if (numNames > 1){aka = "aka. "+name.slice(1,numNames).join(", ")}
   return (
     (<table id = "authorTableWindow"><tbody>
-      <tr className = "Header"><td>{name[0]}</td></tr>
+      <tr className = "Header"><Link to={"/author/"+author.id}><td>{name[0]}</td></Link></tr>
       <tr><td>{aka}</td></tr>
       <tr>
         <td>{"born: " +author.birth+" ("+author.city+", "+author.country + ")"}</td>
@@ -117,28 +119,32 @@ class App extends React.Component {
     newShowDummies.select = false;
     newShowDummies.authorView = true;
     this.setState({data:newData, showDummies:newShowDummies});
+    window.location.href="/author/"+newData[0].id;
   }  
     
   returnHome = event => {//Remove all windows
     var newShowDummies = this.state.showDummies;
-    const keys = Object.keys(newShowDummies)
-    for (var n in keys) {newShowDummies[keys[n]] = false}
-    this.setState({showDummies:newShowDummies})
+    const keys = Object.keys(newShowDummies);
+    for (var n in keys) {newShowDummies[keys[n]] = false};
+    this.setState({showDummies:newShowDummies});
+    window.location.href="/";
   }
 
   render() {
   return (
+    
     <div>
+      <BrowserRouter>
         <div className = "siteHeader">
             <button id = "homeBtn" onClick={()=> this.returnHome()}>{"Home"}</button>
-            <TextField
+            <TextField //Search field
               id="outlined-basic"
               onChange={e => {
-                this.setState({search:e.target.value});
-                this.authorSearch();
-                const newShowDummies = this.state.showDummies;
-                newShowDummies.select = true;
-                newShowDummies.authorView = false;
+                this.setState({search:e.target.value}); //set new search value
+                this.authorSearch(); //Searches for author using new search value
+                var newShowDummies = this.state.showDummies; 
+                newShowDummies.select = true; //Opens the select element
+                newShowDummies.authorView = false; //Closes existing 
                 if(this.state.search.length>0){this.setState({showDummies:newShowDummies})};
                 }}
               variant="outlined"
@@ -150,11 +156,23 @@ class App extends React.Component {
           {this.state.showDummies.select ? //Show select window if there is a search
           (<Select options={this.state.data} onChange={this.searchSelect}/>):(<div></div>)}
       </div>
-
-      <div id = "Author">
-          {this.state.showDummies.authorView ? 
-          (<AuthorTable data={this.state.data[0]}/>):(<div></div>)}
-      </div>   
+      <Routes>
+          <Route path={
+              this.state.showDummies.authorView ? "/author/"+this.state.data[0].id:"/"
+          }
+          element = {
+            this.state.showDummies.authorView ? 
+          (<AuthorTable data={this.state.data[0]}/>):(<div></div>)
+          }
+          >
+          </Route>
+      {listOfAuthors.map((author) => 
+        <Route path={"/author/"+author.id} element={
+          <AuthorTable data={author} key = {author.id}/>}>
+        
+      </Route>)}
+      </Routes>
+      </BrowserRouter>
     </div>
   );
 }
