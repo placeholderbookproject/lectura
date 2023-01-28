@@ -44,11 +44,11 @@ function checkNull(data){
   return data}
 
 //Options for language dropdown
-/*const options = [
-  {name: 'Swedish', value: 'sv'},
-  {name: 'English', value: 'en'},
+const languageOptions = [
+  {label: 'English', value: 'en'},
+  
 ];
-*/
+
 
 /*Building a frame for an author:
   Author name tr -> later a popdown
@@ -70,7 +70,7 @@ function AuthorTable (props){
   if (numNames > 1){aka = "aka. "+name.slice(1,numNames).join(", ")}
   return (
     (<table id = "authorTableWindow"><tbody>
-      <tr className = "Header"><Link to={"/author/"+author.id}><td>{name[0]}</td></Link></tr>
+      <tr className = "Header"><td>{name[0]}</td></tr>
       <tr><td>{aka}</td></tr>
       <tr>
         <td>{"born: " +author.birth+" ("+author.city+", "+author.country + ")"}</td>
@@ -79,11 +79,60 @@ function AuthorTable (props){
       <tr><td>{floruit}</td></tr>
       <tr><td>{""}</td></tr>
       <tr><td>{author.position}</td></tr>
-      <tr><td>{"For biographical details, see:"}</td></tr>
-      <tr className = "Works"><td>{"List of known works"}</td></tr>
+      <tr><td>{"For biographical details, see google "}<a href = {"https://www.google.com/search?q="+name[0]}>here</a></td>
+        </tr>
+      <tr className = {"Works"}><td>{"List of known works"}</td></tr>
       </tbody></table>
     )
   );
+}
+
+function TextTable (props){
+  const text = props.data;
+  const title = text.title.split(",");
+  const numTitles = title.length;
+  var aka = "";
+  if(numTitles>1){aka = "aka. " + title.slice(1,numTitles).join(", ")};
+  return (
+    (
+      <div>
+      <table>
+        <h1>{title[0]+ " (" + text.type + ")"}</h1>
+          <h3>{aka}</h3>
+          <h3>{text.publication + " (placeholder publication place, country)"}</h3>
+          <h3>{text.language}</h3>
+          <h3>{text.genre}</h3>
+          <h3>{text.description}</h3>
+      </table>
+      <h1>{"Editions"}</h1>{/*mapping of editions*/}
+      </div>
+    )
+  )
+}
+
+function SearchDetailed(props) {//Add the table view of 
+  var search = props.data.search;
+  var data = listOfAuthors;
+  //List of options with label and options from these options
+  //search field + clickable dropdown of variables to search through
+  return (
+    <div>
+      <div>
+        <TextField/>
+        <button>{"placeholder for filter options"/*should be changed to dynamic select list*/}</button>
+      </div>
+      <div>
+        <table>
+        <tbody>
+          <tr>
+            <td>Author/Title</td>
+            <td>Type</td>
+            </tr>
+        </tbody>
+        </table>
+      </div>
+    </div>
+  )
 }
 
 
@@ -147,6 +196,13 @@ class App extends React.Component {
                 newShowDummies.authorView = false; //Closes existing 
                 if(this.state.search.length>0){this.setState({showDummies:newShowDummies})};
                 }}
+              /*onKeyDown={e => {if (e.key === "Enter")
+                        {
+                        window.location.href="/search?q="+this.state.search;
+                        //<Navigate to={"/search?q="+this.state.search}/>;
+                        console.log("Search has been entered");
+                        }
+                        }}*/
               variant="outlined"
               //fullwidth
               label="Search for a person or a text"
@@ -164,11 +220,14 @@ class App extends React.Component {
             this.state.showDummies.authorView ? 
           (<AuthorTable data={this.state.data[0]}/>):(<div></div>)
           }
-          >
-          </Route>
+          />
+          <Route 
+          path={"/search"}
+          element = {<SearchDetailed data={this.state.data}/>}  
+          />
       {listOfAuthors.map((author) => 
         <Route path={"/author/"+author.id} element={
-          <AuthorTable data={author} key = {author.id}/>}>
+          <AuthorTable data={author} key = {author.id}/>} key = {author.id}>
         
       </Route>)}
       </Routes>
