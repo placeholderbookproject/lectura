@@ -1,22 +1,26 @@
+import {Link} from 'react-router-dom';
+
 function TextTable (props){
     const text = props.data;
     const title = text.title.split(",");
     const numTitles = title.length;
+    const author = text.author
     var aka = "";
     if(numTitles>1){aka = "aka. " + title.slice(1,numTitles).join(", ")};
     return (
       (
         <div>
-        <table>
-          <h1>{title[0]+ " (" + text.type + ")"}</h1>
+          <h1>{title[0]}</h1>
             <h3>{aka}</h3>
-            <h3>{text.publication + " (placeholder publication place, country)"}</h3>
+            <h3><Link to = {"/work/"+text.author_index}></Link>{author + author.author_id}</h3>
+            <h3>{text.publication}</h3>
             <h3>{text.language}</h3>
             <h3>{text.genre}</h3>
             <h3>{text.description}</h3>
-        </table>
         <h1>{"Editions"}</h1>{/*mapping of editions*/}
         </div>
       )
     )
   }
+
+  export default TextTable;

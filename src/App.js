@@ -1,6 +1,7 @@
 import './App.css';
 //import SearchDetailed from './views/Search.js';
 import AuthorTable from './views/AuthorTable.js';
+import TextTable from './views/TextTable.js';
 import authorData from './data/main_data.js';
 import React, {useState, useEffect} from 'react';
 import TextField from "@mui/material/TextField";
@@ -16,7 +17,8 @@ import { Navbar, Nav, /*NavDropdown,*/ Container } from "react-bootstrap";
   {label: 'English', value: 'en'},
 ];
 */
-let listOfAuthors = authorData();
+let listOfAuthors = authorData()["authors"];
+let listOfWorks = authorData()["work"];
 
 function MainSearch() {
   let [search, setSearch] = useState("");
@@ -101,6 +103,14 @@ function App () {
       <BrowserRouter>
       <Routes>
         <Route path = {"/"} element = {<SiteHeader/>}/>
+        {listOfWorks.map((work) =>
+          <Route path ={"/work/"+work.id} element = {
+            <div>
+              <MainSearch/>
+              <TextTable data={work}/>
+            </div>
+          } key = {work.id}/>
+        )}
         {listOfAuthors.map((author) => 
           <Route path={"/author/"+author.id} element={ //Adds a link for every author
             <div>

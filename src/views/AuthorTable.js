@@ -13,22 +13,6 @@ function WorkRow(props) {
 }
 
 
-function readXLSX(file){
-    const reader = new FileReader();
-    var excelRows;
-    if (reader.readAsBinaryString) {
-        reader.onload = (e) => {
-            const workbook = XLSX.read(reader.result, {type: 'binary'});
-            const firstSheet = workbook.SheetNames[0];
-            excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[firstSheet]);
-            //console.log(excelRows);
-            return (excelRows);
-        };
-    }
-    reader.readAsBinaryString(file)
-    return excelRows;
-}
-
 function AuthorTable (props){
     //Creates the author "view"
     const inputFile = useRef(null);
@@ -55,6 +39,7 @@ function AuthorTable (props){
     }
     const author = props.data;
     var birth = author.birth, death = author.death, aka = "", floruit = "", name = author.name.split(",");
+    var city = author.city, country = author.country;
     var numNames = name.length;
     if ((author.birth === ("unknown")|author.death === ("unknown")) && author.floruit !==("unknown")) 
         {floruit = "floruit: " + author.floruit}
@@ -68,7 +53,7 @@ function AuthorTable (props){
         <tr className = "Header"><td>{name[0]}</td></tr>
         <tr><td>{aka}</td></tr>
         <tr>
-          <td><span style={{"fontWeight": '700'}}>born: </span> {birth+" ("+author.city+", "+author.country + ")"}</td>
+          <td><span style={{"fontWeight": '700'}}>born: </span> {birth+" ("+city+", "+country + ")"}</td>
         </tr>
         <tr>
           <td><span style = {{"fontWeight":'700'}}>died:</span> {death}</td>

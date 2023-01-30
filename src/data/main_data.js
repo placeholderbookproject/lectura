@@ -1,5 +1,5 @@
 //Translate author table
-function authorToDict(data) {
+function authorToDict() {
   function transferToDict(id) {
     var dictionary = data['data'][id];
     var id_int = parseInt(id)+1
@@ -24,6 +24,7 @@ function authorToDict(data) {
       deathString:deathString,
     }
 }
+  let data = require('../data.json')
   var list = [];
   for (var n in data['data']) {list.push(transferToDict(n))}
   return list
@@ -32,9 +33,30 @@ function authorToDict(data) {
 function checkNull(data){
     if(data === null) {data = "unknown"}
     return data}
+
+function worksToDict() {
+  function dictElement(id){
+    var dictionary = listOfWorks[id];
+    var id_int = parseInt(id)+1;
+    var title = dictionary['title'], author = dictionary["author"], author_id = dictionary["author_index"], publication = dictionary["publication"]
+    return {
+      id: id_int,
+      title:title,
+      author:author,
+      publication:publication,
+      author_id:author_id,
+    }}
+    let listOfWorks = require("../works.json")["data"];
+    var list = [];
+    for (var n in listOfWorks){list.push(dictElement(n))}
+    return list
+  }
 function authorData(){
-    let data = require('../data.json')
-    return (authorToDict(data))
+    let data = {
+        work: worksToDict(),
+        authors: authorToDict(),
+      }
+    return data
 }
 
 export default authorData;
