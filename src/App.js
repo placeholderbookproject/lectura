@@ -1,13 +1,13 @@
 import './App.css';
-import SearchDetailed from './views/Search.js';
+//import SearchDetailed from './views/Search.js';
 import AuthorTable from './views/AuthorTable.js';
 import authorData from './data/main_data.js';
 import React, {useState, useEffect} from 'react';
 import TextField from "@mui/material/TextField";
 import Select from 'react-select';
 import 'react-select-search/style.css';
-import { BrowserRouter, Route, Routes/*, Link*/, Navigate, useNavigate } from 'react-router-dom';
-import { Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { BrowserRouter, Route, Routes/*, Link*/, Navigate} from 'react-router-dom';
+import { Navbar, Nav, /*NavDropdown,*/ Container } from "react-bootstrap";
 
 //Use bootstrap?
 
@@ -26,7 +26,7 @@ function MainSearch() {
 
   useEffect (()=> {
     setEnterSearch(false);
-  });
+  },[enterSearch]);
   //let [link,setLink] = "";
   function searchFunction (search) {
       var data = listOfAuthors;
@@ -52,6 +52,7 @@ function MainSearch() {
   return (
     <div>
       <TextField //Search field
+      className = "searchText"
       id="outlined-basic"
       onChange={e => {
         setSearch(e.target.value); //set new search value
@@ -67,7 +68,6 @@ function MainSearch() {
                 }
                 }}*/
       variant="outlined"
-      //fullwidth
       label="Search for a person or a text"
     />
     {"# search results: " + results.length}
@@ -82,52 +82,37 @@ function MainSearch() {
   )
 }
 
-function AuthorLinks () {
-  const data = listOfAuthors.map((author) => 
-    <Route path={"/author/"+author.id} element={
-      <AuthorTable data={author}/>} key = {author.id}>
-  </Route>)
+function SiteHeader() {
   return (
-    <Routes>
-    {data}
-    </Routes>)
-    
-  };
+    <Container className = "flexbox-container">
+    <Navbar>
+      <Navbar.Brand href={"/"}>Lectura</Navbar.Brand>
+      <Nav>
+        <MainSearch/>
+      </Nav>
+    </Navbar>
+    </Container>
+  )
+}
 
-
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showDummies: {select: false, authorView: false, bookView: false},
-      language: "en",
-  }
-  };
-    
-  returnHome = event => {//Remove all windows
-    var newShowDummies = this.state.showDummies;
-    const keys = Object.keys(newShowDummies);
-    for (var n in keys) {newShowDummies[keys[n]] = false};
-    this.setState({showDummies:newShowDummies});
-    window.location.href="/";
-  }
-
-  render() {
+function App () {
   return (
-    
     <div>
       <BrowserRouter>
-        <div className = "siteHeader">
-            <button id = "homeBtn" onClick={()=> this.returnHome()}>{"Home"}</button>
-            <button id = "searchDetailBtn">{"Detailed search"}</button>
-            <button id = "languageChoice">{this.state.language}</button>
-      </div>
-      <MainSearch/>
-      <AuthorLinks/>
+      <Routes>
+        <Route path = {"/"} element = {<SiteHeader/>}/>
+        {listOfAuthors.map((author) => 
+        <Route path={"/author/"+author.id} element={ 
+          <div>
+          <MainSearch/>
+          <AuthorTable data={author}/>
+          </div>
+          } key = {author.id}>
+        </Route>)}
+      </Routes>
       </BrowserRouter>
     </div>
   );
-}
 }
 
 export default App;

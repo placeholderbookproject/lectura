@@ -43,9 +43,18 @@ table#authorTableWindow .Works td {
   border: none;
 }
 
+.flexbox-container {
+  display: flex;
+  flex-direction: row;
+}
+
 .siteHeader {
   padding-bottom: 30px;
   padding-top: 10px;
+}
+
+.searchText {
+  width:300px;
 }
 
 .mainSearch {

@@ -5,19 +5,20 @@ function authorToDict(data) {
     var id_int = parseInt(id)+1
     var birth = dictionary['Birth'];
     var death = dictionary['Death'];
-    var deathString
+    var deathString;
+    var position = checkNull(dictionary['Position']);
     if (death<0) {deathString= Math.abs(death)+" BC"}
     else{deathString = death+ " AD"}    
     return {
       id:id_int,
       name: dictionary['Name'],
-      position: checkNull(dictionary['Position']),
+      position: position,
       birth: checkNull(birth),
       death: checkNull(death),
       floruit: checkNull(dictionary['Floruit']),
       country: checkNull(dictionary['Country']),
       city: checkNull(dictionary['City/Region']),
-      label: "#"+id_int+": "+dictionary.Name.split(",")[0] + " - " + dictionary.Position +
+      label: "#"+id_int+": "+dictionary.Name.split(",")[0] + " - " + position.split(",")[0] +
       " ("+Math.abs(birth)+"-"+deathString/*+", fl. " + author.floruit*/+ ") (author)",
       value:id_int,
       deathString:deathString,
