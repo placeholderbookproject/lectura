@@ -102,13 +102,13 @@ function App () {
       <Routes>
         <Route path = {"/"} element = {<SiteHeader/>}/>
         {listOfAuthors.map((author) => 
-        <Route path={"/author/"+author.id} element={ 
-          <div>
-          <MainSearch/>
-          <AuthorTable data={author}/>
-          </div>
-          } key = {author.id}>
-        </Route>)}
+          <Route path={"/author/"+author.id} element={ //Adds a link for every author
+            <div>
+            <MainSearch/>
+            <AuthorTable data={author}/>
+            </div>
+            } key = {author.id}>
+          </Route>)}
       </Routes>
       </BrowserRouter>
     </div>

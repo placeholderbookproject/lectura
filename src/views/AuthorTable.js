@@ -1,38 +1,61 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import * as XLSX from 'xlsx';
+import {Link} from 'react-router-dom';
+
+function WorkRow(props) {
+    return (
+        <tr>
+            <td>
+                <Link to={"/work/"+props.data.id} >{props.data.Title + " (" + props.data.Publication + ")"}</Link>
+            </td>
+        </tr>
+    )
+}
+
 
 function readXLSX(file){
     const reader = new FileReader();
+    var excelRows;
     if (reader.readAsBinaryString) {
         reader.onload = (e) => {
             const workbook = XLSX.read(reader.result, {type: 'binary'});
             const firstSheet = workbook.SheetNames[0];
-            const excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[firstSheet]);
-            return excelRows;
+            excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[firstSheet]);
+            //console.log(excelRows);
+            return (excelRows);
         };
     }
     reader.readAsBinaryString(file)
+    return excelRows;
 }
 
 function AuthorTable (props){
     //Creates the author "view"
     const inputFile = useRef(null);
     const uploadWorks = () => {inputFile.current.click();};
-    var uploadedWorkList;
+    let [uploadedWorkList, setUploadedWorkList] = useState([]);
     function onUpload(event) {
         event.stopPropagation();
         event.preventDefault();
         if (inputFile){
             var file = inputFile.current.files[0];
             if (file.name.includes(".xlsx")) {
-                uploadedWorkList = readXLSX(file);
+                const reader = new FileReader();
+                if (reader.readAsBinaryString) {
+                    reader.onload = (event) => {
+                        const workbook = XLSX.read(event.target.result,{type:'binary'});//(reader.result, {type: 'binary'});
+                        const firstSheet = workbook.SheetNames[0];
+                        var excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[firstSheet]);
+                        setUploadedWorkList(excelRows);
+                    };
+                }
+                reader.readAsBinaryString(file)
             }
         }
     }
     const author = props.data;
-    var name = author.name.split(",");
+    var birth = author.birth, death = author.death, aka = "", floruit = "", name = author.name.split(",");
     var numNames = name.length;
-    var birth = author.birth, death = author.death, aka = "", floruit = "";
     if ((author.birth === ("unknown")|author.death === ("unknown")) && author.floruit !==("unknown")) 
         {floruit = "floruit: " + author.floruit}
     if (death<0) {death = Math.abs(death)+" BC";}
@@ -67,6 +90,9 @@ function AuthorTable (props){
                 <button id="fileSelect" onClick={uploadWorks}>Add works</button>
                 </td>
         </tr>
+            {(uploadedWorkList.length>0) ? 
+                (uploadedWorkList.map((work) => (<WorkRow key={work.Title} data={work}/>)))
+                :<tr><td></td></tr>}
         </tbody></table>
       )
     );
