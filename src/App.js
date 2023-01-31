@@ -31,17 +31,24 @@ function MainSearch() {
   },[enterSearch]);
   //let [link,setLink] = "";
   function searchFunction (search) {
-      var data = listOfAuthors;
+      var authors = listOfAuthors;
+      var works = listOfWorks;
+      var data = authors//concat(works);
       search = search.toLowerCase();
       search = search.split(" ")
       for (let i = 0; i<search.length;i++){ 
         //For every element in the search, find a match in the data using a combination of author name, position, country and city
-        data = data.filter(
+        authors = authors.filter(
         e=> 
         (e.name+e.position+e.country+e.city).toLowerCase()
         .includes(search[i])
-        )}
-      setResults(data)
+        )
+        works = works.filter(
+          e=>
+          (e.title+e.author).toLowerCase().includes(search[i])
+        )
+      }
+      setResults(authors.concat(works))
   }
   function searchSelect (event) {
     const selectedValue = event;
@@ -77,7 +84,9 @@ function MainSearch() {
       (<Select options={results} onChange={searchSelect}
           />):(<div></div>)}
     {(enterSearch) ? 
-      (<Navigate to={"/author/"+results[0].id}/>):
+      (<Navigate to=
+        {(results[0].type === "author") ? ("/author/"+results[0].id): ("/work/"+results[0].id)}
+      />):
       (<div/>)
     }
   </div>

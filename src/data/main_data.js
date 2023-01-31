@@ -18,10 +18,11 @@ function authorToDict() {
       floruit: checkNull(dictionary['Floruit']),
       country: checkNull(dictionary['Country']),
       city: checkNull(dictionary['City/Region']),
-      label: "#"+id_int+": "+dictionary.Name.split(",")[0] + " - " + position.split(",")[0] +
+      label: /*"#"+id_int+": "+*/dictionary.Name.split(",")[0] + " - " + position.split(",")[0] +
       " ("+Math.abs(birth)+"-"+deathString/*+", fl. " + author.floruit*/+ ") (author)",
       value:id_int,
       deathString:deathString,
+      type: "author",
     }
 }
   let data = require('../data.json')
@@ -45,6 +46,9 @@ function worksToDict() {
       author:author,
       publication:publication,
       author_id:author_id,
+      label: title + " (" + publication + ") (text)",
+      value: id_int,
+      type: "text",
     }}
     let listOfWorks = require("../works.json")["data"];
     var list = [];
