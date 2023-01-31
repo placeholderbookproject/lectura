@@ -2,10 +2,7 @@
 function authorToDict() {
   function transferToDict(id) {
     var dictionary = data['data'][id];
-    var id_int = parseInt(id)+1
-    var birth = dictionary['Birth'];
-    var death = dictionary['Death'];
-    var deathString;
+    var id_int = dictionary["index"], birth = dictionary['Birth'], death = dictionary['Death'], deathString;
     var position = checkNull(dictionary['Position']);
     if (death<0) {deathString= Math.abs(death)+" BC"}
     else{deathString = death+ " AD"}    
@@ -23,6 +20,7 @@ function authorToDict() {
       value:id_int,
       deathString:deathString,
       type: "author",
+      works: dictionary["works"],
     }
 }
   let data = require('../data.json')
@@ -38,7 +36,7 @@ function checkNull(data){
 function worksToDict() {
   function dictElement(id){
     var dictionary = listOfWorks[id];
-    var id_int = parseInt(id)+1;
+    var id_int = dictionary["index"];
     var title = dictionary['title'], author = dictionary["author"], author_id = dictionary["author_index"], publication = dictionary["publication"]
     return {
       id: id_int,

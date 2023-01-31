@@ -3,12 +3,11 @@ import './App.css';
 import AuthorTable from './views/AuthorTable.js';
 import TextTable from './views/TextTable.js';
 import authorData from './data/main_data.js';
-import React, {useState, useEffect} from 'react';
-import TextField from "@mui/material/TextField";
-import Select from 'react-select';
-import 'react-select-search/style.css';
-import { BrowserRouter, Route, Routes/*, Link*/, Navigate} from 'react-router-dom';
-import { Navbar, Nav, /*NavDropdown,*/ Container } from "react-bootstrap";
+import React from 'react';
+import SiteHeader from './views/SiteHeader.js';
+import SearchDetailed from './views/Search.js';
+//import 'react-select-search/style.css';
+import { BrowserRouter, Route, Routes} from 'react-router-dom';
 
 //Use bootstrap?
 
@@ -20,114 +19,37 @@ import { Navbar, Nav, /*NavDropdown,*/ Container } from "react-bootstrap";
 let listOfAuthors = authorData()["authors"];
 let listOfWorks = authorData()["work"];
 
-function MainSearch() {
-  let [search, setSearch] = useState("");
-  let [select, setSelect] = useState(false);
-  let [results,setResults] = useState(listOfAuthors.slice(1,1));
-  let [enterSearch,setEnterSearch] = useState(false);
-
-  useEffect (()=> {
-    setEnterSearch(false);
-  },[enterSearch]);
-  //let [link,setLink] = "";
-  function searchFunction (search) {
-      var authors = listOfAuthors;
-      var works = listOfWorks;
-      var data = authors//concat(works);
-      search = search.toLowerCase();
-      search = search.split(" ")
-      for (let i = 0; i<search.length;i++){ 
-        //For every element in the search, find a match in the data using a combination of author name, position, country and city
-        authors = authors.filter(
-        e=> 
-        (e.name+e.position+e.country+e.city).toLowerCase()
-        .includes(search[i])
-        )
-        works = works.filter(
-          e=>
-          (e.title+e.author).toLowerCase().includes(search[i])
-        )
-      }
-      setResults(authors.concat(works))
-  }
-  function searchSelect (event) {
-    const selectedValue = event;
-    setSelect(false);
-    setResults([selectedValue]);
-    setEnterSearch(true);
-    //setLink("/author/"+selectedValue.id);
-  }  
-
-  return (
-    <div>
-      <TextField //Search field
-      className = "searchText"
-      id="outlined-basic"
-      onChange={e => {
-        setSearch(e.target.value); //set new search value
-        searchFunction(search); //Searches for author using new search value
-        if(search.length>0){setSelect(true);}
-        setEnterSearch(false);
-        }}
-      /*onKeyDown={e => {if (e.key === "Enter")
-                {
-                window.location.href="/search?q="+this.state.search;
-                //<Navigate to={"/search?q="+this.state.search}/>;
-                console.log("Search has been entered");
-                }
-                }}*/
-      variant="outlined"
-      label="Search for a person or a text"
-    />
-    {"# search results: " + results.length}
-    {(select) ? //Show select window if there is a search
-      (<Select options={results} onChange={searchSelect}
-          />):(<div></div>)}
-    {(enterSearch) ? 
-      (<Navigate to=
-        {(results[0].type === "author") ? ("/author/"+results[0].id): ("/work/"+results[0].id)}
-      />):
-      (<div/>)
-    }
-  </div>
-  )
-}
-
-function SiteHeader() {
-  return (
-    <Container className = "flexbox-container">
-    <Navbar>
-      <Navbar.Brand href={"/"}>Lectura</Navbar.Brand>
-      <Nav>
-        <MainSearch/>
-      </Nav>
-    </Navbar>
-    </Container>
-  )
-}
-
 function App () {
+  const dataList = {listOfAuthors:listOfAuthors,listOfWorks:listOfWorks,}
   return (
     <div>
       <BrowserRouter>
       <Routes>
-        <Route path = {"/"} element = {<SiteHeader/>}/>
+        <Route path = {"/"} element = {<SiteHeader data = {dataList} />}/>
         {listOfWorks.map((work) =>
           <Route path ={"/work/"+work.id} element = {
-            <div>
-              <MainSearch/>
+            <>
+              <SiteHeader data = {dataList}/>
               <TextTable data={work}/>
-            </div>
+            </>
           } key = {work.id}/>
         )}
         {listOfAuthors.map((author) => 
           <Route path={"/author/"+author.id} element={ //Adds a link for every author
-            <div>
-            <MainSearch/>
+            <>
+            <SiteHeader data = {dataList} />
             <AuthorTable data={author}/>
-            </div>
+            </>
             } key = {author.id}>
           </Route>)}
+      <Route path = {"/search"} element = {
+        <>
+        <SiteHeader data = {dataList}/>
+        <SearchDetailed data ={dataList}/>
+        </>
+        }        
+        
+      />
       </Routes>
       </BrowserRouter>
     </div>

@@ -6,7 +6,7 @@ function WorkRow(props) {
     return (
         <tr>
             <td>
-                <Link to={"/work/"+props.data.id} >{props.data.Title + " (" + props.data.Publication + ")"}</Link>
+                <Link to={"/work/"+props.data.index}>{props.data.title + " (" + props.data.publication + ")"}</Link>
             </td>
         </tr>
     )
@@ -17,6 +17,8 @@ function AuthorTable (props){
     //Creates the author "view"
     const inputFile = useRef(null);
     const uploadWorks = () => {inputFile.current.click();};
+    var works = props.data.works;
+    if (works === null) {works = []};
     let [uploadedWorkList, setUploadedWorkList] = useState([]);
     function onUpload(event) {
         event.stopPropagation();
@@ -75,8 +77,8 @@ function AuthorTable (props){
                 <button id="fileSelect" onClick={uploadWorks}>Add works</button>
                 </td>
         </tr>
-            {(uploadedWorkList.length>0) ? 
-                (uploadedWorkList.map((work) => (<WorkRow key={work.Title} data={work}/>)))
+            {(works.length>0) ? 
+                (works.map((work) => (<WorkRow key={work.index} data={work}/>)))
                 :<tr><td></td></tr>}
         </tbody></table>
       )
