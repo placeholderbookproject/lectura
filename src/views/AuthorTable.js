@@ -12,7 +12,6 @@ function WorkRow(props) {
     )
 }
 
-
 function AuthorTable (props){
     //Creates the author "view"
     const inputFile = useRef(null);
@@ -21,6 +20,7 @@ function AuthorTable (props){
     if (works === null) {works = []};
     let [uploadedWorkList, setUploadedWorkList] = useState([]);
     function onUpload(event) {
+        /*Add some sort of export function to server/local -> validation&approval -> add to main dataframe*/
         event.stopPropagation();
         event.preventDefault();
         if (inputFile){
@@ -53,33 +53,43 @@ function AuthorTable (props){
     return (
       (<table id = "authorTableWindow"><tbody>
         <tr className = "Header"><td>{name[0]}</td></tr>
-        <tr><td>{aka}</td></tr>
         <tr>
-          <td><span style={{"fontWeight": '700'}}>born: </span> {birth+" ("+city+", "+country + ")"}</td>
+            <td>{/*string of all other names of the person, should be replaced by hover list or similar*/}
+                {aka}
+            </td>
         </tr>
         <tr>
-          <td><span style = {{"fontWeight":'700'}}>died:</span> {death}</td>
+            <td>{/*Birth date of the person including place of birth. Should include source etc later*/}
+                <span style={{"fontWeight": '700'}}>born: </span>{birth+" ("+city+", "+country + ")"}
+            </td>
         </tr>
         <tr>
-            <td>{floruit}</td>
+            <td>{/*Death date of person. Should include place of death later*/}
+                <span style = {{"fontWeight":'700'}}>died:</span>{death}
+            </td>
         </tr>
         <tr>
-            <td>{""}</td>
+            <td>{/*Floruit, only if birth or death does not exist and floruit itself exists*/}
+                {floruit}
+            </td>
         </tr>
         <tr>
-            <td>{author.position}</td>
+            <td>{/*Positions/roles of the person - should be formatted and fixed later*/}
+                {author.position}
+            </td>
         </tr>
-        <tr><td>{"For biographical details, see "}<a href = {"https://www.google.com/search?q="+name[0]}>google</a></td>
-          </tr>
+        <tr>
+            <td>{/*Replace this with some sort of import from source, f.ex. wikipedia, later*/}
+                {"For biographical details, see "}<a href = {"https://www.google.com/search?q="+name[0]}>google</a>
+            </td>
+        </tr>
         <tr className = {"Works"}>
             <td>{"List of known works  "}
                 <input type='file' id='fileElem' ref={inputFile} style={{display: 'none'}} onChange={onUpload}/>
                 <button id="fileSelect" onClick={uploadWorks}>Add works</button>
-                </td>
+            </td>
         </tr>
-            {(works.length>0) ? 
-                (works.map((work) => (<WorkRow key={work.index} data={work}/>)))
-                :<tr><td></td></tr>}
+            {(works.length>0) ? (works.map((work) => (<WorkRow key={work.index} data={work}/>))):<></>}
         </tbody></table>
       )
     );
