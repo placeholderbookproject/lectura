@@ -42,3 +42,52 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
 .searchText {
   width:500px;
 }
+
+#detailedSearchResults td, #detailedSearchResults th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+#detailedSearchResults {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+#detailedSearchResults th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #08153f;
+  color: white;
+  position: sticky;
+  top: 0px;
+}
+#detailedSearchResults tr{background-color: #ffffff;}
+
+#detailedSearchResults tr:hover {background-color: #ddd;}
+
+#detailedSearchHead .container {
+  position: sticky;
+  top: 0px;
+}
+
+.changeSearchVersionBtn  {
+	background-color:#3b140c;
+	border-radius:28px;
+	border:1px solid #f0960e;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	padding:6px 11px;
+	text-decoration:none;
+}
+.changeSearchVersionBtn {
+	background-color:#3b140c;
+}
+.changeSearchVersionBtn {
+	position:relative;
+	top:1px;
+}
+
+.changeSearchVersionBtn:active{background-color:rgb(15, 54, 5);}

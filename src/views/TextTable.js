@@ -10,9 +10,9 @@ function TextTable (props){
     return (
       (
         <table id = "textTableWindow"><tbody>
-            <tr className = "Header">
+            <th className = "Header">
                 <td>{title[0]}</td>{/*Text title: currently just the first title name*/}
-            </tr>
+            </th>
             <tr>
                 <td>{aka}</td>{/*akas, a string of alternative names. Should be replaced with a list of language alternatives*/}
             </tr>

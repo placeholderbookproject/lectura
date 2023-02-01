@@ -90,7 +90,7 @@ function MainSearch(props) {
 function SiteHeader(props) {
 return (
     <Container className = "flexbox-container">
-    <Navbar>
+    <Navbar fixed="top">
     <Nav>
         <MainSearch data = {props.data}/>
     </Nav>

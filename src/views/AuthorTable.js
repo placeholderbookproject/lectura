@@ -65,7 +65,7 @@ function AuthorTable (props){
         </tr>
         <tr>
             <td>{/*Death date of person. Should include place of death later*/}
-                <span style = {{"fontWeight":'700'}}>died:</span>{death}
+                <span style = {{"fontWeight":'700'}}>died: </span>{death}
             </td>
         </tr>
         <tr>
