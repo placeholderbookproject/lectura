@@ -30,8 +30,8 @@ const authorFilters = [
 ]
 
 const options = 
-    {"Author":authorFilters,
-    "Work":workFilters,}
+    {"author":authorFilters,
+    "work":workFilters,}
 
 function CreateList(props) {
     const values = props.data
@@ -51,8 +51,8 @@ function CreateList(props) {
 function SearchDetailed(props) {//Add the table view of
     let [searchParams,setSearchParams] = useSearchParams();
     const data = props.data; //data["authors"]
-    const [searchType, setSearchType] = useState("Author");
-    const [filters, setFilters] = useState(options["Author"]);
+    const [searchType, setSearchType] = useState("author"); //searchParams.get('type') fix type query later..
+    const [filters, setFilters] = useState(options["author"]);
     const [search, setSearch] = useState("");
     const [startSearch, setStartSearch] = useState(false);
     let [searchData,setSearchData] = useState(data["listOfAuthors"]); 
@@ -60,15 +60,15 @@ function SearchDetailed(props) {//Add the table view of
     const [searchOrder, setSearchOrder] = useState("asc");
     function changeVersion () {
         setSearchResults([]);
-        if(searchType === "Author"){
-            setSearchType("Work");
+        if(searchType === "author"){
+            setSearchType("work");
             setSearchData(data["listOfWorks"]);
-            setFilters(options["Work"])
+            setFilters(options["work"])
         }
         else {
-            setSearchType("Author");
+            setSearchType("author");
             setSearchData(data["listOfAuthors"]);
-            setFilters(options["Author"])
+            setFilters(options["author"])
         }
     }
     function searchFunction(searchVar = search) {
@@ -76,7 +76,9 @@ function SearchDetailed(props) {//Add the table view of
         var searchInput = searchVar;
         setSearchResults([]);
         if (filters.length>0 && searchInput.length>0){
-            setSearchParams({'query':searchInput})
+            setSearchParams({'query':searchInput,
+                             'type':searchType   
+                            })
             setStartSearch(true);
             var dataSearch = searchData.slice(0,searchData.len);
             var searchElements = searchInput.toLowerCase().split(" ");
@@ -145,7 +147,7 @@ function SearchDetailed(props) {//Add the table view of
     return (//Need to add dynamic search link. I.e. when enter -> change search. Also add basic filters from link
       <div className = "detailedSearch">
         <div id = "detailedSearchHeader">
-            <button className="changeSearchVersionBtn" onClick={changeVersion}>{+ (searchType === "Author")? "Works":"Authors"}</button>
+            <button className="changeSearchVersionBtn" onClick={changeVersion}>{+ (searchType === "author")? "Works":"Authors"}</button>
             <FormControl sx={{ m: 1, width: "50ch" }} variant="outlined">
                 <InputLabel 
                     htmlFor="outlined-adornment-password"
@@ -185,7 +187,7 @@ function SearchDetailed(props) {//Add the table view of
                 />
             </FormControl>
             <Select 
-            options = {(searchType === "Author") ? options["Author"]:options["Work"]}
+            options = {(searchType === "author") ? options["author"]:options["work"]}
             onChange = {(e) => setFilters(e)}
             value = {filters}
             placeholder = {"Select search filters"}
@@ -201,13 +203,12 @@ function SearchDetailed(props) {//Add the table view of
                     <Tooltip sx = {{fontSize:15}}key={filter.value} title="Click to sort" placement="top" arrow followCursor>
                     <th onClick={sortFunction}>{filter.label}</th>
                     </Tooltip>
-                    
                 )
               ):<></>}
             </tr>
             {search.length>0 ? (
                 (searchResults.length>100?searchResults.slice(0,100):searchResults).map //Limitation to first 100 values
-                /*searchResults.map*/ (result => (
+                (result => (
                     <tr key = {result.id}>
                     <CreateList data = {result} filters = {filters}/>
                     </tr>
