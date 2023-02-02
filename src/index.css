@@ -60,7 +60,10 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   color: white;
   position: sticky;
   top: 0px;
+  cursor:pointer;
 }
+
+
 #detailedSearchResults tr{background-color: #ffffff;}
 
 #detailedSearchResults tr:hover {background-color: #ddd;}
@@ -74,7 +77,9 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
 	background-color:#3b140c;
 	border-radius:28px;
 	border:1px solid #f0960e;
-	display:inline-block;
+	display:bottom;
+  justify-content: center;
+  align-items:center;
 	cursor:pointer;
 	color:#ffffff;
 	font-family:Arial;

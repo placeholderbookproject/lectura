@@ -30,7 +30,7 @@ function authorToDict() {
 }
 //translate nulls to unknown
 function checkNull(data){
-    if(data === null) {data = "unknown"}
+    if(data === null) {data = ""}
     return data}
 
 function worksToDict() {
