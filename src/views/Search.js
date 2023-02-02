@@ -54,8 +54,6 @@ function SearchDetailed(props) {//Add the table view of
     const [searchType, setSearchType] = useState("Author");
     const [filters, setFilters] = useState(options["Author"]);
     const [search, setSearch] = useState("");
-//    if([...searchParams].length>0 && [...searchParams][0][0]==="query"){setSearch([...searchParams][0][1])}
-
     const [startSearch, setStartSearch] = useState(false);
     let [searchData,setSearchData] = useState(data["listOfAuthors"]); 
     let [searchResults,setSearchResults] = useState([]);
@@ -73,13 +71,15 @@ function SearchDetailed(props) {//Add the table view of
             setFilters(options["Author"])
         }
     }
-    function searchFunction() {
+    function searchFunction(searchVar = search) {
         //setSearchParams()
+        var searchInput = searchVar;
         setSearchResults([]);
-        if (filters.length>0){
+        if (filters.length>0 && searchInput.length>0){
+            setSearchParams({'query':searchInput})
             setStartSearch(true);
             var dataSearch = searchData.slice(0,searchData.len);
-            var searchElements = search.toLowerCase().split(" ");
+            var searchElements = searchInput.toLowerCase().split(" ");
             for (let j = 0; j<searchElements.length;j++) {
                 var results = [];
                 var resultNumber = 0;
@@ -103,10 +103,12 @@ function SearchDetailed(props) {//Add the table view of
             }
             setSearchResults(results);
         }
-        setSearchParams({query:search})
     }
     function onEnter(e) {if(e.keyCode === 13){searchFunction()}}
-    function clearSearch() {setStartSearch(false); setSearch("")}
+    function clearSearch() {
+        setSearch("");
+        setSearchResults([]);
+    }
     function sortFunction(event) {
         if (searchOrder==="asc"){setSearchOrder("desc")}
         else {setSearchOrder("asc")}
@@ -134,11 +136,11 @@ function SearchDetailed(props) {//Add the table view of
     useEffect ( () => {//Search if a search query parameter exists in the url
         const searchQuery = [...searchParams];
         if(searchQuery.length>0 && searchQuery[0][0]==="query" && searchQuery[0][1] !== ""){
-            setSearch(searchQuery[0][1]);
             setStartSearch(true);
-            searchFunction();
+            searchFunction(searchQuery[0][1]);
+            setSearch(searchQuery[0][1]);
         }
-    },[startSearch]
+    },[startSearch] // eslint-disable-line react-hooks/exhaustive-deps
     )
     return (//Need to add dynamic search link. I.e. when enter -> change search. Also add basic filters from link
       <div className = "detailedSearch">
@@ -176,7 +178,9 @@ function SearchDetailed(props) {//Add the table view of
                 }
                 label="Search"
                 value = {search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => 
+                    setSearch(e.target.value)
+                    }
                 onKeyDown = {onEnter}
                 />
             </FormControl>
@@ -192,7 +196,7 @@ function SearchDetailed(props) {//Add the table view of
           <table id = "detailedSearchResults">
           <tbody>
             <tr>
-              {filters.length>0 ? filters.map((filter) =>
+              {filters.length>0 && startSearch ? filters.map((filter) =>
                 ( 
                     <Tooltip sx = {{fontSize:15}}key={filter.value} title="Click to sort" placement="top" arrow followCursor>
                     <th onClick={sortFunction}>{filter.label}</th>
@@ -201,8 +205,9 @@ function SearchDetailed(props) {//Add the table view of
                 )
               ):<></>}
             </tr>
-            {startSearch ? (
-                searchResults.map (result => (
+            {search.length>0 ? (
+                (searchResults.length>100?searchResults.slice(0,100):searchResults).map //Limitation to first 100 values
+                /*searchResults.map*/ (result => (
                     <tr key = {result.id}>
                     <CreateList data = {result} filters = {filters}/>
                     </tr>
