@@ -90,8 +90,9 @@ function AuthorTable (props){
     const mainOccupation = occupationList[0];//(firstOccupation.length>1)?firstOccupation.splice(1,firstOccupation.length).join(" "):occupationList[0];
     const nationality = firstOccupation[0];
     return (
-      (<table id = "authorTableWindow"><tbody>
-        <tr className = "Header"><td>{name[0]}</td></tr>
+      (<table id = "authorTableWindow">
+        <tbody>
+        <tr className = "Header"><th>{name[0]}</th></tr>
         <tr>
             <td>{/*string of all other names of the person, should be replaced by hover list or similar*/}
                 {numNames>1?
@@ -112,7 +113,7 @@ function AuthorTable (props){
                 {birth === ""? tableLabels.unspecified://If no birth -> not specified
                                 (birth>0?birth + " AD": Math.abs(birth) + " BC" )//If <0->BC else AD
                 }
-                {(city === "" && country === "")?"":" ("+city+(country.length>0?", ":"")+country + ")" //If neither country or city of birth exists -> empty string
+                {(city === "" && country === "")?"":" ("+city+((city.length>0&&country.length>0)?", ":"")+country + ")" //If neither country or city of birth exists -> empty string
                 }
             </td>
             <td>{/*Nationality */}
@@ -129,16 +130,17 @@ function AuthorTable (props){
                     {(city_death === "" && country_death === "")?"": " (" + city_death + (country_death.length>0?", ": "") + country_death + ")"}
             </td>
         </tr>
-        <tr>
-            <td>{/*Floruit, only if birth or death does not exist and floruit itself exists*/}
-                <span style = {{"fontWeight":'700'}}>
+        <tr>{/*Floruit, only if birth or death does not exist and floruit itself exists*/}
                 {(author.birth === ("")|author.death === ("")) && author.floruit !==("")?
-                tableLabels.floruit:""
-                }
+                <td>
+                <span style = {{"fontWeight":'700'}}>
+                {tableLabels.floruit}
                 </span>
                 {" " + author.floruit}
-                {/*floruit*/}
-            </td>
+                </td>
+                :<></>
+                }
+
         </tr>
         <tr>
             <td>{/*Positions/roles of the person - should be formatted and fixed later*/}
@@ -147,8 +149,8 @@ function AuthorTable (props){
                 </span>
                 {mainOccupation}
             </td>
-            <td>
                 {occupationList.length>1?
+                    <td>
                     <Collapsible label = {tableLabels.other_occupations}>
                         <table className = "occupationList">
                             <tbody>
@@ -160,29 +162,20 @@ function AuthorTable (props){
                             </tbody>
                         </table>
                     </Collapsible>
+                    </td>
                     :<></>
                 }
-            </td>
         </tr>
         <tr>
             <td>{/*Replace this with some sort of import from source, f.ex. wikipedia, later*/}
                 {"For biographical details, see "}<a href = {"https://www.google.com/search?q="+name[0]}>google</a>
             </td>
         </tr>
-        <tr>
-            <td>
-                {/*Placeholder for biography */}
-            </td>
+        <tr>{/*Placeholder for biography */}
         </tr>
-        <tr>
-            <td>
-                {/*Placeholder for influences */}
-            </td>
+        <tr>{/*Placeholder for influences */}
         </tr>
-        <tr>
-            <td>
-                {/*Placeholder for influenced */}
-            </td>
+        <tr>{/*Placeholder for influenced */}
         </tr>
         <tr className = {"Works"}>
             <td>{"List of known works  "}
