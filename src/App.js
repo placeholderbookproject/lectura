@@ -36,10 +36,10 @@ function App () {
         )}
         {listOfAuthors.map((author) => 
           <Route path={"/author/"+author.id} element={ //Adds a link for every author
-            <>
+            <div>
             <SiteHeader data = {dataList} />
             <AuthorTable data={author}/>
-            </>
+            </div>
             } key = {author.id}>
           </Route>)}
       <Route path = {"/search"} element = {

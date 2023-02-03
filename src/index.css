@@ -1,3 +1,10 @@
+.navbar {
+  height: 60px;
+  background-color: #fffcf8;
+  position: relative;
+}
+
+
 table#authorTable tr, table#authorTable td
 {
   border:solid thin;
@@ -30,8 +37,9 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
 }
 
 .flexbox-container {
-  display: flex;
+  display: flex;/*this causes the stickyness of select window (right below search as desired)*/
   flex-direction: row;
+  justify-content:center;
 }
 
 .siteHeader {
