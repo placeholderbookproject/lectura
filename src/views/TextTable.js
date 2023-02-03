@@ -1,5 +1,7 @@
 import {Link} from 'react-router-dom';
 
+
+
 function TextTable (props){
     const text = props.data;
     const title = text.title.split(",");

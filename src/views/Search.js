@@ -53,7 +53,7 @@ function SearchDetailed(props) {//Add the table view of
     let [searchParams,setSearchParams] = useSearchParams();
     const data = props.data; //data["authors"]
     const [searchType, setSearchType] = useState("author"); //searchParams.get('type') fix type query later..
-    const [filters, setFilters] = useState(options["author"]);
+    const [filters, setFilters] = useState(options["author"].slice(0,3));
     const [search, setSearch] = useState("");
     const [startSearch, setStartSearch] = useState(false);
     let [searchData,setSearchData] = useState(data["listOfAuthors"]); 
@@ -187,7 +187,7 @@ function SearchDetailed(props) {//Add the table view of
                 onKeyDown = {onEnter}
                 />
                 <FormHelperText>
-                    {"Your search returned " + searchResults.length +" results"}
+                    {(searchResults.length>0)?"Your query returned #" + searchResults.length +" results":""}
                 </FormHelperText>
             </FormControl>
             <Select 
@@ -211,7 +211,7 @@ function SearchDetailed(props) {//Add the table view of
               ):<></>}
             </tr>
             {search.length>0 ? (
-                (searchResults.length>100?searchResults.slice(0,100):searchResults).map //Limitation to first 100 values
+                ((searchResults.length>100)?searchResults.slice(0,100):searchResults).map //Limitation to first 100 values
                 (result => (
                     <tr key = {result.id}>
                     <CreateList data = {result} filters = {filters}/>

@@ -91,6 +91,8 @@ function MainSearch(props) {
             options={results.length>100? results.slice(0,100):results}
             onInputChange={testSelect}
             onChange={searchSelect}
+            menuPortalTarget={document.body} 
+            styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
           />
         </div>
       {(enterSearch) ? 
