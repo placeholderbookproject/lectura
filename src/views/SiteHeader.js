@@ -54,7 +54,7 @@ function MainSearch(props) {
           (e.name+e.position+e.country+e.city).toLowerCase()
           .includes(searchElement)
           )
-          console.log(authors)
+          //console.log(authors)
           works = works.filter(
             e=>
             (e.title+e.author).toLowerCase().includes(searchElement)

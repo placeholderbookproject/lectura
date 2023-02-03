@@ -7,6 +7,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import IconButton from "@mui/material/IconButton";
 import FormControl from "@mui/material/FormControl";
 import Tooltip from '@mui/material/Tooltip';
+import FormHelperText from '@mui/material/FormHelperText';
 import Select from 'react-select';
 import {Link, useSearchParams} from 'react-router-dom';
 
@@ -185,6 +186,9 @@ function SearchDetailed(props) {//Add the table view of
                     }
                 onKeyDown = {onEnter}
                 />
+                <FormHelperText>
+                    {"Your search returned " + searchResults.length +" results"}
+                </FormHelperText>
             </FormControl>
             <Select 
             options = {(searchType === "author") ? options["author"]:options["work"]}
