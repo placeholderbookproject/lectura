@@ -107,8 +107,15 @@ function MainSearch(props) {
 
 function SiteHeader(props) {
 return (
-    <Container className = "flexbox-container">
-      <Navbar fixed="top">{/*https://retool.com/blog/building-a-react-navbar/ */}
+    <Container className = "flexbox-container" 
+        style={{paddingBottom: 10,
+                backgroundColor: '#4c7557',
+                borderBottom: '1px solid #8a8a8a',
+                }}
+        >
+      <Navbar fixed="top"
+        style = {{backgroundColor: '#4c7557'}}
+      >{/*https://retool.com/blog/building-a-react-navbar/ */}
             <MainSearch data = {props.data}/>
       </Navbar>
     </Container>

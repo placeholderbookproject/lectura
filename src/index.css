@@ -36,15 +36,13 @@ table#authorTable tr, table#authorTable td
   border-collapse: collapse;
 }
 
-table#authorTableWindow{
-  border: 1px solid;
-}
 
 table#authorTableWindow .Header th, table#textTableWindow .Header th {
-  padding-bottom: 20px;
   font-size: 40px;
   font-family: Arial;
   font-weight: 700;
+  padding-bottom: 5px;
+  text-decoration: underline 1px rgb(100, 88, 71);
 }
 
 /*table#authorTableWindow td {

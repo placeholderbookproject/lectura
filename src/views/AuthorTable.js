@@ -1,5 +1,4 @@
-import React, {useRef, useState} from 'react';
-import * as XLSX from 'xlsx';
+import React, {/*useRef,*/ useState} from 'react';
 import {Link} from 'react-router-dom';
 //import Collapsible from 'react-collapsible';
 
@@ -22,7 +21,6 @@ const labels = {
 const Collapsible = (props) => {
     const [open, setOPen] = useState(false);
     const toggle = () => {setOPen(!open);}
-    const data = props.data;
     return (
       <>
         <span onClick = {toggle} className = "collapsibleBtn">{props.label}</span>
@@ -30,13 +28,6 @@ const Collapsible = (props) => {
             <div className={open ? "content-show" : "content-parent"}>
                 <div className="toggle">{props.children}</div>
             </div>
-        
-        /*?
-            data.map((dataElement) => 
-                <p key = {dataElement}>
-                    {dataElement}
-                </p>
-            ):<></>*/
         }
       </>
     );
@@ -56,31 +47,8 @@ function WorkRow(props) {
 function AuthorTable (props){
     //Creates the author "view"
     const tableLabels = labels;
-    const inputFile = useRef(null);
-    const uploadWorks = () => {inputFile.current.click();};
     var works = props.data.works;
     if (works === null) {works = []};
-    let [uploadedWorkList, setUploadedWorkList] = useState([]);
-    function onUpload(event) {
-        /*Add some sort of export function to server/local -> validation&approval -> add to main dataframe*/
-        event.stopPropagation();
-        event.preventDefault();
-        if (inputFile){
-            var file = inputFile.current.files[0];
-            if (file.name.includes(".xlsx")) {
-                const reader = new FileReader();
-                if (reader.readAsBinaryString) {
-                    reader.onload = (event) => {
-                        const workbook = XLSX.read(event.target.result,{type:'binary'});//(reader.result, {type: 'binary'});
-                        const firstSheet = workbook.SheetNames[0];
-                        var excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[firstSheet]);
-                        setUploadedWorkList(excelRows);
-                    };
-                }
-                reader.readAsBinaryString(file)
-            }
-        }
-    }
     const author = props.data;
     var birth = author.birth, death = author.death, name = author.name.split(",");
     var city = author.city, country = author.country, country_death = "", city_death = "";
@@ -89,6 +57,16 @@ function AuthorTable (props){
     var firstOccupation = occupationList[0].split(" ");
     const mainOccupation = occupationList[0];//(firstOccupation.length>1)?firstOccupation.splice(1,firstOccupation.length).join(" "):occupationList[0];
     const nationality = firstOccupation[0];
+    async function searchWikipedia() {
+        const searchQuery = name[0];
+        const endpoint = `https://en.wikipedia.org/w/api.php?action=query&list=search&prop=info&inprop=url&utf8=&format=json&origin=*&srlimit=20&srsearch=${searchQuery}`;
+        const response = await fetch(endpoint);
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
+        const json = await response.json();
+        console.log(json);//return json;
+      }
     return (
       (<table id = "authorTableWindow">
         <tbody>
@@ -113,7 +91,8 @@ function AuthorTable (props){
                 {birth === ""? tableLabels.unspecified://If no birth -> not specified
                                 (birth>0?birth + " AD": Math.abs(birth) + " BC" )//If <0->BC else AD
                 }
-                {(city === "" && country === "")?"":" ("+city+((city.length>0&&country.length>0)?", ":"")+country + ")" //If neither country or city of birth exists -> empty string
+                {(city === "" && country === "")?"":" ("+city+((city.length>0&&country.length>0)?", ":"")+country + ")" 
+                //If neither country or city of birth exists -> empty string
                 }
             </td>
             <td>{/*Nationality */}
@@ -171,16 +150,19 @@ function AuthorTable (props){
                 {"For biographical details, see "}<a href = {"https://www.google.com/search?q="+name[0]}>google</a>
             </td>
         </tr>
+        <tr>
+            <td>{/*Replace this with some sort of import from source, f.ex. wikipedia, later*/}
+                <button onClick={searchWikipedia}>Click to print wikipedia result</button>
+            </td>
+        </tr>
         <tr>{/*Placeholder for biography */}
         </tr>
         <tr>{/*Placeholder for influences */}
         </tr>
         <tr>{/*Placeholder for influenced */}
         </tr>
-        <tr className = {"Works"}>
+        <tr className = "Works" style = {{textDecoration: 'underline 1px rgb(100, 88, 71)'}}>
             <td>{"List of known works  "}
-                {/*<input type='file' id='fileElem' ref={inputFile} style={{display: 'none'}} onChange={onUpload}/>
-                <button id="fileSelect" onClick={uploadWorks}>Add works</button>*/}
             </td>
         </tr>
             {(works.length>0) ? (works.map((work) => (<WorkRow key={work.index} data={work}/>))):<></>}
