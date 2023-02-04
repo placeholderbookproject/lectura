@@ -45,7 +45,7 @@ function MainSearch(props) {
               a) find a match in the author data using a combination of author name, position, country and city
               b) find a match in the text data using a combination of title and author
           */ 
-        var authors = props.data.listOfAuthors, works = props.data.listOfWorks;
+        let authors = props.data.listOfAuthors, works = props.data.listOfWorks;
         search = search.toLowerCase().split(" ");
         for (let i = 0; i<search.length;i++){ 
           const searchElement = search[i];
@@ -111,6 +111,8 @@ return (
         style={{paddingBottom: 10,
                 backgroundColor: '#4c7557',
                 borderBottom: '1px solid #8a8a8a',
+                position: 'sticky',
+                top: 0,
                 }}
         >
       <Navbar fixed="top"

@@ -1,9 +1,9 @@
 //Translate author table
-function authorToDict() {
-  function transferToDict(id) {
-    var dictionary = data['data'][id];
-    var id_int = dictionary["index"], birth = dictionary['Birth'], death = dictionary['Death'], deathString;
-    var position = checkNull(dictionary['Position']);
+const authorToDict = () => {
+  const transferToDict = (id) => {
+    const dictionary = data['data'][id];
+    let id_int = dictionary["index"], birth = dictionary['Birth'], death = dictionary['Death'], deathString;
+    const position = checkNull(dictionary['Position']);
     if (death<0) {deathString= Math.abs(death)+" BC"}
     else{deathString = death+ " AD"}    
     return {
@@ -24,20 +24,20 @@ function authorToDict() {
     }
 }
   let data = require('../data.json')
-  var list = [];
-  for (var n in data['data']) {list.push(transferToDict(n))}
+  let list = [];
+  for (let n in data['data']) {list.push(transferToDict(n))}
   return list
 }
 //translate nulls to unknown
-function checkNull(data){
+const checkNull = (data) => {
     if(data === null) {data = ""}
     return data}
 
-function worksToDict() {
-  function dictElement(id){
-    var dictionary = listOfWorks[id];
-    var id_int = dictionary["index"];
-    var title = dictionary['title'], author = dictionary["author"], author_id = dictionary["author_index"], publication = dictionary["publication"]
+const worksToDict = () => {
+  const dictElement = (id) => {
+    const dictionary = listOfWorks[id];
+    const id_int = dictionary["index"];
+    const title = dictionary['title'], author = dictionary["author"], author_id = dictionary["author_index"], publication = dictionary["publication"]
     return {
       id: id_int,
       title:title,
@@ -49,11 +49,12 @@ function worksToDict() {
       type: "text",
     }}
     let listOfWorks = require("../works.json")["data"];
-    var list = [];
-    for (var n in listOfWorks){list.push(dictElement(n))}
+    let list = [];
+    for (let n in listOfWorks){list.push(dictElement(n))}
     return list
   }
-function authorData(){
+
+const authorData = () => {
     let data = {
         work: worksToDict(),
         authors: authorToDict(),

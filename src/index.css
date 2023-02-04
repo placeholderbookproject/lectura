@@ -96,7 +96,7 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   text-align: left;
   background-color: #08153f;
   color: white;
-  position: sticky;
+  /*position: sticky;*/
   top: 0px;
   cursor:pointer;
 }

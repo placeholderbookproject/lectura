@@ -1,13 +1,11 @@
 import {Link} from 'react-router-dom';
 
-
-
-function TextTable (props){
+const TextTable = (props) => {
     const text = props.data;
     const title = text.title.split(",");
     const numTitles = title.length;
     const author = text.author
-    var aka = "";
+    const aka = "";
     if(numTitles>1){aka = "also known as: " + title.slice(1,numTitles).join(", ")};
     return (
       (

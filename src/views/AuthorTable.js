@@ -34,7 +34,7 @@ const Collapsible = (props) => {
   };
 
 
-function WorkRow(props) {
+const WorkRow = (props) => {
     return (
         <tr>
             <td>
@@ -44,17 +44,18 @@ function WorkRow(props) {
     )
 }
 
-function AuthorTable (props){
+const AuthorTable = (props) => {
     //Creates the author "view"
     const tableLabels = labels;
-    var works = props.data.works;
+    let works = props.data.works;
     if (works === null) {works = []};
     const author = props.data;
-    var birth = author.birth, death = author.death, name = author.name.split(",");
-    var city = author.city, country = author.country, country_death = "", city_death = "";
-    var numNames = name.length;
-    var occupationList = author.position.split(", ");
-    var firstOccupation = occupationList[0].split(" ");
+    const {birth, death, city, country} = author;
+    const country_death = "", city_death = ""
+    const name = author.name.split(",");
+    const numNames = name.length;
+    const occupationList = author.position.split(", ");
+    const firstOccupation = occupationList[0].split(" ");
     const mainOccupation = occupationList[0];//(firstOccupation.length>1)?firstOccupation.splice(1,firstOccupation.length).join(" "):occupationList[0];
     const nationality = firstOccupation[0];
     async function searchWikipedia() {

@@ -34,10 +34,10 @@ const options =
     {"author":authorFilters,
     "work":workFilters,}
 
-function CreateList(props) {
+const CreateList = (props) => {
     const values = props.data
     const filters = props.filters;
-    function differentiateFilter(filter) {
+    const differentiateFilter = (filter) => {
         const joinedValues = values[filter["value"]]
         //if(joinedValues.constructor.name === "Array") {joinedValues = joinedValues.join(", ")} //For listing works later...
         if (filter.value === "title" | filter.value === "name") {
@@ -49,7 +49,7 @@ function CreateList(props) {
     return (filters.map((filter) => (differentiateFilter(filter))))
 }
 
-function SearchDetailed(props) {//Add the table view of
+const SearchDetailed = (props) => {//Add the table view of
     let [searchParams,setSearchParams] = useSearchParams();
     const data = props.data; //data["authors"]
     const [searchType, setSearchType] = useState("author"); //searchParams.get('type') fix type query later..
@@ -59,7 +59,7 @@ function SearchDetailed(props) {//Add the table view of
     let [searchData,setSearchData] = useState(data["listOfAuthors"]); 
     let [searchResults,setSearchResults] = useState([]);
     const [searchOrder, setSearchOrder] = useState("asc");
-    function changeVersion () {
+    const changeVersion = () =>  {
         setSearchResults([]);
         if(searchType === "author"){
             setSearchType("work");
@@ -72,24 +72,24 @@ function SearchDetailed(props) {//Add the table view of
             setFilters(options["author"])
         }
     }
-    function searchFunction(searchVar = search) {
+    const searchFunction = (searchVar = search) => {
         //setSearchParams()
-        var searchInput = searchVar;
+        const searchInput = searchVar;
+        let results
         setSearchResults([]);
         if (filters.length>0 && searchInput.length>0){
             setSearchParams({'query':searchInput,
                              'type':searchType   
                             })
             setStartSearch(true);
-            var dataSearch = searchData.slice(0,searchData.len);
-            var searchElements = searchInput.toLowerCase().split(" ");
+            let dataSearch = searchData.slice(0,searchData.len);
+            const searchElements = searchInput.toLowerCase().split(" ");
             for (let j = 0; j<searchElements.length;j++) {
-                var results = [];
-                var resultNumber = 0;
-                var element = searchElements[j];
+                results = []
+                let resultNumber = 0, element = searchElements[j];
                 for (let n = 0; n<dataSearch.length;n++ in dataSearch){
                     const dataElement = dataSearch[n];
-                    var found = false;
+                    let found = false;
                     for (let i = 0; i<filters.length;i++) {
                         if(found){continue};
                         const filter = filters[i];
@@ -107,19 +107,19 @@ function SearchDetailed(props) {//Add the table view of
             setSearchResults(results);
         }
     }
-    function onEnter(e) {if(e.keyCode === 13){searchFunction()}}
-    function clearSearch() {
+    const onEnter = (e) => {if(e.keyCode === 13){searchFunction()}}
+    const clearSearch = () => {
         setSearch("");
         setSearchResults([]);
     }
-    function sortFunction(event) {
+    const sortFunction = (event) => {
         if (searchOrder==="asc"){setSearchOrder("desc")}
         else {setSearchOrder("asc")}
-        var sortedData = searchResults;
+        let sortedData = searchResults;
         const col = event.currentTarget.textContent;
-        var filtersWithIndex = filters
-        var findColumn = filtersWithIndex.find((e) => e.label.includes(col)).value
-        function compare(a,b){
+        const filtersWithIndex = filters
+        const findColumn = filtersWithIndex.find((e) => e.label.includes(col)).value
+        const compare = (a,b) => {
             b = b[findColumn]
             a = a[findColumn]
             if(a === ""|b === "") {

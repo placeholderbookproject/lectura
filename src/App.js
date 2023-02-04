@@ -1,5 +1,4 @@
 import './App.css';
-//import SearchDetailed from './views/Search.js';
 import AuthorTable from './views/AuthorTable.js';
 import TextTable from './views/TextTable.js';
 import authorData from './data/main_data.js';
@@ -9,8 +8,6 @@ import SearchDetailed from './views/Search.js';
 //import 'react-select-search/style.css';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
 
-//Use bootstrap?
-
 //Options for language dropdown
 /*const languageOptions = [
   {label: 'English', value: 'en'},
@@ -19,7 +16,7 @@ import { BrowserRouter, Route, Routes} from 'react-router-dom';
 let listOfAuthors = authorData()["authors"];
 let listOfWorks = authorData()["work"];
 
-function App () {
+const App = () => {
   const dataList = {listOfAuthors:listOfAuthors,listOfWorks:listOfWorks,}
   return (
     <div>
