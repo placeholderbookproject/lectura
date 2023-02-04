@@ -5,7 +5,7 @@ const TextTable = (props) => {
     const title = text.title.split(",");
     const numTitles = title.length;
     const author = text.author
-    const aka = "";
+    let aka = "";
     if(numTitles>1){aka = "also known as: " + title.slice(1,numTitles).join(", ")};
     return (
       (

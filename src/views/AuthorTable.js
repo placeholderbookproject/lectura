@@ -1,5 +1,6 @@
-import React, {/*useRef,*/ useState} from 'react';
+import React, {/*useRef,*/ useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
+const parse = require('html-react-parser');
 //import Collapsible from 'react-collapsible';
 
 const labels = {
@@ -33,7 +34,6 @@ const Collapsible = (props) => {
     );
   };
 
-
 const WorkRow = (props) => {
     return (
         <tr>
@@ -49,6 +49,7 @@ const AuthorTable = (props) => {
     const tableLabels = labels;
     let works = props.data.works;
     if (works === null) {works = []};
+    const [wiki, setWiki] = useState("");
     const author = props.data;
     const {birth, death, city, country} = author;
     const country_death = "", city_death = ""
@@ -58,16 +59,31 @@ const AuthorTable = (props) => {
     const firstOccupation = occupationList[0].split(" ");
     const mainOccupation = occupationList[0];//(firstOccupation.length>1)?firstOccupation.splice(1,firstOccupation.length).join(" "):occupationList[0];
     const nationality = firstOccupation[0];
-    async function searchWikipedia() {
-        const searchQuery = name[0];
-        const endpoint = `https://en.wikipedia.org/w/api.php?action=query&list=search&prop=info&inprop=url&utf8=&format=json&origin=*&srlimit=20&srsearch=${searchQuery}`;
-        const response = await fetch(endpoint);
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-        const json = await response.json();
-        console.log(json);//return json;
-      }
+    useEffect ( () => {
+        async function searchWikipedia() {
+            const searchQuery = name[0];
+            const endpoint = `https://en.wikipedia.org/w/api.php?action=query&list=search&prop=info&inprop=url&utf8=&format=json&origin=*&srlimit=20&srsearch=${searchQuery}`;
+            const response = await fetch(endpoint);
+            if (!response.ok) {
+              throw Error(response.statusText);
+            }
+            const json = await response.json();
+            const title = json["query"]["search"][0]["title"]//["query"]//["search"][0]
+            //const extractText = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&exlimit=20&titles=${title}&explaintext=1&exsectionformat=plain`;
+            const extractText = `https://en.wikipedia.org/api/rest_v1/page/summary/${title}`;
+            const responseTwo = await fetch(extractText)
+            if (!responseTwo.ok) {
+                throw Error(responseTwo.statusText);
+              }
+            const result = await responseTwo.json();
+            const url = result["content_urls"]["desktop"]["page"]
+            console.log(json)
+            console.log(result)
+            return setWiki(result["extract"] + " (source: "+ "<a href = '" + url + "'>wikipedia</a>)");//return json;
+          }
+        searchWikipedia();
+    },[wiki, props, name]
+    )
     return (
       (<table id = "authorTableWindow">
         <tbody>
@@ -148,14 +164,15 @@ const AuthorTable = (props) => {
         </tr>
         <tr>
             <td>{/*Replace this with some sort of import from source, f.ex. wikipedia, later*/}
-                {"For biographical details, see "}<a href = {"https://www.google.com/search?q="+name[0]}>google</a>
+                {typeof wiki !== Object && wiki !== ""? parse(wiki):<></>}
+            </td>   
+        </tr>
+        {/*<tr>
+            <td>
+                {"For more biographical details, see "}<a href = {"https://www.google.com/search?q="+name[0]}>google</a>
             </td>
         </tr>
-        <tr>
-            <td>{/*Replace this with some sort of import from source, f.ex. wikipedia, later*/}
-                <button onClick={searchWikipedia}>Click to print wikipedia result</button>
-            </td>
-        </tr>
+        */}  
         <tr>{/*Placeholder for biography */}
         </tr>
         <tr>{/*Placeholder for influences */}
