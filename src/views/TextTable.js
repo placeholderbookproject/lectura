@@ -1,12 +1,28 @@
 import {Link} from 'react-router-dom';
+import TableRow from './ViewRow.js'
+
+const labels = {
+    aka : 'aka.',
+    author_name : 'Author',
+    original_language : 'Original Language(s)',
+    original_publication_date : 'Original Publication',
+    original_publisher_name : 'Original Publisher',
+    original_publication_type : 'Type',
+    original_publication_length : 'Length',
+    writing_period : 'Writing period',
+    editions : 'Editions',
+    unspecified : 'not specified',
+}
+
 
 const TextTable = (props) => {
     const text = props.data;
     const title = text.title.split(",");
     const numTitles = title.length;
-    const author = text.author
-    let aka = "";
-    if(numTitles>1){aka = "also known as: " + title.slice(1,numTitles).join(", ")};
+    const author = text.author;
+    const textLabels = labels;
+    const [language, publisher, genre, type, publication_type, publication_length, publication_length_type, publication_loc
+        , writing_start, writing_end] = ""
     return (
       (
         <table id = "textTableWindow"><tbody>
@@ -16,34 +32,32 @@ const TextTable = (props) => {
                 </th>
             </tr>
             <tr>
-                <td>{aka}</td>{/*akas, a string of alternative names. Should be replaced with a list of language alternatives*/}
+                <td>{(numTitles>1)?textLabels.aka + title.slice(1,numTitles.join(", ")):""}</td>{/*akas, a string of alternative names. Should be replaced with a list of language alternatives*/}
             </tr>
-            <tr>
-                <td>{/*Author of book, contains link to author page*/}
-                    <span style={{"fontWeight": '700'}}>author: </span><Link to = {"/author/"+text.author_id}>{author}</Link>
-                </td>
-            </tr>
-            <tr>
-                <td>{/*Date (year) of first published year. In future should also contain a list of other publication dates*/}
-                    <span style={{"fontWeight": '700'}}>first published: </span>{text.publication}
-                </td>
-            </tr>
-            <tr>
-                <td>{/*Currently no data on this, but should contain data on original language(s). Also list of languages in translations*/}
-                {text.language}
-                </td>
-            </tr>
-            <tr>
-                <td>{/*To contain genre of the work. History, fiction, philsophy, etc; multiple tags*/}
-                    {text.genre}
-                </td>
-            </tr>
-            <tr>
-                <td>{/*Brief description of the work. Should perhaps not be native, but extracted from other source*/}
-                    {text.description}
-                </td>            
-            </tr>
-        <tr className = {"Editions"}>
+            <TableRow label = {textLabels.author_name + " "} >
+                {<Link to = {"/author/"+text.author_id}>{author}</Link>}
+            </TableRow>
+            {(language !== undefined)?<TableRow label = {textLabels.original_language}>{language}</TableRow>:<></>}
+            <TableRow label = {textLabels.original_publication_date + " "}>
+                {(text.publication>0)?text.publication + " AD": text.publication !== ""? Math.abs(text.publication) + " BC": textLabels.unspecified }
+            </TableRow>
+            {(publisher !== undefined)?//Publisher name & location
+                        <TableRow label = {textLabels.original_publisher_name}>
+                        {publisher + publication_loc !== undefined? " (" + publication_loc + ")":""}
+                        </TableRow>:<></>}
+            {publication_type !== undefined?<TableRow label = {textLabels.original_publication_type}>{publication_type}</TableRow>:<></>}
+            {publication_length !== undefined?
+            <TableRow label = {textLabels.publication_length}>
+                {publication_length + publication_length_type !== undefined? " (" + publication_length_type + ")":""}
+            </TableRow>:<></>}
+            {/*genre placeholder*/}
+            {/*type placeholder*/}
+            {writing_start !== undefined && writing_end !== undefined? 
+                <TableRow label = {textLabels.writing_period}>
+                    {writing_start + "-" + writing_end}
+                </TableRow>:<></>
+                }
+        <tr className = {"Editions"} style = {{textDecoration: 'underline 1px rgb(100, 88, 71)'}}>
             <td>
                 {"Editions"}
             </td>

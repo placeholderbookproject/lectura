@@ -16,10 +16,6 @@
   cursor:s-resize;
 } 
 
-.occupationList {
-  border: 1px solid;
-}
-
 .occupationList td:hover {background-color: rgb(230, 230, 230);}
 
 .navbar {
@@ -37,7 +33,7 @@ table#authorTable tr, table#authorTable td
 }
 
 
-table#authorTableWindow .Header th, table#textTableWindow .Header th {
+table#authorTableWindow .Header th, table#textTableWindow th {
   font-size: 40px;
   font-family: Arial;
   font-weight: 700;

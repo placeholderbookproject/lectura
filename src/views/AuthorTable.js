@@ -1,16 +1,17 @@
 import React, {/*useRef,*/ useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
+import TableRow from './ViewRow.js'
 const parse = require('html-react-parser');
 //import Collapsible from 'react-collapsible';
 
 const labels = {
     aka : 'aka.',
-    born : 'Born:',
-    died : 'Died:',
-    nationality : 'Nationality:',
-    floruit : 'Floruit:',
-    occupation : 'Occupation:',
-    other_occupations : 'also known as a..',
+    born : 'Born',
+    died : 'Died',
+    nationality : 'Nationality',
+    floruit : 'Floruit',
+    occupation : 'Occupation',
+    other_occupations : 'also known as..',
     wiki : '(wikipedia)',
     influence : 'Influences:',
     influenced : 'Influenced:',
@@ -35,10 +36,12 @@ const Collapsible = (props) => {
   };
 
 const WorkRow = (props) => {
+    let publication = props.data.publication
+    publication>0?publication = publication + " AD": publication!== ""? publication = Math.abs(publication) + " BC": publication = "not specified"
     return (
         <tr>
             <td>
-                <Link to={"/work/"+props.data.index}>{props.data.title + " (" + props.data.publication + ")"}</Link>
+                <Link to={"/work/"+props.data.index}>{props.data.title + " (" + publication + ")"}</Link>
             </td>
         </tr>
     )
@@ -79,13 +82,13 @@ const AuthorTable = (props) => {
             const url = result["content_urls"]["desktop"]["page"]
             console.log(json)
             console.log(result)
-            return setWiki(result["extract"] + " (source: "+ "<a href = '" + url + "'>wikipedia</a>)");//return json;
+            return setWiki(result["extract"] + " (source: <a href = '" + url + "'>wikipedia</a>)");//return json;
           }
         searchWikipedia();
     },[wiki, props, name]
     )
     return (
-      (<table id = "authorTableWindow">
+      (<table id = "authorTableWindow" style = {{width: 500}}>
         <tbody>
         <tr className = "Header"><th>{name[0]}</th></tr>
         <tr>
@@ -93,7 +96,7 @@ const AuthorTable = (props) => {
                 {numNames>1?
                     <Collapsible label = {tableLabels.aka}>
                          {name.slice(1,numNames).map((name) => 
-                         <p key = {name}>
+                         <p key = {name} >
                         {name} 
                          </p>
                          )}
@@ -102,86 +105,50 @@ const AuthorTable = (props) => {
                 }
             </td>
         </tr>
-        <tr>
-            <td>{/*Birth date of the person including place of birth. Should include source etc later*/}
-                <span style={{"fontWeight": '700'}}>{tableLabels.born} </span>
-                {birth === ""? tableLabels.unspecified://If no birth -> not specified
+        <TableRow label = {" " + tableLabels.nationality + " "}>{nationality}</TableRow>
+        <TableRow label = {tableLabels.born + " "}>
+            {birth === ""? tableLabels.unspecified://If no birth -> not specified
                                 (birth>0?birth + " AD": Math.abs(birth) + " BC" )//If <0->BC else AD
                 }
-                {(city === "" && country === "")?"":" ("+city+((city.length>0&&country.length>0)?", ":"")+country + ")" 
+                {(city === "" && country === "")?"":" ("+city+((city.length>0&&country.length>0)?", ":"")+country + ") " 
                 //If neither country or city of birth exists -> empty string
                 }
-            </td>
-            <td>{/*Nationality */}
-                <span style ={{"fontWeight":'700'}}>{tableLabels.nationality + " "}</span>
-                {nationality}
-            </td>
-        </tr>
-        <tr>
-            <td>{/*Death date of person. Should include place of death later*/}
-                <span style = {{"fontWeight":'700'}}>{tableLabels.died} </span>
-                    {death===""? tableLabels.unspecified:
-                                (death>0?death + " AD": Math.abs(death) + " BC")
-                    }
-                    {(city_death === "" && country_death === "")?"": " (" + city_death + (country_death.length>0?", ": "") + country_death + ")"}
-            </td>
-        </tr>
-        <tr>{/*Floruit, only if birth or death does not exist and floruit itself exists*/}
-                {(author.birth === ("")|author.death === ("")) && author.floruit !==("")?
-                <td>
-                <span style = {{"fontWeight":'700'}}>
-                {tableLabels.floruit}
-                </span>
-                {" " + author.floruit}
-                </td>
+        </TableRow>
+        <TableRow label = {tableLabels.died + " "}>
+            {death===""? tableLabels.unspecified:
+                                (death>0?death + " AD": Math.abs(death) + " BC")}
+            {(city_death === "" && country_death === "")?"": " (" + city_death + (country_death.length>0?", ": "") + country_death + ")"}
+        </TableRow>
+            {(author.birth === ("")|author.death === ("")) && author.floruit !==("")?
+                <TableRow label = {tableLabels.floruit + " "}>
+                    {" " + author.floruit}
+                </TableRow>
+            :<></>}
+        <TableRow label = {tableLabels.occupation + " "}>
+            {mainOccupation}
+            {occupationList.length>1?//Drop-down list of occupations if there are more than 1
+                <Collapsible label = {", " + tableLabels.other_occupations}>
+                    <table className = "occupationList">
+                        <tbody>
+                        {occupationList.slice(1,occupationList.length).map((occupation) =>
+                            <tr key = {occupation}>
+                                <td>{occupation}</td>
+                            </tr>
+                        )}
+                        </tbody>
+                    </table>
+                </Collapsible>
                 :<></>
-                }
-
-        </tr>
-        <tr>
-            <td>{/*Positions/roles of the person - should be formatted and fixed later*/}
-                <span style = {{"fontWeight":"700"}}>
-                    {tableLabels.occupation + " "}
-                </span>
-                {mainOccupation}
-            </td>
-                {occupationList.length>1?
-                    <td>
-                    <Collapsible label = {tableLabels.other_occupations}>
-                        <table className = "occupationList">
-                            <tbody>
-                            {occupationList.slice(1,occupationList.length).map((occupation) =>
-                                <tr key = {occupation}>
-                                    <td>{occupation}</td>
-                                </tr>
-                            )}
-                            </tbody>
-                        </table>
-                    </Collapsible>
-                    </td>
-                    :<></>
-                }
-        </tr>
-        <tr>
-            <td>{/*Replace this with some sort of import from source, f.ex. wikipedia, later*/}
-                {typeof wiki !== Object && wiki !== ""? parse(wiki):<></>}
-            </td>   
-        </tr>
-        {/*<tr>
-            <td>
-                {"For more biographical details, see "}<a href = {"https://www.google.com/search?q="+name[0]}>google</a>
-            </td>
-        </tr>
-        */}  
-        <tr>{/*Placeholder for biography */}
-        </tr>
-        <tr>{/*Placeholder for influences */}
-        </tr>
-        <tr>{/*Placeholder for influenced */}
-        </tr>
+            }
+        </TableRow>
+        <TableRow>
+            {typeof wiki !== Object && wiki !== ""? parse(wiki):<></>}
+        </TableRow>
+        <tr>{/*Placeholder for biography */}</tr>
+        <tr>{/*Placeholder for influences */}</tr>
+        <tr>{/*Placeholder for influenced */}</tr>
         <tr className = "Works" style = {{textDecoration: 'underline 1px rgb(100, 88, 71)'}}>
-            <td>{"List of known works  "}
-            </td>
+            <td>{tableLabels.works}</td>
         </tr>
             {(works.length>0) ? (works.map((work) => (<WorkRow key={work.index} data={work}/>))):<></>}
         </tbody></table>
