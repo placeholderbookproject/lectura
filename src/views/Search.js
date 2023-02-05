@@ -11,7 +11,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import Select from 'react-select';
 import {Link, useSearchParams} from 'react-router-dom';
 
-const workFilters = [
+const textFilters = [
     {value: '#', label: "#"},
     {value: 'title', label: 'Title'},
     {value: 'author', label: 'Author'},
@@ -32,7 +32,7 @@ const authorFilters = [
 
 const options = 
     {"author":authorFilters,
-    "work":workFilters,}
+    "text":textFilters,}
 
 const CreateList = (props) => {
     const values = props.data
@@ -41,7 +41,7 @@ const CreateList = (props) => {
         const joinedValues = values[filter["value"]]
         //if(joinedValues.constructor.name === "Array") {joinedValues = joinedValues.join(", ")} //For listing works later...
         if (filter.value === "title" | filter.value === "name") {
-            if (filter.value === "title") {return(<td key={filter["label"]+joinedValues}><Link to = {"/work/"+values.id}>{joinedValues}</Link></td>)}
+            if (filter.value === "title") {return(<td key={filter["label"]+joinedValues}><Link to = {"/text/"+values.id}>{joinedValues}</Link></td>)}
             else {return (<td key= {filter["label"]+joinedValues}><Link to = {"/author/"+values.id}>{joinedValues}</Link></td>)}
         }
         else {return(<td key= {filter["label"]+joinedValues}>{joinedValues}</td>)}
@@ -62,9 +62,9 @@ const SearchDetailed = (props) => {//Add the table view of
     const changeVersion = () =>  {
         setSearchResults([]);
         if(searchType === "author"){
-            setSearchType("work");
-            setSearchData(data["listOfWorks"]);
-            setFilters(options["work"])
+            setSearchType("text");
+            setSearchData(data["listOfTexts"]);
+            setFilters(options["text"])
         }
         else {
             setSearchType("author");
@@ -148,7 +148,7 @@ const SearchDetailed = (props) => {//Add the table view of
     return (//Need to add dynamic search link. I.e. when enter -> change search. Also add basic filters from link
       <div className = "detailedSearch">
         <div id = "detailedSearchHeader">
-            <button className="changeSearchVersionBtn" onClick={changeVersion}>{+ (searchType === "author")? "Works":"Authors"}</button>
+            <button className="changeSearchVersionBtn" onClick={changeVersion}>{+ (searchType === "author")? "Texts":"Authors"}</button>
             <FormControl sx={{ m: 1, width: "50ch" }} variant="outlined">
                 <InputLabel 
                     htmlFor="outlined-adornment-password"
@@ -191,7 +191,7 @@ const SearchDetailed = (props) => {//Add the table view of
                 </FormHelperText>
             </FormControl>
             <Select 
-            options = {(searchType === "author") ? options["author"]:options["work"]}
+            options = {(searchType === "author") ? options["author"]:options["text"]}
             onChange = {(e) => setFilters(e)}
             value = {filters}
             placeholder = {"Select search filters"}

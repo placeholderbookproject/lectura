@@ -20,7 +20,7 @@ const authorToDict = () => {
       value:id_int,
       deathString:deathString,
       type: "author",
-      works: dictionary["works"],
+      texts: dictionary["texts"],
     }
 }
   let data = require('../data.json')
@@ -33,9 +33,9 @@ const checkNull = (data) => {
     if(data === null) {data = ""}
     return data}
 
-const worksToDict = () => {
+const textsToDict = () => {
   const dictElement = (id) => {
-    const dictionary = listOfWorks[id];
+    const dictionary = listOfTexts[id];
     const id_int = dictionary["index"];
     const title = dictionary['title'], author = dictionary["author"], author_id = dictionary["author_index"], publication = dictionary["publication"]
     return {
@@ -48,15 +48,15 @@ const worksToDict = () => {
       value: id_int,
       type: "text",
     }}
-    let listOfWorks = require("../works.json")["data"];
+    let listOfTexts = require("../texts.json")["data"];
     let list = [];
-    for (let n in listOfWorks){list.push(dictElement(n))}
+    for (let n in listOfTexts){list.push(dictElement(n))}
     return list
   }
 
 const authorData = () => {
     let data = {
-        work: worksToDict(),
+        texts: textsToDict(),
         authors: authorToDict(),
       }
     return data

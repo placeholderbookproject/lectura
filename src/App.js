@@ -14,22 +14,22 @@ import { BrowserRouter, Route, Routes} from 'react-router-dom';
 ];
 */
 let listOfAuthors = authorData()["authors"];
-let listOfWorks = authorData()["work"];
+let listOfTexts = authorData()["texts"];
 
 const App = () => {
-  const dataList = {listOfAuthors:listOfAuthors,listOfWorks:listOfWorks,}
+  const dataList = {listOfAuthors:listOfAuthors,listOfTexts:listOfTexts,}
   return (
     <div>
       <BrowserRouter>
       <Routes>
         <Route path = {"/"} element = {<SiteHeader data = {dataList} />}/>
-        {listOfWorks.map((work) =>
-          <Route path ={"/work/"+work.id} element = {
+        {listOfTexts.map((text) =>
+          <Route path ={"/text/"+text.id} element = {
             <>
               <SiteHeader data = {dataList}/>
-              <TextTable data={work}/>
+              <TextTable data={text}/>
             </>
-          } key = {work.id}/>
+          } key = {text.id}/>
         )}
         {listOfAuthors.map((author) => 
           <Route path={"/author/"+author.id} element={ //Adds a link for every author

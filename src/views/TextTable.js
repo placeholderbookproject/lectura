@@ -59,7 +59,7 @@ const TextTable = (props) => {
                 }
         <tr className = {"Editions"} style = {{textDecoration: 'underline 1px rgb(100, 88, 71)'}}>
             <td>
-                {"Editions"}
+                {textLabels.editions}
             </td>
         </tr>{/*Will contains a list of editions -> edition view (work/edition/id)
                 Edition title, date of publication, editor name, language, ISBN (if exists)

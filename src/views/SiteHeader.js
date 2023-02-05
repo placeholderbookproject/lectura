@@ -45,22 +45,22 @@ function MainSearch(props) {
               a) find a match in the author data using a combination of author name, position, country and city
               b) find a match in the text data using a combination of title and author
           */ 
-        let authors = props.data.listOfAuthors, works = props.data.listOfWorks;
+        let authors = props.data.listOfAuthors, texts = props.data.listOfTexts;
         search = search.toLowerCase().split(" ");
         for (let i = 0; i<search.length;i++){ 
           const searchElement = search[i];
           authors = authors.filter(
           e=> 
           (e.name+e.position+e.country+e.city).toLowerCase()
-          .includes(searchElement)
+         .includes(searchElement)
           )
           //console.log(authors)
-          works = works.filter(
+          texts = texts.filter(
             e=>
             (e.title+e.author).toLowerCase().includes(searchElement)
           )
         }
-        setResults(authors.concat(works))
+        setResults(authors.concat(texts))
     }
     function searchSelect (event) {
       const selectedValue = event;
@@ -97,7 +97,7 @@ function MainSearch(props) {
         </div>
       {(enterSearch) ? 
         (<Navigate to=
-          {(results[0].type === "author") ? ("/author/"+results[0].id): ("/work/"+results[0].id)}
+          {(results[0].type === "author") ? ("/author/"+results[0].id): ("/text/"+results[0].id)}
         />):
         (<></>)
       }

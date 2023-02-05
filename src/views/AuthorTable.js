@@ -11,7 +11,7 @@ const labels = {
     nationality : 'Nationality',
     floruit : 'Floruit',
     occupation : 'Occupation',
-    other_occupations : 'also known as..',
+    other_occupations : 'also known as ',
     wiki : '(wikipedia)',
     influence : 'Influences:',
     influenced : 'Influenced:',
@@ -35,13 +35,13 @@ const Collapsible = (props) => {
     );
   };
 
-const WorkRow = (props) => {
+const TextRow = (props) => {
     let publication = props.data.publication
     publication>0?publication = publication + " AD": publication!== ""? publication = Math.abs(publication) + " BC": publication = "not specified"
     return (
         <tr>
             <td>
-                <Link to={"/work/"+props.data.index}>{props.data.title + " (" + publication + ")"}</Link>
+                <Link to={"/text/"+props.data.index}>{props.data.title + " (" + publication + ")"}</Link>
             </td>
         </tr>
     )
@@ -50,8 +50,8 @@ const WorkRow = (props) => {
 const AuthorTable = (props) => {
     //Creates the author "view"
     const tableLabels = labels;
-    let works = props.data.works;
-    if (works === null) {works = []};
+    let texts = props.data.texts;
+    if (texts === null) {texts = []};
     const [wiki, setWiki] = useState("");
     const author = props.data;
     const {birth, death, city, country} = author;
@@ -64,7 +64,7 @@ const AuthorTable = (props) => {
     const nationality = firstOccupation[0];
     useEffect ( () => {
         async function searchWikipedia() {
-            const searchQuery = name[0];
+            const searchQuery = author.name;
             const endpoint = `https://en.wikipedia.org/w/api.php?action=query&list=search&prop=info&inprop=url&utf8=&format=json&origin=*&srlimit=20&srsearch=${searchQuery}`;
             const response = await fetch(endpoint);
             if (!response.ok) {
@@ -80,12 +80,12 @@ const AuthorTable = (props) => {
               }
             const result = await responseTwo.json();
             const url = result["content_urls"]["desktop"]["page"]
-            console.log(json)
-            console.log(result)
+            //console.log(json)
+            //console.log(result)
             return setWiki(result["extract"] + " (source: <a href = '" + url + "'>wikipedia</a>)");//return json;
           }
         searchWikipedia();
-    },[wiki, props, name]
+    },[author.name]
     )
     return (
       (<table id = "authorTableWindow" style = {{width: 500}}>
@@ -94,13 +94,15 @@ const AuthorTable = (props) => {
         <tr>
             <td>{/*string of all other names of the person, should be replaced by hover list or similar*/}
                 {numNames>1?
+                    /*
                     <Collapsible label = {tableLabels.aka}>
                          {name.slice(1,numNames).map((name) => 
                          <p key = {name} >
                         {name} 
                          </p>
                          )}
-                    </Collapsible>
+                    </Collapsible>*/
+                    tableLabels.aka + name.slice(1,numNames).join(", ")
                     :<></>
                 }
             </td>
@@ -127,7 +129,7 @@ const AuthorTable = (props) => {
         <TableRow label = {tableLabels.occupation + " "}>
             {mainOccupation}
             {occupationList.length>1?//Drop-down list of occupations if there are more than 1
-                <Collapsible label = {", " + tableLabels.other_occupations}>
+                /*<Collapsible label = {", " + tableLabels.other_occupations}>
                     <table className = "occupationList">
                         <tbody>
                         {occupationList.slice(1,occupationList.length).map((occupation) =>
@@ -137,7 +139,8 @@ const AuthorTable = (props) => {
                         )}
                         </tbody>
                     </table>
-                </Collapsible>
+                </Collapsible>*/
+                " " + tableLabels.other_occupations + occupationList.slice(1,occupationList.length).join(", ")
                 :<></>
             }
         </TableRow>
@@ -150,7 +153,7 @@ const AuthorTable = (props) => {
         <tr className = "Works" style = {{textDecoration: 'underline 1px rgb(100, 88, 71)'}}>
             <td>{tableLabels.works}</td>
         </tr>
-            {(works.length>0) ? (works.map((work) => (<WorkRow key={work.index} data={work}/>))):<></>}
+            {(texts.length>0) ? (texts.map((text) => (<TextRow key={text.index} data={text}/>))):<></>}
         </tbody></table>
       )
     );
