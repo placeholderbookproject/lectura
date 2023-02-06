@@ -18,21 +18,6 @@ const labels = {
     isbn : 'ISBN',
 }
 
-const EditionRow = (props) => {
-    //const {}editionprops.data
-    const {title, additional_authors, language, ISBN, ISBN13} = props.data
-    return (
-        <>
-        <tr>
-            <td>{title}</td>
-            <td>{additional_authors}</td>
-            <td>{language}</td>
-            <td>{ISBN13 === ""?ISBN:ISBN13}</td>
-        </tr>
-        </>
-        )
-}
-
 const TextTable = (props) => {
     const text = props.data;
     const title = text.title.split(",");
@@ -80,7 +65,8 @@ const TextTable = (props) => {
             </tr>
             {text.editions.length>0?text.editions.map((edition) => 
                     <TableRow key = {edition.index}>
-                        {edition.title}
+                        {<Link to = {"/text/"+text.id+"/edition/"+edition.index}>{edition.title}</Link>}
+                        {edition.publication_year !== undefined?" (" + edition.publication_year + ") ":""}
                         {edition.additional_authors !== undefined? " (editors: " + edition.additional_authors + ")":""}
                         {edition.language !== null ? " (" + edition.language + ")":""}
                         {edition.ISBN13!==undefined|edition.ISBN!==undefined?" (ISBN: " + edition.ISBN + "/ "+edition.ISBN13+ ")":")"}

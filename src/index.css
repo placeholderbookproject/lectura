@@ -33,7 +33,7 @@ table#authorTable tr, table#authorTable td
 }
 
 
-table#authorTableWindow .Header th, table#textTableWindow th {
+table#authorTableWindow .Header th, table#textTableWindow th, table#editionTableWindow th {
   font-size: 40px;
   font-family: Arial;
   font-weight: 700;

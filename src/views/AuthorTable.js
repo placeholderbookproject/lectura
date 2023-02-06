@@ -70,7 +70,7 @@ const AuthorTable = (props) => {
             return setWiki(result["extract"] + " (source: <a href = '" + url + "'>wikipedia</a>)");//return json;
           }
         searchWikipedia();
-    },[author.name]
+    },[name,mainOccupation]
     )
     return (
       (<table id = "authorTableWindow" style = {{width: 500}}>

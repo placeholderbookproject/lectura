@@ -54,10 +54,44 @@ const textsToDict = () => {
     return list
   }
 
+const editionsToDict = () => {
+  const dictElement = (id) => {
+    const dictionary = listOfEditions[id];
+    const {index,title, original_title, author, additional_authors, ISBN, ISBN13, publisher, binding, 
+      number_of_pages, publication_year, original_publication_year, language, text_index} = dictionary
+    return {
+      id:index,
+      title:title,
+      original_title:original_title,
+      author:author,
+      additional_authors:additional_authors,
+      isbn: ISBN,
+      isbn13: ISBN13,
+      publisher: publisher,
+      binding: binding,
+      number_of_pages:number_of_pages,
+      publication_year: publication_year,
+      original_publication_year: original_publication_year,
+      language:language,
+      text_index: text_index,
+      label: '',
+      value: index,
+    }}
+    let listOfEditions = require("../editions.json")["data"];
+    let list = []
+    for (let n in listOfEditions){
+      if(n.text_index !== ""){list.push(dictElement(n))}
+    }
+    return list
+  }
+
+
+
 const authorData = () => {
     let data = {
         texts: textsToDict(),
         authors: authorToDict(),
+        editions: editionsToDict(),
       }
     return data
 }
