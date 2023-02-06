@@ -2,7 +2,7 @@ import React, {/*useRef,*/ useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import TableRow from './ViewRow.js'
 const parse = require('html-react-parser');
-//import Collapsible from 'react-collapsible';
+//import Collapsible from './Collapsible.js';
 
 const labels = {
     aka : 'aka.',
@@ -19,21 +19,6 @@ const labels = {
     add_works : 'Add works:',
     unspecified : 'not specified',
 }
-
-const Collapsible = (props) => {
-    const [open, setOPen] = useState(false);
-    const toggle = () => {setOPen(!open);}
-    return (
-      <>
-        <span onClick = {toggle} className = "collapsibleBtn">{props.label}</span>
-        {open &&
-            <div className={open ? "content-show" : "content-parent"}>
-                <div className="toggle">{props.children}</div>
-            </div>
-        }
-      </>
-    );
-  };
 
 const TextRow = (props) => {
     let publication = props.data.publication
@@ -64,7 +49,7 @@ const AuthorTable = (props) => {
     const nationality = firstOccupation[0];
     useEffect ( () => {
         async function searchWikipedia() {
-            const searchQuery = author.name;
+            const searchQuery = name[0]+ " " + mainOccupation;
             const endpoint = `https://en.wikipedia.org/w/api.php?action=query&list=search&prop=info&inprop=url&utf8=&format=json&origin=*&srlimit=20&srsearch=${searchQuery}`;
             const response = await fetch(endpoint);
             if (!response.ok) {
@@ -80,7 +65,7 @@ const AuthorTable = (props) => {
               }
             const result = await responseTwo.json();
             const url = result["content_urls"]["desktop"]["page"]
-            //console.log(json)
+            console.log(json)
             //console.log(result)
             return setWiki(result["extract"] + " (source: <a href = '" + url + "'>wikipedia</a>)");//return json;
           }

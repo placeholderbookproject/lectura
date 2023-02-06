@@ -14,14 +14,13 @@ const labels = {
     unspecified : 'not specified',
 }
 
-
 const TextTable = (props) => {
     const text = props.data;
     const title = text.title.split(",");
     const numTitles = title.length;
     const author = text.author;
     const textLabels = labels;
-    const [language, publisher, genre, type, publication_type, publication_length, publication_length_type, publication_loc
+    const [language, publisher, /*genre, type,*/ publication_type, publication_length, publication_length_type, publication_loc
         , writing_start, writing_end] = ""
     return (
       (
@@ -32,7 +31,7 @@ const TextTable = (props) => {
                 </th>
             </tr>
             <tr>
-                <td>{(numTitles>1)?textLabels.aka + title.slice(1,numTitles.join(", ")):""}</td>{/*akas, a string of alternative names. Should be replaced with a list of language alternatives*/}
+                <td>{(numTitles>1)?textLabels.aka + title.slice(1,numTitles).join(", "):""}</td>{/*akas, a string of alternative names. Should be replaced with a list of language alternatives*/}
             </tr>
             <TableRow label = {textLabels.author_name + " "} >
                 {<Link to = {"/author/"+text.author_id}>{author}</Link>}

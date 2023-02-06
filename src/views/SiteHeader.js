@@ -2,44 +2,19 @@ import Select from 'react-select';
 import 'react-select-search/style.css';
 import {Navigate, Link} from 'react-router-dom'
 import React, {useState, useEffect} from 'react';
-import { Navbar, Nav, /*NavDropdown,*/ Container } from "react-bootstrap";
+import { Navbar, /*Nav, NavDropdown,*/ Container } from "react-bootstrap";
 
-/*const customStyles = {
-  option: (provided, state) => ({
-    ...provided,
-    borderBottom: '1px dotted orange',
-    color: 'black',
-    padding: 20,
-  }),
-  menuPortal: (provided) => ({
-    ...provided,
-    backgroundColor:'black',
-    width: 200,
-    borderBottom: '1px dotted orange',
-  }
-  ),
-  control: () => ({
-    width: 200,
-  }),
-  singleValue: (provided, state) => {
-    const opacity = 1;
-    const transition = 'opacity 350ms';
 
-    return { ...provided, opacity, transition };
-  }
-}*/
-
-function MainSearch(props) {
+const MainSearch = (props) => {
     /*
       Component consisting of a search, a short description of search results and a select list of all results
     */
     let [results,setResults] = useState(props.data.listOfAuthors.slice(1,1)); //
     let [enterSearch,setEnterSearch] = useState(false);
-  
     useEffect (()=> {
       setEnterSearch(false);
     },[enterSearch]);
-    function searchFunction (search) {
+    const searchFunction = (search) => {
           /*Function finds and sets search results based on the search using the filter function:
               For every element in the search, 
               a) find a match in the author data using a combination of author name, position, country and city
@@ -54,7 +29,6 @@ function MainSearch(props) {
           (e.name+e.position+e.country+e.city).toLowerCase()
          .includes(searchElement)
           )
-          //console.log(authors)
           texts = texts.filter(
             e=>
             (e.title+e.author).toLowerCase().includes(searchElement)
@@ -62,13 +36,12 @@ function MainSearch(props) {
         }
         setResults(authors.concat(texts))
     }
-    function searchSelect (event) {
+    const searchSelect = (event) => {
       const selectedValue = event;
-//      setSelect(false);
       setResults([selectedValue]);
       setEnterSearch(true);
     }  
-    function testSelect(event) {
+    const testSelect = (event) => {
       const query = event
       if (query.length>3){
         searchFunction(query);
@@ -76,8 +49,6 @@ function MainSearch(props) {
     }
     return (
       <>
-        <Link style={{margin: "1rem",textDecoration: "none",color: 'blue'}} to = {"/"}><button>Home</button></Link>
-        <Link to = {"/search"}><button>Detailed search</button></Link>
         <div style={{
           width: '500px',
           position:'relative',
@@ -105,24 +76,25 @@ function MainSearch(props) {
     )
   }
 
-function SiteHeader(props) {
-return (
-    <Container className = "flexbox-container" 
-        style={{paddingBottom: 10,
-                backgroundColor: '#4c7557',
-                borderBottom: '1px solid #8a8a8a',
-                position: 'sticky',
-                top: 0,
-                }}
-        >
-      <Navbar fixed="top"
-        style = {{backgroundColor: '#4c7557'}}
-      >{/*https://retool.com/blog/building-a-react-navbar/ */}
+const SiteHeader = (props) => {
+  return (
+      <Container className = "flexbox-container" 
+          style={{paddingBottom: 10,
+                  backgroundColor: '#4c7557',
+                  borderBottom: '1px solid #8a8a8a',
+                  position: 'sticky',
+                  top: 0,
+                  }}
+          >
+        <Navbar style = {{backgroundColor: '#4c7557',
+                          paddingBottom: 10,
+                          }}>{/*https://retool.com/blog/building-a-react-navbar/ */}
+            <Link style={{margin: "1rem",textDecoration: "none",color: 'blue'}} to = {"/"}><button className="homeBtn">Home</button></Link>
+            <Link to = {"/search"}><button className="detailedSearchBtn">Detailed search</button></Link>
             <MainSearch data = {props.data}/>
-      </Navbar>
-    </Container>
-)
+        </Navbar>
+      </Container>
+  )
 }
-
 
 export default SiteHeader;
