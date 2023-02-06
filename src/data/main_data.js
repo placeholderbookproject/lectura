@@ -36,17 +36,17 @@ const checkNull = (data) => {
 const textsToDict = () => {
   const dictElement = (id) => {
     const dictionary = listOfTexts[id];
-    const id_int = dictionary["index"];
-    const title = dictionary['title'], author = dictionary["author"], author_id = dictionary["author_index"], publication = dictionary["publication"]
+    const {title, author, author_index, publication, index, editions} = dictionary
     return {
-      id: id_int,
+      id: index,
       title:title,
       author:author,
       publication:publication,
-      author_id:author_id,
-      label: title + " (" + publication + ") (text)",
-      value: id_int,
+      author_id:author_index,
+      label: title + " (" + (publication>0?publication + " AD":publication!==""? Math.abs(publication) + " BC": " unspecified") + ") (text)",
+      value: index,
       type: "text",
+      editions: editions,
     }}
     let listOfTexts = require("../texts.json")["data"];
     let list = [];

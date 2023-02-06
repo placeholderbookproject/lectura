@@ -125,7 +125,7 @@ const AuthorTable = (props) => {
                         </tbody>
                     </table>
                 </Collapsible>*/
-                " " + tableLabels.other_occupations + occupationList.slice(1,occupationList.length).join(", ")
+                ", " + tableLabels.other_occupations + occupationList.slice(1,occupationList.length).join(", ")
                 :<></>
             }
         </TableRow>

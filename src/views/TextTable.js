@@ -12,6 +12,25 @@ const labels = {
     writing_period : 'Writing period',
     editions : 'Editions',
     unspecified : 'not specified',
+    edition_title : 'Title',
+    edition_editors : 'Editors',
+    edition_language : 'Language',
+    isbn : 'ISBN',
+}
+
+const EditionRow = (props) => {
+    //const {}editionprops.data
+    const {title, additional_authors, language, ISBN, ISBN13} = props.data
+    return (
+        <>
+        <tr>
+            <td>{title}</td>
+            <td>{additional_authors}</td>
+            <td>{language}</td>
+            <td>{ISBN13 === ""?ISBN:ISBN13}</td>
+        </tr>
+        </>
+        )
 }
 
 const TextTable = (props) => {
@@ -56,14 +75,22 @@ const TextTable = (props) => {
                     {writing_start + "-" + writing_end}
                 </TableRow>:<></>
                 }
-        <tr className = {"Editions"} style = {{textDecoration: 'underline 1px rgb(100, 88, 71)'}}>
-            <td>
-                {textLabels.editions}
-            </td>
-        </tr>{/*Will contains a list of editions -> edition view (work/edition/id)
+            <tr className = {"Editions"} style = {{textDecoration: 'underline 1px rgb(100, 88, 71)'}}>
+                <td>{textLabels.editions}</td>
+            </tr>
+            {text.editions.length>0?text.editions.map((edition) => 
+                    <TableRow key = {edition.index}>
+                        {edition.title}
+                        {edition.additional_authors !== undefined? " (editors: " + edition.additional_authors + ")":""}
+                        {edition.language !== null ? " (" + edition.language + ")":""}
+                        {edition.ISBN13!==undefined|edition.ISBN!==undefined?" (ISBN: " + edition.ISBN + "/ "+edition.ISBN13+ ")":")"}
+                        
+                    </TableRow>//<EditionRow data={edition} key = {edition.title}/>
+                    ):<></>}{/*Will contains a list of editions -> edition view (work/edition/id)
                 Edition title, date of publication, editor name, language, ISBN (if exists)
                 */}       
         </tbody></table>
+
       )
     )
   }
