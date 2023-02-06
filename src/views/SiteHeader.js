@@ -79,8 +79,7 @@ const MainSearch = (props) => {
 const SiteHeader = (props) => {
   return (
       <Container className = "flexbox-container" 
-          style={{paddingBottom: 10,
-                  backgroundColor: '#4c7557',
+          style={{backgroundColor: '#4c7557',
                   borderBottom: '1px solid #8a8a8a',
                   position: 'sticky',
                   top: 0,
@@ -89,9 +88,10 @@ const SiteHeader = (props) => {
         <Navbar style = {{backgroundColor: '#4c7557',
                           paddingBottom: 10,
                           }}>{/*https://retool.com/blog/building-a-react-navbar/ */}
-            <Link style={{margin: "1rem",textDecoration: "none",color: 'blue'}} to = {"/"}><button className="homeBtn">Home</button></Link>
-            <Link to = {"/search"}><button className="detailedSearchBtn">Detailed search</button></Link>
+            <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/"}><button className="homeBtn">Home</button></Link>
             <MainSearch data = {props.data}/>
+            <Link to = {"/search"} style={{paddingLeft: "1rem",paddingRight: "1rem"}}><button className="detailedSearchBtn">Detailed search</button></Link>
+            <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/import"}><button className="importBtn">Import data</button></Link>
         </Navbar>
       </Container>
   )

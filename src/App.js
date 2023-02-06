@@ -8,6 +8,7 @@ import SearchDetailed from './views/Search.js';
 //import 'react-select-search/style.css';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import EditionTable from './views/EditionTable.js';
+import ImportWindow from './views/Import.js';
 
 //Options for language dropdown
 /*const languageOptions = [
@@ -57,8 +58,14 @@ const App = () => {
         <SiteHeader data = {dataList}/>
         <SearchDetailed data ={dataList}/>
         </>
-        }        
-        
+        }                
+      />
+      <Route path = {"/import"} element = {
+          <>
+            <SiteHeader data = {dataList}/>
+            <ImportWindow />
+          </>
+        }
       />
       </Routes>
       </BrowserRouter>

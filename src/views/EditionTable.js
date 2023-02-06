@@ -14,7 +14,6 @@ const labels = {
     length : 'Length',
 }
 
-
 const EditionTable = (props) => {
     const data = props.data;
     const editionLabels = labels;
@@ -32,8 +31,7 @@ const EditionTable = (props) => {
             </TableRow>
             <TableRow label = {editionLabels.isbn + " "}>
                 {isbn + "/ " + isbn13}
-            </TableRow>
-        
+            </TableRow>        
         </tbody></table>
     )
 }
