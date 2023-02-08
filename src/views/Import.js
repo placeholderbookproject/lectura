@@ -127,16 +127,15 @@ const ImportWindow = () => {
             }
             newData.push(newDataElement)
         }
+        
+        const inputName = (inputFile["current"]["value"].split("\\").slice(inputFile["current"]["value"].split("\\").length-1)[0].split(".")[0]) + "_" + importType
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json',
-                        'My-Customer-Header':importType
-                        },
-            body: JSON.stringify(newData)
+            body: JSON.stringify({data:newData, type:importType, name: inputName, date_uploaded: new Date().getDate()})
         };
-        fetch('https://reqres.in/api/posts', requestOptions)
+        fetch('http://127.0.0.1:8000/import', requestOptions)
             .then(response => response.json())
-            .then(data => console.log(data))
+            //.then(data => console.log(data))
         //const blob = new Blob ([JSON.stringify(newData)],{type: "application/json"});
         //const fileName = inputFile.current.value.split("\\")[inputFile.current.value.split("\\").length-1].split(".")[0]
         //fileSaver.saveAs(blob, "./data/"+fileName + ".json")

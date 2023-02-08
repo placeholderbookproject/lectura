@@ -4,7 +4,6 @@ import TextTable from './views/TextTable.js';
 import React, {useEffect, useState} from 'react';
 import SiteHeader from './views/SiteHeader.js';
 import SearchDetailed from './views/Search.js';
-//import 'react-select-search/style.css';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import EditionTable from './views/EditionTable.js';
 import ImportWindow from './views/Import.js';
@@ -66,7 +65,6 @@ const RouteList = (props) => {
     </BrowserRouter>
   )  
 }
-
 
 const App = () => {
   const [data,setData] = useState({})
