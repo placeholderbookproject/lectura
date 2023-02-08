@@ -1,6 +1,7 @@
 import * as XLSX from 'xlsx';
 import React, {useRef, useState, useEffect} from 'react';
 import Select from 'react-select';
+//const fileSaver = require('file-saver'); 
 
 const textFilters = [
     //{value: '#', label: "#"},
@@ -42,6 +43,7 @@ const labels = {
     import_upload_data : 'Upload data',
     import_preview_label : 'Please change column names using the dropdowns',
     import_push_data : 'Push data to database',
+    import_refresh : 'Refresh',
 }
 
 const ImportWindow = () => {
@@ -52,7 +54,6 @@ const ImportWindow = () => {
     const headerOptions = options;
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [headers, setHeaders] = useState([]);
-    const [showUpload, setShowUpload] = useState(false);
     const changeHandler = (event) => {onUpload(event)}
     const onUpload = (event) => {
         /*Add some sort of export function to server/local -> validation&approval -> add to main dataframe*/
@@ -115,14 +116,33 @@ const ImportWindow = () => {
         const newKeys = selectedOptions;
         let newData = []
         for (let i = 0; i<data.length;i++){
-            const dataElement = data[i]
+            const dataElement = data[i];
+            const dataElementKeys = Object.keys(dataElement);
             let newDataElement = {}
-            //console.log(Object.fromEntries(newKeys.map(col => [col, dataElement[col]])))
             for (let j = 0; j<newKeys.length;j++) {
-                const column = newKeys[j]
-                delete Object.assign(newDataElement, dataElement, {[column.newHeader]: dataElement[column.oldHeader] })[column.oldHeader];
+                const header = newKeys[j]
+                if (dataElementKeys.includes(header["oldHeader"])) {
+                    newDataElement[header["newHeader"]] = dataElement[header["oldHeader"]]
+                }
             }
+            newData.push(newDataElement)
         }
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json',
+                        'My-Customer-Header':importType
+                        },
+            body: JSON.stringify(newData)
+        };
+        fetch('https://reqres.in/api/posts', requestOptions)
+            .then(response => response.json())
+            .then(data => console.log(data))
+        //const blob = new Blob ([JSON.stringify(newData)],{type: "application/json"});
+        //const fileName = inputFile.current.value.split("\\")[inputFile.current.value.split("\\").length-1].split(".")[0]
+        //fileSaver.saveAs(blob, "./data/"+fileName + ".json")
+    }
+    const refreshImport = () => {
+        setHeaders(Object.keys(uploadedList[0]))
     }
     return (
         <>
@@ -150,7 +170,7 @@ const ImportWindow = () => {
                 <header style = {{fontSize:30, fontWeight:700, textDecoration: 'underline 1px rgb(100, 88, 71)', paddingBottom: 10}}>
                 {importLabels.import_preview_header}
                 </header>
-                <label>{importLabels.import_preview_label}</label>
+                <label>{importLabels.import_preview_label + " "}<button onClick = {refreshImport}>{importLabels.import_refresh}</button></label>
                 <table id = "importPreview">
                     <tbody>
                         <tr>
@@ -187,7 +207,9 @@ const ImportWindow = () => {
             }
             {/*<button id="fileSelect" onClick={uploadWorks}>Add works</button>   */}
             {//selectedOptions.length===headers.length && selectedOptions.length !== 0?
-                <button onClick = {uploadData}>{importLabels.import_push_data}</button>
+                <div style = {{paddingTop:10}}>
+                    <button onClick = {uploadData}>{importLabels.import_push_data}</button>
+                </div>
                 //:<></>
                 }
         </>

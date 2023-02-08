@@ -9,7 +9,7 @@ const MainSearch = (props) => {
     /*
       Component consisting of a search, a short description of search results and a select list of all results
     */
-    let [results,setResults] = useState(props.data.listOfAuthors.slice(1,1)); //
+    let [results,setResults] = useState(props.data.texts.slice(1,1)); //
     let [enterSearch,setEnterSearch] = useState(false);
     useEffect (()=> {
       setEnterSearch(false);
@@ -20,7 +20,7 @@ const MainSearch = (props) => {
               a) find a match in the author data using a combination of author name, position, country and city
               b) find a match in the text data using a combination of title and author
           */ 
-        let authors = props.data.listOfAuthors, texts = props.data.listOfTexts;
+        let authors = props.data.authors, texts = props.data.texts;
         search = search.toLowerCase().split(" ");
         for (let i = 0; i<search.length;i++){ 
           const searchElement = search[i];

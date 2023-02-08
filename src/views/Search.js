@@ -56,19 +56,19 @@ const SearchDetailed = (props) => {//Add the table view of
     const [filters, setFilters] = useState(options["author"].slice(0,3));
     const [search, setSearch] = useState("");
     const [startSearch, setStartSearch] = useState(false);
-    let [searchData,setSearchData] = useState(data["listOfAuthors"]); 
+    let [searchData,setSearchData] = useState(data["authors"]); 
     let [searchResults,setSearchResults] = useState([]);
     const [searchOrder, setSearchOrder] = useState("asc");
     const changeVersion = () =>  {
         setSearchResults([]);
         if(searchType === "author"){
             setSearchType("text");
-            setSearchData(data["listOfTexts"]);
+            setSearchData(data["texts"]);
             setFilters(options["text"])
         }
         else {
             setSearchType("author");
-            setSearchData(data["listOfAuthors"]);
+            setSearchData(data["authors"]);
             setFilters(options["author"])
         }
     }
