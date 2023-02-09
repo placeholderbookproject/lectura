@@ -27,6 +27,7 @@ const authorFilters = [
     {value: 'floruit', label: 'Floruit'},
     {value: 'country',label: 'Country of Birth'},
     {value: 'city', label:'City of Birth'},
+    {value: "date_uploaded", label: "Date Uploaded"},
     //{value: 'works', label: 'Works'},
 ]
 

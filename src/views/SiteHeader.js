@@ -9,42 +9,46 @@ const MainSearch = (props) => {
     /*
       Component consisting of a search, a short description of search results and a select list of all results
     */
-    let [results,setResults] = useState(props.data.texts.slice(1,1)); //
-    let [enterSearch,setEnterSearch] = useState(false);
+    const [results,setResults] = useState(props.data.texts.slice(1,1)); //
+    const [enterSearch,setEnterSearch] = useState(false);
+    const [query, setQuery] = useState("");
+    const [APIResults,setAPIResults] = useState();
+    const [loading, setLoading] = useState(false);
     useEffect (()=> {
       setEnterSearch(false);
     },[enterSearch]);
-    const searchFunction = (search) => {
-          /*Function finds and sets search results based on the search using the filter function:
-              For every element in the search, 
-              a) find a match in the author data using a combination of author name, position, country and city
-              b) find a match in the text data using a combination of title and author
-          */ 
-        let authors = props.data.authors, texts = props.data.texts;
-        search = search.toLowerCase().split(" ");
-        for (let i = 0; i<search.length;i++){ 
-          const searchElement = search[i];
-          authors = authors.filter(
-          e=> 
-          (e.name+e.position+e.country+e.city).toLowerCase()
-         .includes(searchElement)
+    useEffect (()=> {
+      const fetchData = () => {
+        const requestOptions = {
+            method: 'GET',
+                    };
+        fetch('http://127.0.0.1:8000/search?query='+query, requestOptions)
+        .then(response => {
+            if (response.ok) {
+            return response.json()
+            }
+            throw response;
+        })
+        .then (data => setAPIResults(
+            (data["texts"].concat(data["authors"], data["editions"])).length>100?
+            (data["texts"].concat(data["authors"], data["editions"])).slice(0,100):
+            (data["texts"].concat(data["authors"], data["editions"])).slice(0,100)
           )
-          texts = texts.filter(
-            e=>
-            (e.title+e.author).toLowerCase().includes(searchElement)
-          )
+            )
+        .finally( () => setLoading(false))
         }
-        setResults(authors.concat(texts))
-    }
+    fetchData()
+    },[query])
+
     const searchSelect = (event) => {
       const selectedValue = event;
       setResults([selectedValue]);
       setEnterSearch(true);
     }  
     const testSelect = (event) => {
-      const query = event
+      const query = event;
       if (query.length>3){
-        searchFunction(query);
+        setQuery(query);
       }
     }
     return (
@@ -59,7 +63,9 @@ const MainSearch = (props) => {
           }}>
           <Select 
             placeholder="Search for an author or text"
-            options={results.length>100? results.slice(0,100):results}
+            options={
+              typeof APIResults === 'object'?(APIResults):results
+              }
             onInputChange={testSelect}
             onChange={searchSelect}
             menuPortalTarget={document.body} 
