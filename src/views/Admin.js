@@ -27,12 +27,12 @@ const Admin = () => {
             </div>
             {importWindow?
             <>
-                <div>
+                <div style = {{paddingBottom: 10}}>
                     <button onClick = {() => setImportType(options.import_type_authors.toLowerCase())}>{options.import_type_authors}</button>
                     <button onClick = {() => setImportType(options.import_type_texts.toLowerCase())}>{options.import_type_texts}</button>
-                    <button onClick = {() => setImportType(options.import_type_texts.toLowerCase())}>{options.import_type_editions}</button>
+                    <button onClick = {() => setImportType(options.import_type_editions.toLowerCase())}>{options.import_type_editions}</button>
                 </div>
-            {importType != ""?    
+            {importType !== ""?    
             <ImportTable type = {importType}/>
             :<></>}
             </>
@@ -79,6 +79,8 @@ const ImportTable = (props) => {
     return (
         <>
         {isImported&&importData.length>0?
+        <div>
+            <header>All rows of imported data: <button>Click to approve all imports</button></header>
             <table id = "detailedSearchResults"><tbody>
             <tr>
             {/*<th>Approve Import</th>*/}
@@ -102,7 +104,8 @@ const ImportTable = (props) => {
                 )
             )}
             </tbody></table>
-            :<div>{options.import_error}</div>
+        </div>
+        :<div>{options.import_error}</div>
         }
         </>
     )
