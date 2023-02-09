@@ -7,6 +7,7 @@ import SearchDetailed from './views/Search.js';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import EditionTable from './views/EditionTable.js';
 import ImportWindow from './views/Import.js';
+import Admin from './views/Admin.js';
 
 //Options for language dropdown
 /*const languageOptions = [
@@ -59,6 +60,13 @@ const RouteList = (props) => {
           <SiteHeader data = {dataList}/>
           <ImportWindow />
         </>
+      }
+    />
+    <Route path = {"/admin"} element = {
+      <>
+        <SiteHeader data = {dataList}/>
+        <Admin/>
+      </>
       }
     />
     </Routes>

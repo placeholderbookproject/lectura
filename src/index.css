@@ -136,7 +136,7 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
 .changeSearchVersionBtn:active{background-color:rgb(15, 54, 5);}
 
 /* CSS */
-.homeBtn, .detailedSearchBtn, .importBtn {
+.homeBtn, .detailedSearchBtn, .importBtn, .adminBtn {
   top:0;
   background-color: #054777;
   border: 1px solid transparent;
@@ -164,11 +164,11 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
 }
 
 .homeBtn:hover,
-.homeBtn:focus, .detailedSearchBtn:hover, .detailedSearchBtn:focus, .importBtn:hover, .importBtn:focus {
+.homeBtn:focus, .detailedSearchBtn:hover, .detailedSearchBtn:focus, .importBtn:hover, .importBtn:focus, .adminBtn:focus, .adminBtn:hover {
   background-color: #07c;
 }
 
-.homeBtn:active, .detailedSearchBtn:active, .importBtn:active {
+.homeBtn:active, .detailedSearchBtn:active, .importBtn:active, .adminBtn:active {
   background-color: #0064bd;
   box-shadow: none;
 }

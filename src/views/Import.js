@@ -26,13 +26,13 @@ const authorFilters = [
 ]
 
 const options = 
-    {"author":authorFilters,
-    "text":textFilters,}
+    {"authors":authorFilters,
+    "texts":textFilters,}
 
 const importTypes = [
-    {value: 'author', label:'Authors'},
-    {value: 'text', label:'Texts'},
-    {value: 'edition', label: 'Editions'},
+    {value: 'authors', label:'Authors'},
+    {value: 'texts', label:'Texts'},
+    {value: 'editions', label: 'Editions'},
 ]
 
 const labels = {
@@ -129,9 +129,11 @@ const ImportWindow = () => {
         }
         
         const inputName = (inputFile["current"]["value"].split("\\").slice(inputFile["current"]["value"].split("\\").length-1)[0].split(".")[0]) + "_" + importType
+        const date = new Date()
+        const curr_date = [date.getFullYear(), date.getMonth()+1, date.getDate()].join("-")
         const requestOptions = {
             method: 'POST',
-            body: JSON.stringify({data:newData, type:importType, name: inputName, date_uploaded: new Date().getDate()})
+            body: JSON.stringify({data:newData, type:importType, name: inputName, date_uploaded: curr_date})
         };
         fetch('http://127.0.0.1:8000/import', requestOptions)
             .then(response => response.json())

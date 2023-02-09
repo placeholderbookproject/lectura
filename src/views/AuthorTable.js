@@ -79,14 +79,6 @@ const AuthorTable = (props) => {
         <tr>
             <td>{/*string of all other names of the person, should be replaced by hover list or similar*/}
                 {numNames>1?
-                    /*
-                    <Collapsible label = {tableLabels.aka}>
-                         {name.slice(1,numNames).map((name) => 
-                         <p key = {name} >
-                        {name} 
-                         </p>
-                         )}
-                    </Collapsible>*/
                     tableLabels.aka + name.slice(1,numNames).join(", ")
                     :<></>
                 }
@@ -114,17 +106,6 @@ const AuthorTable = (props) => {
         <TableRow label = {tableLabels.occupation + " "}>
             {mainOccupation}
             {occupationList.length>1?//Drop-down list of occupations if there are more than 1
-                /*<Collapsible label = {", " + tableLabels.other_occupations}>
-                    <table className = "occupationList">
-                        <tbody>
-                        {occupationList.slice(1,occupationList.length).map((occupation) =>
-                            <tr key = {occupation}>
-                                <td>{occupation}</td>
-                            </tr>
-                        )}
-                        </tbody>
-                    </table>
-                </Collapsible>*/
                 ", " + tableLabels.other_occupations + occupationList.slice(1,occupationList.length).join(", ")
                 :<></>
             }

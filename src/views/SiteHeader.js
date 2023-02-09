@@ -86,12 +86,13 @@ const SiteHeader = (props) => {
                   }}
           >
         <Navbar style = {{backgroundColor: '#4c7557',
-                          paddingBottom: 10,
+                          paddingBottom: 5,
                           }}>{/*https://retool.com/blog/building-a-react-navbar/ */}
             <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/"}><button className="homeBtn">Home</button></Link>
             <MainSearch data = {props.data}/>
             <Link to = {"/search"} style={{paddingLeft: "1rem",paddingRight: "1rem"}}><button className="detailedSearchBtn">Detailed search</button></Link>
             <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/import"}><button className="importBtn">Import data</button></Link>
+            <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/admin"}><button className="adminBtn">Admin</button></Link>
         </Navbar>
       </Container>
   )
