@@ -7,7 +7,7 @@ const textFilters = [
     //{value: '#', label: "#"},
     {value: 'title', label: 'Title'},
     {value: 'author', label: 'Author'},
-    {value: 'publication',label: 'Publication Year'},
+    {value: 'publication_year',label: 'Publication Year'},
     {value: 'language', label: 'Language'},
     {value: 'type', label: 'Type'},
     {value: 'genre', label: 'Genre'},
@@ -137,10 +137,6 @@ const ImportWindow = () => {
         };
         fetch('http://127.0.0.1:8000/import', requestOptions)
             .then(response => response.json())
-            //.then(data => console.log(data))
-        //const blob = new Blob ([JSON.stringify(newData)],{type: "application/json"});
-        //const fileName = inputFile.current.value.split("\\")[inputFile.current.value.split("\\").length-1].split(".")[0]
-        //fileSaver.saveAs(blob, "./data/"+fileName + ".json")
     }
     const refreshImport = () => {
         setHeaders(Object.keys(uploadedList[0]))
@@ -206,7 +202,6 @@ const ImportWindow = () => {
                 </table></>
                 :<></>
             }
-            {/*<button id="fileSelect" onClick={uploadWorks}>Add works</button>   */}
             {//selectedOptions.length===headers.length && selectedOptions.length !== 0?
                 <div style = {{paddingTop:10}}>
                     <button onClick = {uploadData}>{importLabels.import_push_data}</button>

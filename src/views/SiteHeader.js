@@ -13,7 +13,7 @@ const MainSearch = (props) => {
     const [enterSearch,setEnterSearch] = useState(false);
     const [query, setQuery] = useState("");
     const [APIResults,setAPIResults] = useState();
-    const [loading, setLoading] = useState(false);
+    //const [loading, setLoading] = useState(false);
     useEffect (()=> {
       setEnterSearch(false);
     },[enterSearch]);
@@ -29,15 +29,18 @@ const MainSearch = (props) => {
             }
             throw response;
         })
-        .then (data => setAPIResults(
-            (data["texts"].concat(data["authors"], data["editions"])).length>100?
-            (data["texts"].concat(data["authors"], data["editions"])).slice(0,100):
-            (data["texts"].concat(data["authors"], data["editions"])).slice(0,100)
+        .then (data => 
+          {const final_data = (data["texts"].concat(data["authors"], data["editions"]))
+          setAPIResults(
+            final_data.length>100?
+            final_data.slice(0,100):
+            final_data.slice(0,100)
           )
-            )
-        .finally( () => setLoading(false))
         }
-    fetchData()
+            )
+        //.finally( () => setLoading(false))
+        }
+    query.length>3?fetchData():console.log("search is not long enough")
     },[query])
 
     const searchSelect = (event) => {

@@ -38,7 +38,12 @@ const TextTable = (props) => {
                 <td>{(numTitles>1)?textLabels.aka + title.slice(1,numTitles).join(", "):""}</td>{/*akas, a string of alternative names. Should be replaced with a list of language alternatives*/}
             </tr>
             <TableRow label = {textLabels.author_name + " "} >
-                {<Link to = {"/author/"+text.author_id}>{author}</Link>}
+                {text.author_id !== ""?
+                    <Link to = {"/author/"+text.author_id}>
+                        {author}
+                    </Link>:
+                    <>{author}</>
+                }
             </TableRow>
             {(language !== undefined)?<TableRow label = {textLabels.original_language}>{language}</TableRow>:<></>}
             <TableRow label = {textLabels.original_publication_date + " "}>

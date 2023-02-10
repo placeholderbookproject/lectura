@@ -45,19 +45,12 @@ const Admin = () => {
 const ImportTable = (props) => {
     const [importData, setImportData] = useState([]);
     const [isImported, setIsImported] = useState(false);
+    const [importApproved, setImportApproved] = useState(false);
     const columns = {texts: ['title', 'author', 'publication', 'language','type', 'date_uploaded'],
                     authors: ['name', 'position', 'birth', 'death', 'city', 'country'],
                     editions: ['title', 'author', 'publisher', 'isbn', 'isbn13'],
     }
     const columnsToUse = columns[props.type]
-/*    const [approvals, setApprovals] = useState({});
-    const approveFunc = (id) => {
-        const oldApprovalKeys = Object.keys(approvals);
-        const oldApprovals = approvals
-        if (oldApprovalKeys.includes(id)) {oldApprovals[id] = "approved"}
-        else {oldApprovals[id] = "approved"}
-        setApprovals(oldApprovals);
-    }*/
     useEffect (() => {
         const fetchData = () => {
             const requestOptions = {
@@ -74,16 +67,25 @@ const ImportTable = (props) => {
             .finally( () => setIsImported(true))
         }
         fetchData()
-    },[props.type]
+    },[props.type, importApproved]
     )
+    const approveImports = () => {
+        fetch('http://127.0.0.1:8000/import/approve?type='+props.type)
+        .then(response => {
+            if (response.ok) {
+                return response.json()
+            }
+            throw response
+        })
+        setImportApproved(true)
+    }
     return (
         <>
         {isImported&&importData.length>0?
         <div>
-            <header>All rows of imported data: <button>Click to approve all imports</button></header>
+            <header>All rows of imported data: <button onClick = {approveImports}>Click to approve all imports</button></header>
             <table id = "detailedSearchResults"><tbody>
             <tr>
-            {/*<th>Approve Import</th>*/}
             <th>#</th>
             {columnsToUse.map((header) => (
                 <th key = {header}>{header}</th>
@@ -93,7 +95,6 @@ const ImportTable = (props) => {
             {importData.map((row) =>
                 (
                 <tr key = {importData.indexOf(row)}>
-                {/*<td onClick = {() => approveFunc(importData.indexOf(row))}>{approvals[importData.indexOf(row)]?"Approved":"Not approved"}</td>*/}
                 <td >{importData.indexOf(row)}</td>
                 {columnsToUse.map((element) =>
                     (<td key = {importData.indexOf(row)+element}>

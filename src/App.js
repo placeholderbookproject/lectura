@@ -22,7 +22,7 @@ const RouteList = (props) => {
     <Routes>
       <Route path = {"/"} element = {<SiteHeader data = {dataList} />}/>
       {dataList["texts"].map((text) =>
-        <Route path ={"/text/"+text.id} element = {
+        <Route path ={"/text/"+text.id} element = { //importData.indexOf(row)
           <>
             <SiteHeader data = {dataList}/>
             <TextTable data={text}/>
