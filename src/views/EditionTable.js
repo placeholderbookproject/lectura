@@ -1,18 +1,6 @@
-import TableRow from './ViewRow.js'
-import {Link} from 'react-router-dom'
-
-const labels = {
-    author : 'Author',
-    original_title : 'Original Title',
-    language : 'Language',
-    editors : 'Editors',
-    isbn : 'ISBN10/13',
-    publisher : 'Publisher',
-    binding : 'Binding',
-    pages : 'pages',
-    publication : 'Published',
-    length : 'Length',
-}
+import TableRow from './ViewRow.js';
+import {Link} from 'react-router-dom';
+import labels from './labels.js';
 
 const EditionTable = (props) => {
     const data = props.data;

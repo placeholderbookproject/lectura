@@ -1,22 +1,6 @@
 import {Link} from 'react-router-dom';
 import TableRow from './ViewRow.js'
-
-const labels = {
-    aka : 'aka.',
-    author_name : 'Author',
-    original_language : 'Original Language(s)',
-    original_publication_date : 'Original Publication',
-    original_publisher_name : 'Original Publisher',
-    original_publication_type : 'Type',
-    original_publication_length : 'Length',
-    writing_period : 'Writing period',
-    editions : 'Editions',
-    unspecified : 'not specified',
-    edition_title : 'Title',
-    edition_editors : 'Editors',
-    edition_language : 'Language',
-    isbn : 'ISBN',
-}
+import labels from './labels.js'
 
 const TextTable = (props) => {
     const text = props.data;

@@ -2,21 +2,17 @@ import Select from 'react-select';
 import 'react-select-search/style.css';
 import {Navigate, Link} from 'react-router-dom'
 import React, {useState, useEffect} from 'react';
-import { Navbar, /*Nav, NavDropdown,*/ Container } from "react-bootstrap";
-
+import { Navbar, Container } from "react-bootstrap";
 
 const MainSearch = (props) => {
-    /*
-      Component consisting of a search, a short description of search results and a select list of all results
-    */
-    const [results,setResults] = useState(props.data.texts.slice(1,1)); //
     const [enterSearch,setEnterSearch] = useState(false);
     const [query, setQuery] = useState("");
     const [APIResults,setAPIResults] = useState();
-    //const [loading, setLoading] = useState(false);
+    const [selectedValue, setSelectedValue] = useState();
     useEffect (()=> {
       setEnterSearch(false);
     },[enterSearch]);
+    
     useEffect (()=> {
       const fetchData = () => {
         const requestOptions = {
@@ -36,23 +32,19 @@ const MainSearch = (props) => {
             final_data.slice(0,100):
             final_data.slice(0,100)
           )
-        }
-            )
-        //.finally( () => setLoading(false))
-        }
-    query.length>3?fetchData():console.log("search is not long enough")
+        })
+      }
+    query.length>3?fetchData():void(0);
     },[query])
 
-    const searchSelect = (event) => {
+    const searchSelect = (event) => {      
       const selectedValue = event;
-      setResults([selectedValue]);
+      setSelectedValue(selectedValue);
       setEnterSearch(true);
     }  
     const testSelect = (event) => {
       const query = event;
-      if (query.length>3){
-        setQuery(query);
-      }
+      if (query.length>3){setQuery(query);}
     }
     return (
       <>
@@ -67,7 +59,7 @@ const MainSearch = (props) => {
           <Select 
             placeholder="Search for an author or text"
             options={
-              typeof APIResults === 'object'?(APIResults):results
+              typeof APIResults === 'object'?(APIResults):props.data.texts.slice(1,1)
               }
             onInputChange={testSelect}
             onChange={searchSelect}
@@ -77,7 +69,7 @@ const MainSearch = (props) => {
         </div>
       {(enterSearch) ? 
         (<Navigate to=
-          {(results[0].type === "author") ? ("/author/"+results[0].id): ("/text/"+results[0].id)}
+          {(selectedValue.type === "author") ? ("/author/"+selectedValue.id): ("/text/"+selectedValue.id)}
         />):
         (<></>)
       }
