@@ -53,6 +53,7 @@ const labels = {
     import_databtn : 'Imported data',
     latest_editsbtn : 'Latest edits',
     admin_header : 'Admin',
+    undoEditBtn : 'Undo all changes',
     }
     
     export default labels;

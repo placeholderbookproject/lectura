@@ -75,12 +75,17 @@ const AuthorTable = (props) => {
         newData[name] = value
         setData({...data,[name]:value})
     }
-
+    const undoEdit = () => {
+        setData(props.data)
+    }
     return (
     <div>
         <button onClick = {setEditWindow}>{!edit?tableLabels.editBtn:tableLabels.exitEditBtn}</button>
         {edit?
-            <button onClick = {uploadEdits}>{tableLabels.submit_edits}</button>
+            <>
+                <button onClick = {undoEdit}>{tableLabels.undoEditBtn}</button>
+                <button onClick = {uploadEdits}>{tableLabels.submit_edits}</button>
+            </>
             :<></>}
         <table id = "authorTableWindow"><tbody>
             <tr className = "Header">
