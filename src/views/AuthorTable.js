@@ -83,7 +83,7 @@ const AuthorTable = (props) => {
         <button onClick = {setEditWindow}>{!edit?tableLabels.editBtn:tableLabels.exitEditBtn}</button>
         {edit?
             <>
-                <button onClick = {undoEdit}>{tableLabels.undoEditBtn}</button>
+                <button>{tableLabels.undoEditBtn}</button>
                 <button onClick = {uploadEdits}>{tableLabels.submit_edits}</button>
             </>
             :<></>}
