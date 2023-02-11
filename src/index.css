@@ -159,8 +159,9 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   white-space: nowrap;
 }
 
-.homeBtn:hover,
-.homeBtn:focus, .detailedSearchBtn:hover, .detailedSearchBtn:focus, .importBtn:hover, .importBtn:focus, .adminBtn:focus, .adminBtn:hover {
+.homeBtn:hover, .detailedSearchBtn:hover, .importBtn:hover, .adminBtn:hover 
+/*,.homeBtn:focus, .detailedSearchBtn:focus, .importBtn:focus, .adminBtn:focus*/
+{
   background-color: #012443;
   color:white;
 }

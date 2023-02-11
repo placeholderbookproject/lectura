@@ -47,7 +47,7 @@ const ImportTable = (props) => {
     const [isImported, setIsImported] = useState(false);
     const [importApproved, setImportApproved] = useState(false);
     const columns = {texts: ['title', 'author', 'publication', 'language','type', 'date_uploaded'],
-                    authors: ['name', 'position', 'birth', 'death', 'city', 'country'],
+                    authors: ['name', 'position', 'birth', 'death', 'city', 'country', 'floruit'],
                     editions: ['title', 'author', 'publisher', 'isbn', 'isbn13'],
     }
     const columnsToUse = columns[props.type]
@@ -70,7 +70,11 @@ const ImportTable = (props) => {
     },[props.type, importApproved]
     )
     const approveImports = () => {
-        fetch('http://127.0.0.1:8000/import/approve?type='+props.type)
+        const requestOptions = {
+            method: 'POST',
+            body: JSON.stringify(importData)
+        }
+        fetch('http://127.0.0.1:8000/import/approve?type='+props.type, requestOptions)
         .then(response => {
             if (response.ok) {
                 return response.json()
@@ -79,13 +83,24 @@ const ImportTable = (props) => {
         })
         setImportApproved(true)
     }
+    const removeImportRow = (id) => {
+        const oldData = importData
+        let newData = []
+        for (let i = 0;i<importData.length;i++){
+            if (i !== id) {newData.push(oldData[i])}
+        }
+        setImportData(newData);
+    }
     return (
         <>
         {isImported&&importData.length>0?
         <div>
-            <header>All rows of imported data: <button onClick = {approveImports}>Click to approve all imports</button></header>
+            <header>All rows of imported data: 
+                <button onClick = {approveImports}>Click to approve all imports</button>
+                </header>
             <table id = "detailedSearchResults"><tbody>
             <tr>
+                <th style = {{backgroundColor: 'white', border: 'none'}}></th>
             <th>#</th>
             {columnsToUse.map((header) => (
                 <th key = {header}>{header}</th>
@@ -95,6 +110,7 @@ const ImportTable = (props) => {
             {importData.map((row) =>
                 (
                 <tr key = {importData.indexOf(row)}>
+                <td onClick = {() => removeImportRow(importData.indexOf(row))}>X</td>
                 <td >{importData.indexOf(row)}</td>
                 {columnsToUse.map((element) =>
                     (<td key = {importData.indexOf(row)+element}>

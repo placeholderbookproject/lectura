@@ -3,6 +3,7 @@ import 'react-select-search/style.css';
 import {Navigate, Link} from 'react-router-dom'
 import React, {useState, useEffect} from 'react';
 import { Navbar, Container } from "react-bootstrap";
+import labels from './labels.js'
 
 const MainSearch = (props) => {
     const [enterSearch,setEnterSearch] = useState(false);
@@ -78,18 +79,19 @@ const SiteHeader = (props) => {
       <Container className = "flexbox-container" 
           style={{backgroundColor: '#dedbdb',
                   position: 'sticky',
+                  borderBottom: '1.5px solid #8a8a8a',
                   top: 0,
                   }}
           >
         <Navbar style = {{backgroundColor: '#dedbdb',
                           paddingBottom: 5,
-                          borderBottom: '1.5px solid #8a8a8a',
+                          paddingTop: 5,
                           }}>{/*https://retool.com/blog/building-a-react-navbar/ */}
-            <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/"}><button className="homeBtn">Home</button></Link>
+            <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/"}><button className="homeBtn">{labels.homeBtn}</button></Link>
             <MainSearch data = {props.data}/>
-            <Link to = {"/search"} style={{paddingLeft: "1rem",paddingRight: "1rem"}}><button className="detailedSearchBtn">Detailed search</button></Link>
-            <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/import"}><button className="importBtn">Import data</button></Link>
-            <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/admin"}><button className="adminBtn">Admin</button></Link>
+            <Link to = {"/search"} style={{paddingLeft: "1rem",paddingRight: "1rem"}}><button className="detailedSearchBtn">{labels.detailedSearchBtn}</button></Link>
+            <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/import"}><button className="importBtn">{labels.importDataBtn}</button></Link>
+            <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/admin"}><button className="adminBtn">{labels.adminBtn}</button></Link>
         </Navbar>
       </Container>
   )

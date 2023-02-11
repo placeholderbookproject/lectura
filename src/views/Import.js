@@ -138,9 +138,7 @@ const ImportWindow = () => {
         fetch('http://127.0.0.1:8000/import', requestOptions)
             .then(response => response.json())
     }
-    const refreshImport = () => {
-        setHeaders(Object.keys(uploadedList[0]))
-    }
+    const refreshImport = () => {setHeaders(Object.keys(uploadedList[0]))}
     return (
         <>
             <header style = {{fontSize:30, fontWeight:700, textDecoration: 'underline 1px rgb(100, 88, 71)', paddingBottom: 10}}>

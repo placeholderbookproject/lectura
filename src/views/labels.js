@@ -54,6 +54,10 @@ const labels = {
     latest_editsbtn : 'Latest edits',
     admin_header : 'Admin',
     undoEditBtn : 'Undo all changes',
+    homeBtn : 'Home',
+    detailedSearchBtn : 'Detailed Search',
+    importDataBtn : 'Import',
+    adminBtn : 'Admin',
     }
     
     export default labels;

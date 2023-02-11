@@ -19,7 +19,6 @@ const TextRow = (props) => {
 }
 
 const AuthorTable = (props) => {
-    const tableLabels = labels;
     let texts = props.data.texts;
     if (texts === null) {texts = []};
     const [wiki, setWiki] = useState("");
@@ -30,9 +29,7 @@ const AuthorTable = (props) => {
     const name = data.name.split(",");
     const numNames = name.length;
     const occupationList = data.position.split(", ");
-    const firstOccupation = occupationList[0].split(" ");
     const mainOccupation = occupationList[0];//(firstOccupation.length>1)?firstOccupation.splice(1,firstOccupation.length).join(" "):occupationList[0];
-    const nationality = firstOccupation[0];
     useEffect (()=> {
         const fetchData = () => {
           const requestOptions = {
@@ -97,9 +94,6 @@ const AuthorTable = (props) => {
         newData[name] = value
         setData({...data,[name]:value})
     }
-    const undoEdit = () => {
-        setData(props.data)
-    }
     const addWork = () => {
         let oldWorks = data.texts;
         const addWork = [{title: ''}]
@@ -126,11 +120,11 @@ const AuthorTable = (props) => {
       }  
     return (
     <div>
-        <button onClick = {setEditWindow}>{!edit?tableLabels.editBtn:tableLabels.exitEditBtn}</button>
+        <button onClick = {setEditWindow}>{!edit?labels.editBtn:labels.exitEditBtn}</button>
         {edit?
             <>
-                <button>{tableLabels.undoEditBtn}</button>
-                <button onClick = {uploadEdits}>{tableLabels.submit_edits}</button>
+                {/*<button onClick = {undoEdit}>{labels.undoEditBtn}</button>*/}
+                <button onClick = {uploadEdits}>{labels.submit_edits}</button>
             </>
             :<></>}
         <table id = "authorTableWindow"><tbody>
@@ -139,15 +133,15 @@ const AuthorTable = (props) => {
             </tr>
             <tr>
                 <td>{/*string of all other names of the person, should be replaced by hover list or similar*/}
-                    {numNames>1?tableLabels.aka + name.slice(1,numNames).join(", "):<></>}
+                    {numNames>1?labels.aka + name.slice(1,numNames).join(", "):<></>}
                 </td>
             </tr>
-            <TableRow label = {" " + tableLabels.nationality + " "}>
-                {!edit?nationality:<input value={data.nationality} name = "nationality" onChange = {e => editInfo(e)}></input>}
+            <TableRow label = {" " + labels.nationality + " "}>
+                {!edit?data.nationality:<input value={data.nationality} name = "nationality" onChange = {e => editInfo(e)}></input>}
             </TableRow>
-            <TableRow label = {tableLabels.born + " "}>
+            <TableRow label = {labels.born + " "}>
             {!edit?
-                data.birth === ""? tableLabels.unspecified://If no birth -> not specified
+                data.birth === ""? labels.unspecified://If no birth -> not specified
                                     (data.birth>0?data.birth + " AD": Math.abs(data.birth) + " BC" )//If <0->BC else AD
                     :<input type="number" name = "birth" value = {data.birth} onChange = {e => editInfo(e)}></input>
                     }
@@ -162,13 +156,13 @@ const AuthorTable = (props) => {
                     <label>
                         <input value={data.country} name = "country" onChange = {e => editInfo(e)}></input>
                         {")"}
-                    </label>{tableLabels.edit_country_birth_description}
+                    </label>{labels.edit_country_birth_description}
                     </>
                     }
             </TableRow>
-            <TableRow label = {tableLabels.died + " "}>
+            <TableRow label = {labels.died + " "}>
                 {!edit?
-                    data.death===""? tableLabels.unspecified:(data.death>0?data.death + " AD": Math.abs(data.death) + " BC")
+                    data.death===""? labels.unspecified:(data.death>0?data.death + " AD": Math.abs(data.death) + " BC")
                     :<input value = {data.death} type = "number" name = "death" onChange = {e => editInfo(e)}></input>
                 }
                 {!edit?
@@ -179,28 +173,26 @@ const AuthorTable = (props) => {
                     </label>
                     <label>
                         <input value = {data.country_death} name = "country_death" onChange = {e => editInfo(e)}></input>
-                        {tableLabels.edit_country_death_description}
+                        {labels.edit_country_death_description}
                     </label>
                 </>  
                     }
             </TableRow>
                 {!edit? (
                         (data.birth === ("")|data.death === ("")) && data.floruit !==("")?
-                        <TableRow label = {tableLabels.floruit + " "}>
+                        <TableRow label = {labels.floruit + " "}>
                             {" " + data.floruit}
                         </TableRow>
                     :<></>
                 )
-                    :<TableRow label = {tableLabels.floruit + " "}>
+                    :<TableRow label = {labels.floruit + " "}>
                         <input value = {data.floruit} name = "floruit" onChange = {e => editInfo(e)}></input>
                     </TableRow>
                 }
-            <TableRow label = {tableLabels.occupation + " "}>
-                {//edit?<input value = {mainOccupation}></input>:
-                mainOccupation
-                }
+            <TableRow label = {labels.occupation + " "}>
+                {mainOccupation}
                 {occupationList.length>1?//Drop-down list of occupations if there are more than 1
-                    ", " + tableLabels.other_occupations + occupationList.slice(1,occupationList.length).join(", ")
+                    ", " + labels.other_occupations + occupationList.slice(1,occupationList.length).join(", ")
                     :<></>
                 }
             </TableRow>
@@ -210,11 +202,11 @@ const AuthorTable = (props) => {
             <tr>{/*Placeholder for influences */}</tr>
             <tr>{/*Placeholder for influenced */}</tr>
             <tr className = "Works" style = {{textDecoration: 'underline 1px rgb(100, 88, 71)'}}>
-                <td>{tableLabels.works}</td>
+                <td>{labels.works}</td>
             </tr>
                     {!edit
                     ?(data.texts !== null) ? (data.texts.map((work) => (<TextRow key={work.index} data={work}/>))):<></>
-                    :<> {data.texts !== null?
+                    :<>{data.texts !== null?
                         data.texts.map( (work) => 
                             <tr key = {data.texts.indexOf(work)}>
                                 <td style = {{display:'inline-flex'}}>
