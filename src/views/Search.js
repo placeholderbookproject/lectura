@@ -202,23 +202,23 @@ const SearchDetailed = (props) => {//Add the table view of
         <>{/*Table of search results*/}
           <table id = "detailedSearchResults">
           <tbody>
-            <tr>
-              {filters.length>0 && startSearch ? filters.map((filter) =>
-                ( 
-                    <Tooltip sx = {{fontSize:15}}key={filter.value} title="Click to sort" placement="top" arrow followCursor>
-                    <th onClick={sortFunction}>{filter.label}</th>
-                    </Tooltip>
-                )
-              ):<></>}
-            </tr>
-            {search.length>0 ? (
-                ((searchResults.length>100)?searchResults.slice(0,100):searchResults).map //Limitation to first 100 values
-                (result => (
-                    <tr key = {result.id}>
-                    <CreateList data = {result} filters = {filters}/>
-                    </tr>
-                    ))
-            ):(<></>)}
+                <tr>
+                    {filters.length>0 && startSearch ? filters.map((filter) =>
+                    ( 
+                        <Tooltip sx = {{fontSize:15}}key={filter.value} title="Click to sort" placement="top" arrow followCursor>
+                        <th onClick={sortFunction}>{filter.label}</th>
+                        </Tooltip>
+                    )
+                    ):<></>}
+                </tr>
+                {search.length>0 ? (
+                    ((searchResults.length>100)?searchResults.slice(0,100):searchResults).map //Limitation to first 100 values
+                    (result => (
+                        <tr key = {result.id}>
+                        <CreateList data = {result} filters = {filters}/>
+                        </tr>
+                        ))
+                ):(<></>)}
           </tbody>
           </table>
         </>

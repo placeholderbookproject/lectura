@@ -12,7 +12,7 @@ const MainSearch = (props) => {
     useEffect (()=> {
       setEnterSearch(false);
     },[enterSearch]);
-    
+
     useEffect (()=> {
       const fetchData = () => {
         const requestOptions = {
@@ -27,11 +27,7 @@ const MainSearch = (props) => {
         })
         .then (data => 
           {const final_data = (data["texts"].concat(data["authors"], data["editions"]))
-          setAPIResults(
-            final_data.length>100?
-            final_data.slice(0,100):
-            final_data.slice(0,100)
-          )
+          setAPIResults(final_data)
         })
       }
     query.length>3?fetchData():void(0);
@@ -69,7 +65,7 @@ const MainSearch = (props) => {
         </div>
       {(enterSearch) ? 
         (<Navigate to=
-          {(selectedValue.type === "author") ? ("/author/"+selectedValue.id): ("/text/"+selectedValue.id)}
+          {(selectedValue.type === "author") ? ("/author/"+selectedValue.value): ("/text/"+selectedValue.value)}
         />):
         (<></>)
       }
@@ -80,14 +76,14 @@ const MainSearch = (props) => {
 const SiteHeader = (props) => {
   return (
       <Container className = "flexbox-container" 
-          style={{backgroundColor: '#4c7557',
-                  borderBottom: '1px solid #8a8a8a',
+          style={{backgroundColor: '#dedbdb',
                   position: 'sticky',
                   top: 0,
                   }}
           >
-        <Navbar style = {{backgroundColor: '#4c7557',
+        <Navbar style = {{backgroundColor: '#dedbdb',
                           paddingBottom: 5,
+                          borderBottom: '1.5px solid #8a8a8a',
                           }}>{/*https://retool.com/blog/building-a-react-navbar/ */}
             <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/"}><button className="homeBtn">Home</button></Link>
             <MainSearch data = {props.data}/>

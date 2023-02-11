@@ -1,7 +1,8 @@
 import React, {/*useRef,*/ useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
-import TableRow from './ViewRow.js'
-import labels from './labels.js'
+import TableRow from './ViewRow.js';
+import labels from './labels.js';
+import Select from 'react-select';
 const parse = require('html-react-parser');
 //import Collapsible from './Collapsible.js';
 
@@ -24,12 +25,33 @@ const AuthorTable = (props) => {
     const [wiki, setWiki] = useState("");
     const [data, setData] = useState(props.data);
     const [edit,setEdit] = useState(false);
+    const [query, setQuery] = useState("");
+    const [searchResults, setSearchResults] = useState();
     const name = data.name.split(",");
     const numNames = name.length;
     const occupationList = data.position.split(", ");
     const firstOccupation = occupationList[0].split(" ");
     const mainOccupation = occupationList[0];//(firstOccupation.length>1)?firstOccupation.splice(1,firstOccupation.length).join(" "):occupationList[0];
     const nationality = firstOccupation[0];
+    useEffect (()=> {
+        const fetchData = () => {
+          const requestOptions = {
+              method: 'GET',
+                      };
+          fetch('http://127.0.0.1:8000/search?query='+query+"&type=texts", requestOptions)
+          .then(response => {
+              if (response.ok) {
+              return response.json()
+              }
+              throw response;
+          })
+          .then (data => 
+            {const final_data = (data["texts"])
+            setSearchResults(final_data)
+          })
+        }
+      query.length>3?fetchData():void(0);
+      },[query])  
     useEffect(() => {
         setData(props.data)
     },[props.data]
@@ -78,6 +100,30 @@ const AuthorTable = (props) => {
     const undoEdit = () => {
         setData(props.data)
     }
+    const addWork = () => {
+        let oldWorks = data.texts;
+        const addWork = [{title: ''}]
+        oldWorks.push(addWork)
+        setData({...data,["texts"]:oldWorks})
+    }
+    const removeWork = (e,id) => {
+        const oldWorks = data.texts;
+        let newWorks = []
+        for (let i = 0; i<oldWorks.length;i++){
+            if (i === id){continue}
+            else {newWorks.push(oldWorks[i])}
+        }
+        setData({...data,["texts"]:newWorks})
+    }
+    const searchSelect = (event, id) => {      
+        let oldWorks = data.texts;
+        oldWorks[id] = event
+        setData({...data,["texts"]:oldWorks})
+      }    
+    const selectQuery = (event) => {
+        const query = event;
+        if (query.length>3){setQuery(query);}
+      }  
     return (
     <div>
         <button onClick = {setEditWindow}>{!edit?tableLabels.editBtn:tableLabels.exitEditBtn}</button>
@@ -161,13 +207,30 @@ const AuthorTable = (props) => {
             <TableRow>
                 {typeof wiki !== Object && wiki !== ""? parse(wiki):<></>}
             </TableRow>
-            <tr>{/*Placeholder for biography */}</tr>
             <tr>{/*Placeholder for influences */}</tr>
             <tr>{/*Placeholder for influenced */}</tr>
             <tr className = "Works" style = {{textDecoration: 'underline 1px rgb(100, 88, 71)'}}>
                 <td>{tableLabels.works}</td>
             </tr>
-                {(texts.length>0) ? (texts.map((text) => (<TextRow key={text.index} data={text}/>))):<></>}
+                    {!edit
+                    ?(data.texts !== null) ? (data.texts.map((work) => (<TextRow key={work.index} data={work}/>))):<></>
+                    :<> {data.texts !== null?
+                        data.texts.map( (work) => 
+                            <tr key = {data.texts.indexOf(work)}>
+                                <td style = {{display:'inline-flex'}}>
+                                    <Select 
+                                        placeholder={work.title?work.title:"find a book in the system"}
+                                        options = {typeof searchResults === 'object'?(searchResults):void(0)}
+                                        onInputChange = {selectQuery}
+                                        onChange = {(e) => searchSelect (e, data.texts.indexOf(work))}
+                                    />
+                                    <button onClick = {(e) => removeWork(e,data.texts.indexOf(work))}>X</button>
+                                </td>
+                            </tr>)
+                        :<></>}
+                        <tr><td><button onClick = {addWork}>+</button></td></tr>
+                    </>
+                    }
             </tbody></table>
     </div>
     );
