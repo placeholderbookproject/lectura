@@ -16,6 +16,7 @@ const labels = {
     edit_country_death_description : ' (city, country) of death',
     editBtn : 'Edit',
     exitEditBtn : 'Stop Editing',
+    worksUnknown : 'No known works',
     aka : 'aka.',
     author_name : 'Author',
     original_language : 'Original Language(s)',

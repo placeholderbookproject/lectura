@@ -26,6 +26,7 @@ const AuthorTable = (props) => {
     const [edit,setEdit] = useState(false);
     const [query, setQuery] = useState("");
     const [searchResults, setSearchResults] = useState();
+    const addText = "texts"
     const name = data.name.split(",");
     const numNames = name.length;
     const occupationList = data.position.split(", ");
@@ -43,8 +44,7 @@ const AuthorTable = (props) => {
               throw response;
           })
           .then (data => 
-            {const final_data = (data["texts"])
-            setSearchResults(final_data)
+            {setSearchResults(data["texts"])
           })
         }
       query.length>3?fetchData():void(0);
@@ -98,7 +98,7 @@ const AuthorTable = (props) => {
         let oldWorks = data.texts;
         const addWork = [{title: ''}]
         oldWorks.push(addWork)
-        setData({...data,["texts"]:oldWorks})
+        setData({...data,[addText]:oldWorks})
     }
     const removeWork = (e,id) => {
         const oldWorks = data.texts;
@@ -107,12 +107,12 @@ const AuthorTable = (props) => {
             if (i === id){continue}
             else {newWorks.push(oldWorks[i])}
         }
-        setData({...data,["texts"]:newWorks})
+        setData({...data,[addText]:newWorks})
     }
     const searchSelect = (event, id) => {      
         let oldWorks = data.texts;
         oldWorks[id] = event
-        setData({...data,["texts"]:oldWorks})
+        setData({...data,[addText]:oldWorks})
       }    
     const selectQuery = (event) => {
         const query = event;
@@ -120,16 +120,21 @@ const AuthorTable = (props) => {
       }  
     return (
     <div>
-        <button onClick = {setEditWindow}>{!edit?labels.editBtn:labels.exitEditBtn}</button>
-        {edit?
+        <div style = {{left:5, position: 'fixed'}}>
+            <button className = "editBtn" onClick = {setEditWindow}>{!edit?labels.editBtn:labels.exitEditBtn}
+            </button>
+            {edit?
             <>
                 {/*<button onClick = {undoEdit}>{labels.undoEditBtn}</button>*/}
-                <button onClick = {uploadEdits}>{labels.submit_edits}</button>
+                <button className = "submitEditBtn" onClick = {uploadEdits}>{labels.submit_edits}</button>
             </>
             :<></>}
+        </div>        
         <table id = "authorTableWindow"><tbody>
             <tr className = "Header">
-                <th>{name[0]}</th>
+                <th>
+                    {name[0]}
+                </th>
             </tr>
             <tr>
                 <td>{/*string of all other names of the person, should be replaced by hover list or similar*/}
@@ -172,7 +177,7 @@ const AuthorTable = (props) => {
                         <input value = {data.city_death} name = "city_death" onChange = {e => editInfo(e)}></input>
                     </label>
                     <label>
-                        <input value = {data.country_death} name = "country_death" onChange = {e => editInfo(e)}></input>
+                        <input value = {data.country_death} name = "country_death" onChange = {e => editInfo(e)}></input>)
                         {labels.edit_country_death_description}
                     </label>
                 </>  
@@ -202,7 +207,9 @@ const AuthorTable = (props) => {
             <tr>{/*Placeholder for influences */}</tr>
             <tr>{/*Placeholder for influenced */}</tr>
             <tr className = "Works" style = {{textDecoration: 'underline 1px rgb(100, 88, 71)'}}>
-                <td>{labels.works}</td>
+                <td>
+                    {data.texts !== null && data.texts.length>0?labels.works:labels.worksUnknown}
+                </td>
             </tr>
                     {!edit
                     ?(data.texts !== null) ? (data.texts.map((work) => (<TextRow key={work.index} data={work}/>))):<></>
@@ -210,7 +217,7 @@ const AuthorTable = (props) => {
                         data.texts.map( (work) => 
                             <tr key = {data.texts.indexOf(work)}>
                                 <td style = {{display:'inline-flex'}}>
-                                    <Select 
+                                    <Select style = {{width: 300}}
                                         placeholder={work.title?work.title:"find a book in the system"}
                                         options = {typeof searchResults === 'object'?(searchResults):void(0)}
                                         onInputChange = {selectQuery}

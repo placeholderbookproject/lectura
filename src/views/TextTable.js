@@ -1,17 +1,38 @@
 import {Link} from 'react-router-dom';
 import TableRow from './ViewRow.js'
 import labels from './labels.js'
-import {useState, useEffect} from 'react'
+import {useState, useEffect} from 'react';
+import Select from 'react-select';
 
 const TextTable = (props) => {
     const text = props.data;
     const [data, setData] = useState(text);
     const [edit, setEdit] = useState(false);
+    const [query, setQuery] = useState("");
+    const [searchResults, setSearchResults] = useState();
     const title = data.title.split(",");
     const numTitles = title.length;
     useEffect(() => {
         setData(props.data)
     },[props.data])
+    useEffect (()=> {
+        const fetchData = () => {
+          const requestOptions = {
+              method: 'GET',
+                      };
+          fetch('http://127.0.0.1:8000/search?query='+query+"&type=authors", requestOptions)
+          .then(response => {
+              if (response.ok) {
+              return response.json()
+              }
+              throw response;
+          })
+          .then (data => {setSearchResults(data["authors"])
+          })
+        }
+      query.length>3?fetchData():void(0);
+      },[query])  
+
     const setEditWindow = () => {
         if (!edit) {setEdit(true)}
         else{setEdit(false)}
@@ -31,13 +52,23 @@ const TextTable = (props) => {
         newData[name] = value
         setData({...data,[name]:value})
     }
+    const selectQuery = (event) => {
+        const query = event;
+        if (query.length>3){setQuery(query);}
+      }
+    const searchSelect = (event) => {
+        let newData = data;
+        newData["author_name"] = event.name
+        newData["author_id"] = event.id
+        setData(newData);
+    }
     return (
       (
         <div>
-        <button onClick = {setEditWindow}>{!edit?labels.editBtn:labels.exitEditBtn}</button>
+        <button className = "editBtn" onClick = {setEditWindow}>{!edit?labels.editBtn:labels.exitEditBtn}</button>
         {edit?
             <>
-                <button onClick = {uploadEdits}>{labels.submit_edits}</button>
+                <button className = "submitEditBtn" onClick = {uploadEdits}>{labels.submit_edits}</button>
             </>
             :<></>}
             <table id = "textTableWindow"><tbody>
@@ -48,11 +79,20 @@ const TextTable = (props) => {
                     <td>{(numTitles>1)?labels.aka + title.slice(1,numTitles).join(", "):""}</td>{/*akas, a string of alternative names. Should be replaced with a list of language alternatives*/}
                 </tr>
                 <TableRow label = {labels.author_name + " "} >
-                    {data.author_id !== ""?
-                        <Link to = {"/author/"+data.author_id}>
-                            {data.author}
-                        </Link>:
-                        <>{data.author}</>
+                    {edit?
+                        <div style = {{display:'inline-flex'}}>
+                        <Select 
+                            placeholder={data.author?data.author:"find an author in the system"}
+                            options = {typeof searchResults === 'object'?(searchResults):void(0)}
+                            onInputChange = {selectQuery}
+                            onChange = {searchSelect}
+                        />
+                        </div>
+                        :data.author_id !== ""
+                            ?<Link to = {"/author/"+data.author_id}>
+                                {data.author}
+                            </Link>
+                            :<>{data.author}</>
                     }
                 </TableRow>
                 {!edit?

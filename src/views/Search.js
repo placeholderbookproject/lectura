@@ -65,16 +65,15 @@ const SearchDetailed = (props) => {//Add the table view of
         if(searchType === "author"){
             setSearchType("text");
             setSearchData(data["texts"]);
-            setFilters(options["text"])
+            setFilters(options["text"].slice(0,3))
         }
         else {
             setSearchType("author");
             setSearchData(data["authors"]);
-            setFilters(options["author"])
+            setFilters(options["author"].slice(0,3))
         }
     }
     const searchFunction = (searchVar = search) => {
-        //setSearchParams()
         const searchInput = searchVar;
         let results
         setSearchResults([]);

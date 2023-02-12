@@ -58,7 +58,7 @@ const RouteList = (props) => {
     <Route path = {"/import"} element = {
         <>
           <SiteHeader data = {dataList}/>
-          <ImportWindow />
+          <ImportWindow/>
         </>
       }
     />

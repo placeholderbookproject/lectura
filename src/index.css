@@ -129,7 +129,7 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
 .changeSearchVersionBtn:active{background-color:rgb(15, 54, 5);}
 
 /* CSS */
-.homeBtn, .detailedSearchBtn, .importBtn, .adminBtn {
+.homeBtn, .detailedSearchBtn, .importBtn, .adminBtn, .editBtn, .submitEditBtn {
   top:0;
   /*background-color: #054777;*/
   background-color: #dedbdb;
@@ -159,14 +159,18 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   white-space: nowrap;
 }
 
-.homeBtn:hover, .detailedSearchBtn:hover, .importBtn:hover, .adminBtn:hover 
+.editBtn, .submitEditBtn {
+  background: none;
+}
+
+.homeBtn:hover, .detailedSearchBtn:hover, .importBtn:hover, .adminBtn:hover, .editBtn:hover, .submitEditBtn:hover 
 /*,.homeBtn:focus, .detailedSearchBtn:focus, .importBtn:focus, .adminBtn:focus*/
 {
   background-color: #012443;
   color:white;
 }
 
-.homeBtn:active, .detailedSearchBtn:active, .importBtn:active, .adminBtn:active {
+.homeBtn:active, .detailedSearchBtn:active, .importBtn:active, .adminBtn:active, .editBtn:active, .submitEditBtn:active {
   background-color: #012443;
   color: white;
   box-shadow: none;
