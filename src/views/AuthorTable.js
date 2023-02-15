@@ -1,18 +1,14 @@
 import React, {/*useRef,*/ useState, useEffect} from 'react';
-import {Link} from 'react-router-dom';
 import TableRow from './ViewRow.js';
 import labels from './labels.js';
-import Select from 'react-select';
+import AuthorTexts from './AuthorTexts.js'
 const parse = require('html-react-parser');
 //import Collapsible from './Collapsible.js';
 
-const TextRow = (props) => {
-    return (
-        <tr>
-            <td>
-                <Link to={"/text/"+props.data.text_id}>{props.data.label}</Link>
-            </td>
-        </tr>
+const fetchDataEffect = props => () => {
+    fetch('http://127.0.0.1:8000/data?type=texts&id='+props.author_id)
+    .then(response => {if(response.ok) {return response.json()}throw response})
+    .then(results => {props.setData({...props.data,[props.addText]:results})}
     )
 }
 
@@ -20,44 +16,12 @@ const AuthorTable = (props) => {
     const [wiki, setWiki] = useState("");
     const [data, setData] = useState(props.data);
     const [edit,setEdit] = useState(false);
-    const [query, setQuery] = useState("");
-    const [searchResults, setSearchResults] = useState();
-    const [texts, setTexts] = useState(false);
     const addText = "texts"
     const name = data.author_name.split(",");
     const numNames = name.length;
     const occupationList = data.author_positions.split(", ");
     const mainOccupation = occupationList[0];//(firstOccupation.length>1)?firstOccupation.splice(1,firstOccupation.length).join(" "):occupationList[0];
-    useEffect( () => {
-        const fetchData = () => {
-        fetch('http://127.0.0.1:8000/data?type=texts&id='+data.author_id)
-        .then(response => {if(response.ok) {return response.json()}throw response})
-        .then(results => {setData({...data,[addText]:results})}
-        )}
-        fetchData();
-    },[])
-    useEffect ( () => {
-        if(data.texts != "") {setTexts(true)}
-    },[props.data.texts]
-    )
-    useEffect (()=> {
-        const fetchData = () => {
-          const requestOptions = {
-              method: 'GET',
-                      };
-          fetch('http://127.0.0.1:8000/search?query='+query+"&type=texts", requestOptions)
-          .then(response => {
-              if (response.ok) {
-              return response.json()
-              }
-              throw response;
-          })
-          .then (data => 
-            {setSearchResults(data["texts"])
-          })
-        }
-      query.length>3?fetchData():void(0);
-      },[query])  
+    useEffect( fetchDataEffect({data: data, setData: setData, author_id: data.author_id, addText: addText}),[])
     useEffect(() => {
         setData(props.data)
     },[props.data]
@@ -103,31 +67,6 @@ const AuthorTable = (props) => {
         newData[name] = value
         setData({...data,[name]:value})
     }
-    const addWork = () => {
-        let oldWorks = data.texts;
-        const addWork = [{text_id: '',label: ''}]
-        oldWorks.push(addWork)
-        setData({...data,[addText]:oldWorks})
-    }
-    const removeWork = (e,id) => {
-        const oldWorks = data.texts;
-        console.log(id)
-        let newWorks = []
-        for (let i = 0; i<oldWorks.length;i++){
-            if (i === id){continue}
-            else {newWorks.push(oldWorks[i])}
-        }
-        setData({...data,[addText]:newWorks})
-    }
-    const searchSelect = (event, id) => {      
-        let oldWorks = data.texts;
-        oldWorks[id] = event
-        setData({...data,[addText]:oldWorks})
-      }    
-    const selectQuery = (event) => {
-        const query = event;
-        if (query.length>3){setQuery(query);}
-      }  
     return (
     <div>
         <div style = {{left:5, position: 'fixed'}}>
@@ -225,31 +164,7 @@ const AuthorTable = (props) => {
             </TableRow>
             <tr>{/*Placeholder for influences */}</tr>
             <tr>{/*Placeholder for influenced */}</tr>
-            <tr className = "Works" style = {{textDecoration: 'underline 1px rgb(100, 88, 71)'}}>
-                <td>
-                    {typeof data.texts !== Object && data.texts !== ""?labels.works:labels.worksUnknown}
-                </td>
-            </tr>
-                    {!edit
-                    ?(data.texts !== "") ? (data.texts.map((work) => (<TextRow key={work.text_id} data={work}/>))):<></>
-                    :<>{data.texts !== null?
-                        data.texts.map( (work) => 
-                            <tr key = {data.texts.indexOf(work)}>
-                                <td style = {{display:'inline-flex'}}>
-                                    <Select style = {{width: 300}}
-                                        placeholder={work.label?work.label:"find a book in the system"}
-                                        options = {typeof searchResults === 'object'?(searchResults):void(0)}
-                                        onInputChange = {selectQuery}
-                                        onChange = {(e) => searchSelect (e,data.texts.indexOf(work))}
-                                        getOptionLabel ={(option)=>option.title+" - "+option.author}
-                                    />
-                                    <button onClick = {(e) => removeWork(e,data.texts.indexOf(work))}>X</button>
-                                </td>
-                            </tr>)
-                        :<></>}
-                        <tr><td><button onClick = {addWork}>+</button></td></tr>
-                    </>
-                    }
+            <AuthorTexts data = {data.texts} edit = {edit}/>
             </tbody></table>
     </div>
     );
