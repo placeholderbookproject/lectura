@@ -27,7 +27,7 @@ const MainSearch = (props) => {
             throw response;
         })
         .then (data => 
-          {const final_data = (data["texts"].concat(data["authors"], data["editions"]))
+          {const final_data = (data["texts"].concat(data["authors"]/*, data["editions"]*/))
           setAPIResults(final_data)
         })
       }
@@ -62,11 +62,16 @@ const MainSearch = (props) => {
             onChange={searchSelect}
             menuPortalTarget={document.body} 
             styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+            //getOptionLabel ={(option)=>option.label}
+            getOptionValue = {(option) =>
+              (option.edition_id===undefined | option.text_id===undefined)?option.author_id:option.text_id
+            }
           />
         </div>
       {(enterSearch) ? 
         (<Navigate to=
-          {(selectedValue.type === "author") ? ("/author/"+selectedValue.value): ("/text/"+selectedValue.value)}
+          {(selectedValue.author_id !== undefined && selectedValue.text_id===undefined) 
+            ? ("/author/"+selectedValue.author_id): ("/text/"+selectedValue.text_id)}
         />):
         (<></>)
       }

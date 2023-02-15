@@ -22,23 +22,23 @@ const RouteList = (props) => {
     <Routes>
       <Route path = {"/"} element = {<SiteHeader data = {dataList} />}/>
       {dataList["texts"].map((text) =>
-        <Route path ={"/text/"+text.id} element = { //importData.indexOf(row)
+        <Route path ={"/text/"+text.text_id} element = { //importData.indexOf(row)
           <>
             <SiteHeader data = {dataList}/>
             <TextTable data={text}/>
           </>
-        } key = {text.id}/>
+        } key = {text.text_id}/>
       )}
       {dataList["authors"].map((author) => 
-        <Route path={"/author/"+author.id} element={ //Adds a link for every author
+        <Route path={"/author/"+author.author_id} element={ //Adds a link for every author
           <div>
           <SiteHeader data = {dataList} />
           <AuthorTable data={author}/>
           </div>
-          } key = {author.id}>
+          } key = {author.author_id}>
         </Route>)}
       {dataList["editions"].map((edition) => 
-        <Route path = {"/text/"+edition.text_index+"/edition/"+edition.id} key = {edition.id}
+        <Route path = {"/text/"+edition.text_id+"/edition/"+edition.edition_id} key = {edition.edition_id}
           element={
           <>
             <SiteHeader data = {dataList}/>

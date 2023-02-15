@@ -1,6 +1,7 @@
 import * as XLSX from 'xlsx';
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState} from 'react';
 import Select from 'react-select';
+
 //const fileSaver = require('file-saver'); 
 
 const textFilters = [
@@ -145,7 +146,7 @@ const ImportWindow = () => {
                 {importLabels.import_header}
             </header>
             <div style = {{paddingTop:10}}>
-                <input type='file' id='fileElem' ref={inputFile} onChange={changeHandler}/>
+                {<input type='file' id='fileElem' ref={inputFile} onChange={changeHandler}/>}
             </div>
             <label>{importLabels.import_type + " "}</label>
             <div style = {{display:'inline-flex'}}>

@@ -10,7 +10,7 @@ const TextTable = (props) => {
     const [edit, setEdit] = useState(false);
     const [query, setQuery] = useState("");
     const [searchResults, setSearchResults] = useState();
-    const title = data.title.split(",");
+    const title = data.text_title.split(",");
     const numTitles = title.length;
     useEffect(() => {
         setData(props.data)
@@ -82,77 +82,88 @@ const TextTable = (props) => {
                     {edit?
                         <div style = {{display:'inline-flex'}}>
                         <Select 
-                            placeholder={data.author?data.author:"find an author in the system"}
+                            placeholder={data.text_author?data.text_author:"find an author in the system"}
                             options = {typeof searchResults === 'object'?(searchResults):void(0)}
                             onInputChange = {selectQuery}
                             onChange = {searchSelect}
+                            getOptionLabel = {(option) => option.name.split(", ")[0] + (option.birth!=="" && option.death !== "" //Need to change after API is adjusted.
+                                                                                ?(" (" + option.birth + "-" + option.death + ")")
+                                                                                :(" (fl. "+option.floruit + ")"))                                             
+                                                }
                         />
                         </div>
-                        :data.author_id !== ""
+                        :data.author_id !== null
                             ?<Link to = {"/author/"+data.author_id}>
-                                {data.author}
+                                {data.text_author}
                             </Link>
-                            :<>{data.author}</>
+                            :<>{data.text_author}</>
                     }
                 </TableRow>
                 {!edit?
-                    (data.language !== "")?<TableRow label = {labels.original_language}>{data.language}</TableRow>:<></>
+                    (data.text_language !== null)?<TableRow label = {labels.original_language}>{data.text_language}</TableRow>:<></>
                     :<TableRow label = {labels.original_language}>
-                        <input value = {data.language} name = "language" onChange = {e => editInfo(e)}></input>
+                        <input value = {data.text_language} name = "text_language" onChange = {e => editInfo(e)}></input>
                     </TableRow>
                     }
                 {<TableRow label = {labels.original_publication_date + " "}>
                     {!edit?
-                    (data.publication>0)?data.publication + " AD": data.publication !== ""? Math.abs(data.publication) + " BC": labels.unspecified
-                    :<input type="number" value = {data.publication} name = "publication" onChange = {e => editInfo(e)}></input>
+                    (data.text_original_publication_year>0)
+                        ?data.text_original_publication_year + " AD"
+                        : data.text_original_publication_year !== null
+                            ? Math.abs(data.text_original_publication_year) + " BC"
+                            : labels.unspecified
+                    :<input type="number" value = {data.text_original_publication_year} name = "text_original_publication_year" onChange = {e => editInfo(e)}></input>
                      }
                 </TableRow>
                 }
-                {data.publisher !== "" | edit?
+                {data.text_original_publication_publisher !== null | edit?
                     <TableRow label = {labels.original_publisher_name + " "}>
                     {!edit?
-                        (data.publisher !== ""?data.publisher:labels.unspecified) + (data.publication_loc !== ""? " (" + data.publication_loc + ")":"")
+                        (data.text_original_publication_publisher !== null
+                            ?data.text_original_publication_publisher
+                            :labels.unspecified) + 
+                                (data.text_original_publication_publisher_loc !== null? " (" + data.text_original_publication_publisher_loc + ")":"")
                         :<>
                             <label>
-                                <input value = {data.publisher} name = "publisher" onChange = {e=>editInfo(e)}></input>
+                                <input value = {data.text_original_publication_publisher} name = "text_original_publication_publisher" onChange = {e=>editInfo(e)}></input>
                             </label>
                             <label>(
-                                <input value = {data.publication_loc} name = "publication_loc" onChange = {e=>editInfo(e)}></input>)
+                                <input value = {data.text_original_publication_publisher_loc} name = "text_original_publication_publisher_loc" onChange = {e=>editInfo(e)}></input>)
                             </label>
                         </>
                         }
                 </TableRow>
                 :<></>}
-                {data.publication_type !== ""| edit? 
+                {data.text_original_publication_type !== null| edit? 
                     <TableRow label = {labels.original_publication_type + " "}>
                         {!edit?
-                            data.publication_type
-                            :<input value={data.publication_type} name = "publication_type" onChange = {e => editInfo(e)}></input>
+                            data.text_original_publication_type
+                            :<input value={data.text_original_publication_type} name = "text_original_publication_type" onChange = {e => editInfo(e)}></input>
                         }
                     </TableRow>
                 :<></>}
-                {data.publication_length !== ""|edit?
+                {data.text_original_publication_length !== null|edit?
                 <TableRow label = {labels.original_publication_length + " "}>
                     {!edit
-                        ?data.publication_length + data.publication_length_type !== ""? " (" + data.publication_length_type + ")":""
+                        ?data.text_original_publication_length + data.text_original_publication_length_type !== ""? " (" + data.text_original_publication_length_type + ")":""
                         :<><label>
-                            <input type = "number" value={data.publication_length} name="publication_length" onChange = {e => editInfo(e)}></input>(
-                            <input value={data.publication_length_type} name = "publication_length_type"
+                            <input type = "number" value={data.text_original_publication_length} name="text_original_publication_length" onChange = {e => editInfo(e)}></input>(
+                            <input value={data.text_original_publication_length_type} name = "text_original_publication_length_type"
                                 onChange = {e => editInfo(e)}></input>)
                         </label></>
                     }
                 </TableRow>:<></>}
                 {/*genre placeholder*/}
                 {/*type placeholder*/}
-                {(data.writing_start !== "" && data.writing_end !== "")|edit? 
+                {(data.text_writing_start !== null && data.text_writing_end !== null)|edit? 
                     <TableRow label = {labels.writing_period + " "}>
                         {!edit?
-                            data.writing_start + "-" + data.writing_end
+                            data.text_writing_start + "-" + data.text_writing_end
                             :<>
                                 <label>
-                                <input type = "number" value={data.writing_start} name = "writing_start" onChange = {e => editInfo(e)}></input>
+                                <input type = "number" value={data.writing_start} name = "text_writing_start" onChange = {e => editInfo(e)}></input>
                                 -
-                                <input type = "number" value={data.writing_end} name = "writing_end" onChange = {e => editInfo(e)}></input>
+                                <input type = "number" value={data.writing_end} name = "text_writing_end" onChange = {e => editInfo(e)}></input>
                                 </label>
                             </>
                             }
@@ -161,7 +172,7 @@ const TextTable = (props) => {
                 <tr className = {"Editions"} style = {{textDecoration: 'underline 1px rgb(100, 88, 71)'}}>
                     <td>{labels.editions}</td>
                 </tr>
-                {data.editions.length>0?data.editions.map((edition) => 
+                {/*data.editions.length>0?data.editions.map((edition) => 
                         <TableRow key = {edition.index}>
                             {<Link to = {"/text/"+data.id+"/edition/"+edition.index}>{edition.title}</Link>}
                             {edition.publication_year !== undefined?" (" + edition.publication_year + ") ":""}
@@ -170,7 +181,7 @@ const TextTable = (props) => {
                             {edition.ISBN13!==undefined|edition.ISBN!==undefined?" (ISBN: " + edition.ISBN + "/ "+edition.ISBN13+ ")":")"}
                             
                         </TableRow>//<EditionRow data={edition} key = {edition.title}/>
-                        ):<></>}{/*Will contains a list of editions -> edition view (work/edition/id)
+                        ):<></>*/}{/*Will contains a list of editions -> edition view (work/edition/id)
                     Edition title, date of publication, editor name, language, ISBN (if exists)
                     */}       
             </tbody></table>

@@ -104,32 +104,8 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   top: 0px;
 }
 
-.changeSearchVersionBtn  {
-	background-color:#3b140c;
-	border-radius:28px;
-	border:1px solid #f0960e;
-	display:bottom;
-  justify-content: center;
-  align-items:center;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:17px;
-	padding:6px 11px;
-	text-decoration:none;
-}
-.changeSearchVersionBtn {
-	background-color:#3b140c;
-}
-.changeSearchVersionBtn {
-	position:relative;
-	top:1px;
-}
-
-.changeSearchVersionBtn:active{background-color:rgb(15, 54, 5);}
-
 /* CSS */
-.homeBtn, .detailedSearchBtn, .importBtn, .adminBtn, .editBtn, .submitEditBtn {
+.homeBtn, .detailedSearchBtn, .importBtn, .adminBtn, .editBtn, .submitEditBtn, .changeSearchVersionBtn {
   top:0;
   /*background-color: #054777;*/
   background-color: #dedbdb;
@@ -159,21 +135,25 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   white-space: nowrap;
 }
 
-.editBtn, .submitEditBtn {
+.editBtn, .submitEditBtn, .changeSearchVersionBtn {
   background: none;
 }
 
-.homeBtn:hover, .detailedSearchBtn:hover, .importBtn:hover, .adminBtn:hover, .editBtn:hover, .submitEditBtn:hover 
+.homeBtn:hover, .detailedSearchBtn:hover, .importBtn:hover, .adminBtn:hover, .editBtn:hover, .submitEditBtn:hover, .changeSearchVersionBtn:hover 
 /*,.homeBtn:focus, .detailedSearchBtn:focus, .importBtn:focus, .adminBtn:focus*/
 {
   background-color: #012443;
   color:white;
 }
 
-.homeBtn:active, .detailedSearchBtn:active, .importBtn:active, .adminBtn:active, .editBtn:active, .submitEditBtn:active {
+.homeBtn:active, .detailedSearchBtn:active, .importBtn:active, .adminBtn:active, .editBtn:active, .submitEditBtn:active, .changeSearchVersionBtn:active {
   background-color: #012443;
   color: white;
   box-shadow: none;
+}
+
+.editBtn, .submitEditBtn {
+  border: 0.5px solid black;
 }
 
 .importBtn {

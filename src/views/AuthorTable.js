@@ -7,30 +7,39 @@ const parse = require('html-react-parser');
 //import Collapsible from './Collapsible.js';
 
 const TextRow = (props) => {
-    let publication = props.data.publication
-    publication>0?publication = publication + " AD": publication!== ""? publication = Math.abs(publication) + " BC": publication = "not specified"
     return (
         <tr>
             <td>
-                <Link to={"/text/"+props.data.index}>{props.data.title + " (" + publication + ")"}</Link>
+                <Link to={"/text/"+props.data.text_id}>{props.data.label}</Link>
             </td>
         </tr>
     )
 }
 
 const AuthorTable = (props) => {
-    let texts = props.data.texts;
-    if (texts === null) {texts = []};
     const [wiki, setWiki] = useState("");
     const [data, setData] = useState(props.data);
     const [edit,setEdit] = useState(false);
     const [query, setQuery] = useState("");
     const [searchResults, setSearchResults] = useState();
+    const [texts, setTexts] = useState(false);
     const addText = "texts"
-    const name = data.name.split(",");
+    const name = data.author_name.split(",");
     const numNames = name.length;
-    const occupationList = data.position.split(", ");
+    const occupationList = data.author_positions.split(", ");
     const mainOccupation = occupationList[0];//(firstOccupation.length>1)?firstOccupation.splice(1,firstOccupation.length).join(" "):occupationList[0];
+    useEffect( () => {
+        const fetchData = () => {
+        fetch('http://127.0.0.1:8000/data?type=texts&id='+data.author_id)
+        .then(response => {if(response.ok) {return response.json()}throw response})
+        .then(results => {setData({...data,[addText]:results})}
+        )}
+        fetchData();
+    },[])
+    useEffect ( () => {
+        if(data.texts != "") {setTexts(true)}
+    },[props.data.texts]
+    )
     useEffect (()=> {
         const fetchData = () => {
           const requestOptions = {
@@ -83,7 +92,7 @@ const AuthorTable = (props) => {
             method: 'POST',
             body: JSON.stringify(data)
         };
-        fetch('http://127.0.0.1:8000/edit?type=authors&id='+data.id, requestOptions)
+        fetch('http://127.0.0.1:8000/edit?type=authors&id='+data.author_id, requestOptions)
             .then(response => response.json())
             .finally(() => setEdit(false))
     }
@@ -96,12 +105,13 @@ const AuthorTable = (props) => {
     }
     const addWork = () => {
         let oldWorks = data.texts;
-        const addWork = [{title: ''}]
+        const addWork = [{text_id: '',label: ''}]
         oldWorks.push(addWork)
         setData({...data,[addText]:oldWorks})
     }
     const removeWork = (e,id) => {
         const oldWorks = data.texts;
+        console.log(id)
         let newWorks = []
         for (let i = 0; i<oldWorks.length;i++){
             if (i === id){continue}
@@ -142,24 +152,30 @@ const AuthorTable = (props) => {
                 </td>
             </tr>
             <TableRow label = {" " + labels.nationality + " "}>
-                {!edit?data.nationality:<input value={data.nationality} name = "nationality" onChange = {e => editInfo(e)}></input>}
+                {!edit?data.author_nationality:<input value={data.author_nationality} name = "author_nationality" onChange = {e => editInfo(e)}></input>}
             </TableRow>
             <TableRow label = {labels.born + " "}>
             {!edit?
-                data.birth === ""? labels.unspecified://If no birth -> not specified
-                                    (data.birth>0?data.birth + " AD": Math.abs(data.birth) + " BC" )//If <0->BC else AD
-                    :<input type="number" name = "birth" value = {data.birth} onChange = {e => editInfo(e)}></input>
+                data.author_birth_year === null
+                    ? labels.unspecified
+                        :(data.author_birth_year>0
+                            ?data.author_birth_year + " AD": Math.abs(data.author_birth_year) + " BC" )//If <0->BC else AD
+                            :<input type="number" name = "author_birth_year" value = {data.author_birth_year} 
+                                        onChange = {e => editInfo(e)}/>
                     }
-                    {!edit?(data.city === "" && data.country === "")?"":" ("+data.city+((data.city.length>0&&data.country.length>0)?
-                        ", ":"")+data.country + ") " 
+                    {!edit
+                        ?(data.author_birth_city !== null || data.author_birth_country !== null) //need to fix later..
+                            ?"("+(data.author_birth_city !== null)?data.author_birth_city:""
+                                +(data.author_birth_country!==null)?", "+data.author_birth_country+")":")"
+                            :""
                     //If neither country or city of birth exists -> empty string
                     :<>
                     <label style = {{paddingLeft:5}}>
                     {"("}
-                        <input value = {data.city} name = "city" onChange = {e => editInfo(e)}></input>
+                        <input value = {data.author_birth_city} name = "author_birth_city" onChange = {e => editInfo(e)}></input>
                     </label>
                     <label>
-                        <input value={data.country} name = "country" onChange = {e => editInfo(e)}></input>
+                        <input value={data.author_birth_country} name = "author_birth_country" onChange = {e => editInfo(e)}></input>
                         {")"}
                     </label>{labels.edit_country_birth_description}
                     </>
@@ -167,31 +183,34 @@ const AuthorTable = (props) => {
             </TableRow>
             <TableRow label = {labels.died + " "}>
                 {!edit?
-                    data.death===""? labels.unspecified:(data.death>0?data.death + " AD": Math.abs(data.death) + " BC")
-                    :<input value = {data.death} type = "number" name = "death" onChange = {e => editInfo(e)}></input>
+                    data.author_death_year===null
+                        ?labels.unspecified:(data.author_death_year>0?data.author_death_year + " AD"
+                            :Math.abs(data.author_death_year) + " BC")
+                        :<input value = {data.author_death_year} type = "number" name = "author_death_year" onChange = {e => editInfo(e)}></input>
                 }
                 {!edit?
-                    (data.city_death === "" && data.country_death === "")?"": " (" + data.city_death + (data.country_death.length>0?", ": "") + data.country_death + ")"
+                    (data.author_death_city === null && data.author_death_country === null)
+                        ?"": " (" + data.author_death_city + (data.author_death_country.length>0?", ": "") + data.author_death_country + ")"
                 :<>
                     <label style = {{paddingLeft: 5}}>{"("}
-                        <input value = {data.city_death} name = "city_death" onChange = {e => editInfo(e)}></input>
+                        <input value = {data.author_death_city} name = "author_death_city" onChange = {e => editInfo(e)}></input>
                     </label>
                     <label>
-                        <input value = {data.country_death} name = "country_death" onChange = {e => editInfo(e)}></input>)
+                        <input value = {data.author_death_country} name = "author_death_country" onChange = {e => editInfo(e)}></input>)
                         {labels.edit_country_death_description}
                     </label>
                 </>  
                     }
             </TableRow>
                 {!edit? (
-                        (data.birth === ("")|data.death === ("")) && data.floruit !==("")?
+                        (data.author_birth_year === null|data.author_death_year === null) && data.author_floruit !==null?
                         <TableRow label = {labels.floruit + " "}>
-                            {" " + data.floruit}
+                            {" " + data.author_floruit}
                         </TableRow>
                     :<></>
                 )
                     :<TableRow label = {labels.floruit + " "}>
-                        <input value = {data.floruit} name = "floruit" onChange = {e => editInfo(e)}></input>
+                        <input value = {data.author_floruit} name = "author_floruit" onChange = {e => editInfo(e)}></input>
                     </TableRow>
                 }
             <TableRow label = {labels.occupation + " "}>
@@ -208,20 +227,21 @@ const AuthorTable = (props) => {
             <tr>{/*Placeholder for influenced */}</tr>
             <tr className = "Works" style = {{textDecoration: 'underline 1px rgb(100, 88, 71)'}}>
                 <td>
-                    {data.texts !== null && data.texts.length>0?labels.works:labels.worksUnknown}
+                    {typeof data.texts !== Object && data.texts !== ""?labels.works:labels.worksUnknown}
                 </td>
             </tr>
                     {!edit
-                    ?(data.texts !== null) ? (data.texts.map((work) => (<TextRow key={work.index} data={work}/>))):<></>
+                    ?(data.texts !== "") ? (data.texts.map((work) => (<TextRow key={work.text_id} data={work}/>))):<></>
                     :<>{data.texts !== null?
                         data.texts.map( (work) => 
                             <tr key = {data.texts.indexOf(work)}>
                                 <td style = {{display:'inline-flex'}}>
                                     <Select style = {{width: 300}}
-                                        placeholder={work.title?work.title:"find a book in the system"}
+                                        placeholder={work.label?work.label:"find a book in the system"}
                                         options = {typeof searchResults === 'object'?(searchResults):void(0)}
                                         onInputChange = {selectQuery}
-                                        onChange = {(e) => searchSelect (e, data.texts.indexOf(work))}
+                                        onChange = {(e) => searchSelect (e,data.texts.indexOf(work))}
+                                        getOptionLabel ={(option)=>option.title+" - "+option.author}
                                     />
                                     <button onClick = {(e) => removeWork(e,data.texts.indexOf(work))}>X</button>
                                 </td>
