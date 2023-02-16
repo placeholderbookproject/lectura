@@ -1,6 +1,6 @@
 export const fetchDataEffect = props => () => {
     let searchType = props.type===null?"":"type="+props.type+"&id="
-    fetch('http://127.0.0.1:8000/data?'+searchType+props.author_id)
+    fetch('http://127.0.0.1:8000/data?'+searchType+props.id)
     .then(response => {if(response.ok) {return response.json()}throw response})
     .then(results => {props.setData(results)})
     .finally(() => (props.type===null?props.setLoading(true):void(0)))

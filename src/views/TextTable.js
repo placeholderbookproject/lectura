@@ -4,7 +4,25 @@ import labels from './labels.js'
 import {useState, useEffect} from 'react';
 import Select from 'react-select';
 import {transformYear} from './formattingFuncs';
-import {fetchSearchResults, submitEdits} from './apiEffects'
+import {fetchSearchResults, submitEdits, fetchDataEffect} from './apiEffects'
+
+const TextEditionsTable = (props) => {
+    const [editionsData, setEditionsData] = useState([]);
+    useEffect (fetchDataEffect({setData:setEditionsData, id:props.text_id, type:'editions'}),[props.text_id])
+    return (
+        <>
+            <tr className = "Editions" style = {{textDecoration: 'underline 1px rgb(100, 88, 71)'}}>
+                <td>{labels.editions}</td>
+            </tr>
+                {editionsData.length>0?editionsData.map((edition) => 
+                        <TableRow key = {edition.edition_id}>
+                            {<Link to = {"/text/"+props.text_id+"/edition/"+edition.edition_id}>{edition.edition_title}</Link>}
+                            {edition.label}
+                        </TableRow>
+                        ):<></>}
+        </>
+    )
+}
 
 const TextTable = (props) => {
     const [data, setData] = useState(props.text);
@@ -42,7 +60,6 @@ const TextTable = (props) => {
         setData(props.text)
         setEditData({'text_id':props.text.text_id})
     }
-
     return (
       (
         <div>
@@ -80,14 +97,15 @@ const TextTable = (props) => {
                 {!edit?
                     (data.text_language !== null)?<TableRow label = {labels.original_language}>{data.text_language}</TableRow>:<></>
                     :<TableRow label = {labels.original_language}>
-                        <input value = {data.text_language} name = "text_language" onChange = {e => editInfo(e)}></input>
+                        <input value = {data.text_language===null?"":data.text_language} name = "text_language" 
+                            onChange = {e => editInfo(e)}></input>
                     </TableRow>
                     }
                 {<TableRow label = {labels.original_publication_date + " "}>
                     {!edit
                         ?transformYear(data.text_original_publication_year, labels.unspecified)
-                        :<input type="number" value = {data.text_original_publication_year} name = "text_original_publication_year" 
-                            onChange = {e => editInfo(e)}/>
+                        :<input type="number" value = {data.text_original_publication_year===null?"":data.text_original_publication_year} 
+                            name = "text_original_publication_year" onChange = {e => editInfo(e)}/>
                      }
                 </TableRow>
                 }
@@ -100,10 +118,12 @@ const TextTable = (props) => {
                                 (data.text_original_publication_publisher_loc !== null? " (" + data.text_original_publication_publisher_loc + ")":"")
                         :<>
                             <label>
-                                <input value = {data.text_original_publication_publisher} name = "text_original_publication_publisher" onChange = {e=>editInfo(e)}></input>
+                                <input value = {data.text_original_publication_publisher===null?"":data.text_original_publication_publisher} 
+                                    name = "text_original_publication_publisher" onChange = {e=>editInfo(e)}/>
                             </label>
                             <label>(
-                                <input value = {data.text_original_publication_publisher_loc} name = "text_original_publication_publisher_loc" onChange = {e=>editInfo(e)}></input>)
+                                <input value = {data.text_original_publication_publisher_loc===null?"":data.text_original_publication_publisher_loc} 
+                                    name = "text_original_publication_publisher_loc" onChange = {e=>editInfo(e)}/>)
                             </label>
                         </>
                         }
@@ -113,7 +133,8 @@ const TextTable = (props) => {
                     <TableRow label = {labels.original_publication_type + " "}>
                         {!edit?
                             data.text_original_publication_type
-                            :<input value={data.text_original_publication_type} name = "text_original_publication_type" onChange = {e => editInfo(e)}></input>
+                            :<input value={data.text_original_publication_type===null?"":data.text_original_publication_type} 
+                                name = "text_original_publication_type" onChange = {e => editInfo(e)}/>
                         }
                     </TableRow>
                 :<></>}
@@ -122,9 +143,10 @@ const TextTable = (props) => {
                     {!edit
                         ?data.text_original_publication_length + data.text_original_publication_length_type !== ""? " (" + data.text_original_publication_length_type + ")":""
                         :<><label>
-                            <input type = "number" value={data.text_original_publication_length} name="text_original_publication_length" onChange = {e => editInfo(e)}></input>(
-                            <input value={data.text_original_publication_length_type} name = "text_original_publication_length_type"
-                                onChange = {e => editInfo(e)}></input>)
+                            <input type = "number" value={data.text_original_publication_length===null?"":data.text_original_publication_length} 
+                                name="text_original_publication_length" onChange = {e => editInfo(e)}/>(
+                            <input value={data.text_original_publication_length_type===null?"":data.text_original_publication_length_type} 
+                                name = "text_original_publication_length_type" onChange = {e => editInfo(e)}/>)
                         </label></>
                     }
                 </TableRow>:<></>}
@@ -136,29 +158,17 @@ const TextTable = (props) => {
                             data.text_writing_start + "-" + data.text_writing_end
                             :<>
                                 <label>
-                                <input type = "number" value={data.writing_start} name = "text_writing_start" onChange = {e => editInfo(e)}></input>
+                                <input type = "number" value={data.writing_start===null?"":data.writing_start} 
+                                    name = "text_writing_start" onChange = {e => editInfo(e)}/>
                                 -
-                                <input type = "number" value={data.writing_end} name = "text_writing_end" onChange = {e => editInfo(e)}></input>
+                                <input type = "number" value={data.writing_end===null?"":data.writing_end} 
+                                    name = "text_writing_end" onChange = {e => editInfo(e)}/>
                                 </label>
                             </>
                             }
                     </TableRow>:<></>
                     }
-                <tr className = {"Editions"} style = {{textDecoration: 'underline 1px rgb(100, 88, 71)'}}>
-                    <td>{labels.editions}</td>
-                </tr>
-                {/*data.editions.length>0?data.editions.map((edition) => 
-                        <TableRow key = {edition.index}>
-                            {<Link to = {"/text/"+data.id+"/edition/"+edition.index}>{edition.title}</Link>}
-                            {edition.publication_year !== undefined?" (" + edition.publication_year + ") ":""}
-                            {edition.additional_authors !== undefined? " (editors: " + edition.additional_authors + ")":""}
-                            {edition.language !== null ? " (" + edition.language + ")":""}
-                            {edition.ISBN13!==undefined|edition.ISBN!==undefined?" (ISBN: " + edition.ISBN + "/ "+edition.ISBN13+ ")":")"}
-                            
-                        </TableRow>//<EditionRow data={edition} key = {edition.title}/>
-                        ):<></>*/}{/*Will contains a list of editions -> edition view (work/edition/id)
-                    Edition title, date of publication, editor name, language, ISBN (if exists)
-                    */}       
+                <TextEditionsTable text_id = {props.text.text_id} />
             </tbody></table>
         </div>
 
