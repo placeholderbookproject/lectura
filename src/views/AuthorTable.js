@@ -2,7 +2,7 @@ import React, {/*useRef,*/ useState, useEffect} from 'react';
 import TableRow from './ViewRow.js';
 import labels from './labels.js';
 import AuthorTexts from './AuthorTexts.js'
-import {searchWikipediaEffect, uploadEdits} from './apiEffects.js'
+import {searchWikipediaEffect, submitEdits} from './apiEffects.js'
 import {checkStr, transformYear} from './formattingFuncs.js'
 const parse = require('html-react-parser');
 
@@ -17,6 +17,7 @@ const AuthorTable = (props) => {
     const mainOccupation = occupationList[0];
     useEffect(() => {setData(props.author)},[props.author])
     useEffect (searchWikipediaEffect({setWiki, edit, name:name[0], mainOccupation}),[name,mainOccupation, edit, props.author.author_id])
+    useEffect(() => {setEditData({'author_id':props.author.author_id})},[props.author.author_id])
     const setEditWindow = () => {
         if (!edit) {setEdit(true)}
         else{setEdit(false)}
@@ -33,16 +34,6 @@ const AuthorTable = (props) => {
         setData(props.author)
         setEditData({'author_id':props.author.author_id})
     }
-    const submitEdits = () => {
-        const keys = Object.keys(editData)
-        for (let i = 0; i<keys.length;i++){
-            const key = keys[i]
-            const toCheck = editData[key]
-            if (key === "author_id") {continue}
-            if (toCheck === props.author[key]){delete editData[key]}
-        }
-        uploadEdits({type: "authors", id:props.author.author_id, editData, setEdit})
-    }
     return (
     <div>
         <div>
@@ -50,7 +41,8 @@ const AuthorTable = (props) => {
             {edit?
                 <>
                     <button className = "resetEditBtn" onClick = {resetEdit}>{labels.undoEditBtn}</button>
-                    <button className = "submitEditBtn" onClick = {submitEdits}>{labels.submit_edits}</button>
+                    <button className = "submitEditBtn" onClick = {submitEdits({type:"authors", id:props.author.author_id, editData, setEdit, data:props.author})}>
+                        {labels.submit_edits}</button>
                 </>
                 :<></>}
         </div>        
@@ -70,7 +62,7 @@ const AuthorTable = (props) => {
                     :<input type="number" name = "author_birth_year" value = {data.author_birth_year} onChange = {e => editInfo(e)}/>
                 }
                 {!edit
-                    ?" " +checkStr(data.author_birth_city, data.author_birth_country)
+                    ?" " +checkStr(data.author_birth_city, data.author_birth_country, "")
                     :<>
                 <label style = {{paddingLeft:5}}>
                 {"("}

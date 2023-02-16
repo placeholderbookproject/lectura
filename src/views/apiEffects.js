@@ -50,3 +50,16 @@ export const uploadEdits = (props) => {
         .finally(() => props.setEdit(false))
     }
 }
+
+
+export const submitEdits = props => () => {
+    const skip = props.type.replace('s','')+"_id";
+    const keys = Object.keys(props.editData)
+    for (let i = 0; i<keys.length;i++){
+        const key = keys[i]
+        const toCheck = props.editData[key]
+        if (key === skip) {continue}
+        if (toCheck === props.data[key]){delete props.editData[key]}
+    }
+    uploadEdits({type: props.type, id:props.id, editData:props.editData, setEdit:props.setEdit})
+}

@@ -4,35 +4,28 @@ import labels from './labels.js'
 import {useState, useEffect} from 'react';
 import Select from 'react-select';
 import {transformYear} from './formattingFuncs';
-import {fetchSearchResults} from './apiEffects'
+import {fetchSearchResults, submitEdits} from './apiEffects'
 
 const TextTable = (props) => {
-    const text = props.data;
-    const [data, setData] = useState(text);
+    const [data, setData] = useState(props.text);
     const [edit, setEdit] = useState(false);
+    const [editData, setEditData] = useState({'text_id':props.text.text_id});
     const [query, setQuery] = useState("");
     const [searchResults, setSearchResults] = useState();
     const title = data.text_title.split(",");
     const numTitles = title.length;
-    useEffect(() => {setData(props.data)},[props.data])
+    useEffect(() => {setData(props.text)},[props.text])
     useEffect (fetchSearchResults({query, setSearchResults, type: "authors"}),[query])  
     const setEditWindow = () => {
         if (!edit) {setEdit(true)}
         else{setEdit(false)}
     }
-    const uploadEdits = () => {
-        const requestOptions = {
-            method: 'POST',
-            body: JSON.stringify(data)
-        };
-        fetch('http://127.0.0.1:8000/edit?type=texts&id='+data.id, requestOptions)
-            .then(response => response.json())
-            .finally(() => setEdit(false))
-    }
     const editInfo = (e) => {
         const {value, name} = e.target
+        const oldEdit = editData;
         let newData = data
         newData[name] = value
+        setEditData({...oldEdit, [name]:value})
         setData({...data,[name]:value})
     }
     const selectQuery = (event) => {
@@ -45,13 +38,20 @@ const TextTable = (props) => {
         newData["author_id"] = event.id
         setData(newData);
     }
+    const resetEdit = () => {
+        setData(props.text)
+        setEditData({'text_id':props.text.text_id})
+    }
+
     return (
       (
         <div>
         <button className = "editBtn" onClick = {setEditWindow}>{!edit?labels.editBtn:labels.exitEditBtn}</button>
         {edit?
             <>
-                <button className = "submitEditBtn" onClick = {uploadEdits}>{labels.submit_edits}</button>
+                <button className = "resetEditBtn" onClick = {resetEdit}>{labels.undoEditBtn}</button>
+                <button className = "submitEditBtn" onClick = {submitEdits({type:"texts", id:props.text.text_id, editData, setEdit, data:props.text})}
+                    >{labels.submit_edits}</button>
             </>
             :<></>}
             <table id = "textTableWindow"><tbody>

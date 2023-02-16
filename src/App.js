@@ -26,7 +26,7 @@ const RouteList = (props) => {
         <Route path ={"/text/"+text.text_id} element = { //importData.indexOf(row)
           <>
             <SiteHeader data = {dataList}/>
-            <TextTable data={text}/>
+            <TextTable text={text}/>
           </>
         } key = {text.text_id}/>
       )}
