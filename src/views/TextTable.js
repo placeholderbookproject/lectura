@@ -3,6 +3,8 @@ import TableRow from './ViewRow.js'
 import labels from './labels.js'
 import {useState, useEffect} from 'react';
 import Select from 'react-select';
+import {transformYear} from './formattingFuncs';
+import {fetchSearchResults} from './apiEffects'
 
 const TextTable = (props) => {
     const text = props.data;
@@ -12,27 +14,8 @@ const TextTable = (props) => {
     const [searchResults, setSearchResults] = useState();
     const title = data.text_title.split(",");
     const numTitles = title.length;
-    useEffect(() => {
-        setData(props.data)
-    },[props.data])
-    useEffect (()=> {
-        const fetchData = () => {
-          const requestOptions = {
-              method: 'GET',
-                      };
-          fetch('http://127.0.0.1:8000/search?query='+query+"&type=authors", requestOptions)
-          .then(response => {
-              if (response.ok) {
-              return response.json()
-              }
-              throw response;
-          })
-          .then (data => {setSearchResults(data["authors"])
-          })
-        }
-      query.length>3?fetchData():void(0);
-      },[query])  
-
+    useEffect(() => {setData(props.data)},[props.data])
+    useEffect (fetchSearchResults({query, setSearchResults, type: "authors"}),[query])  
     const setEditWindow = () => {
         if (!edit) {setEdit(true)}
         else{setEdit(false)}
@@ -79,23 +62,18 @@ const TextTable = (props) => {
                     <td>{(numTitles>1)?labels.aka + title.slice(1,numTitles).join(", "):""}</td>{/*akas, a string of alternative names. Should be replaced with a list of language alternatives*/}
                 </tr>
                 <TableRow label = {labels.author_name + " "} >
-                    {edit?
-                        <div style = {{display:'inline-flex'}}>
-                        <Select 
-                            placeholder={data.text_author?data.text_author:"find an author in the system"}
-                            options = {typeof searchResults === 'object'?(searchResults):void(0)}
-                            onInputChange = {selectQuery}
-                            onChange = {searchSelect}
-                            getOptionLabel = {(option) => option.name.split(", ")[0] + (option.birth!=="" && option.death !== "" //Need to change after API is adjusted.
-                                                                                ?(" (" + option.birth + "-" + option.death + ")")
-                                                                                :(" (fl. "+option.floruit + ")"))                                             
-                                                }
-                        />
+                    {edit
+                        ?<div style = {{display:'inline-flex'}}>
+                            <Select 
+                                placeholder={data.text_author?data.text_author:"find an author in the system"}
+                                options = {typeof searchResults === 'object'?(searchResults):void(0)}
+                                onInputChange = {selectQuery}
+                                onChange = {searchSelect}
+                                getOptionValue = {(option) => option.author_id}
+                            />
                         </div>
                         :data.author_id !== null
-                            ?<Link to = {"/author/"+data.author_id}>
-                                {data.text_author}
-                            </Link>
+                            ?<Link to = {"/author/"+data.author_id}>{data.text_author}</Link>
                             :<>{data.text_author}</>
                     }
                 </TableRow>
@@ -106,13 +84,10 @@ const TextTable = (props) => {
                     </TableRow>
                     }
                 {<TableRow label = {labels.original_publication_date + " "}>
-                    {!edit?
-                    (data.text_original_publication_year>0)
-                        ?data.text_original_publication_year + " AD"
-                        : data.text_original_publication_year !== null
-                            ? Math.abs(data.text_original_publication_year) + " BC"
-                            : labels.unspecified
-                    :<input type="number" value = {data.text_original_publication_year} name = "text_original_publication_year" onChange = {e => editInfo(e)}></input>
+                    {!edit
+                        ?transformYear(data.text_original_publication_year, labels.unspecified)
+                        :<input type="number" value = {data.text_original_publication_year} name = "text_original_publication_year" 
+                            onChange = {e => editInfo(e)}/>
                      }
                 </TableRow>
                 }

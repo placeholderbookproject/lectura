@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import EditionTable from './views/EditionTable.js';
 import ImportWindow from './views/Import.js';
 import Admin from './views/Admin.js';
+import { fetchDataEffect } from './views/apiEffects';
 
 //Options for language dropdown
 /*const languageOptions = [
@@ -33,7 +34,7 @@ const RouteList = (props) => {
         <Route path={"/author/"+author.author_id} element={ //Adds a link for every author
           <div>
           <SiteHeader data = {dataList} />
-          <AuthorTable data={author}/>
+          <AuthorTable author={author}/>
           </div>
           } key = {author.author_id}>
         </Route>)}
@@ -77,23 +78,7 @@ const RouteList = (props) => {
 const App = () => {
   const [data,setData] = useState({})
   const [loading, setLoading] = useState(false)
-  useEffect( () => {
-    const fetchData = () => {
-      const requestOptions = {
-        method: 'GET',
-                  };
-      fetch('http://127.0.0.1:8000/data', requestOptions)
-      .then(response => {
-        if (response.ok) {
-          return response.json()
-        }
-        throw response;
-      })
-      .then (data => {setData(data)})
-      .finally( () => setLoading(true))
-    }
-    fetchData()
-  },[])
+  useEffect(fetchDataEffect({setData, setLoading, type:null}),[])
   return (
     <div>
     {loading?<RouteList data = {data}/>:<></>}

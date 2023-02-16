@@ -13,20 +13,20 @@ import {Link, useSearchParams} from 'react-router-dom';
 
 const textFilters = [
     {value: '#', label: "#"},
-    {value: 'title', label: 'Title'},
-    {value: 'author', label: 'Author'},
-    {value: 'publication',label: 'Publication Year'},
+    {value: 'text_title', label: 'Title'},
+    {value: 'text_author', label: 'Author'},
+    {value: 'text_original_publication_year',label: 'Publication Year'},
 ]
 
 const authorFilters = [
     {value: '#', label: "#"},
-    {value: 'name', label: 'Author'},
-    {value: 'position', label: 'Positions'},
-    {value: 'birth',label: 'Birth Year'},
-    {value: 'death',label: 'Death Year'},
-    {value: 'floruit', label: 'Floruit'},
-    {value: 'country',label: 'Country of Birth'},
-    {value: 'city', label:'City of Birth'},
+    {value: 'author_name', label: 'Author'},
+    {value: 'author_positions', label: 'Positions'},
+    {value: 'author_birth_year',label: 'Birth Year'},
+    {value: 'author_death_year',label: 'Death Year'},
+    {value: 'author_floruit', label: 'Floruit'},
+    {value: 'author_birth_country',label: 'Country of Birth'},
+    {value: 'author_birth_city', label:'City of Birth'},
     {value: "date_uploaded", label: "Date Uploaded"},
     //{value: 'works', label: 'Works'},
 ]
@@ -166,8 +166,7 @@ const SearchDetailed = (props) => {//Add the table view of
                     <InputAdornment position="end">
                         <IconButton onClick = {searchFunction}
                             aria-label="Search Button"
-                            edge="end"
-                        >
+                            edge="end"                        >
                             <SearchIcon />
                         </IconButton>
                         <IconButton onClick = {clearSearch}
@@ -176,7 +175,6 @@ const SearchDetailed = (props) => {//Add the table view of
                         >
                             <ClearIcon />
                         </IconButton>
-
                     </InputAdornment>
                 }
                 label="Search"

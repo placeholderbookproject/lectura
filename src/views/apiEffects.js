@@ -1,8 +1,9 @@
 export const fetchDataEffect = props => () => {
-    fetch('http://127.0.0.1:8000/data?type=texts&id='+props.author_id)
+    let searchType = props.type===null?"":"type="+props.type+"&id="
+    fetch('http://127.0.0.1:8000/data?'+searchType+props.author_id)
     .then(response => {if(response.ok) {return response.json()}throw response})
-    .then(results => {props.setData(results)}
-    )
+    .then(results => {props.setData(results)})
+    .finally(() => (props.type===null?props.setLoading(true):void(0)))
 }
 
 export const fetchSearchResults = props => () => {
@@ -35,4 +36,17 @@ export const searchWikipediaEffect = props =>  () => {
         props.setWiki(result["extract"] + " (source: <a href = '" + url + "'>wikipedia</a>)");//return json;
     }
     !props.edit?searchWikipedia():void(0);
+}
+
+export const uploadEdits = (props) => {
+    const requestOptions = {
+        method: 'POST',
+        body: JSON.stringify(props.editData)
+    };
+    if (Object.keys(props.editData).length===1){void(0)}
+    else {
+        fetch('http://127.0.0.1:8000/edit?type='+props.type+'&id='+props.id, requestOptions)
+        .then(response => response.json())
+        .finally(() => props.setEdit(false))
+    }
 }

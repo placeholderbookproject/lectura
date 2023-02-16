@@ -105,7 +105,7 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
 }
 
 /* CSS */
-.homeBtn, .detailedSearchBtn, .importBtn, .adminBtn, .editBtn, .submitEditBtn, .changeSearchVersionBtn {
+.homeBtn, .detailedSearchBtn, .importBtn, .adminBtn, .editBtn, .submitEditBtn, .changeSearchVersionBtn, .resetEditBtn {
   top:0;
   /*background-color: #054777;*/
   background-color: #dedbdb;
@@ -135,11 +135,12 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   white-space: nowrap;
 }
 
-.editBtn, .submitEditBtn, .changeSearchVersionBtn {
+.editBtn, .submitEditBtn, .changeSearchVersionBtn, .resetEditBtn {
   background: none;
 }
 
 .homeBtn:hover, .detailedSearchBtn:hover, .importBtn:hover, .adminBtn:hover, .editBtn:hover, .submitEditBtn:hover, .changeSearchVersionBtn:hover 
+, .resetEditBtn:hover
 /*,.homeBtn:focus, .detailedSearchBtn:focus, .importBtn:focus, .adminBtn:focus*/
 {
   background-color: #012443;
@@ -152,7 +153,7 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   box-shadow: none;
 }
 
-.editBtn, .submitEditBtn {
+.editBtn, .submitEditBtn,  .resetEditBtn {
   border: 0.5px solid black;
 }
 

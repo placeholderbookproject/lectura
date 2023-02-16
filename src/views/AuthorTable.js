@@ -2,49 +2,55 @@ import React, {/*useRef,*/ useState, useEffect} from 'react';
 import TableRow from './ViewRow.js';
 import labels from './labels.js';
 import AuthorTexts from './AuthorTexts.js'
-import {searchWikipediaEffect} from './apiEffects.js'
+import {searchWikipediaEffect, uploadEdits} from './apiEffects.js'
 import {checkStr, transformYear} from './formattingFuncs.js'
 const parse = require('html-react-parser');
 
 const AuthorTable = (props) => {
     const [wiki, setWiki] = useState("");
-    const [data, setData] = useState(props.data);
+    const [data, setData] = useState(props.author);
     const [edit,setEdit] = useState(false);
+    const [editData, setEditData] = useState({'author_id':props.author.author_id});
     const name = data.author_name.split(",");
     const numNames = name.length;
     const occupationList = data.author_positions.split(", ");
-    const mainOccupation = occupationList[0];//(firstOccupation.length>1)?firstOccupation.splice(1,firstOccupation.length).join(" "):occupationList[0];
-    useEffect(() => {setData(props.data)},[props.data])
-    useEffect (searchWikipediaEffect({setWiki, edit, name:name[0], mainOccupation}),[name,mainOccupation, edit])
+    const mainOccupation = occupationList[0];
+    useEffect(() => {setData(props.author)},[props.author])
+    useEffect (searchWikipediaEffect({setWiki, edit, name:name[0], mainOccupation}),[name,mainOccupation, edit, props.author.author_id])
     const setEditWindow = () => {
         if (!edit) {setEdit(true)}
         else{setEdit(false)}
     }
-    const uploadEdits = () => {
-        const requestOptions = {
-            method: 'POST',
-            body: JSON.stringify(data)
-        };
-        fetch('http://127.0.0.1:8000/edit?type=authors&id='+data.author_id, requestOptions)
-            .then(response => response.json())
-            .finally(() => setEdit(false))
-    }
-
     const editInfo = (e) => {
         const {value, name} = e.target
+        const oldEdit = editData
         let newData = data
         newData[name] = value
+        setEditData({...oldEdit, [name]:value})
         setData({...data,[name]:value})
+    }
+    const resetEdit = () => {
+        setData(props.author)
+        setEditData({'author_id':props.author.author_id})
+    }
+    const submitEdits = () => {
+        const keys = Object.keys(editData)
+        for (let i = 0; i<keys.length;i++){
+            const key = keys[i]
+            const toCheck = editData[key]
+            if (key === "author_id") {continue}
+            if (toCheck === props.author[key]){delete editData[key]}
+        }
+        uploadEdits({type: "authors", id:props.author.author_id, editData, setEdit})
     }
     return (
     <div>
-        <div style = {{left:5, position: 'fixed'}}>
-            <button className = "editBtn" onClick = {setEditWindow}>{!edit?labels.editBtn:labels.exitEditBtn}
-            </button>
+        <div>
+            <button className = "editBtn" onClick = {setEditWindow}>{!edit?labels.editBtn:labels.exitEditBtn}</button>
             {edit?
                 <>
-                    {/*<button onClick = {undoEdit}>{labels.undoEditBtn}</button>*/}
-                    <button className = "submitEditBtn" onClick = {uploadEdits}>{labels.submit_edits}</button>
+                    <button className = "resetEditBtn" onClick = {resetEdit}>{labels.undoEditBtn}</button>
+                    <button className = "submitEditBtn" onClick = {submitEdits}>{labels.submit_edits}</button>
                 </>
                 :<></>}
         </div>        
