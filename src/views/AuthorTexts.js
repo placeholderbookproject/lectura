@@ -2,13 +2,13 @@ import React, {/*useRef,*/ useState, useEffect} from 'react';
 import labels from './labels.js';
 import {Link} from 'react-router-dom';
 import Select from 'react-select';
-
+import {fetchDataEffect, fetchSearchResults} from './apiEffects.js'
 
 const TextRow = (props) => {
     return (
         <tr>
             <td>
-                <Link to={"/text/"+props.data.text_id}>{props.data.label}</Link>
+                {props.data.text_id !== ""?<Link to={"/text/"+props.data.text_id}>{props.data.label}</Link>:props.data.label}
             </td>
         </tr>
     )
@@ -16,38 +16,15 @@ const TextRow = (props) => {
 
 const AuthorTexts = (props) => {
     const edit = props.edit;
-    const [textsData,setTextsData] = useState(props.data);
+    const [textsData,setTextsData] = useState([]);
     const [searchResults, setSearchResults] = useState();
     const [query, setQuery] = useState("");
-    useEffect (() => {
-        setTextsData(props.data)
-    },[props.data])
-
-    useEffect (()=> {
-        const fetchData = () => {
-          const requestOptions = {
-              method: 'GET',
-                      };
-          fetch('http://127.0.0.1:8000/search?query='+query+"&type=texts", requestOptions)
-          .then(response => {
-              if (response.ok) {
-              return response.json()
-              }
-              throw response;
-          })
-          .then (data => 
-            {setSearchResults(data["texts"])
-          })
-        }
-      query.length>3?fetchData():void(0);
-      },[query])  
-    const addWork = () => {
-        const addWork = {text_id: '',label: 'New row'}
-        setTextsData([...textsData, addWork])
-    }
+    useEffect( fetchDataEffect({setData:setTextsData, author_id:props.author_id}),[props.author_id])
+    useEffect (fetchSearchResults({setSearchResults,query, type:"texts"}),[query])  
+    const addWork = () => {setTextsData([...textsData, {text_id: '',label: 'New row'}])}
     const removeWork = (e,id) => {
         const oldWorks = textsData;
-        let newWorks = []
+        let newWorks = []   
         for (let i = 0; i<oldWorks.length;i++){
             if (i === id){continue}
             else {newWorks.push(oldWorks[i])}
@@ -81,7 +58,6 @@ const AuthorTexts = (props) => {
                                 options = {typeof searchResults === 'object'?(searchResults):void(0)}
                                 onInputChange = {selectQuery}
                                 onChange = {(e) => searchSelect (e,textsData.indexOf(work))}
-                                getOptionLabel ={(option)=>option.title+" - "+option.author}
                             />
                             <button onClick = {(e) => removeWork(e,textsData.indexOf(work))}>X</button>
                         </td>
