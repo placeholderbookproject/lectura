@@ -3,7 +3,7 @@ import TableRow from './ViewRow.js';
 import labels from './labels.js';
 import AuthorTexts from './AuthorTexts.js'
 import {searchWikipediaEffect} from './apiEffects.js'
-import {checkStr} from './formattingFuncs.js'
+import {checkStr, transformYear} from './formattingFuncs.js'
 const parse = require('html-react-parser');
 
 const AuthorTable = (props) => {
@@ -59,33 +59,27 @@ const AuthorTable = (props) => {
                 {!edit?data.author_nationality:<input value={data.author_nationality} name = "author_nationality" onChange = {e => editInfo(e)}></input>}
             </TableRow>
             <TableRow label = {labels.born + " "}>
-            {!edit?
-                data.author_birth_year === null
-                    ? labels.unspecified
-                        :(data.author_birth_year>0
-                            ?data.author_birth_year + " AD": Math.abs(data.author_birth_year) + " BC" )//If <0->BC else AD
-                            :<input type="number" name = "author_birth_year" value = {data.author_birth_year} 
-                                        onChange = {e => editInfo(e)}/>
-                    }
-                    {!edit
-                        ? " " +checkStr(data.author_birth_city, data.author_birth_country)
-                        :<>
-                    <label style = {{paddingLeft:5}}>
-                    {"("}
-                        <input value = {data.author_birth_city} name = "author_birth_city" onChange = {e => editInfo(e)}></input>
-                    </label>
-                    <label>
-                        <input value={data.author_birth_country} name = "author_birth_country" onChange = {e => editInfo(e)}></input>
-                        {")"}
-                    </label>{labels.edit_country_birth_description}
-                    </>
-                    }
+                {!edit
+                    ?transformYear(data.author_birth_year, labels.unspecified)
+                    :<input type="number" name = "author_birth_year" value = {data.author_birth_year} onChange = {e => editInfo(e)}/>
+                }
+                {!edit
+                    ?" " +checkStr(data.author_birth_city, data.author_birth_country)
+                    :<>
+                <label style = {{paddingLeft:5}}>
+                {"("}
+                    <input value = {data.author_birth_city} name = "author_birth_city" onChange = {e => editInfo(e)}></input>
+                </label>
+                <label>
+                    <input value={data.author_birth_country} name = "author_birth_country" onChange = {e => editInfo(e)}></input>
+                    {")"}
+                </label>{labels.edit_country_birth_description}
+                </>
+                }
             </TableRow>
             <TableRow label = {labels.died + " "}>
                 {!edit
-                    ?data.author_death_year===null
-                        ?labels.unspecified
-                        :(data.author_death_year>0?data.author_death_year + " AD": Math.abs(data.author_death_year) + " BC")
+                    ?transformYear(data.author_death_year, labels.unspecified)
                     :<input value = {data.author_death_year} type = "number" name = "author_death_year" onChange = {e => editInfo(e)}></input>
                 }
                 {!edit
@@ -122,8 +116,6 @@ const AuthorTable = (props) => {
             <TableRow>
                 {typeof wiki !== Object && wiki !== ""? parse(wiki):<></>}
             </TableRow>
-            <tr>{/*Placeholder for influences */}</tr>
-            <tr>{/*Placeholder for influenced */}</tr>
             <AuthorTexts edit = {edit} author_id = {data.author_id}/>
             </tbody></table>
     </div>
