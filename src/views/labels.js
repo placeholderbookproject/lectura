@@ -47,6 +47,8 @@ const labels = {
     import_preview_label : 'Please change column names using the dropdowns',
     import_push_data : 'Push data to database',
     import_refresh : 'Refresh',
+    admin_import_header : 'All rows of imported data:',
+    admin_approve_imports : 'Click to approve imports',
     import_type_authors : 'Authors',
     import_type_texts : 'Texts',
     import_type_editions : 'Editions',

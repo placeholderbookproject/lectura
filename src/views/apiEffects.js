@@ -63,3 +63,47 @@ export const submitEdits = props => () => {
     }
     uploadEdits({type: props.type, id:props.id, editData:props.editData, setEdit:props.setEdit})
 }
+
+export const uploadData = (props) => () => {
+    const data = props.uploadedList;
+    const newKeys = props.selectedOptions;
+    let newData = []
+    for (let i = 0; i<data.length;i++){
+        const dataElement = data[i];
+        const dataElementKeys = Object.keys(dataElement);
+        let newDataElement = {}
+        for (let j = 0; j<newKeys.length;j++) {
+            const header = newKeys[j]
+            if (dataElementKeys.includes(header["oldHeader"])) {
+                newDataElement[header["newHeader"]] = dataElement[header["oldHeader"]]
+            }
+        }
+        newData.push(newDataElement)
+    }
+    
+    const inputName = (props.inputFile["current"]["value"].split("\\").slice(props.inputFile["current"]["value"].split("\\").length-1)[0].split(".")[0]) + "_" + props.importType
+    const date = new Date()
+    const curr_date = [date.getFullYear(), date.getMonth()+1, date.getDate()].join("-")
+    const requestOptions = {
+        method: 'POST',
+        body: JSON.stringify({data:newData, type:props.importType, name: inputName, date_uploaded: curr_date})
+    };
+    fetch('http://127.0.0.1:8000/import', requestOptions)
+        .then(response => response.json())
+        .finally(() => props.setShowImports(true))
+}
+
+export const approveImports = props => () => {
+    const requestOptions = {
+        method: 'POST',
+        body: JSON.stringify(props.importData)
+    }
+    fetch('http://127.0.0.1:8000/import/approve?type='+props.type, requestOptions)
+    .then(response => {
+        if (response.ok) {
+            return response.json()
+        }
+        throw response
+    })
+    props.setImportApproved(true)
+}

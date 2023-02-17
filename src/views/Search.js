@@ -10,30 +10,7 @@ import Tooltip from '@mui/material/Tooltip';
 import FormHelperText from '@mui/material/FormHelperText';
 import Select from 'react-select';
 import {Link, useSearchParams} from 'react-router-dom';
-
-const textFilters = [
-    {value: '#', label: "#"},
-    {value: 'text_title', label: 'Title'},
-    {value: 'text_author', label: 'Author'},
-    {value: 'text_original_publication_year',label: 'Publication Year'},
-]
-
-const authorFilters = [
-    {value: '#', label: "#"},
-    {value: 'author_name', label: 'Author'},
-    {value: 'author_positions', label: 'Positions'},
-    {value: 'author_birth_year',label: 'Birth Year'},
-    {value: 'author_death_year',label: 'Death Year'},
-    {value: 'author_floruit', label: 'Floruit'},
-    {value: 'author_birth_country',label: 'Country of Birth'},
-    {value: 'author_birth_city', label:'City of Birth'},
-    {value: "date_uploaded", label: "Date Uploaded"},
-    //{value: 'works', label: 'Works'},
-]
-
-const options = 
-    {"author":authorFilters,
-    "text":textFilters,}
+import options from './filters.js'
 
 const CreateList = (props) => {
     const values = props.data

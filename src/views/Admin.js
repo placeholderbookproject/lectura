@@ -1,36 +1,27 @@
-import {useState, useEffect} from 'react'
-const options = {
-    import_type_authors : 'Authors',
-    import_type_texts : 'Texts',
-    import_type_editions : 'Editions',
-    import_error : 'Data has not been imported or the data imported is empty',
-    import_databtn : 'Imported data',
-    latest_editsbtn : 'Latest edits',
-    admin_header : 'Admin',
-}
+import {useState, useEffect} from 'react';
+import labels from './labels.js';
+import options from './filters.js';
+import {approveImports} from './apiEffects.js';
 
 const Admin = () => {
     const [importWindow, setImportWindow] = useState(false);
     const [importType, setImportType] = useState("");
-    const openImportWindow = () => {
-        if (importWindow) {setImportWindow(false)}
-        else {setImportWindow(true)}
-    }
+    const openImportWindow = () => {importWindow?setImportWindow(false):setImportWindow(true)}
     return (
         <>
             <header style= {{textDecoration: 'underline 1px rgb(100, 88, 71)', fontSize: 30, fontWeight: 700, paddingBottom: 15}}>
-            {options.admin_header}
+            {labels.admin_header}
             </header>
             <div style = {{display:'inline-flex', paddingBottom: 10}}>
-                <button onClick = {openImportWindow}>{options.import_databtn}</button>
-                <button>{options.latest_editsbtn}</button>
+                <button onClick = {openImportWindow}>{labels.import_databtn}</button>
+                <button>{labels.latest_editsbtn}</button>
             </div>
             {importWindow?
             <>
                 <div style = {{paddingBottom: 10}}>
-                    <button onClick = {() => setImportType(options.import_type_authors.toLowerCase())}>{options.import_type_authors}</button>
-                    <button onClick = {() => setImportType(options.import_type_texts.toLowerCase())}>{options.import_type_texts}</button>
-                    <button onClick = {() => setImportType(options.import_type_editions.toLowerCase())}>{options.import_type_editions}</button>
+                    <button onClick = {() => setImportType(labels.import_type_authors.toLowerCase())}>{labels.import_type_authors}</button>
+                    <button onClick = {() => setImportType(labels.import_type_texts.toLowerCase())}>{labels.import_type_texts}</button>
+                    <button onClick = {() => setImportType(labels.import_type_editions.toLowerCase())}>{labels.import_type_editions}</button>
                 </div>
             {importType !== ""?    
             <ImportTable type = {importType}/>
@@ -42,15 +33,11 @@ const Admin = () => {
     )
 }
 
-const ImportTable = (props) => {
+export const ImportTable = (props) => {
     const [importData, setImportData] = useState([]);
     const [isImported, setIsImported] = useState(false);
     const [importApproved, setImportApproved] = useState(false);
-    const columns = {texts: ['title', 'author', 'publication', 'language','type', 'date_uploaded'],
-                    authors: ['name', 'position', 'birth', 'death', 'city', 'country', 'floruit'],
-                    editions: ['title', 'author', 'publisher', 'isbn', 'isbn13'],
-    }
-    const columnsToUse = columns[props.type]
+    const columnsToUse = options[props.type]
     useEffect (() => {
         const fetchData = () => {
             const requestOptions = {
@@ -69,20 +56,6 @@ const ImportTable = (props) => {
         fetchData()
     },[props.type, importApproved]
     )
-    const approveImports = () => {
-        const requestOptions = {
-            method: 'POST',
-            body: JSON.stringify(importData)
-        }
-        fetch('http://127.0.0.1:8000/import/approve?type='+props.type, requestOptions)
-        .then(response => {
-            if (response.ok) {
-                return response.json()
-            }
-            throw response
-        })
-        setImportApproved(true)
-    }
     const removeImportRow = (id) => {
         const oldData = importData
         let newData = []
@@ -95,34 +68,29 @@ const ImportTable = (props) => {
         <>
         {isImported&&importData.length>0?
         <div>
-            <header>All rows of imported data: 
-                <button onClick = {approveImports}>Click to approve all imports</button>
+            <header>{labels.admin_import_header}
+                <button onClick = {approveImports({importData, setImportApproved, type: props.type})}>{labels.admin_approve_imports}</button>
                 </header>
             <table id = "detailedSearchResults"><tbody>
             <tr>
                 <th style = {{backgroundColor: 'white', border: 'none'}}></th>
-            <th>#</th>
-            {columnsToUse.map((header) => (
-                <th key = {header}>{header}</th>
-            )
-            )}
+                <th>#</th>
+                {columnsToUse.map((header) => (<th key = {header.label}>{header.label}</th>))}
             </tr>
             {importData.map((row) =>
-                (
-                <tr key = {importData.indexOf(row)}>
+                (<tr key = {importData.indexOf(row)}>
                 <td onClick = {() => removeImportRow(importData.indexOf(row))}>X</td>
                 <td >{importData.indexOf(row)}</td>
                 {columnsToUse.map((element) =>
-                    (<td key = {importData.indexOf(row)+element}>
-                        {row[element]}
+                    (<td key = {importData.indexOf(row)+element['value']}>
+                        {row[element['value']]}
                     </td>)
                 )}
-                </tr>
-                )
+                </tr>)
             )}
             </tbody></table>
         </div>
-        :<div>{options.import_error}</div>
+        :<div>{labels.import_error}</div>
         }
         </>
     )

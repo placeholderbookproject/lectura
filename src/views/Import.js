@@ -1,51 +1,18 @@
 import * as XLSX from 'xlsx';
 import React, {useRef, useState} from 'react';
 import Select from 'react-select';
+import options from './filters.js';
+import labels from './labels.js'
+import {uploadData} from './apiEffects.js';
+import {ImportTable} from './Admin.js';
 
 //const fileSaver = require('file-saver'); 
-
-const textFilters = [
-    //{value: '#', label: "#"},
-    {value: 'title', label: 'Title'},
-    {value: 'author', label: 'Author'},
-    {value: 'publication_year',label: 'Publication Year'},
-    {value: 'language', label: 'Language'},
-    {value: 'type', label: 'Type'},
-    {value: 'genre', label: 'Genre'},
-]
-
-const authorFilters = [
-    //{value: '#', label: "#"},
-    {value: 'name', label: 'Author'},
-    {value: 'position', label: 'Positions'},
-    {value: 'birth',label: 'Birth Year'},
-    {value: 'death',label: 'Death Year'},
-    {value: 'floruit', label: 'Floruit'},
-    {value: 'country',label: 'Country of Birth'},
-    {value: 'city', label:'City of Birth'},
-    //{value: 'works', label: 'Works'},
-]
-
-const options = 
-    {"authors":authorFilters,
-    "texts":textFilters,}
 
 const importTypes = [
     {value: 'authors', label:'Authors'},
     {value: 'texts', label:'Texts'},
     {value: 'editions', label: 'Editions'},
 ]
-
-const labels = {
-    import_header : 'Data Import',
-    import_type : 'Please select import type',
-    import_type_select : 'Import type',
-    import_preview_header : 'Preview',
-    import_upload_data : 'Upload data',
-    import_preview_label : 'Please change column names using the dropdowns',
-    import_push_data : 'Push data to database',
-    import_refresh : 'Refresh',
-}
 
 const ImportWindow = () => {
     const importLabels = labels;
@@ -55,9 +22,9 @@ const ImportWindow = () => {
     const headerOptions = options;
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [headers, setHeaders] = useState([]);
+    const [showImports, setShowImports] = useState(false);
     const changeHandler = (event) => {onUpload(event)}
     const onUpload = (event) => {
-        /*Add some sort of export function to server/local -> validation&approval -> add to main dataframe*/
         event.stopPropagation();
         event.preventDefault();
         if (inputFile){
@@ -111,33 +78,6 @@ const ImportWindow = () => {
         }
         setHeaders(newHeaders);
         setSelectedOptions(newOptions);
-    }
-    const uploadData = () => {
-        const data = uploadedList;
-        const newKeys = selectedOptions;
-        let newData = []
-        for (let i = 0; i<data.length;i++){
-            const dataElement = data[i];
-            const dataElementKeys = Object.keys(dataElement);
-            let newDataElement = {}
-            for (let j = 0; j<newKeys.length;j++) {
-                const header = newKeys[j]
-                if (dataElementKeys.includes(header["oldHeader"])) {
-                    newDataElement[header["newHeader"]] = dataElement[header["oldHeader"]]
-                }
-            }
-            newData.push(newDataElement)
-        }
-        
-        const inputName = (inputFile["current"]["value"].split("\\").slice(inputFile["current"]["value"].split("\\").length-1)[0].split(".")[0]) + "_" + importType
-        const date = new Date()
-        const curr_date = [date.getFullYear(), date.getMonth()+1, date.getDate()].join("-")
-        const requestOptions = {
-            method: 'POST',
-            body: JSON.stringify({data:newData, type:importType, name: inputName, date_uploaded: curr_date})
-        };
-        fetch('http://127.0.0.1:8000/import', requestOptions)
-            .then(response => response.json())
     }
     const refreshImport = () => {setHeaders(Object.keys(uploadedList[0]))}
     return (
@@ -203,10 +143,18 @@ const ImportWindow = () => {
             }
             {//selectedOptions.length===headers.length && selectedOptions.length !== 0?
                 <div style = {{paddingTop:10}}>
-                    <button onClick = {uploadData}>{importLabels.import_push_data}</button>
+                {importType !== ""
+                    ?<button onClick = {uploadData({uploadedList, selectedOptions, inputFile, importType, setShowImports})}>
+                        {importLabels.import_push_data}
+                    </button>
+                    :<></>
+                    }
                 </div>
                 //:<></>
                 }
+            <div>
+                {showImports?<ImportTable type = {importType}/>:<></>}
+            </div>
         </>
     )
 }
