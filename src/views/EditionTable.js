@@ -3,22 +3,22 @@ import {Link} from 'react-router-dom';
 import labels from './labels.js';
 
 const EditionTable = (props) => {
-    const data = props.data;
+    const data = props.edition;
     const editionLabels = labels;
-    const {text_index, title, original_title, author, additional_authors, isbn, isbn13
-        , publisher, binding, number_of_pages, publication_year, language} = data
+    const {text_id, edition_title, text_author, text_title, edition_editor, edition_isbn, edition_isbn13
+        , edition_publisher, edition_binding, edition_length, edition_publication_year, edition_language} = data
     return (
         <table id = "editionTableWindow"><tbody>
-            <tr><th className = "Header">{title}{language!== null?" (" + language + ")":""}</th></tr>
-            <TableRow label = {editionLabels.original_title + " "}><Link to={"/text/"+text_index}>{original_title}</Link></TableRow>
-            <TableRow label = {editionLabels.author + " "}>{author}{additional_authors!==undefined?" (editors: " + additional_authors + ")":""}</TableRow>
-            <TableRow label = {editionLabels.publication + " "}>{publication_year}{" (" + publisher + ")"}</TableRow>
+            <tr><th className = "Header">{edition_title}{edition_language!== null?" (" + edition_language + ")":""}</th></tr>
+            <TableRow label = {editionLabels.original_title + " "}><Link to={"/text/"+text_id}>{text_title}</Link></TableRow>
+            <TableRow label = {editionLabels.author + " "}>{text_author}{edition_editor!==null?" (editors: " + edition_editor + ")":""}</TableRow>
+            <TableRow label = {editionLabels.publication + " "}>{edition_publication_year}{" (" + edition_publisher + ")"}</TableRow>
             <TableRow label = {editionLabels.length + " "}>
-            {number_of_pages + " " + editionLabels.pages}
-            {" (" +binding + ")"}
+            {edition_length + " " + editionLabels.pages}
+            {" (" +edition_binding + ")"}
             </TableRow>
             <TableRow label = {editionLabels.isbn + " "}>
-                {isbn + "/ " + isbn13}
+                {edition_isbn + "/ " + edition_isbn13}
             </TableRow>        
         </tbody></table>
     )

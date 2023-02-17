@@ -18,9 +18,9 @@ const CreateList = (props) => {
     const differentiateFilter = (filter) => {
         const joinedValues = values[filter["value"]]
         //if(joinedValues.constructor.name === "Array") {joinedValues = joinedValues.join(", ")} //For listing works later...
-        if (filter.value === "title" | filter.value === "name") {
-            if (filter.value === "title") {return(<td key={filter["label"]+joinedValues}><Link to = {"/text/"+values.id}>{joinedValues}</Link></td>)}
-            else {return (<td key= {filter["label"]+joinedValues}><Link to = {"/author/"+values.id}>{joinedValues}</Link></td>)}
+        if (filter.value === "text_title" | filter.value === "author_name") {
+            if (filter.value === "text_title") {return(<td key={filter["label"]+joinedValues}><Link to = {"/text/"+values.text_id}>{joinedValues}</Link></td>)}
+            else {return (<td key= {filter["label"]+joinedValues}><Link to = {"/author/"+values.author_id}>{joinedValues}</Link></td>)}
         }
         else {return(<td key= {filter["label"]+joinedValues}>{joinedValues}</td>)}
     }
@@ -31,7 +31,7 @@ const SearchDetailed = (props) => {//Add the table view of
     let [searchParams,setSearchParams] = useSearchParams();
     const data = props.data; //data["authors"]
     const [searchType, setSearchType] = useState("author"); //searchParams.get('type') fix type query later..
-    const [filters, setFilters] = useState(options["author"].slice(0,3));
+    const [filters, setFilters] = useState(options["authors"].slice(0,3));
     const [search, setSearch] = useState("");
     const [startSearch, setStartSearch] = useState(false);
     let [searchData,setSearchData] = useState(data["authors"]); 
@@ -42,12 +42,14 @@ const SearchDetailed = (props) => {//Add the table view of
         if(searchType === "author"){
             setSearchType("text");
             setSearchData(data["texts"]);
-            setFilters(options["text"].slice(0,3))
+            setFilters(options["texts"].slice(0,3))
+            setSearch("");
         }
         else {
             setSearchType("author");
             setSearchData(data["authors"]);
-            setFilters(options["author"].slice(0,3))
+            setFilters(options["authors"].slice(0,3))
+            setSearch("")
         }
     }
     const searchFunction = (searchVar = search) => {
@@ -55,9 +57,7 @@ const SearchDetailed = (props) => {//Add the table view of
         let results
         setSearchResults([]);
         if (filters.length>0 && searchInput.length>0){
-            setSearchParams({'query':searchInput,
-                             'type':searchType   
-                            })
+            setSearchParams({'query':searchInput,'type':searchType})
             setStartSearch(true);
             let dataSearch = searchData.slice(0,searchData.len);
             const searchElements = searchInput.toLowerCase().split(" ");
@@ -127,46 +127,39 @@ const SearchDetailed = (props) => {//Add the table view of
         <div id = "detailedSearchHeader">
             <button className="changeSearchVersionBtn" onClick={changeVersion}>{+ (searchType === "author")? "Texts":"Authors"}</button>
             <FormControl sx={{ m: 1, width: "50ch" }} variant="outlined">
-                <InputLabel 
-                    htmlFor="outlined-adornment-password"
-                    >
-                    Search
-                </InputLabel>
+                <InputLabel>Search</InputLabel>
                 <OutlinedInput
-                id="outlined-adornment-password"
-                type={"text"}
-                inputProps={{style: 
-                {fontSize: 20,
-                height: 10}
-                }}
-                endAdornment={
-                    <InputAdornment position="end">
-                        <IconButton onClick = {searchFunction}
-                            aria-label="Search Button"
-                            edge="end"                        >
-                            <SearchIcon />
-                        </IconButton>
-                        <IconButton onClick = {clearSearch}
-                            aria-label="Clear Search Button"
-                            edge="end"
-                        >
-                            <ClearIcon />
-                        </IconButton>
-                    </InputAdornment>
-                }
-                label="Search"
-                value = {search}
-                onChange={(e) => 
-                    setSearch(e.target.value)
+                    type={"text"}
+                    inputProps={{style: 
+                    {fontSize: 20,
+                    height: 10}
+                    }}
+                    endAdornment={
+                        <InputAdornment position="end">
+                            <IconButton onClick = {() => searchFunction()}
+                                aria-label="Search Button"
+                                edge="end"                        >
+                                <SearchIcon />
+                            </IconButton>
+                            <IconButton onClick = {clearSearch}
+                                aria-label="Clear Search Button"
+                                edge="end"
+                            >
+                                <ClearIcon />
+                            </IconButton>
+                        </InputAdornment>
                     }
-                onKeyDown = {onEnter}
+                    label="Search"
+                    value = {search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    onKeyDown = {onEnter}
                 />
                 <FormHelperText>
                     {(searchResults.length>0)?"Your query returned #" + searchResults.length +" results":""}
                 </FormHelperText>
             </FormControl>
             <Select 
-            options = {(searchType === "author") ? options["author"]:options["text"]}
+            options = {(searchType === "author") ? options["authors"]:options["texts"]}
             onChange = {(e) => setFilters(e)}
             value = {filters}
             placeholder = {"Select search filters"}

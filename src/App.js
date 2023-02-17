@@ -43,7 +43,7 @@ const RouteList = (props) => {
           element={
           <>
             <SiteHeader data = {dataList}/>
-            <EditionTable data = {edition}/>
+            <EditionTable edition = {edition}/>
           </>
           }
         >

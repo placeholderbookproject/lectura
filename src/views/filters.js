@@ -20,7 +20,6 @@ const authorFilters = [
     //{value: 'works', label: 'Works'},
 ]
 
-const options = {"authors":authorFilters,
-"texts":textFilters,}
+const options = {"authors":authorFilters, "texts":textFilters,}
 
 export default options

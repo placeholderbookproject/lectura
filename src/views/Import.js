@@ -61,10 +61,8 @@ const ImportWindow = () => {
     }    
     const selectImportType = (e) => {setImportType(e.value)}
     const removeColumn = (header) => {
-        const oldHeaders = headers;
-        const oldOptions = selectedOptions;
-        let newHeaders = [];
-        let newOptions = [];
+        const oldHeaders = headers, oldOptions = selectedOptions;
+        let newHeaders = [], newOptions = [];
         for (let i = 0; i<oldHeaders.length;i++){
             const oldHeader = oldHeaders[i]
             if(oldHeader !== header) {newHeaders.push(oldHeader)}
@@ -104,7 +102,7 @@ const ImportWindow = () => {
             {uploadedList.length>0?//If uploaded data is longer than zero (i.e. it has been uploaded correctly) -> make preview
                 <>
                 <header style = {{fontSize:30, fontWeight:700, textDecoration: 'underline 1px rgb(100, 88, 71)', paddingBottom: 10}}>
-                {importLabels.import_preview_header}
+                    {importLabels.import_preview_header}
                 </header>
                 <label>{importLabels.import_preview_label + " "}<button onClick = {refreshImport}>{importLabels.import_refresh}</button></label>
                 <table id = "importPreview">
@@ -142,7 +140,7 @@ const ImportWindow = () => {
                 :<></>
             }
             {//selectedOptions.length===headers.length && selectedOptions.length !== 0?
-                <div style = {{paddingTop:10}}>
+                <div style = {{paddingTop:10, paddingBottom: 10}}>
                 {importType !== ""
                     ?<button onClick = {uploadData({uploadedList, selectedOptions, inputFile, importType, setShowImports})}>
                         {importLabels.import_push_data}
@@ -153,7 +151,9 @@ const ImportWindow = () => {
                 //:<></>
                 }
             <div>
-                {showImports?<ImportTable type = {importType}/>:<></>}
+                {showImports
+                    ?<ImportTable type = {importType}/>
+                    :<></>}
             </div>
         </>
     )
