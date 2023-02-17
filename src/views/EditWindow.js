@@ -8,8 +8,7 @@ const EditWindow = (props) => {
             {edit?
                 <>
                     <button className = "resetEditBtn" onClick = {resetEdit}>{labels.undoEditBtn}</button>
-                    <button className = "submitEditBtn" 
-                        onClick = {submitEdits({type, id, editData,setEdit,data})}>
+                    <button className = "submitEditBtn" onClick = {submitEdits({type, id, editData,setEdit,data})}>
                         {labels.submit_edits}</button>
                 </>
                 :<></>}

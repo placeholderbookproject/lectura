@@ -1,22 +1,23 @@
 const server = 'http://127.0.0.1:8000/'
 
 export const fetchDataEffect = props => () => {
-    let searchType = props.type===null?"":"type="+props.type+"&id="
-    fetch(server+'data?'+searchType+props.id)
+    const {type, id, setData} = props
+    let searchType = type===null?"":"type="+type+"&id="
+    fetch(server+'data?'+searchType+id)
     .then(response => {if(response.ok) {return response.json()}throw response})
-    .then(results => {props.setData(results)})
-    .finally(() => (props.type===null?props.setLoading(true):void(0)))
+    .then(results => {setData(results)})
+    .finally(() => (type===null?props.setLoading(true):void(0)))
 }
 
 export const fetchSearchResults = props => () => {
-    const searchType = props.type===undefined?"":"&type="+props.type
-    const {setSearchResults, query} = props
-    if(props.query.length>3) {
+    const {setSearchResults, query, type} = props
+    const searchType = type===undefined?"":"&type="+type
+    if(query.length>3) {
           fetch(server+'search?query='+query+searchType)
           .then(response => {
               if (response.ok) {return response.json()} throw response;})
           .then (data => {(searchType!=="")
-                            ?setSearchResults(data[props.type])
+                            ?setSearchResults(data[type])
                             :setSearchResults(data["texts"].concat(data["authors"]))
                         })
         }
@@ -24,8 +25,9 @@ export const fetchSearchResults = props => () => {
 }
 
 export const searchWikipediaEffect = props =>  () => {
+    const {name, mainOccupation, setWiki, edit} = props
     const searchWikipedia = async () => {
-        const searchQuery = props.name+ " " + props.mainOccupation;
+        const searchQuery = name+ " " + mainOccupation;
         const endpoint = `https://en.wikipedia.org/w/api.php?action=query&list=search&prop=info&inprop=url&utf8=&format=json&origin=*&srlimit=20&srsearch=${searchQuery}`;
         const response = await fetch(endpoint);
         if (!response.ok) {throw Error(response.statusText);}
@@ -38,47 +40,48 @@ export const searchWikipediaEffect = props =>  () => {
         const result = await responseTwo.json();
         const url = result["content_urls"]["desktop"]["page"]
         console.log(json)
-        props.setWiki(result["extract"] + " (source: <a href = '" + url + "'>wikipedia</a>)");//return json;
+        setWiki(result["extract"] + " (source: <a href = '" + url + "'>wikipedia</a>)");//return json;
     }
-    !props.edit?searchWikipedia():void(0);
+    !edit?searchWikipedia():void(0);
 }
 
 export const uploadEdits = (props) => {
+    const {editData, id, type, setEdit} = props
     const requestOptions = {
         method: 'POST',
-        body: JSON.stringify(props.editData)
+        body: JSON.stringify(editData)
     };
-    if (Object.keys(props.editData).length===1){void(0)}
+    if (Object.keys(editData).length===1){void(0)}
     else {
-        fetch(server+'edit?type='+props.type+'&id='+props.id, requestOptions)
+        fetch(server+'edit?type='+type+'&id='+id, requestOptions)
         .then(response => response.json())
-        .finally(() => props.setEdit(false))
+        .finally(() => setEdit(false))
     }
 }
 
 
 export const submitEdits = props => () => {
-    const skip = props.type.replace('s','')+"_id";
-    const keys = Object.keys(props.editData)
+    const {type, id, editData, setEdit, data} = props
+    const skip = type.replace('s','')+"_id";
+    const keys = Object.keys(editData)
     for (let i = 0; i<keys.length;i++){
         const key = keys[i]
-        const toCheck = props.editData[key]
+        const toCheck = editData[key]
         if (key === skip) {continue}
-        if (toCheck === props.data[key]){delete props.editData[key]}
+        if (toCheck === data[key]){delete editData[key]}
     }
-    uploadEdits({type: props.type, id:props.id, editData:props.editData, setEdit:props.setEdit})
+    uploadEdits({type, id, editData, setEdit})
 }
 
 export const uploadData = (props) => () => {
-    const data = props.uploadedList;
-    const newKeys = props.selectedOptions;
+    const {inputFile, importType, setShowImports, uploadedList, selectedOptions} = props
     let newData = []
-    for (let i = 0; i<data.length;i++){
-        const dataElement = data[i];
+    for (let i = 0; i<uploadedList.length;i++){
+        const dataElement = uploadedList[i];
         const dataElementKeys = Object.keys(dataElement);
         let newDataElement = {}
-        for (let j = 0; j<newKeys.length;j++) {
-            const header = newKeys[j]
+        for (let j = 0; j<selectedOptions.length;j++) {
+            const header = selectedOptions[j]
             if (dataElementKeys.includes(header["oldHeader"])) {
                 newDataElement[header["newHeader"]] = dataElement[header["oldHeader"]]
             }
@@ -86,29 +89,30 @@ export const uploadData = (props) => () => {
         newData.push(newDataElement)
     }
     
-    const inputName = (props.inputFile["current"]["value"].split("\\").slice(props.inputFile["current"]["value"].split("\\").length-1)[0].split(".")[0]) + "_" + props.importType
+    const inputName = (inputFile["current"]["value"].split("\\").slice(inputFile["current"]["value"].split("\\").length-1)[0].split(".")[0]) + "_" + importType
     const date = new Date()
     const curr_date = [date.getFullYear(), date.getMonth()+1, date.getDate()].join("-")
     const requestOptions = {
         method: 'POST',
-        body: JSON.stringify({data:newData, type:props.importType, name: inputName, date_uploaded: curr_date})
+        body: JSON.stringify({data:newData, type:importType, name: inputName, date_uploaded: curr_date})
     };
     fetch(server+'import', requestOptions)
         .then(response => response.json())
-        .finally(() => props.setShowImports(true))
+        .finally(() => setShowImports(true))
 }
 
 export const approveImports = props => () => {
+    const {importData, type, setImportApproved} = props
     const requestOptions = {
         method: 'POST',
-        body: JSON.stringify(props.importData)
+        body: JSON.stringify(importData)
     }
-    fetch(server+'import/approve?type='+props.type, requestOptions)
+    fetch(server+'import/approve?type='+type, requestOptions)
     .then(response => {
         if (response.ok) {
             return response.json()
         }
         throw response
     })
-    props.setImportApproved(true)
+    setImportApproved(true)
 }
