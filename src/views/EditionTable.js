@@ -14,8 +14,7 @@ const EditionTable = (props) => {
             <TableRow label = {editionLabels.author + " "}>{text_author}{edition_editor!==null?" (editors: " + edition_editor + ")":""}</TableRow>
             <TableRow label = {editionLabels.publication + " "}>{edition_publication_year}{" (" + edition_publisher + ")"}</TableRow>
             <TableRow label = {editionLabels.length + " "}>
-            {edition_length + " " + editionLabels.pages}
-            {" (" +edition_binding + ")"}
+            {edition_length + " " + editionLabels.pages + " (" +edition_binding + ")"}
             </TableRow>
             <TableRow label = {editionLabels.isbn + " "}>
                 {edition_isbn + "/ " + edition_isbn13}

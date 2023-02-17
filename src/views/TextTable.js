@@ -5,6 +5,7 @@ import {useState, useEffect} from 'react';
 import Select from 'react-select';
 import {transformYear} from './formattingFuncs';
 import {fetchSearchResults, submitEdits, fetchDataEffect} from './apiEffects'
+import EditWindow from './EditWindow.js';
 
 const TextEditionsTable = (props) => {
     const [editionsData, setEditionsData] = useState([]);
@@ -63,14 +64,8 @@ const TextTable = (props) => {
     return (
       (
         <div>
-        <button className = "editBtn" onClick = {setEditWindow}>{!edit?labels.editBtn:labels.exitEditBtn}</button>
-        {edit?
-            <>
-                <button className = "resetEditBtn" onClick = {resetEdit}>{labels.undoEditBtn}</button>
-                <button className = "submitEditBtn" onClick = {submitEdits({type:"texts", id:props.text.text_id, editData, setEdit, data:props.text})}
-                    >{labels.submit_edits}</button>
-            </>
-            :<></>}
+            <EditWindow id={props.text.text_id} editData = {editData} setEdit = {setEdit} setEditWindow = {setEditWindow}
+                resetEdit = {resetEdit} data = {props.text} edit = {edit} type = "texts" submitEdits = {submitEdits}/>        
             <table id = "textTableWindow"><tbody>
                 <tr>
                     <th className = "Header">{title[0]}</th>

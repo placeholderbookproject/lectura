@@ -1,10 +1,12 @@
 import React, {/*useRef,*/ useState, useEffect} from 'react';
 import TableRow from './ViewRow.js';
 import labels from './labels.js';
-import AuthorTexts from './AuthorTexts.js'
-import {searchWikipediaEffect, submitEdits} from './apiEffects.js'
-import {checkStr, transformYear} from './formattingFuncs.js'
+import AuthorTexts from './AuthorTexts.js';
+import {searchWikipediaEffect, submitEdits} from './apiEffects.js';
+import {checkStr, transformYear} from './formattingFuncs.js';
+import EditWindow from './EditWindow.js';
 const parse = require('html-react-parser');
+
 
 const AuthorTable = (props) => {
     const [wiki, setWiki] = useState("");
@@ -36,25 +38,15 @@ const AuthorTable = (props) => {
     }
     return (
     <div>
-        <div>
-            <button className = "editBtn" onClick = {setEditWindow}>{!edit?labels.editBtn:labels.exitEditBtn}</button>
-            {edit?
-                <>
-                    <button className = "resetEditBtn" onClick = {resetEdit}>{labels.undoEditBtn}</button>
-                    <button className = "submitEditBtn" onClick = {submitEdits({type:"authors", id:props.author.author_id, editData, setEdit, data:props.author})}>
-                        {labels.submit_edits}</button>
-                </>
-                :<></>}
-        </div>        
+        <EditWindow id={props.author.author_id} editData = {editData} setEdit = {setEdit} setEditWindow = {setEditWindow}
+            resetEdit = {resetEdit} data = {props.author} edit = {edit} type = "authors" submitEdits = {submitEdits}/>        
         <table id = "authorTableWindow"><tbody>
             <tr className = "Header"><th>{name[0]}</th></tr>
             <tr>
-                <td>{/*string of all other names of the person, should be replaced by hover list or similar*/}
-                    {numNames>1?labels.aka + name.slice(1,numNames).join(", "):<></>}
-                </td>
+                <td>{numNames>1?labels.aka + name.slice(1,numNames).join(", "):<></>}</td>
             </tr>
             <TableRow label = {" " + labels.nationality + " "}>
-                {!edit?data.author_nationality:<input value={data.author_nationality} name = "author_nationality" onChange = {e => editInfo(e)}></input>}
+                {!edit?data.author_nationality:<input value={data.author_nationality} name = "author_nationality" onChange = {e => editInfo(e)}/>}
             </TableRow>
             <TableRow label = {labels.born + " "}>
                 {!edit
@@ -66,10 +58,10 @@ const AuthorTable = (props) => {
                     :<>
                 <label style = {{paddingLeft:5}}>
                 {"("}
-                    <input value = {data.author_birth_city} name = "author_birth_city" onChange = {e => editInfo(e)}></input>
+                    <input value = {data.author_birth_city} name = "author_birth_city" onChange = {e => editInfo(e)}/>
                 </label>
                 <label>
-                    <input value={data.author_birth_country} name = "author_birth_country" onChange = {e => editInfo(e)}></input>
+                    <input value={data.author_birth_country} name = "author_birth_country" onChange = {e => editInfo(e)}/>
                     {")"}
                 </label>{labels.edit_country_birth_description}
                 </>
@@ -78,16 +70,16 @@ const AuthorTable = (props) => {
             <TableRow label = {labels.died + " "}>
                 {!edit
                     ?transformYear(data.author_death_year, labels.unspecified)
-                    :<input value = {data.author_death_year} type = "number" name = "author_death_year" onChange = {e => editInfo(e)}></input>
+                    :<input value = {data.author_death_year} type = "number" name = "author_death_year" onChange = {e => editInfo(e)}/>
                 }
                 {!edit
                     ?" " + checkStr(data.author_death_city, data.author_death_country, "")
                     :<>
                         <label style = {{paddingLeft: 5}}>{"("}
-                            <input value = {data.author_death_city} name = "author_death_city" onChange = {e => editInfo(e)}></input>
+                            <input value = {data.author_death_city} name = "author_death_city" onChange = {e => editInfo(e)}/>
                         </label>
                         <label>
-                            <input value = {data.author_death_country} name = "author_death_country" onChange = {e => editInfo(e)}></input>)
+                            <input value = {data.author_death_country} name = "author_death_country" onChange = {e => editInfo(e)}/>)
                             {labels.edit_country_death_description}
                         </label>
                     </>  
@@ -106,14 +98,11 @@ const AuthorTable = (props) => {
                 }
             <TableRow label = {labels.occupation + " "}>
                 {mainOccupation}
-                {occupationList.length>1?//Drop-down list of occupations if there are more than 1
-                    ", " + labels.other_occupations + occupationList.slice(1,occupationList.length).join(", ")
-                    :<></>
-                }
+                {occupationList.length>1
+                    ?", " + labels.other_occupations + occupationList.slice(1,occupationList.length).join(", ")
+                    :<></>}
             </TableRow>
-            <TableRow>
-                {typeof wiki !== Object && wiki !== ""? parse(wiki):<></>}
-            </TableRow>
+            <TableRow> {typeof wiki !== Object && wiki !== ""? parse(wiki):<></>}</TableRow>
             <AuthorTexts edit = {edit} author_id = {data.author_id}/>
             </tbody></table>
     </div>

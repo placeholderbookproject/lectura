@@ -10,14 +10,13 @@ import Tooltip from '@mui/material/Tooltip';
 import FormHelperText from '@mui/material/FormHelperText';
 import Select from 'react-select';
 import {Link, useSearchParams} from 'react-router-dom';
-import options from './filters.js'
+import options from './filters.js';
 
 const CreateList = (props) => {
     const values = props.data
     const filters = props.filters;
     const differentiateFilter = (filter) => {
         const joinedValues = values[filter["value"]]
-        //if(joinedValues.constructor.name === "Array") {joinedValues = joinedValues.join(", ")} //For listing works later...
         if (filter.value === "text_title" | filter.value === "author_name") {
             if (filter.value === "text_title") {return(<td key={filter["label"]+joinedValues}><Link to = {"/text/"+values.text_id}>{joinedValues}</Link></td>)}
             else {return (<td key= {filter["label"]+joinedValues}><Link to = {"/author/"+values.author_id}>{joinedValues}</Link></td>)}
@@ -27,35 +26,27 @@ const CreateList = (props) => {
     return (filters.map((filter) => (differentiateFilter(filter))))
 }
 
-const SearchDetailed = (props) => {//Add the table view of
+const SearchDetailed = (props) => {
     let [searchParams,setSearchParams] = useSearchParams();
-    const data = props.data; //data["authors"]
-    const [searchType, setSearchType] = useState("author"); //searchParams.get('type') fix type query later..
+    const data = props.data;
+    const [searchType, setSearchType] = useState("authors");
     const [filters, setFilters] = useState(options["authors"].slice(0,3));
     const [search, setSearch] = useState("");
     const [startSearch, setStartSearch] = useState(false);
     let [searchData,setSearchData] = useState(data["authors"]); 
     let [searchResults,setSearchResults] = useState([]);
     const [searchOrder, setSearchOrder] = useState("asc");
-    const changeVersion = () =>  {
+    const changeVersion = (searchType) =>  {
         setSearchResults([]);
-        if(searchType === "author"){
-            setSearchType("text");
-            setSearchData(data["texts"]);
-            setFilters(options["texts"].slice(0,3))
-            setSearch("");
-        }
-        else {
-            setSearchType("author");
-            setSearchData(data["authors"]);
-            setFilters(options["authors"].slice(0,3))
-            setSearch("")
-        }
+        const newType = searchType==="authors"?"texts":"authors"
+        setSearchType(newType);
+        setSearchData(data[newType]);
+        setFilters(options[newType].slice(0,3));
+        setSearch("")
     }
     const searchFunction = (searchVar = search) => {
         const searchInput = searchVar;
         let results
-        setSearchResults([]);
         if (filters.length>0 && searchInput.length>0){
             setSearchParams({'query':searchInput,'type':searchType})
             setStartSearch(true);
@@ -95,13 +86,11 @@ const SearchDetailed = (props) => {//Add the table view of
         let sortedData = searchResults;
         const col = event.currentTarget.textContent;
         const filtersWithIndex = filters
-        const findColumn = filtersWithIndex.find((e) => e.label.includes(col)).value
+        const colValue = filtersWithIndex.find((e) => e.label.includes(col)).value
         const compare = (a,b) => {
-            b = b[findColumn]
-            a = a[findColumn]
-            if(a === ""|b === "") {
-                if(searchOrder==="desc"){return 1;}
-                else {return -1;}}
+            b = b[colValue]
+            a = a[colValue]
+            if(a === null|b === null) {return 0;}
             if ( a < b ){
                 if(searchOrder ==="desc") {return -1;}
                 else{return 1;}}
@@ -122,18 +111,16 @@ const SearchDetailed = (props) => {//Add the table view of
         }
     },[startSearch] // eslint-disable-line react-hooks/exhaustive-deps
     )
-    return (//Need to add dynamic search link. I.e. when enter -> change search. Also add basic filters from link
+    return (
       <div className = "detailedSearch">
         <div id = "detailedSearchHeader">
-            <button className="changeSearchVersionBtn" onClick={changeVersion}>{+ (searchType === "author")? "Texts":"Authors"}</button>
+            <button className="changeSearchVersionBtn" onClick={() => changeVersion (searchType)}>
+                {(searchType === "authors")? "Texts":"Authors"}</button>
             <FormControl sx={{ m: 1, width: "50ch" }} variant="outlined">
                 <InputLabel>Search</InputLabel>
                 <OutlinedInput
-                    type={"text"}
-                    inputProps={{style: 
-                    {fontSize: 20,
-                    height: 10}
-                    }}
+                    type="text"
+                    inputProps={{style: {fontSize: 20, height: 10}}}
                     endAdornment={
                         <InputAdornment position="end">
                             <IconButton onClick = {() => searchFunction()}
@@ -159,7 +146,7 @@ const SearchDetailed = (props) => {//Add the table view of
                 </FormHelperText>
             </FormControl>
             <Select 
-            options = {(searchType === "author") ? options["authors"]:options["texts"]}
+            options = {(searchType === "authors") ? options["authors"]:options["texts"]}
             onChange = {(e) => setFilters(e)}
             value = {filters}
             placeholder = {"Select search filters"}
@@ -167,27 +154,23 @@ const SearchDetailed = (props) => {//Add the table view of
             />
         </div>
         <>{/*Table of search results*/}
-          <table id = "detailedSearchResults">
-          <tbody>
+          <table id = "detailedSearchResults"><tbody>
                 <tr>
-                    {filters.length>0 && startSearch ? filters.map((filter) =>
-                    ( 
-                        <Tooltip sx = {{fontSize:15}}key={filter.value} title="Click to sort" placement="top" arrow followCursor>
+                    {filters.length>0 && startSearch ? filters.map((filter) => (
+                    <Tooltip sx = {{fontSize:15}}key={filter.value} title="Click to sort" placement="top" arrow followCursor>
                         <th onClick={sortFunction}>{filter.label}</th>
-                        </Tooltip>
-                    )
-                    ):<></>}
+                    </Tooltip>
+                    )):<></>}
                 </tr>
-                {search.length>0 ? (
-                    ((searchResults.length>100)?searchResults.slice(0,100):searchResults).map //Limitation to first 100 values
+                {search.length>0 
+                ?(((searchResults.length>100)?searchResults.slice(0,100):searchResults).map //Limitation to first 100 values
                     (result => (
                         <tr key = {result.id}>
-                        <CreateList data = {result} filters = {filters}/>
+                            <CreateList data = {result} filters = {filters}/>
                         </tr>
-                        ))
-                ):(<></>)}
-          </tbody>
-          </table>
+                        )))
+                :(<></>)}
+          </tbody></table>
         </>
       </div>
     )

@@ -1,19 +1,24 @@
+const server = 'http://127.0.0.1:8000/'
+
 export const fetchDataEffect = props => () => {
     let searchType = props.type===null?"":"type="+props.type+"&id="
-    fetch('http://127.0.0.1:8000/data?'+searchType+props.id)
+    fetch(server+'data?'+searchType+props.id)
     .then(response => {if(response.ok) {return response.json()}throw response})
     .then(results => {props.setData(results)})
     .finally(() => (props.type===null?props.setLoading(true):void(0)))
 }
 
 export const fetchSearchResults = props => () => {
-        if(props.query.length>3) {
-          fetch('http://127.0.0.1:8000/search?query='+props.query+"&type="+props.type)
+    const searchType = props.type===undefined?"":"&type="+props.type
+    const {setSearchResults, query} = props
+    if(props.query.length>3) {
+          fetch(server+'search?query='+query+searchType)
           .then(response => {
               if (response.ok) {return response.json()} throw response;})
-          .then (data => 
-            {props.setSearchResults(data[props.type])
-          })
+          .then (data => {(searchType!=="")
+                            ?setSearchResults(data[props.type])
+                            :setSearchResults(data["texts"].concat(data["authors"]))
+                        })
         }
     else {void(0)}
 }
@@ -45,7 +50,7 @@ export const uploadEdits = (props) => {
     };
     if (Object.keys(props.editData).length===1){void(0)}
     else {
-        fetch('http://127.0.0.1:8000/edit?type='+props.type+'&id='+props.id, requestOptions)
+        fetch(server+'edit?type='+props.type+'&id='+props.id, requestOptions)
         .then(response => response.json())
         .finally(() => props.setEdit(false))
     }
@@ -88,7 +93,7 @@ export const uploadData = (props) => () => {
         method: 'POST',
         body: JSON.stringify({data:newData, type:props.importType, name: inputName, date_uploaded: curr_date})
     };
-    fetch('http://127.0.0.1:8000/import', requestOptions)
+    fetch(server+'import', requestOptions)
         .then(response => response.json())
         .finally(() => props.setShowImports(true))
 }
@@ -98,7 +103,7 @@ export const approveImports = props => () => {
         method: 'POST',
         body: JSON.stringify(props.importData)
     }
-    fetch('http://127.0.0.1:8000/import/approve?type='+props.type, requestOptions)
+    fetch(server+'import/approve?type='+props.type, requestOptions)
     .then(response => {
         if (response.ok) {
             return response.json()
