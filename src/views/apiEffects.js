@@ -64,6 +64,7 @@ export const submitEdits = props => () => {
     const {type, id, editData, setEdit, data} = props
     const skip = type.replace('s','')+"_id";
     const keys = Object.keys(editData)
+    console.log(editData)
     for (let i = 0; i<keys.length;i++){
         const key = keys[i]
         const toCheck = editData[key]
