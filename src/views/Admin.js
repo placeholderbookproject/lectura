@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import labels from './labels.js';
-import options from './filters.js';
+import {options} from './filters.js';
 import {approveImports} from './apiEffects.js';
 
 const Admin = () => {

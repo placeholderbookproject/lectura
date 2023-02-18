@@ -1,7 +1,7 @@
 import * as XLSX from 'xlsx';
 import React, {useRef, useState} from 'react';
 import Select from 'react-select';
-import options from './filters.js';
+import {options} from './filters.js';
 import labels from './labels.js'
 import {uploadData} from './apiEffects.js';
 import {ImportTable} from './Admin.js';

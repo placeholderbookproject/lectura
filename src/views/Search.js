@@ -10,7 +10,7 @@ import Tooltip from '@mui/material/Tooltip';
 import FormHelperText from '@mui/material/FormHelperText';
 import Select from 'react-select';
 import {Link, useSearchParams} from 'react-router-dom';
-import options from './filters.js';
+import {options} from './filters.js';
 
 const CreateList = (props) => {
     const values = props.data
