@@ -78,7 +78,7 @@ const TextTable = (props) => {
                         }
                 </>
                 :<>
-                    <TextEdit cols = {editRowData} data = {data} origData = {props.text} setData = {setData} setEdit = {setEdit}
+                    <TextEdit cols = {editRowData} data = {data} origData = {props.text} setData = {setData}
                         type = "texts" id = {props.text.text_id} />
                 </>
                 }

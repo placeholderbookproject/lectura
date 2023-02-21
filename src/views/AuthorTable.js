@@ -51,7 +51,7 @@ const AuthorTable = (props) => {
                     <TableRow> {typeof wiki !== Object && wiki !== ""? parse(wiki):<></>}</TableRow>
                 </>
                 :<EditWindow cols = {editRowData} data = {data} origData = {props.author} setData = {setData}
-                    setEdit = {setEdit} type = "authors" id = {props.author.author_id}/>
+                    type = "authors" id = {props.author.author_id}/>
             }
                 <AuthorTexts edit = {edit} author_id = {data.author_id}/>
             </tbody></table>

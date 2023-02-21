@@ -25,32 +25,35 @@ const authorFilters = [
 export const options = {"authors":authorFilters, "texts":textFilters,}
 
 const editRowTexts = [
-    {label:labels.original_language+" ", input: [{value:'text_language'}], explanationText: ''},
-    {label: labels.original_publication_date+ " ", input: [{value: 'text_original_publication_year', type: 'number'}], explanationText: ''},
-    {label: labels.original_publisher_name+ " ", input: [{value: 'text_original_publication_publisher'}
-        ,{value: 'text_original_publication_publisher_loc'}], explanationText: ' (publisher, location)'},
-    {label: labels.original_publication_type+" ", input: [{value:'text_original_publication_type'}], explanationText: ''},
-    {label: labels.original_publication_length+" ", input: [{value:'text_original_publication_length', type: "number"}
-        ,{value: 'text_original_publication_length_type'}], explanationText: ' (length, length type)'},
-    {label: labels.writing_period+" ", input: [{value:'text_writing_start'},{value:'text_writing_end'}], explanationText: ' (start - writing)'},
+    {label:labels.original_language+" ", input: [{value:'text_language', label: 'original language'}]},
+    {label:labels.original_publication_date+ " ", input: [{value: 'text_original_publication_year', type: 'number', label: 'original publication year'}]},
+    {label:labels.original_publisher_name+ " ", input: [{value: 'text_original_publication_publisher', label: 'original publisher name'}
+        ,{value: 'text_original_publication_publisher_loc', label: 'original publication location'}]},
+    {label:labels.original_publication_type+" ", input: [{value:'text_original_publication_type', label: 'publication type'}]},
+    {label:labels.original_publication_length+" ", input: [{value:'text_original_publication_length', type: "number", label: 'length'}
+        ,{value: 'text_original_publication_length_type', label: 'length type (lines, pages, etc)'}]},
+    {label:labels.writing_period+" ", input: [{value:'text_writing_start', label: 'start'},{value:'text_writing_end', label: 'end'}]},
 ]
 
 const editRowAuthors = [
-    {label:labels.nationality+" ", input: [{value:'author_nationality'}], explanationText: ''},
-    {label: labels.born+ " ", input: [{value: 'author_birth_year', type: "number"},{value:'author_birth_city'}, {value:'author_birth_country'}]
-            , explanationText: ' (birth, birth city & country)'},
-    {label: labels.died+ " ", input: [{value: 'author_death_year', type: "number"},{value: 'author_death_city'}, {value: 'author_death_country'}]
-            , explanationText: ' (publication year, publisher)'},
-    {label: labels.floruit+" ", input: [{value:'author_floruit'}], explanationText: ''},
+    {label:labels.nationality+" ", input: [{value:'author_nationality', label: "nationality"}]},
+    {label: labels.born+ " ", input: [{value:'author_birth_day', type:'number', label: "birth day"}
+                ,{value:'author_birth_month', type:'number', label: "birth month"},{value: 'author_birth_year', type: "number", label: "birth year"}
+                ,{value:'author_birth_city', label: "birth city"}, {value:'author_birth_country', label: "birth country"}]},
+    {label: labels.died+ " ", input: [{value:'author_death_day', type: 'number', label: 'death day'}
+                ,{value: 'author_death_month', label: "death month",type:'number'},{value: 'author_death_year', type: "number", label: "death year"}
+                ,{value: 'author_death_city', label: "city of death"}, {value: 'author_death_country', label: "country of death"}]
+            },
+    {label: labels.floruit+" ", input: [{value:'author_floruit', label: 'floruit'}]},
 ]
 
 const editRowEditions = [
-    {label:labels.original_title+" ", input: [{value:'text_title'}], explanationText: ' (title of edition)'},
-    {label: labels.author+ " ", input: [{value: 'text_author'},{value:'edition_editor'}], explanationText: ' (author, editors)'},
-    {label: labels.publication+ " ", input: [{value: 'edition_publication_year', type: "number"}
-        ,{value: 'edition_publisher'}], explanationText: ' (publication year, publisher)'},
-    {label: labels.length+" ", input: [{value:'edition_length', type: "number"},{value:'edition_binding'}], explanationText: ' (pages, binding)'},
-    {label: labels.isbn+" ", input: [{value: 'edition_isbn'},{value:'edition_isbn13'}], explanationText: ' (isbn, isbn13)'},
+    {label:labels.original_title+" ", input: [{value:'text_title', label: 'edition title'}]},
+    {label: labels.author+ " ", input: [{value: 'text_author', label: 'author'},{value:'edition_editor', label: 'editors'}]},
+    {label: labels.publication+ " ", input: [{value: 'edition_publication_year', type: "number", label: 'edition publication year'}
+        ,{value: 'edition_publisher', label: 'edition publisher'}]},
+    {label: labels.length+" ", input: [{value:'edition_length', type: "number", label: 'edition length'},{value:'edition_binding', label: 'binding type'}]},
+    {label: labels.isbn+" ", input: [{value: 'edition_isbn', label: 'isbn'},{value:'edition_isbn13', label: 'isbn13'}]},
 ]
 
 export const editRowAll = {texts: editRowTexts, authors: editRowAuthors, editions: editRowEditions}

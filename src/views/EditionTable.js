@@ -30,7 +30,7 @@ const EditionTable = (props) => {
                     </TableRow>
                 </>
                 :<EditWindow cols = {editRowData} data = {data} origData = {props.edition} setData = {setData}
-                    setEdit = {setEdit} type = "editions" id = {props.edition.edition_id}/>
+                    type = "editions" id = {props.edition.edition_id}/>
             }   
         </tbody></table>
     </div>

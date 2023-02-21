@@ -1,3 +1,45 @@
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-label {
+  font-size: 0.7em;
+  margin-bottom: 0px;
+  text-align: center;
+  font-family: Arial;
+  font-style: italic;
+  text-decoration: rgb(95, 94, 93);
+}
+
+.input-field {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
 .content-parent {
   height: 0px;
   overflow: hidden;
@@ -105,7 +147,7 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
 }
 
 /* CSS */
-.homeBtn, .detailedSearchBtn, .importBtn, .adminBtn, .editBtn, .submitEditBtn, .changeSearchVersionBtn, .resetEditBtn {
+.homeBtn, .detailedSearchBtn, .importBtn, .adminBtn, .editBtn, .submitEditBtn, .changeSearchVersionBtn, .resetEditBtn, .addNewBtn {
   top:0;
   /*background-color: #054777;*/
   background-color: #dedbdb;
@@ -140,14 +182,15 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
 }
 
 .homeBtn:hover, .detailedSearchBtn:hover, .importBtn:hover, .adminBtn:hover, .editBtn:hover, .submitEditBtn:hover, .changeSearchVersionBtn:hover 
-, .resetEditBtn:hover
+, .resetEditBtn:hover, .addNewBtn:hover
 /*,.homeBtn:focus, .detailedSearchBtn:focus, .importBtn:focus, .adminBtn:focus*/
 {
   background-color: #012443;
   color:white;
 }
 
-.homeBtn:active, .detailedSearchBtn:active, .importBtn:active, .adminBtn:active, .editBtn:active, .submitEditBtn:active, .changeSearchVersionBtn:active {
+.homeBtn:active, .detailedSearchBtn:active, .importBtn:active
+, .adminBtn:active, .editBtn:active, .submitEditBtn:active, .changeSearchVersionBtn:active, .addNewBtn:active {
   background-color: #012443;
   color: white;
   box-shadow: none;

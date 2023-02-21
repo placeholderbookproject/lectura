@@ -46,7 +46,7 @@ export const searchWikipediaEffect = props =>  () => {
 }
 
 export const uploadEdits = (props) => {
-    const {editData, id, type, setEdit} = props
+    const {editData, id, type, setEditUploaded} = props
     const requestOptions = {
         method: 'POST',
         body: JSON.stringify(editData)
@@ -55,23 +55,32 @@ export const uploadEdits = (props) => {
     else {
         fetch(server+'edit?type='+type+'&id='+id, requestOptions)
         .then(response => response.json())
-        .finally(() => setEdit(false))
+        .finally(() => setEditUploaded(true))
     }
 }
 
-
 export const submitEdits = props => () => {
-    const {type, id, editData, setEdit, data} = props
+    const {type, id, editData, setEditUploaded, data} = props
     const skip = type.replace('s','')+"_id";
     const keys = Object.keys(editData)
-    console.log(editData)
     for (let i = 0; i<keys.length;i++){
         const key = keys[i]
         const toCheck = editData[key]
         if (key === skip) {continue}
         if (toCheck === data[key]){delete editData[key]}
     }
-    uploadEdits({type, id, editData, setEdit})
+    uploadEdits({type, id, editData, setEditUploaded})
+}
+
+export const uploadNew = (props) => () => {
+    const {data, type, setSubmissionUploaded} = props
+    const requestOptions = {
+        method: 'POST',
+        body: JSON.stringify(data)
+    };
+    fetch(server+'new?type='+type, requestOptions)
+        .then(response => response.json())
+        .finally(() => setSubmissionUploaded(true))
 }
 
 export const uploadData = (props) => () => {
@@ -109,11 +118,6 @@ export const approveImports = props => () => {
         body: JSON.stringify(importData)
     }
     fetch(server+'import/approve?type='+type, requestOptions)
-    .then(response => {
-        if (response.ok) {
-            return response.json()
-        }
-        throw response
-    })
+    .then(response => {if (response.ok) {return response.json()} throw response})
     setImportApproved(true)
 }
