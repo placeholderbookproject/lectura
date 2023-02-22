@@ -4,7 +4,7 @@ import labels from './labels.js';
 import AuthorTexts from './AuthorTexts.js';
 import {searchWikipediaEffect} from './apiEffects.js';
 import {checkStr, transformYear} from './formattingFuncs.js';
-import EditWindow from './EditWindow.js';
+import {AuthorEdit} from './EditWindow.js';
 import {editRowAll} from './filters.js';
 const parse = require('html-react-parser');
 
@@ -50,7 +50,7 @@ const AuthorTable = (props) => {
                     </TableRow>
                     <TableRow> {typeof wiki !== Object && wiki !== ""? parse(wiki):<></>}</TableRow>
                 </>
-                :<EditWindow cols = {editRowData} data = {data} origData = {props.author} setData = {setData}
+                :<AuthorEdit cols = {editRowData} data = {data} origData = {props.author} setData = {setData}
                     type = "authors" id = {props.author.author_id}/>
             }
                 <AuthorTexts edit = {edit} author_id = {data.author_id}/>

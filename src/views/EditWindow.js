@@ -4,6 +4,7 @@ import Select from 'react-select';
 import CreateableSelect from 'react-select/creatable';
 import TableRow from './ViewRow.js';
 import {useState, useEffect} from 'react'
+import TextareaAutosize from 'react-textarea-autosize';
 
 export const InputWithLabel = (props) => {
     const {editData, setEditData, data, setData, type, label, value, name} = props
@@ -44,13 +45,37 @@ export const EditSubmission = props => {
 }
 
 export const NewSubmission = props => {
-    const {data, type} = props
+    const {data, type, setData} = props
     const [submissionUploaded, setSubmissionUploaded] = useState(false);
+    const requirement = {"authors":"author_name", "texts":"text_title", "editions":"edition_title"}[type]
+    return (
+        Object.keys(data).includes(requirement) && data[requirement].length>3?
+        <>
+            <button className = "submitEditBtn" onClick = {uploadNew({setSubmissionUploaded,setData, data, type})}>
+                {labels.submit_edits}</button>
+            <label>{submissionUploaded&&<p>{labels.import_successful_add_new}</p>}</label>
+        </>
+        :<></>
+    )
+}
+
+export const EditBulk = props => {
+    const {editInputs, data, setData, editData, setEditData} = props
     return (
         <>
-        <button className = "submitEditBtn" onClick = {uploadNew({setSubmissionUploaded,data, type})}>
-            {labels.submit_edits}</button>
-        {submissionUploaded&&<p>{labels.successfulEdit}</p>}
+        {editInputs.map((inputRow) =>
+            (<TableRow label = {inputRow["label"]} key = {inputRow["label"]}>
+                <label>
+                {inputRow["input"].map((input) => (
+                    <InputWithLabel value = {data[input["value"]]===null?"":data[input["value"]]} name = {input["value"]} 
+                        type = {input["type"]!==undefined?input["type"]:""}  label = {input["label"]} 
+                        setEditData = {setEditData} editData = {editData} data = {data} setData = {setData}
+                        key = {input["label"]}
+                        /> )
+                )}
+                </label>
+            </TableRow>)
+        )}
         </>
     )
 }
@@ -66,26 +91,32 @@ export const EditWindow = props => {
     },[additionalEdits])
     return (
         <>
-            {editInputs.map((inputRow) =>
-                (<TableRow label = {inputRow["label"]} key = {inputRow["label"]}>
-                    <label>
-                    {inputRow["input"].map((input) => (
-                        <InputWithLabel value = {data[input["value"]]===null?"":data[input["value"]]} name = {input["value"]} 
-                            type = {input["type"]!==undefined?input["type"]:""}  label = {input["label"]} 
-                            setEditData = {setEditData} editData = {editData} data = {data} setData = {setData}
-                            key = {input["label"]}
-                            /> )
-                    )}
-                    </label>
-                </TableRow>)
-            )}
+            <EditBulk editInputs = {editInputs} data = {data} setData = {setData} editData = {editData} setEditData = {setEditData}/>
+            {props.children}
             <TableRow>
                 {id!==null?<EditSubmission setData={setData} setEditData = {setEditData} type = {type} 
                     id = {id} editData = {editData} origData = {origData}/>
-                :<NewSubmission type = {type} data = {data} />
+                :<NewSubmission type = {type} data = {data} setData = {setData}/>
                 }
             </TableRow>
         </>
+    )
+}
+
+export const SearchResults = props => {
+    const {type, query} = props;
+    const [searchResults, setSearchResults] = useState([]);
+    useEffect (fetchSearchResults({query, setSearchResults, type: type}),[query])  
+    return (
+        <div>
+        <Select 
+            placeholder="Click for results"
+            value={query}
+            options = {typeof searchResults === 'object'?(searchResults):void(0)}
+        />
+        <label style = {{fontSize:'0.7em',fontFamily:'Arial', fontStyle: 'Italic'}}>
+            {(searchResults.length>0)?"#" + searchResults.length + " similar available":""}</label>
+        </div>
     )
 }
 
@@ -124,6 +155,30 @@ export const EditSelect = props => {
         </div>
         </TableRow>
     )
+}
+
+export const AuthorEdit = props => {
+    const {origData, data, setData, setEdit, type, id, cols} = props
+    const [additionalEdits, setAdditionalEdits] = useState({})
+    const addAdditional = (e) => {
+        const newData = e.target.value.split("\n").join(", ")
+        setData({...data, [e.target.name]:newData})
+        setAdditionalEdits({[e.target.name]:newData})
+    }
+    return (
+        <>
+            <EditWindow cols = {cols} data = {data} origData = {origData} setData = {setData}
+                setEdit = {setEdit} type = {type} id = {id} additionalEdits = {additionalEdits}>
+            <TableRow label = {labels.occupation + " "}>
+                <TextareaAutosize value = {data["author_positions"]!==undefined?data["author_positions"].split(", ").join("\n"):""}
+                    name = "author_positions"
+                    onChange = {(e) => addAdditional(e)}
+                />
+            </TableRow>
+            </EditWindow>
+        </>
+    )
+
 }
 
 export const TextEdit = (props) => {

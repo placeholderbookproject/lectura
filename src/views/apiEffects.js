@@ -12,7 +12,7 @@ export const fetchDataEffect = props => () => {
 export const fetchSearchResults = props => () => {
     const {setSearchResults, query, type} = props
     const searchType = type===undefined?"":"&type="+type
-    if(query.length>3) {
+    if(query!==undefined && query.length>3) {
           fetch(server+'search?query='+query+searchType)
           .then(response => {
               if (response.ok) {return response.json()} throw response;})
@@ -73,14 +73,17 @@ export const submitEdits = props => () => {
 }
 
 export const uploadNew = (props) => () => {
-    const {data, type, setSubmissionUploaded} = props
+    const {data, setData, type, setSubmissionUploaded} = props
     const requestOptions = {
         method: 'POST',
         body: JSON.stringify(data)
     };
     fetch(server+'new?type='+type, requestOptions)
         .then(response => response.json())
-        .finally(() => setSubmissionUploaded(true))
+        .finally(() => {setSubmissionUploaded(true)
+                        //setData({})
+                    }                
+        )
 }
 
 export const uploadData = (props) => () => {

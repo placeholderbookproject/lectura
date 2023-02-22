@@ -3,9 +3,11 @@ import 'react-select-search/style.css';
 import {Navigate, Link} from 'react-router-dom'
 import React, {useState, useEffect} from 'react';
 import { Navbar, Container } from "react-bootstrap";
+import Dropdown from 'react-bootstrap/Dropdown';
 import labels from './labels.js'
 import {fetchSearchResults} from './apiEffects.js'
 import {AddNew} from './AddNew.js'
+import DropdownItem from 'react-bootstrap/esm/DropdownItem.js';
 
 const MainSearch = (props) => {
     const [enterSearch,setEnterSearch] = useState(false);
@@ -54,8 +56,8 @@ const SiteHeader = (props) => {
             <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/"}><button className="homeBtn">{labels.homeBtn}</button></Link>
             <MainSearch data = {props.data}/>
             <Link to = {"/search"} style={{paddingLeft: "1rem",paddingRight: "1rem"}}><button className="detailedSearchBtn">{labels.detailedSearchBtn}</button></Link>
-            <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/import"}><button className="importBtn">{labels.importDataBtn}</button></Link>
-            <AddNew/>
+              <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/import"}><button className="importBtn">{labels.importDataBtn}</button></Link>{/*className="importBtn"*/}
+              <AddNew label = "+"/>
             <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/admin"}><button className="adminBtn">{labels.adminBtn}</button></Link>
        </Navbar>
       </Container>
