@@ -21,10 +21,14 @@ const AuthorTable = (props) => {
     useEffect (searchWikipediaEffect({setWiki, edit, name:name[0], mainOccupation}),[name,mainOccupation, edit, props.author.author_id])
     const setEditWindow = () => {!edit?setEdit(true):setEdit(false)}
     return (
-    <div>
-        <button className = "editBtn" onClick = {setEditWindow}>{!edit?labels.editBtn:labels.exitEditBtn}</button>
         <table id = "authorTableWindow"><tbody>
-            <tr className = "Header"><th>{name[0]}</th></tr>
+            <tr className = "Header">
+                <th>{name[0]}
+                <button className = "editBtn" onClick = {setEditWindow}>{/*!edit?labels.editBtn:labels.exitEditBtn*/}
+                <img src = "/lectura/src/icons/edit.png" alt = "edit"></img>
+                    </button>
+                </th>
+            </tr>
             <tr><td>{numNames>1?labels.aka + name.slice(1,numNames).join(", "):<></>}</td></tr>
             {!edit
                 ?<>
@@ -55,7 +59,6 @@ const AuthorTable = (props) => {
             }
                 <AuthorTexts edit = {edit} author_id = {data.author_id}/>
             </tbody></table>
-    </div>
     );
   }
 

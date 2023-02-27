@@ -1,3 +1,30 @@
+.latestAdditionsHeader {
+  font-weight: 700;
+  font-size: 1.2em;
+}
+.listHeader {
+  font-weight:700;
+}
+.latestAdditionsList ul {
+  border-bottom: 0.5px dotted;
+}
+.latestAdditionsList {
+  padding-right: 15px;
+}
+.latestAdditions {
+  font-family: Arial;
+  list-style-type: none;
+  border: 1px solid;
+  text-align: center;
+}
+.latestAdditions header {padding-top: 5px;}
+.listRow {
+  font-size: 0.9em;
+  border: 0.5px dotted;
+  padding: 5px;
+}
+
+
 .input-group {
   display: flex;
   flex-direction: column;
@@ -60,7 +87,6 @@
   display: inline-flex;
 }
 
-
 table#authorTable tr, table#authorTable td
 {
   border:solid thin;
@@ -77,9 +103,9 @@ table#authorTableWindow .Header th, table#textTableWindow th, table#editionTable
   text-decoration: underline 1px rgb(100, 88, 71);
 }
 
-/*table#authorTableWindow td {
-  border: 0.5px dotted;
-}*/
+table#authorTableWindow, table#textTableWindow, table#editionTableWindow{
+  border: 0.5px solid;
+}
 
 table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   padding-bottom: 5px;

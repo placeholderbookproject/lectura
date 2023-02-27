@@ -123,15 +123,10 @@ const SearchDetailed = (props) => {
                     inputProps={{style: {fontSize: 20, height: 10}}}
                     endAdornment={
                         <InputAdornment position="end">
-                            <IconButton onClick = {() => searchFunction()}
-                                aria-label="Search Button"
-                                edge="end"                        >
+                            <IconButton onClick = {() => searchFunction()} aria-label="Search Button" edge="end"                        >
                                 <SearchIcon />
                             </IconButton>
-                            <IconButton onClick = {clearSearch}
-                                aria-label="Clear Search Button"
-                                edge="end"
-                            >
+                            <IconButton onClick = {clearSearch} aria-label="Clear Search Button" edge="end">
                                 <ClearIcon />
                             </IconButton>
                         </InputAdornment>
@@ -146,14 +141,13 @@ const SearchDetailed = (props) => {
                 </FormHelperText>
             </FormControl>
             <Select 
-            options = {(searchType === "authors") ? options["authors"]:options["texts"]}
-            onChange = {(e) => setFilters(e)}
-            value = {filters}
-            placeholder = {"Select search filters"}
-            isMulti
+                options = {(searchType === "authors") ? options["authors"]:options["texts"]}
+                onChange = {(e) => setFilters(e)}
+                value = {filters}
+                placeholder = {"Select search filters"}
+                isMulti
             />
         </div>
-        <>{/*Table of search results*/}
           <table id = "detailedSearchResults"><tbody>
                 <tr>
                     {filters.length>0 && startSearch ? filters.map((filter) => (
@@ -171,7 +165,6 @@ const SearchDetailed = (props) => {
                         )))
                 :(<></>)}
           </tbody></table>
-        </>
       </div>
     )
   }

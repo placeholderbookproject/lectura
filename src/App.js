@@ -8,7 +8,8 @@ import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import EditionTable from './views/EditionTable.js';
 import ImportWindow from './views/Import.js';
 import Admin from './views/Admin.js';
-import { fetchDataEffect } from './views/apiEffects';
+import { fetchDataEffect } from './views/apiEffects.js';
+import {IntroPage} from './views/IntroPage.js';
 
 //Options for language dropdown
 /*const languageOptions = [
@@ -21,7 +22,12 @@ const RouteList = (props) => {
   return (
     <BrowserRouter>
     <Routes>
-      <Route path = {"/"} element = {<SiteHeader data = {dataList} />}/>
+      <Route path = {"/"} element = {
+        <>
+        <SiteHeader data = {dataList} />
+        <IntroPage data = {dataList}/>
+        </>
+        }/>
       {dataList["texts"].map((text) =>
         <Route path ={"/text/"+text.text_id} element = { //importData.indexOf(row)
           <>

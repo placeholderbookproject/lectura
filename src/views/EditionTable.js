@@ -8,15 +8,17 @@ import {editRowAll} from './filters.js';
 const EditionTable = (props) => {
     const [data, setData] = useState(props.edition);
     const {text_id, edition_title, text_author, text_title, edition_editor, edition_isbn, edition_isbn13
-        , edition_publisher, edition_binding, edition_length, edition_publication_year, edition_language} = data
+        ,edition_publisher, edition_binding, edition_length, edition_publication_year, edition_language} = data
     const editRowData = editRowAll["editions"]
     const [edit, setEdit] = useState(false)
     const setEditWindow = () => {!edit?setEdit(true):setEdit(false)}
     return (
-    <div>
-        <button className = "editBtn" onClick = {setEditWindow}>{!edit?labels.editBtn:labels.exitEditBtn}</button>
         <table id = "editionTableWindow"><tbody>
-            <tr><th className = "Header">{edition_title}{edition_language!== null?" (" + edition_language + ")":""}</th></tr>
+            <tr>
+                <th className = "Header">{edition_title}{edition_language!== null?" (" + edition_language + ")":""}
+                <button className = "editBtn" onClick = {setEditWindow}>{!edit?labels.editBtn:labels.exitEditBtn}</button>
+                </th>
+            </tr>
             {!edit
                 ?<>
                     <TableRow label = {labels.original_title + " "}><Link to={"/text/"+text_id}>{text_title}</Link></TableRow>
@@ -33,7 +35,6 @@ const EditionTable = (props) => {
                     type = "editions" id = {props.edition.edition_id}/>
             }   
         </tbody></table>
-    </div>
     )
 }
 

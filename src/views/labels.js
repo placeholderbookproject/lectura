@@ -64,6 +64,7 @@ const labels = {
     detailedSearchBtn : 'Detailed Search',
     importDataBtn : 'Import',
     adminBtn : 'Admin',
+    latestAdditions : 'Latest Additions',
     }
     
     export default labels;
