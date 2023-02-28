@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {EditWindow, TextEdit, InputWithLabel, SearchResults, AuthorEdit} from './EditWindow.js';
+import {TextEdit, InputWithLabel, SearchResults, AuthorEdit} from './EditWindow.js';
 import {editRowAll} from './filters.js';
 import labels from './labels.js';
 import TableRow from './ViewRow.js';

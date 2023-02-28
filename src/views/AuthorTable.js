@@ -24,9 +24,9 @@ const AuthorTable = (props) => {
         <table id = "authorTableWindow"><tbody>
             <tr className = "Header">
                 <th>{name[0]}
-                <button className = "editBtn" onClick = {setEditWindow}>{/*!edit?labels.editBtn:labels.exitEditBtn*/}
-                <img src = "/lectura/src/icons/edit.png" alt = "edit"></img>
-                    </button>
+                <button className = "editBtn" onClick = {setEditWindow} style = {{border:'None'}}>{/*!edit?labels.editBtn:labels.exitEditBtn*/}
+                    <img src = "https://upload.wikimedia.org/wikipedia/commons/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg" alt = "edit" width="25" height="30"/>
+                </button>
                 </th>
             </tr>
             <tr><td>{numNames>1?labels.aka + name.slice(1,numNames).join(", "):<></>}</td></tr>
@@ -35,11 +35,11 @@ const AuthorTable = (props) => {
                     <TableRow label = {labels.nationality + " "}>{data.author_nationality}</TableRow>
                     <TableRow label = {labels.born + " "}>
                         {transformYear(data.author_birth_year, labels.unspecified)}
-                        {" " +checkStr(data.author_birth_city, data.author_birth_country, "")}
+                        {" " +checkStr(data.author_birth_city, data.author_birth_country)}
                     </TableRow>
                     <TableRow label = {labels.died + " "}>
                         {transformYear(data.author_death_year, labels.unspecified)}
-                        {" " + checkStr(data.author_death_city, data.author_death_country, "")}
+                        {" " + checkStr(data.author_death_city, data.author_death_country)}
                     </TableRow>
                         {(data.author_birth_year === null|data.author_death_year === null) && data.author_floruit !==null
                             ?<TableRow label = {labels.floruit + " "}>

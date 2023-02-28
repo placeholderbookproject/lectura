@@ -25,21 +25,17 @@ export const LatestChanges = props => {
     const types = ["authors", "texts"]
     return (
         <div className = "latestAdditions">
-            <header className="latestAdditionsHeader">{labels.latestAdditions}</header>
-            <div style = {{display:'inline-flex'}}>
-                {types.map((type) => 
-                <div className="latestAdditionsList">
-                    <ul className="listHeader">{type.charAt(0).toUpperCase()+type.slice(1,type.length)}</ul>
-                    {data[type].map((element) => 
-                        <Link to = {type==="authors"?"/author/"+element["author_id"]:"/text/"+element["text_id"]}>
-                            <li className="listRow">{element["label"]}</li>
-                        </Link>
-                    )}
-                </div>
-                    )
-                
-                }
-            </div>
+        <header className="latestAdditionsHeader">{labels.latestAdditions}</header>
+            {types.map((type) => 
+            <div className="latestAdditionsList">
+                <ul className="listHeader">{type.charAt(0).toUpperCase()+type.slice(1,type.length)}</ul>
+                {data[type].map((element) => 
+                    <Link to = {type==="authors"?"/author/"+element["author_id"]:"/text/"+element["text_id"]}>
+                        <li className="listRow">{element["label"]}</li>
+                    </Link>
+                )}
+            </div>)
+            }
         </div>
         )
 }

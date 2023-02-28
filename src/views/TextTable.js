@@ -36,7 +36,9 @@ const TextTable = (props) => {
         <table id = "textTableWindow"><tbody>
             <tr>
                 <th className = "Header">{title[0]}
-                <button className = "editBtn" onClick = {setEditWindow}>{!edit?labels.editBtn:labels.exitEditBtn}</button>
+                <button className = "editBtn" onClick = {setEditWindow} style = {{border:'None'}}>{/*!edit?labels.editBtn:labels.exitEditBtn*/}
+                    <img src = "https://upload.wikimedia.org/wikipedia/commons/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg" alt = "edit" width="25" height="30"/>
+                </button>
                 </th>
             </tr>
             <tr><td>{(numTitles>1)?labels.aka + title.slice(1,numTitles).join(", "):""}</td></tr>
