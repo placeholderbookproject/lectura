@@ -46,14 +46,13 @@ const SearchDetailed = (props) => {
     }
     const searchFunction = (searchVar = search) => {
         const searchInput = searchVar;
-        let results
+        let results = [];
         if (filters.length>0 && searchInput.length>0){
             setSearchParams({'query':searchInput,'type':searchType})
             setStartSearch(true);
             let dataSearch = searchData.slice(0,searchData.len);
             const searchElements = searchInput.toLowerCase().split(" ");
             for (let j = 0; j<searchElements.length;j++) {
-                results = []
                 let resultNumber = 0, element = searchElements[j];
                 for (let n = 0; n<dataSearch.length;n++ in dataSearch){
                     const dataElement = dataSearch[n];
@@ -91,10 +90,10 @@ const SearchDetailed = (props) => {
             b = b[colValue]
             a = a[colValue]
             if(a === null|b === null) {return 0;}
-            if ( a < b ){
+            if (a < b ){
                 if(searchOrder ==="desc") {return -1;}
                 else{return 1;}}
-              if ( a > b){
+              if (a > b){
                 if(searchOrder==="desc") {return 1;}
                 else {return -1;}}
               return 0;
@@ -150,19 +149,16 @@ const SearchDetailed = (props) => {
         </div>
           <table id = "detailedSearchResults"><tbody>
                 <tr>
-                    {filters.length>0 && startSearch ? filters.map((filter) => (
+                    {filters.length>0 && startSearch 
+                    ? filters.map((filter) => (
                     <Tooltip sx = {{fontSize:15}}key={filter.value} title="Click to sort" placement="top" arrow followCursor>
                         <th onClick={sortFunction}>{filter.label}</th>
-                    </Tooltip>
-                    )):<></>}
+                    </Tooltip>))
+                    :<></>}
                 </tr>
                 {search.length>0 
                 ?(((searchResults.length>100)?searchResults.slice(0,100):searchResults).map //Limitation to first 100 values
-                    (result => (
-                        <tr key = {result.id}>
-                            <CreateList data = {result} filters = {filters}/>
-                        </tr>
-                        )))
+                    (result => (<tr key = {result.id}><CreateList data = {result} filters = {filters}/></tr>)))
                 :(<></>)}
           </tbody></table>
       </div>

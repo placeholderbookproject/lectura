@@ -26,12 +26,8 @@ const EditionTable = (props) => {
                     <TableRow label = {labels.original_title + " "}><Link to={"/text/"+text_id}>{text_title}</Link></TableRow>
                     <TableRow label = {labels.author + " "}>{text_author}{edition_editor!==null?" (editors: " + edition_editor + ")":""}</TableRow>
                     <TableRow label = {labels.publication + " "}>{edition_publication_year}{" (" + edition_publisher + ")"}</TableRow>
-                    <TableRow label = {labels.length + " "}>
-                        {edition_length + " " + labels.pages + " (" +edition_binding + ")"}
-                    </TableRow>
-                    <TableRow label = {labels.isbn + " "}>
-                        {edition_isbn + "/ " + edition_isbn13}
-                    </TableRow>
+                    <TableRow label = {labels.length + " "}>{edition_length + " " + labels.pages + " (" +edition_binding + ")"}</TableRow>
+                    <TableRow label = {labels.isbn + " "}>{edition_isbn + "/ " + edition_isbn13}</TableRow>
                 </>
                 :<EditWindow cols = {editRowData} data = {data} origData = {props.edition} setData = {setData}
                     type = "editions" id = {props.edition.edition_id}/>

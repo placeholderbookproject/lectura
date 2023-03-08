@@ -16,6 +16,7 @@
   list-style-type: none;
   border: 1px solid;
   text-align: center;
+  width: 250px;
 }
 .latestAdditions header {padding-top: 5px;}
 .listRow {

@@ -6,8 +6,6 @@ import labels from './labels.js'
 import {uploadData} from './apiEffects.js';
 import {ImportTable} from './Admin.js';
 
-//const fileSaver = require('file-saver'); 
-
 const importTypes = [
     {value: 'authors', label:'Authors'},
     {value: 'texts', label:'Texts'},
@@ -44,7 +42,6 @@ const ImportWindow = () => {
             }
         }
     }
-
     const selectHeader = (e, header) => {
         const oldOptions = selectedOptions;
         const newHeader = e.value;
@@ -92,8 +89,8 @@ const ImportWindow = () => {
                             container: base => ({
                                 ...base,
                                 flex: 1
-                            })}
-                            }
+                            })
+                            }}
                     placeholder={importLabels.import_type_select}
                     options = {importTypes}
                     onChange = {selectImportType}
@@ -117,7 +114,8 @@ const ImportWindow = () => {
                                             options = {headerOptions[importType]}
                                             onChange={(e) => selectHeader(e,header)}
                                         />
-                                        <button type="button" className="btn-close" aria-label="Close" style = {{backgroundColor:'#bebebe', border: '1px solid',}}
+                                        <button type="button" className="btn-close" aria-label="Close" 
+                                            style = {{backgroundColor:'#bebebe', border: '1px solid',}}
                                             onClick = {() => removeColumn(header)}>
                                             X
                                         </button>
@@ -139,22 +137,14 @@ const ImportWindow = () => {
                 </table></>
                 :<></>
             }
-            {//selectedOptions.length===headers.length && selectedOptions.length !== 0?
-                <div style = {{paddingTop:10, paddingBottom: 10}}>
+            {<div style = {{paddingTop:10, paddingBottom: 10}}>
                 {importType !== ""
                     ?<button onClick = {uploadData({uploadedList, selectedOptions, inputFile, importType, setShowImports})}>
                         {importLabels.import_push_data}
                     </button>
-                    :<></>
-                    }
-                </div>
-                //:<></>
-                }
-            <div>
-                {showImports
-                    ?<ImportTable type = {importType}/>
                     :<></>}
-            </div>
+            </div>}
+            <div>{showImports?<ImportTable type = {importType}/>:<></>}</div>
         </>
     )
 }

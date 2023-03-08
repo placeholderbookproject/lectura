@@ -73,7 +73,7 @@ export const submitEdits = props => () => {
 }
 
 export const uploadNew = (props) => () => {
-    const {data, setData, type, setSubmissionUploaded} = props
+    const {data/*, setData*/, type, setSubmissionUploaded} = props
     const requestOptions = {
         method: 'POST',
         body: JSON.stringify(data)
@@ -123,4 +123,31 @@ export const approveImports = props => () => {
     fetch(server+'import/approve?type='+type, requestOptions)
     .then(response => {if (response.ok) {return response.json()} throw response})
     setImportApproved(true)
+}
+
+export const verifyLogin = (pw, email) => {
+    const requestBody = {
+        email: email,
+        password: pw
+      };
+    fetch(server+'login',{
+        method: 'POST',
+        body: JSON.stringify(requestBody)
+    })
+    .then(response => console.log(response))
+    .catch(error => console.log(error))
+}
+
+export const createUser = props => (pw, email) => {
+    console.log(props.setResponse)
+    const requestBody = {
+        email: email,
+        password: pw
+      };
+    fetch(server+'create_user',{
+        method: 'POST',
+        body: JSON.stringify(requestBody)
+    })
+    .then(response => props.setResponse(response))
+    .catch(error => console.log(error))
 }

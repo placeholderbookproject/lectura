@@ -13,12 +13,19 @@ const textFilters = [
 const authorFilters = [
     //{value: '#', label: "#"},
     {value: 'author_name', label: 'Author'},
-    {value: 'author_positions', label: 'Positions'},
+    {value:'author_nationality', label:'Nationality'},
+    {value: 'author_positions', label: 'Occupations'},
+    {value:'author_birth_day', label: 'Birth Day'},
+    {value:'author_birth_month',label: 'Birth Month'},
     {value: 'author_birth_year',label: 'Birth Year'},
+    {value: 'author_birth_city', label:'Birth City'},
+    {value: 'author_birth_country',label: 'Birth Country'},
+    {value:'author_death_day',label:'Death Day'},
+    {value:'author_death_month',label:'Death Month'},
     {value: 'author_death_year',label: 'Death Year'},
+    {value:'author_death_city', label: 'Death City'},
+    {value:'author_death_country', label:'Death Country'},
     {value: 'author_floruit', label: 'Floruit'},
-    {value: 'author_birth_country',label: 'Country of Birth'},
-    {value: 'author_birth_city', label:'City of Birth'},
     //{value: 'works', label: 'Works'},
 ]
 

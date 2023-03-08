@@ -6,11 +6,9 @@ import {fetchDataEffect, fetchSearchResults} from './apiEffects.js'
 
 const TextRow = (props) => {
     return (
-        <tr>
-            <td>
+        <tr><td>
                 {props.data.text_id !== ""?<Link to={"/text/"+props.data.text_id}>{props.data.label}</Link>:props.data.label}
-            </td>
-        </tr>
+        </td></tr>
     )
 }
 
@@ -43,14 +41,13 @@ const AuthorTexts = (props) => {
     return (
         <>
             <tr className = "Works" style = {{textDecoration: 'underline 1px rgb(100, 88, 71)'}}>
-                <td>
-                    {typeof textsData !== Object && textsData !== ""?labels.works:labels.worksUnknown}
-                </td>
+                <td>{typeof textsData !== Object && textsData !== ""?labels.works:labels.worksUnknown}</td>
             </tr>
         {!edit
-            ?(typeof textsData !== Object && textsData !== "") ? (textsData.map((work) => (<TextRow key={work.text_id} data={work}/>))):<></>
-            :textsData !== ""?
-                textsData.map( (work) => 
+            ?(typeof textsData !== Object && textsData !== "") 
+                ?(textsData.map((work) => (<TextRow key={work.text_id} data={work}/>))):<></>
+            :textsData !== ""
+                ?textsData.map( (work) => 
                     <tr key = {textsData.indexOf(work)}>
                         <td style = {{display:'inline-flex'}}>
                             <Select style = {{width: 300}}

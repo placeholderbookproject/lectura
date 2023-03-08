@@ -36,10 +36,11 @@ export const EditSubmission = props => {
     }
     return (
         <>
-        <button className = "resetEditBtn" onClick = {resetEdit}>{labels.undoEditBtn}</button>
-        <button className = "submitEditBtn" onClick = {submitEdits({type, id, editData,setEditUploaded,data:origData})}>
-            {labels.submit_edits}</button>
-        {editUploaded&&<p>{labels.successfulEdit}</p>}
+            <button className = "resetEditBtn" onClick = {resetEdit}>{labels.undoEditBtn}</button>
+            <button className = "submitEditBtn" onClick = {submitEdits({type, id, editData,setEditUploaded,data:origData})}>
+                {labels.submit_edits}
+            </button>
+            {editUploaded&&<p>{labels.successfulEdit}</p>}
         </>
     )
 }
@@ -52,7 +53,8 @@ export const NewSubmission = props => {
         Object.keys(data).includes(requirement) && data[requirement].length>3?
         <>
             <button className = "submitEditBtn" onClick = {uploadNew({setSubmissionUploaded,setData, data, type})}>
-                {labels.submit_edits}</button>
+                {labels.submit_edits}
+            </button>
             <label>{submissionUploaded&&<p>{labels.import_successful_add_new}</p>}</label>
         </>
         :<></>
@@ -74,8 +76,7 @@ export const EditBulk = props => {
                         /> )
                 )}
                 </label>
-            </TableRow>)
-        )}
+            </TableRow>))}
         </>
     )
 }
@@ -109,13 +110,10 @@ export const SearchResults = props => {
     useEffect (fetchSearchResults({query, setSearchResults, type: type}),[query])  
     return (
         <div>
-        <Select 
-            placeholder="Click for results"
-            value={query}
-            options = {typeof searchResults === 'object'?(searchResults):void(0)}
-        />
-        <label style = {{fontSize:'0.7em',fontFamily:'Arial', fontStyle: 'Italic'}}>
-            {(searchResults.length>0)?"#" + searchResults.length + " similar available":""}</label>
+            <Select placeholder="Click for results" value={query} options = {typeof searchResults === 'object'?(searchResults):void(0)}/>
+            <label style = {{fontSize:'0.7em',fontFamily:'Arial', fontStyle: 'Italic'}}>
+                {(searchResults.length>0)?"#" + searchResults.length + " similar available":""}
+            </label>
         </div>
     )
 }
@@ -144,14 +142,14 @@ export const EditSelect = props => {
     return (
         <TableRow label = {labels[label] + " "}>
         <div style = {{display:'inline-flex'}}>
-                        <CreateableSelect 
-                            isClearAble
-                            placeholder={placeholder}
-                            options = {typeof searchResults === 'object'?(searchResults):void(0)}
-                            onInputChange = {selectQuery}
-                            onChange = {searchSelect}
-                            getOptionValue = {(option) => option.author_id}
-                        />
+            <CreateableSelect 
+                isClearAble
+                placeholder={placeholder}
+                options = {typeof searchResults === 'object'?(searchResults):void(0)}
+                onInputChange = {selectQuery}
+                onChange = {searchSelect}
+                getOptionValue = {(option) => option.author_id}
+            />
         </div>
         </TableRow>
     )

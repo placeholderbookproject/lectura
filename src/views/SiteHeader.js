@@ -6,6 +6,7 @@ import { Navbar, Container } from "react-bootstrap";
 import labels from './labels.js'
 import {fetchSearchResults} from './apiEffects.js'
 import {AddNew} from './AddNew.js'
+import LoginWindow from './Login.js'
 
 const MainSearch = (props) => {
     const [enterSearch,setEnterSearch] = useState(false);
@@ -57,6 +58,7 @@ const SiteHeader = (props) => {
               <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/import"}><button className="importBtn">{labels.importDataBtn}</button></Link>{/*className="importBtn"*/}
               <AddNew label = "+"/>
             <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/admin"}><button className="adminBtn">{labels.adminBtn}</button></Link>
+            <LoginWindow/>
        </Navbar>
       </Container>
   )
