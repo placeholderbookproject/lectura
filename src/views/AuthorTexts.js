@@ -47,7 +47,7 @@ const AuthorTexts = (props) => {
             ?(typeof textsData !== Object && textsData !== "") 
                 ?(textsData.map((work) => (<TextRow key={work.text_id} data={work}/>))):<></>
             :textsData !== ""
-                ?textsData.map( (work) => 
+                ?textsData.map((work) => 
                     <tr key = {textsData.indexOf(work)}>
                         <td style = {{display:'inline-flex'}}>
                             <Select style = {{width: 300}}

@@ -28,8 +28,10 @@ const TextTable = (props) => {
     const [data, setData] = useState(props.text);
     const [edit, setEdit] = useState(false);
     const editRowData = editRowAll["texts"];
-    const title = data.text_title.split(",");
-    const numTitles = title.length;
+    const title = data.text_title!==undefined?data.text_title.split(","):"";
+    const numTitles = title.length!==undefined?title.length:"";
+    console.log(data);
+    useEffect(fetchDataEffect({type:'texts', id:props.text, setData:setData}) , [props.text]);
     useEffect(() => {setData(props.text)},[props.text])
     const setEditWindow = () => {!edit?setEdit(true):setEdit(false)}
     return (
@@ -82,10 +84,10 @@ const TextTable = (props) => {
             </>
             :<>
                 <TextEdit cols = {editRowData} data = {data} origData = {props.text} setData = {setData}
-                    type = "texts" id = {props.text.text_id} />
+                    type = "texts" id = {props.text} />
             </>
             }
-            <TextEditionsTable text_id = {props.text.text_id} />
+            {/*<TextEditionsTable text_id = {props.text} />*/}
         </tbody></table>
     )
   }

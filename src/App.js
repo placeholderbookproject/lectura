@@ -18,61 +18,65 @@ import {IntroPage} from './views/IntroPage.js';
 */
 
 const RouteList = (props) => {
-  const dataList = props.data
+  //const dataList = props.data
+  let searchPlaceholder = {};
+  searchPlaceholder.texts = [{ "text_id": 1 }];
+  const authorArray = Array.from({ length: 400000 }, (_, index) => index);
+  const textArray = Array.from({ length: 89281}, (_,index) => index);
   return (
     <BrowserRouter>
     <Routes>
       <Route path = {"/"} element = {
         <>
-        <SiteHeader data = {dataList} />
-        <IntroPage data = {dataList}/>
+        <SiteHeader data = {searchPlaceholder} />
+        {/*<IntroPage data = {dataList}/>*/}
         </>
         }/>
-      {dataList["texts"].map((text) =>
-        <Route path ={"/text/"+text.text_id} element = { //importData.indexOf(row)
+      {textArray.map((text) =>
+        <Route path ={"/text/"+text} element = { //importData.indexOf(row)
           <>
-            <SiteHeader data = {dataList}/>
+            <SiteHeader data = {searchPlaceholder}/>
             <TextTable text={text}/>
           </>
-        } key = {text.text_id}/>
+        } key = {text}/>
       )}
-      {dataList["authors"].map((author) => 
-        <Route path={"/author/"+author.author_id} element={ //Adds a link for every author
+      {authorArray.map((author) => 
+        <Route path={"/author/"+author} element={ //Adds a link for every author
           <div>
-          <SiteHeader data = {dataList} />
+          <SiteHeader data = {searchPlaceholder} />
           <AuthorTable author={author}/>
           </div>
-          } key = {author.author_id}>
+          } key = {author}>
         </Route>)}
-      {dataList["editions"].map((edition) => 
+      {/*dataList["editions"].map((edition) => 
         <Route path = {"/text/"+edition.text_id+"/edition/"+edition.edition_id} key = {edition.edition_id}
           element={
           <>
-            <SiteHeader data = {dataList}/>
+            <SiteHeader data = {searchPlaceholder}/>
             <EditionTable edition = {edition}/>
           </>
           }
         >
         </Route>
-      )}
+      )*/}
     <Route path = {"/search"} element = {
       <>
-      <SiteHeader data = {dataList}/>
-      <SearchDetailed data ={dataList}/>
+      <SiteHeader data = {searchPlaceholder}/>
+      {/*<SearchDetailed data ={dataList}/>*/}
       </>
       }                
     />
     <Route path = {"/import"} element = {
         <>
-          <SiteHeader data = {dataList}/>
-          <ImportWindow/>
+          <SiteHeader data = {searchPlaceholder}/>
+          {/*<ImportWindow/>*/}
         </>
       }
     />
     <Route path = {"/admin"} element = {
       <>
-        <SiteHeader data = {dataList}/>
-        <Admin/>
+        <SiteHeader data = {searchPlaceholder}/>
+        {/*<Admin/>*/}
       </>
       }
     />
@@ -82,12 +86,17 @@ const RouteList = (props) => {
 }
 
 const App = () => {
-  const [data,setData] = useState({})
-  const [loading, setLoading] = useState(false)
-  useEffect(fetchDataEffect({setData, setLoading, type:null}),[])
+  //const [data,setData] = useState({})
+  //const [loading, setLoading] = useState(false)
+  //useEffect(fetchDataEffect({setData, setLoading, type:null}),[])
   return (
     <div>
-    {loading?<RouteList data = {data}/>:<></>}
+    {/*loading?*/
+
+    <RouteList/>
+
+    //:<></>
+    }
     </div>
   );
 }

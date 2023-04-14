@@ -2,11 +2,21 @@ const server = 'http://127.0.0.1:8000/'
 
 export const fetchDataEffect = props => () => {
     const {type, id, setData} = props
+    console.log(type)
     let searchType = type===null?"":"type="+type+"&id="
     fetch(server+'data?'+searchType+id)
     .then(response => {if(response.ok) {return response.json()}throw response})
-    .then(results => {setData(results)})
+    .then(results => {
+        console.log(results)
+        setData(results)})
     .finally(() => (type===null?props.setLoading(true):void(0)))
+}
+
+export const fetchComments = props => () => {
+    const {id, setComments} = props;
+    fetch(server+'extract_comments')
+    .then(response => {if(response.ok) {return response.json()}throw response})
+    .then(results => {setComments(results)})
 }
 
 export const fetchSearchResults = props => () => {

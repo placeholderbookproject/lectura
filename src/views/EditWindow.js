@@ -14,6 +14,7 @@ export const InputWithLabel = (props) => {
         let newData = data
         newData[name] = value
         setEditData({...oldEdit, [name]:value})
+        //console.log(editData)
         setData({...data,[name]:value})
     }
     return (
@@ -83,9 +84,7 @@ export const EditBulk = props => {
 
 export const EditWindow = props => {
     const editInputs = props.cols; //list of dictionaries with (1) label key, (2) a list of input values (with type?), (3) explanation text
-    const {data, origData, type, id, additionalEdits, setData} = props
-    const idType = type.replace('s','')+"_id"
-    const [editData, setEditData] = useState({[idType]:id,...additionalEdits});
+    const {data, origData, type, id, additionalEdits, setData, editData, setEditData} = props
     useEffect(() => {
         let newEdit = editData
         setEditData({...newEdit,...additionalEdits})
@@ -158,31 +157,56 @@ export const EditSelect = props => {
 export const AuthorEdit = props => {
     const {origData, data, setData, setEdit, type, id, cols} = props
     const [additionalEdits, setAdditionalEdits] = useState({})
+    const idType = type.replace('s','')+"_id"
+    const [editData, setEditData] = useState({[idType]:id,...additionalEdits});
+    const [editKeys,setEditKeys] = useState(Object.keys(editData))
+    useEffect(() => {setEditKeys(Object.keys(editData))},[editData])
     const addAdditional = (e) => {
         const newData = e.target.value.split("\n").join(", ")
         setData({...data, [e.target.name]:newData})
         setAdditionalEdits({[e.target.name]:newData})
     }
+    const deleteEdit = (e) => {
+        const toRemove = e.target.value
+        //const newEdit = edit
+    }
     return (
         <>
             <EditWindow cols = {cols} data = {data} origData = {origData} setData = {setData}
-                setEdit = {setEdit} type = {type} id = {id} additionalEdits = {additionalEdits}>
-            <TableRow label = {labels.occupation + " "}>
-                <TextareaAutosize value = {data["author_positions"]!==undefined?data["author_positions"].split(", ").join("\n"):""}
-                    name = "author_positions"
-                    onChange = {(e) => addAdditional(e)}
-                />
-            </TableRow>
+                setEdit = {setEdit} type = {type} id = {id} additionalEdits = {additionalEdits} 
+                editData = {editData} setEditData = {setEditData}>
+                <TableRow label = {labels.occupation + " "}>
+                    <TextareaAutosize value = {data["author_positions"]!==undefined?data["author_positions"].split(", ").join("\n"):""}
+                        name = "author_positions"
+                        onChange = {(e) => addAdditional(e)}
+                    />
+                </TableRow>
             </EditWindow>
+            <table>
+                <tbody>
+                <tr><th>Key</th><th>Original</th><th>Edit</th></tr>
+            {editKeys.map((key) =>
+                (
+                <tr key={key}>
+                    <td>{key}</td>
+                    <td>{origData[key]}</td>
+                    <td>{editData[key]}</td>
+                    <button value = {key} onClick = {(e) => deleteEdit(e)}>X</button>
+                </tr>
+                )
+            )}{/*Map every original data with the edit if it exists*/}
+            </tbody>
+            </table>
         </>
     )
-
 }
 
 export const TextEdit = (props) => {
     const {origData, data, setData, setEdit, type, id, cols} = props
     const [additionalEdits,setAdditionalEdits] = useState({});
     const addedInputs = {'text_author':'author_name', 'author_id':'author_id'}
+    const idType = type.replace('s','')+"_id"
+    const [editData, setEditData] = useState({[idType]:id,...additionalEdits});
     return (
         <>
             <EditSelect placeholder = {data.text_author?data.text_author:"find an author in the system"}
@@ -190,7 +214,9 @@ export const TextEdit = (props) => {
                 label = "author_name" addedInputs = {addedInputs}
                 />
             <EditWindow cols = {cols} data = {data} origData = {origData} setData = {setData}
-                setEdit = {setEdit} type = {type} id = {id} additionalEdits = {additionalEdits}/>
+                setEdit = {setEdit} type = {type} id = {id} additionalEdits = {additionalEdits}
+                    editData = {editData} setEditData = {setEditData}
+                />
         </>
     )
 }
