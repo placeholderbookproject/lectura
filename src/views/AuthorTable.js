@@ -1,4 +1,5 @@
 import React, {/*useRef,*/ useState, useEffect} from 'react';
+import { useParams} from 'react-router-dom';
 import TableRow from './ViewRow.js';
 import labels from './labels.js';
 import AuthorTexts from './AuthorTexts.js';
@@ -11,21 +12,21 @@ const parse = require('html-react-parser');
 
 const AuthorTable = (props) => {
     const [wiki, setWiki] = useState("");
-    const [data, setData] = useState(props.author);
+    const [data, setData] = useState();
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState("");
     const [edit, setEdit] = useState(false);
+    const { id } = useParams();
     const editRowData = editRowAll["authors"];
-    const name = data.author_name!==undefined?data.author_name.split(","):"";
+    const name = data && data.author_name ? data.author_name.split(",") : "";
     const numNames = name.length;
-    const occupationList = data.author_positions!==undefined&&data.author_positions!==null?data.author_positions.split(", "):"";
+    const occupationList = data?.author_positions?.split(", ") ?? "";
     const mainOccupation = occupationList[0];
-    const author_id = props.author;
-    console.log(data)
-    useEffect(fetchDataEffect({type:'authors', id:props.author, setData:setData}) , [props.author]);
-    useEffect(() => {setData(props.author)},[props.author])
-    useEffect(fetchComments({author_id, setComments}),[props.author])
-    useEffect (searchWikipediaEffect({setWiki, edit, name:name[0], mainOccupation}),[name,mainOccupation, edit, props.author])
+    const author_id = id;
+    useEffect(fetchDataEffect({type:'authors', id:id, setData:setData}) , [id]);
+    useEffect(() => {setData(id)},[id])
+    useEffect(fetchComments({author_id, setComments}),[id])
+    useEffect (searchWikipediaEffect({setWiki, edit, name:name[0], mainOccupation}),[name,mainOccupation, edit, id])
     const setEditWindow = () => {!edit?setEdit(true):setEdit(false)}
     const handleAddComment = () => {
         const commentId = generateUniqueId(); // Generate a unique id for the new comment
@@ -57,7 +58,7 @@ const AuthorTable = (props) => {
                 </th>
             </tr>
             <tr><td>{numNames>1?labels.aka + name.slice(1,numNames).join(", "):<></>}</td></tr>
-            {!edit
+            {!edit&&data
                 ?<>
                     <TableRow label = {labels.nationality + " "}>{data.author_nationality}</TableRow>
                     <TableRow label = {labels.born + " "}>
@@ -80,11 +81,14 @@ const AuthorTable = (props) => {
                             :<></>}
                     </TableRow>
                     <TableRow> {typeof wiki !== Object && wiki !== ""? parse(wiki):<></>}</TableRow>
-                </>
-                :<AuthorEdit cols = {editRowData} data = {data} origData = {props.author} setData = {setData}
-                    type = "authors" id = {props.author}/>
+                    <TableRow label = {labels.author_q + " "}>
+                        <a href={data.author_q}>{data.author_q?data.author_q.replace("http://www.wikidata.org/entity/",""):""}</a>
+                    </TableRow>
+                </>:<></>}
+                {edit?<AuthorEdit cols = {editRowData} data = {data} origData = {id} setData = {setData}
+                    type = "authors" id = {id}/>:<></>
             }
-                <AuthorTexts edit = {edit} author_id = {props.author}/>
+                <AuthorTexts edit = {edit} author_id = {id}/>
                 <tr><td>
                     <input value={newComment} onChange={(e) => setNewComment(e.target.value)} />
                     <button onClick={handleAddComment}>Add Comment</button>

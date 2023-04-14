@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom';
+import {Link,useParams} from 'react-router-dom';
 import TableRow from './ViewRow.js'
 import labels from './labels.js'
 import {useState, useEffect} from 'react';
@@ -25,14 +25,14 @@ const TextEditionsTable = (props) => {
 }
 
 const TextTable = (props) => {
-    const [data, setData] = useState(props.text);
+    const [data, setData] = useState();
     const [edit, setEdit] = useState(false);
+    const { id } = useParams();
     const editRowData = editRowAll["texts"];
-    const title = data.text_title!==undefined?data.text_title.split(","):"";
+    const title = data&&data.text_title?data.text_title.split(","):"";
     const numTitles = title.length!==undefined?title.length:"";
-    console.log(data);
-    useEffect(fetchDataEffect({type:'texts', id:props.text, setData:setData}) , [props.text]);
-    useEffect(() => {setData(props.text)},[props.text])
+    useEffect(fetchDataEffect({type:'texts', id:id, setData:setData}) , [id]);
+    useEffect(() => {setData(id)},[id])
     const setEditWindow = () => {!edit?setEdit(true):setEdit(false)}
     return (
         <table id = "textTableWindow"><tbody>
@@ -44,7 +44,7 @@ const TextTable = (props) => {
                 </th>
             </tr>
             <tr><td>{(numTitles>1)?labels.aka + title.slice(1,numTitles).join(", "):""}</td></tr>
-            {!edit
+            {!edit&&data
             ?<>
                 <TableRow label = {labels.author_name + " "} >
                     {data.author_id !== null
@@ -81,11 +81,19 @@ const TextTable = (props) => {
                     </TableRow>
                     :<></>
                     }
+                    <TableRow label = {labels.text_q + " "}>
+                        <a href={data.text_q}>{data.text_q!==undefined?data.text_q.replace("http://www.wikidata.org/entity/",""):""}</a>
+                    </TableRow>
+                    <TableRow label = {labels.text_author_q + " "}>
+                        <a href={data.text_author_q}>{data.text_author_q!==undefined?data.text_author_q.replace("http://www.wikidata.org/entity/",""):""}</a>
+                    </TableRow>
             </>
-            :<>
+            :<></>}
+            {edit?<>
                 <TextEdit cols = {editRowData} data = {data} origData = {props.text} setData = {setData}
                     type = "texts" id = {props.text} />
             </>
+            :<></>
             }
             {/*<TextEditionsTable text_id = {props.text} />*/}
         </tbody></table>

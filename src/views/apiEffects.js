@@ -1,10 +1,9 @@
 const server = 'http://127.0.0.1:8000/'
 
 export const fetchDataEffect = props => () => {
-    const {type, id, setData} = props
-    console.log(type)
-    let searchType = type===null?"":"type="+type+"&id="
-    fetch(server+'data?'+searchType+id)
+    const {type, id, setData, by} = props
+    let search = type===null?"":"type="+type+"&id="+id+(by!==null?"&by="+by:"")
+    fetch(server+'data?'+search)
     .then(response => {if(response.ok) {return response.json()}throw response})
     .then(results => {
         console.log(results)

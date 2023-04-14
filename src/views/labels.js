@@ -65,6 +65,9 @@ const labels = {
     importDataBtn : 'Import',
     adminBtn : 'Admin',
     latestAdditions : 'Latest Additions',
+    author_q : 'Q Number (wikidata)',
+    text_q : 'Q Number (wikidata)',
+    text_author_q : 'Author Q Number',
     }
     
     export default labels;

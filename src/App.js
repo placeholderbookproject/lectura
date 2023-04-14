@@ -21,8 +21,6 @@ const RouteList = (props) => {
   //const dataList = props.data
   let searchPlaceholder = {};
   searchPlaceholder.texts = [{ "text_id": 1 }];
-  const authorArray = Array.from({ length: 400000 }, (_, index) => index);
-  const textArray = Array.from({ length: 89281}, (_,index) => index);
   return (
     <BrowserRouter>
     <Routes>
@@ -32,22 +30,19 @@ const RouteList = (props) => {
         {/*<IntroPage data = {dataList}/>*/}
         </>
         }/>
-      {textArray.map((text) =>
-        <Route path ={"/text/"+text} element = { //importData.indexOf(row)
+        <Route path ={"/text/:id"} element = {
           <>
             <SiteHeader data = {searchPlaceholder}/>
-            <TextTable text={text}/>
+            <TextTable/>
           </>
-        } key = {text}/>
-      )}
-      {authorArray.map((author) => 
-        <Route path={"/author/"+author} element={ //Adds a link for every author
+        }/>
+      
+        <Route path={"/author/:id"} element={ //Adds a link for every author
           <div>
           <SiteHeader data = {searchPlaceholder} />
-          <AuthorTable author={author}/>
+          <AuthorTable/>
           </div>
-          } key = {author}>
-        </Route>)}
+          }/>
       {/*dataList["editions"].map((edition) => 
         <Route path = {"/text/"+edition.text_id+"/edition/"+edition.edition_id} key = {edition.edition_id}
           element={
@@ -86,17 +81,9 @@ const RouteList = (props) => {
 }
 
 const App = () => {
-  //const [data,setData] = useState({})
-  //const [loading, setLoading] = useState(false)
-  //useEffect(fetchDataEffect({setData, setLoading, type:null}),[])
   return (
     <div>
-    {/*loading?*/
-
-    <RouteList/>
-
-    //:<></>
-    }
+      <RouteList/>
     </div>
   );
 }

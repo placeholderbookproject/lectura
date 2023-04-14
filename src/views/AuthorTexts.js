@@ -17,7 +17,7 @@ const AuthorTexts = (props) => {
     const [textsData,setTextsData] = useState([]);
     const [searchResults, setSearchResults] = useState();
     const [query, setQuery] = useState("");
-    useEffect (fetchDataEffect({setData:setTextsData, id:props.author_id, type:'texts'}),[props.author_id])
+    useEffect (fetchDataEffect({setData:setTextsData, id:props.author_id, type:'texts', by: "author"}),[props.author_id])
     useEffect (fetchSearchResults({setSearchResults,query, type:"texts"}),[query])  
     const addWork = () => {setTextsData([...textsData, {text_id: '',label: 'New row'}])}
     const removeWork = (e,id) => {
