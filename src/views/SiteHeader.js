@@ -8,7 +8,7 @@ import {fetchSearchResults} from './apiEffects.js'
 import {AddNew} from './AddNew.js'
 import LoginWindow from './Login.js'
 
-const MainSearch = (props) => {
+const MainSearch = () => {
     const [enterSearch,setEnterSearch] = useState(false);
     const [query, setQuery] = useState("");
     const [APIResults,setAPIResults] = useState();
@@ -25,35 +25,27 @@ const MainSearch = (props) => {
         <div style={{width: '500px', position:'relative', margin:'0 auto',clear: 'left', height:'auto',zIndex:0,}}>
           <Select 
             placeholder="Search for an author or text"
-            options={APIResults!==undefined?(APIResults):props.data.texts.slice(1,1)}
+            options={APIResults!==undefined?(APIResults):[{ "text_id": 1 }]}
             onInputChange={testSelect}
             onChange={searchSelect}
             menuPortalTarget={document.body} 
             styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
-            getOptionValue = {(option) =>
-                (option.edition_id===undefined)
-                  ?option.text_id === undefined
-                    ?option.author_id:option.text_id
-                    :option.edition_id
-                    }
           />
         </div>
       {(enterSearch) 
-        ?<Navigate to={(selectedValue.author_id !== undefined && selectedValue.text_id===undefined) 
-                        ?("/author/"+selectedValue.author_id):("/text/"+selectedValue.text_id)}
-          />
+        ?<Navigate to={"/"+selectedValue.type+"/"+selectedValue.value}/>
         :(<></>)}
     </>
     )
 }
 
-const SiteHeader = (props) => {
+const SiteHeader = () => {
   return (
       <Container className = "flexbox-container" 
           style={{backgroundColor: '#dedbdb', position: 'sticky', borderBottom: '1.5px solid #8a8a8a', top: 0,}}>
         <Navbar style = {{backgroundColor: '#dedbdb', paddingBottom: 5,paddingTop: 5,}}>{/*https://retool.com/blog/building-a-react-navbar/ */}
             <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/"}><button className="homeBtn">{labels.homeBtn}</button></Link>
-            <MainSearch data = {props.data}/>
+            <MainSearch />
             <Link to = {"/search"} style={{paddingLeft: "1rem",paddingRight: "1rem"}}><button className="detailedSearchBtn">{labels.detailedSearchBtn}</button></Link>
               <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/import"}><button className="importBtn">{labels.importDataBtn}</button></Link>{/*className="importBtn"*/}
               <AddNew label = "+"/>

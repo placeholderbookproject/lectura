@@ -1,7 +1,7 @@
 import './App.css';
 import AuthorTable from './views/AuthorTable.js';
 import TextTable from './views/TextTable.js';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import SiteHeader from './views/SiteHeader.js';
 import SearchDetailed from './views/Search.js';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
@@ -17,37 +17,33 @@ import {IntroPage} from './views/IntroPage.js';
 ];
 */
 
-const RouteList = (props) => {
-  //const dataList = props.data
-  let searchPlaceholder = {};
-  searchPlaceholder.texts = [{ "text_id": 1 }];
+const RouteList = () => {
   return (
     <BrowserRouter>
     <Routes>
       <Route path = {"/"} element = {
         <>
-        <SiteHeader data = {searchPlaceholder} />
+        <SiteHeader/>
         {/*<IntroPage data = {dataList}/>*/}
         </>
         }/>
         <Route path ={"/text/:id"} element = {
           <>
-            <SiteHeader data = {searchPlaceholder}/>
+            <SiteHeader/>
             <TextTable/>
           </>
         }/>
-      
-        <Route path={"/author/:id"} element={ //Adds a link for every author
+        <Route path={"/author/:id"} element={
           <div>
-          <SiteHeader data = {searchPlaceholder} />
-          <AuthorTable/>
+            <SiteHeader/>
+            <AuthorTable/>
           </div>
           }/>
       {/*dataList["editions"].map((edition) => 
         <Route path = {"/text/"+edition.text_id+"/edition/"+edition.edition_id} key = {edition.edition_id}
           element={
           <>
-            <SiteHeader data = {searchPlaceholder}/>
+            <SiteHeader/>
             <EditionTable edition = {edition}/>
           </>
           }
@@ -56,21 +52,21 @@ const RouteList = (props) => {
       )*/}
     <Route path = {"/search"} element = {
       <>
-      <SiteHeader data = {searchPlaceholder}/>
+      <SiteHeader/>
       {/*<SearchDetailed data ={dataList}/>*/}
       </>
       }                
     />
     <Route path = {"/import"} element = {
         <>
-          <SiteHeader data = {searchPlaceholder}/>
+          <SiteHeader/>
           {/*<ImportWindow/>*/}
         </>
       }
     />
     <Route path = {"/admin"} element = {
       <>
-        <SiteHeader data = {searchPlaceholder}/>
+        <SiteHeader/>
         {/*<Admin/>*/}
       </>
       }

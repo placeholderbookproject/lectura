@@ -27,7 +27,7 @@ export const fetchSearchResults = props => () => {
               if (response.ok) {return response.json()} throw response;})
           .then (data => {(searchType!=="")
                             ?setSearchResults(data[type])
-                            :setSearchResults(data["texts"].concat(data["authors"]))
+                            :setSearchResults(data)
                         })
         }
     else {void(0)}
@@ -36,7 +36,7 @@ export const fetchSearchResults = props => () => {
 export const searchWikipediaEffect = props =>  () => {
     const {name, mainOccupation, setWiki, edit} = props
     const searchWikipedia = async () => {
-        const searchQuery = name+ " " + mainOccupation;
+        const searchQuery = name + " " + mainOccupation;
         const endpoint = `https://en.wikipedia.org/w/api.php?action=query&list=search&prop=info&inprop=url&utf8=&format=json&origin=*&srlimit=20&srsearch=${searchQuery}`;
         const response = await fetch(endpoint);
         if (!response.ok) {throw Error(response.statusText);}
