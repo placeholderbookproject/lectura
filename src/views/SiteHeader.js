@@ -25,7 +25,7 @@ const MainSearch = () => {
         <div style={{width: '500px', position:'relative', margin:'0 auto',clear: 'left', height:'auto',zIndex:0,}}>
           <Select 
             placeholder="Search for an author or text"
-            options={APIResults!==undefined?(APIResults):[{ "text_id": 1 }]}
+            options={APIResults!==undefined?(APIResults):[]}
             onInputChange={testSelect}
             onChange={searchSelect}
             menuPortalTarget={document.body} 

@@ -24,7 +24,7 @@ const RouteList = () => {
       <Route path = {"/"} element = {
         <>
         <SiteHeader/>
-        {/*<IntroPage data = {dataList}/>*/}
+        {<IntroPage/>}
         </>
         }/>
         <Route path ={"/text/:id"} element = {
