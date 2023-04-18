@@ -19,15 +19,11 @@ export const fetchComments = props => () => {
 export const fetchSearchResults = props => () => {
     const {setSearchResults, query, type, filters} = props
     const searchType = type===undefined?"":"&searchtype="+type
-    console.log(query)
     if(query!==undefined && query.length>3) {
           fetch(server+'search?query='+query+searchType+"&filters="+JSON.stringify(filters))
           .then(response => {
               if (response.ok) {return response.json()} throw response;})
-          .then (data => {(searchType!=="")
-                            ?setSearchResults(data[type])
-                            :setSearchResults(data)
-                        })
+          .then (data => {setSearchResults(data)})
         }
     else {void(0)}
 }

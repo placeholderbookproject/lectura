@@ -15,45 +15,37 @@ import { fetchSearchResults } from './apiEffects.js';
 
 const CreateList = (props) => {
     const values = props.data
-    console.log(values)
+    const idType = props.type=="authors"?"author_id":"text_id"
     return (
         Object.keys(values).map((value) => {
             if (value === "Author") {
-                return <td key={values[value]+values["author_id"]}><Link to={"/author/"+values["author_id"]}>{values["Author"]}</Link></td>;
+                return <td key={value+values[value]+values["author_id"]}><Link to={"/author/"+values["author_id"]}>{values["Author"]}</Link></td>;
             } else if (value === "Title") {
-                return <td key={values[value]+values["text_id"]}><Link to={"/text/"+values["text_id"]}>{values["Title"]}</Link></td>;
-            } else if (value==="author_id" || value==="text_id") {
-                return <React.Fragment key={value} />;
-            }
-            else if (values[value]===null){
-                return <td key={value}></td>;
-            }
-            else {
-                return <td key={values[value]+values["author_id"]}>{values[value]}</td>;
-            }
-        })
-    );    
+                return <td key={value+values[value]+values["text_id"]}><Link to={"/text/"+values["text_id"]}>{values["Title"]}</Link></td>;
+            } 
+            else if (value==="author_id" || value==="text_id") {return null;}
+            else if (values[value]===null){return <td key={value+values[idType]}></td>;}
+            else {return <td key={value+values[value]+values[idType]}>{values[value]}</td>;}
+        }));    
  }
 
 const SearchDetailed = (props) => {
     let [searchParams,setSearchParams] = useSearchParams();
     const [searchType, setSearchType] = useState("authors");
-    const [filters, setFilters] = useState(options["authors"].slice(0,3));
+    const [filters, setFilters] = useState(options["authors"].slice(0,6));
     const [search, setSearch] = useState("");
-    const [startSearch, setStartSearch] = useState(false);
-    let [searchData,setSearchData] = useState([]); 
     let [searchResults,setSearchResults] = useState([]);
     const [searchOrder, setSearchOrder] = useState("asc");
     const changeVersion = (searchType) =>  {
         setSearchResults([]);
         const newType = searchType==="authors"?"texts":"authors"
         setSearchType(newType);
-        setSearchData([]);
-        setFilters(options[newType].slice(0,3));
+        setFilters(options[newType].slice(0,6));
         setSearch("")
     }
     const searchFunction = (searchVar = search) => {
         const searchInput = searchVar;
+        setSearchParams({'query':searchInput,'type':searchType/*, filter:JSON.stringify(filters)*/})
         fetchSearchResults({ setSearchResults, query:searchInput, type:searchType, filters})();
     }
     const onEnter = (e) => {if(e.keyCode === 13){searchFunction()}}
@@ -65,9 +57,7 @@ const SearchDetailed = (props) => {
         if (searchOrder==="asc"){setSearchOrder("desc")}
         else {setSearchOrder("asc")}
         let sortedData = searchResults;
-        const col = event.currentTarget.textContent;
-        const filtersWithIndex = filters
-        const colValue = filtersWithIndex.find((e) => e.label.includes(col)).value
+        const colValue = event.currentTarget.textContent;
         const compare = (a,b) => {
             b = b[colValue]
             a = a[colValue]
@@ -83,15 +73,18 @@ const SearchDetailed = (props) => {
         sortedData = sortedData.sort(compare)
         setSearchResults(sortedData);
     }
-    useEffect ( () => {//Search if a search query parameter exists in the url
+    useEffect (() => {//Search if a search query parameter exists in the url
         const searchQuery = [...searchParams];
         if(searchQuery.length>0 && searchQuery[0][0]==="query" && searchQuery[0][1] !== ""){
-            setStartSearch(true);
             searchFunction(searchQuery[0][1]);
             setSearch(searchQuery[0][1]);
         }
-    },[startSearch] // eslint-disable-line react-hooks/exhaustive-deps
+    },[searchParams] // eslint-disable-line react-hooks/exhaustive-deps
     )
+    useEffect(() => {
+        setSearchParams({'query':search,'type':searchType})
+        fetchSearchResults({ setSearchResults, query:search, type:searchType, filters})();
+    },[filters])
     return (
       <div className = "detailedSearch">
         <div id = "detailedSearchHeader">
@@ -131,7 +124,7 @@ const SearchDetailed = (props) => {
         </div>
           <table id = "detailedSearchResults"><tbody>
                 <tr>
-                    {filters.length>0 && startSearch 
+                    {filters.length>0
                     ? filters.map((filter) => (
                     <Tooltip sx = {{fontSize:15}}key={filter.value} title="Click to sort" placement="top" arrow followCursor>
                         <th onClick={sortFunction}>{filter.label}</th>
@@ -141,7 +134,7 @@ const SearchDetailed = (props) => {
                 {search.length>0 
                 ?(((searchResults.length>100)?searchResults.slice(0,100):searchResults).map //Limitation to first 100 values
                     (result => (
-                        <tr key = {result.id}><CreateList data = {result}/></tr>)))
+                        <tr key = {searchType === "author"?result.author_id:result.text_id}><CreateList data = {result} type = {searchType}/></tr>)))
                 :(<></>)}
           </tbody></table>
       </div>
