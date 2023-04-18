@@ -11,68 +11,50 @@ import FormHelperText from '@mui/material/FormHelperText';
 import Select from 'react-select';
 import {Link, useSearchParams} from 'react-router-dom';
 import {options} from './filters.js';
+import { fetchSearchResults } from './apiEffects.js';
 
 const CreateList = (props) => {
     const values = props.data
-    const filters = props.filters;
-    const differentiateFilter = (filter) => {
-        const joinedValues = values[filter["value"]]
-        if (filter.value === "text_title" | filter.value === "author_name") {
-            if (filter.value === "text_title") {return(<td key={filter["label"]+joinedValues}><Link to = {"/text/"+values.text_id}>{joinedValues}</Link></td>)}
-            else {return (<td key= {filter["label"]+joinedValues}><Link to = {"/author/"+values.author_id}>{joinedValues}</Link></td>)}
-        }
-        else {return(<td key= {filter["label"]+joinedValues}>{joinedValues}</td>)}
-    }
-    return (filters.map((filter) => (differentiateFilter(filter))))
-}
+    console.log(values)
+    return (
+        Object.keys(values).map((value) => {
+            if (value === "Author") {
+                return <td key={values[value]+values["author_id"]}><Link to={"/author/"+values["author_id"]}>{values["Author"]}</Link></td>;
+            } else if (value === "Title") {
+                return <td key={values[value]+values["text_id"]}><Link to={"/text/"+values["text_id"]}>{values["Title"]}</Link></td>;
+            } else if (value==="author_id" || value==="text_id") {
+                return <React.Fragment key={value} />;
+            }
+            else if (values[value]===null){
+                return <td key={value}></td>;
+            }
+            else {
+                return <td key={values[value]+values["author_id"]}>{values[value]}</td>;
+            }
+        })
+    );    
+ }
 
 const SearchDetailed = (props) => {
     let [searchParams,setSearchParams] = useSearchParams();
-    const data = props.data;
     const [searchType, setSearchType] = useState("authors");
     const [filters, setFilters] = useState(options["authors"].slice(0,3));
     const [search, setSearch] = useState("");
     const [startSearch, setStartSearch] = useState(false);
-    let [searchData,setSearchData] = useState(data["authors"]); 
+    let [searchData,setSearchData] = useState([]); 
     let [searchResults,setSearchResults] = useState([]);
     const [searchOrder, setSearchOrder] = useState("asc");
     const changeVersion = (searchType) =>  {
         setSearchResults([]);
         const newType = searchType==="authors"?"texts":"authors"
         setSearchType(newType);
-        setSearchData(data[newType]);
+        setSearchData([]);
         setFilters(options[newType].slice(0,3));
         setSearch("")
     }
     const searchFunction = (searchVar = search) => {
         const searchInput = searchVar;
-        let results = [];
-        if (filters.length>0 && searchInput.length>0){
-            setSearchParams({'query':searchInput,'type':searchType})
-            setStartSearch(true);
-            let dataSearch = searchData.slice(0,searchData.len);
-            const searchElements = searchInput.toLowerCase().split(" ");
-            for (let j = 0; j<searchElements.length;j++) {
-                let resultNumber = 0, element = searchElements[j];
-                for (let n = 0; n<dataSearch.length;n++ in dataSearch){
-                    const dataElement = dataSearch[n];
-                    let found = false;
-                    for (let i = 0; i<filters.length;i++) {
-                        if(found){continue};
-                        const filter = filters[i];
-                        const toSearch = String(dataElement[filter["value"]]).toLowerCase();
-                        if (toSearch.includes(element)) {
-                            resultNumber += 1;
-                            dataElement["#"] = resultNumber;
-                            results.push(dataElement);
-                            found = true;
-                        }
-                    }
-                }
-                dataSearch = results
-            }
-            setSearchResults(results);
-        }
+        fetchSearchResults({ setSearchResults, query:searchInput, type:searchType, filters})();
     }
     const onEnter = (e) => {if(e.keyCode === 13){searchFunction()}}
     const clearSearch = () => {
@@ -158,7 +140,8 @@ const SearchDetailed = (props) => {
                 </tr>
                 {search.length>0 
                 ?(((searchResults.length>100)?searchResults.slice(0,100):searchResults).map //Limitation to first 100 values
-                    (result => (<tr key = {result.id}><CreateList data = {result} filters = {filters}/></tr>)))
+                    (result => (
+                        <tr key = {result.id}><CreateList data = {result}/></tr>)))
                 :(<></>)}
           </tbody></table>
       </div>

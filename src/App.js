@@ -8,7 +8,6 @@ import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import EditionTable from './views/EditionTable.js';
 import ImportWindow from './views/Import.js';
 import Admin from './views/Admin.js';
-import { fetchDataEffect } from './views/apiEffects.js';
 import {IntroPage} from './views/IntroPage.js';
 
 //Options for language dropdown
@@ -23,8 +22,8 @@ const RouteList = () => {
     <Routes>
       <Route path = {"/"} element = {
         <>
-        <SiteHeader/>
-        {<IntroPage/>}
+          <SiteHeader/>
+          <IntroPage/>
         </>
         }/>
         <Route path ={"/text/:id"} element = {
@@ -53,7 +52,7 @@ const RouteList = () => {
     <Route path = {"/search"} element = {
       <>
       <SiteHeader/>
-      {/*<SearchDetailed data ={dataList}/>*/}
+      <SearchDetailed/>
       </>
       }                
     />
@@ -77,11 +76,7 @@ const RouteList = () => {
 }
 
 const App = () => {
-  return (
-    <div>
-      <RouteList/>
-    </div>
-  );
+  return (<div><RouteList/></div>);
 }
 
 export default App;

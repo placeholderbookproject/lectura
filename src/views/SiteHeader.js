@@ -11,21 +11,25 @@ import LoginWindow from './Login.js'
 const MainSearch = () => {
     const [enterSearch,setEnterSearch] = useState(false);
     const [query, setQuery] = useState("");
-    const [APIResults,setAPIResults] = useState();
+    const [searchResults,setSearchResults] = useState();
     const [selectedValue, setSelectedValue] = useState();
     useEffect (()=> {setEnterSearch(false);},[enterSearch]);
-    useEffect (fetchSearchResults({setSearchResults:setAPIResults,query}),[query])
     const searchSelect = (event) => {      
       setSelectedValue(event);
       setEnterSearch(true);
     }  
-    const testSelect = (event) => {if (event.length>3){setQuery(event);}}
+    const testSelect = (event) => {
+      if (event.length>3){
+        setQuery(event);
+        fetchSearchResults({ setSearchResults, query})();
+      }
+    }
     return (
       <>
         <div style={{width: '500px', position:'relative', margin:'0 auto',clear: 'left', height:'auto',zIndex:0,}}>
           <Select 
             placeholder="Search for an author or text"
-            options={APIResults!==undefined?(APIResults):[]}
+            options={searchResults}
             onInputChange={testSelect}
             onChange={searchSelect}
             menuPortalTarget={document.body} 

@@ -5,9 +5,7 @@ export const fetchDataEffect = props => () => {
     let search = type===null||type===undefined?"":"type="+type+"&id="+id+(by!==null?"&by="+by:"")
     fetch(server+'data?'+search)
     .then(response => {if(response.ok) {return response.json()}throw response})
-    .then(results => {
-        console.log(results)
-        setData(results)})
+    .then(results => {setData(results)})
     .finally(() => (type===null?props.setLoading(true):void(0)))
 }
 
@@ -19,10 +17,11 @@ export const fetchComments = props => () => {
 }
 
 export const fetchSearchResults = props => () => {
-    const {setSearchResults, query, type} = props
-    const searchType = type===undefined?"":"&type="+type
+    const {setSearchResults, query, type, filters} = props
+    const searchType = type===undefined?"":"&searchtype="+type
+    console.log(query)
     if(query!==undefined && query.length>3) {
-          fetch(server+'search?query='+query+searchType)
+          fetch(server+'search?query='+query+searchType+"&filters="+JSON.stringify(filters))
           .then(response => {
               if (response.ok) {return response.json()} throw response;})
           .then (data => {(searchType!=="")
