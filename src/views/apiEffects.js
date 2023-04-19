@@ -49,6 +49,54 @@ export const searchWikipediaEffect = props =>  () => {
     !edit?searchWikipedia():void(0);
 }
 
+export const wikidataEffect = props => () => {
+    const {type, q_number, setWikidata} = props
+    const headers = { Accept: "application/sparql-results+json" };
+    let query = `
+    SELECT DISTINCT ?author ?authordesc ?authorLabel ?genderLabel
+    ?birthdate (YEAR(?birthdate) AS ?birthyear) (MONTH(?birthdate) AS ?birthmonth) (DAY(?birthdate) AS ?birthday) ?birthplace ?birthplaceLabel ?birthplacecountryLabel
+    ?deathdate (YEAR(?deathdate) as ?deathyear) (MONTH(?deathdate) as ?deathmonth) (day(?deathdate) as ?deathday) 
+    ?deathplace ?deathplaceLabel ?deathplacecountry ?deathplacecountryLabel
+    ?floruit
+    ?occupationsLabel
+    ?languages
+    ?spouseLabel
+    ?imageLabel
+    ?nativenameLabel
+    #?descriptionsourceLabel
+    WHERE
+    {
+      VALUES ?author {wd:q_number}
+      ?author schema:description ?authordesc.
+      FILTER(LANG(?authordesc) = "en").
+      OPTIONAL {?author wdt:P569 ?birthdate.}
+      OPTIONAL {?author wdt:P19 ?birthplace.
+               OPTIONAL {?birthplace wdt:P17 ?birthplacecountry.}
+               }
+      OPTIONAL {?author wdt:P570 ?deathdate.}
+      OPTIONAL {?author wdt:P20 ?deathplace.
+               OPTIONAL {?deathplace wdt:P17 ?deathplacecountry.}
+               }
+      OPTIONAL {?author wdt:P21 ?gender}
+      OPTIONAL {?author wdt:P1412 ?languages.}
+      OPTIONAL {?author wdt:P6886 ?languages.}
+      OPTIONAL {?author wdt:P1317 ?floruit.}
+      OPTIONAL {?author wdt:P106 ?occupations.}
+      OPTIONAL {?author wdt:P26 ?spouse.}
+      OPTIONAL {?author wdt:P18 ?image.}
+      OPTIONAL {?author wdt:P1559 ?nativename.}
+      #OPTIONAL {?author wdt:P1343 ?descriptionsource.}
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+    }
+      `;
+    query = query.replace("q_number",q_number);
+    const url = `https://query.wikidata.org/sparql?query=${encodeURIComponent(query)}`;
+    fetch(url, {headers})
+    .then(response => {
+        if (response.ok) {return response.json()} throw response;})
+    .then (data => {setWikidata(data)})       
+}
+
 export const uploadEdits = (props) => {
     const {editData, id, type, setEditUploaded} = props
     const requestOptions = {

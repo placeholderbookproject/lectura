@@ -3,15 +3,17 @@ import { useParams} from 'react-router-dom';
 import TableRow from './ViewRow.js';
 import labels from './labels.js';
 import AuthorTexts from './AuthorTexts.js';
-import {searchWikipediaEffect, fetchComments, fetchDataEffect} from './apiEffects.js';
+import {searchWikipediaEffect, fetchComments, fetchDataEffect, wikidataEffect} from './apiEffects.js';
 import {checkStr, transformYear} from './formattingFuncs.js';
 import {AuthorEdit} from './EditWindow.js';
 import {editRowAll} from './filters.js';
 import { Comment } from './Comments.js';
+import { wikiTranslations } from './filters.js';
 const parse = require('html-react-parser');
 
 const AuthorTable = (props) => {
     const [wiki, setWiki] = useState("");
+    const [wikidata, setWikidata] = useState();
     const [data, setData] = useState();
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState("");
@@ -24,6 +26,12 @@ const AuthorTable = (props) => {
     const mainOccupation = occupationList[0];
     const author_id = id;
     useEffect(fetchDataEffect({type:'authors', id:id, setData:setData}) , [id]);
+    useEffect(() => 
+        {
+           const author_q = data&&(data.author_q!==undefined)?data.author_q.replace("http://www.wikidata.org/entity/",""):null; 
+            author_q?wikidataEffect({q_number:author_q, setWikidata})():console.log("no author_q");
+        }
+        ,[data])
     useEffect(() => {setData(id)},[id])
     useEffect(fetchComments({author_id, setComments}),[id])
     useEffect (searchWikipediaEffect({setWiki, edit, name:name[0], mainOccupation}),[name,mainOccupation, edit, id])
@@ -49,6 +57,7 @@ const AuthorTable = (props) => {
         return Math.random().toString(36).substr(2, 9);
       };
     return (
+        <div>
         <table id = "authorTableWindow"><tbody>
             <tr className = "Header">
                 <th>{name[0]}
@@ -96,8 +105,55 @@ const AuthorTable = (props) => {
                 {comments.map((comment) => 
                     (<tr><td><Comment comment={comment}/></td></tr>
                 ))}
+                {/*wikidata?reformatWikidata(wikidata):null*/}
             </tbody></table>
+            {wikidata?<AuthorWikiTable data = {wikidata}/>:<></>}
+            </div>
     );
   }
 
-  export default AuthorTable;
+const AuthorWikiTable = (props) => {
+    const reformatWikidata = (wiki) => {
+        const columns = wiki.head.vars;
+        let reformData = {};
+        for (let i = 0; i<columns.length; i++) {
+            let col = columns[i], dataPoint = "";
+            const resultLength = wiki.results.bindings.length
+            for (let j = 0;j<resultLength;j++){
+                const row = wiki.results.bindings[j]
+                if (Object.keys(row).includes(col)){
+                    const val = row[col].value;
+                    if(val===undefined) {continue}
+                    else if (j ===0){dataPoint = dataPoint+val}
+                    else if (!dataPoint.includes(val)&&j!==resultLength) {dataPoint = dataPoint + ", " + val }
+                    else if (!dataPoint.includes(val)&&j===resultLength){dataPoint = dataPoint + ", " + val}
+                } else {dataPoint = null}
+            }
+            reformData[col] = dataPoint;
+        } return reformData
+    };
+    const data = reformatWikidata(props.data);
+    const transl = wikiTranslations;
+    return (
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Label</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.keys(data).map((item) => (
+                <tr key={item}>
+                  <td>{transl[item]}</td>
+                  <td>{data[item]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+};
+
+export default AuthorTable;

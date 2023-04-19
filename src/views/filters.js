@@ -65,4 +65,32 @@ const editRowEditions = [
 
 export const editRowAll = {texts: editRowTexts, authors: editRowAuthors, editions: editRowEditions}
 
+export const wikiTranslations = {
+    'author':'Q Number'
+,'authordesc':'Description'
+,'authorLabel':'Name'
+,'genderLabel':'Gender'
+,'birthdate':'Birth Date'
+,'birthyear':'Birth Year'
+,'birthmonth':'Birth Month'
+,'birthday':'Birth Day'
+,'birthplace':'Birth Place Q'
+,'birthplaceLabel':'Birth Place'
+,'birthplacecountryLabel':'Birth Place Country'
+,'deathdate':'Death Date'
+,'deathyear':'Death Year'
+,'deathmonth':'Death Month'
+,'deathday':'Death Day'
+,'deathplace':'Death Place Q'
+,'deathplaceLabel':'Death Place'
+,'deathplacecountry':'Death Place Country Q'
+,'deathplacecountryLabel':'Death Place Country'
+,'floruit':'Floruit'
+,'occupationsLabel':'Occupations'
+,'languages':'Languages'
+,'spouseLabel':'Spouse'
+,'imageLabel':'Image'
+,'nativenameLabel':'Native Name'
+}
+
 //export default options
