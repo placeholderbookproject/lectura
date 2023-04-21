@@ -95,5 +95,7 @@ WHERE
     }
   }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } 
+  BIND(COALESCE(YEAR(?publication), YEAR(?dop), YEAR(?inception), 9999) as ?orderDate)
 }
+ORDER BY ASC(?orderDate)
 `

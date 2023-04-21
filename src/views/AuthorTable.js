@@ -3,7 +3,7 @@ import { useParams} from 'react-router-dom';
 import TableRow from './ViewRow.js';
 import labels from './labels.js';
 import AuthorTexts from './AuthorTexts.js';
-import {searchWikipediaEffect, fetchComments, fetchDataEffect, wikidataEffect} from './apiEffects.js';
+import {searchWikipediaEffect, fetchComments, fetchDataEffect, wikidataEffect, archiveEffect} from './apiEffects.js';
 import {checkStr, transformYear, reformatWikidata, reformatWikitexts, dateCoalesce} from './formattingFuncs.js';
 import {AuthorEdit} from './EditWindow.js';
 import {editRowAll} from './filters.js';
@@ -50,7 +50,8 @@ const AuthorTable = (props) => {
         return Math.random().toString(36).substr(2, 9);
       };
     return (
-        <div>
+        <div style = {{display:'inline-flex'}}>
+        {data&&!data.author_q&&
         <table id = "authorTableWindow"><tbody>
             <tr className = "Header">
                 <th>{name[0]}
@@ -99,6 +100,7 @@ const AuthorTable = (props) => {
                     (<tr><td><Comment comment={comment}/></td></tr>
                 ))}
             </tbody></table>
+            }
             {data && data.author_q?<AuthorWikiTable data = {data.author_q.replace("http://www.wikidata.org/entity/","")}/>:<></>}
             </div>
     );
@@ -112,21 +114,21 @@ const AuthorWikiTable = (props) => {
         = wikidata?reformatWikidata(wikidata):{};
     return (
         <div className="person-info">
-            <h2>Wikidata</h2>
+            {/*<h2>Wikidata</h2>*/}
             <h2><a href={author&&author}>{authorLabel}</a></h2>
             {nativenameLabel&&<p>{`Native Name: ${nativenameLabel}`}{genderLabel&&` (${genderLabel})`}</p>}
             {imageLabel && <img src={imageLabel} style={{ width: "200px", height: "200px", objectFit: "cover" }} />}
             {authordesc&&<p>{authordesc}</p>}
-            {birthyear&&<p>{`Born: `+transformYear(birthyear) + ` (${birthplaceLabel}` 
+            {birthyear&&<p><span style = {{fontWeight:600}}>Born </span>{``+transformYear(birthyear) + ` (${birthplaceLabel}` 
                     + `, ${birthplacecountryLabel})`}</p>}
             {deathyear&&
-                <p>{`Died: `+transformYear(deathyear) + ` (${deathplaceLabel}` + `, ${deathplacecountryLabel})`}
+                <p><span style = {{fontWeight:600}}>Died </span>{``+transformYear(deathyear) + ` (${deathplaceLabel}` + `, ${deathplacecountryLabel})`}
                 </p>}
             {!(birthdate||deathdate)&&floruit&&
                 <p>{`Floruit: ${floruit}`}</p>
             }
-            {occupationsLabel&& <p>{`Occupations: ${occupationsLabel}`}</p>}
-            {languagesLabel&&<p>{`Languages: ${languagesLabel}`}</p>}
+            {occupationsLabel&& <p><span style = {{fontWeight:600}}>Occupations </span>{`${occupationsLabel}`}</p>}
+            {languagesLabel&&<p><span style = {{fontWeight:600}}>Languages </span>{`${languagesLabel}`}</p>}
             {wikidata?<TextsWikiTable data={props.data} name={authorLabel}/>:<></>}
         </div>
       );
@@ -139,28 +141,51 @@ const TextsWikiTable = (props) => {
     const textsReform = wikidata?reformatWikitexts(wikidata):null;
     return (
     <div>
-        {textsReform&&textsReform.length>0&&<h3>{props.name+"'s Texts "}
-            <button onClick = {() => setExpandTexts(!expandTexts)}>{expandTexts?"Collapse":"Show All"}</button></h3>}
-        {textsReform&&textsReform.slice(0,(!expandTexts?5:textsReform.length)).map((text) => <SubTextsTable data={text} key={text.book}/>)}
+        {textsReform&&textsReform.length>0&&<h3>{props.name+"'s Texts "}{`(${textsReform.length})`}</h3>}
+        {textsReform&&textsReform.slice(0,(!expandTexts?5:textsReform.length)).map((text) => <SubTextsTable data={text} key={text.book} name = {props.name}/>)}
+        {textsReform&&textsReform.length>5&&
+            <button onClick = {() => setExpandTexts(!expandTexts)}>{expandTexts?"Collapse":"Show Remaining "+(textsReform.length-5) + " texts"}</button>}
     </div>)
 }
 
 const SubTextsTable = (props) => {
-    const {bookLabel, bookdesc, titleLabel, typeLabel, genreLabel, publYear, publication, languageLabel, origincountryLabel
-    ,dopYear, inception, inceptionYear, metreLabel, book, publisherLabel} = props.data
+    const {bookLabel, publYear,dopYear, inceptionYear, book} = props.data
     const [detailed, setDetailed] = useState(false);
+    const [archive, setArchive] = useState();
+    const [showArchive, setShowArchive] = useState(false)
     const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
+    useEffect(() => {
+        detailed?archiveEffect({title: bookLabel, name:props.name, setArchive})():void(0);
+    },[detailed]);
+//    console.log(archive)
     return (
         <div className="text-info">
             <p><a href={book}>{bookLabel}{selectedDate&&" ("+transformYear(dateCoalesce(publYear, dopYear, inceptionYear))+ ")"}</a>
-                <button onClick = {() => {setDetailed(!detailed)}}>{detailed?"Collapse":"Expand"}</button>
+                <button onClick = {() => {setDetailed(!detailed)}}>
+                    {detailed?"Collapse":"Expand"}
+                    </button>
             </p>
             {detailed
-            ?<DetailedTexts data = {props.data}/>
+            ?<>
+                <DetailedTexts data = {props.data} name={props.name}/>
+                {detailed&&archive&&archive.length>0&&<p onClick = {() => setShowArchive(!showArchive)}>
+                    <span style={{fontWeight:600}}>Archive.org Results</span></p>}
+                {showArchive&&
+                    archive.map((result) => 
+                    <p><a href={'https://archive.org/details/'+result.identifier}>
+                    {`${result.title} by ${result.creator} (${result.year}) (${result.downloads} downloads) (${result.language}) (${result.mediatype})`}
+                    </a>
+                    </p>
+                    )
+                    }
+            </>
             :<></>}
+
         </div>
     )
 }
+
+
 
 const DetailedTexts = (props) => {
     const {bookLabel, bookdesc, titleLabel, typeLabel, genreLabel, publYear, publication, languageLabel, origincountryLabel

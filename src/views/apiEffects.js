@@ -64,6 +64,31 @@ export const wikidataEffect = props => () => {
     .then (data => {setWikidata(data)})       
 }
 
+export const archiveEffect = props => () => {
+    const {title, name, setArchive} = props
+    const searchUrl = 'https://archive.org/advancedsearch.php';
+    //const apiUrlBase = 'https://archive.org/details/';
+    const search = 'title:"'+title+'" AND ' + 'text:"'+name+'"';
+    const params = {
+      q: search,
+      output: 'json',
+      fields: 'identifier,creator,title,language,year',
+      sort: ['downloads desc','year asc', 'addeddate asc'], // sort by year and then by date added
+      rows: 20 // set the number of results to return
+    };
+    // encode the search query parameters as a URL query string
+    const queryString = Object.keys(params)
+      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+      .join('&');
+    
+    // send the GET request to the search API endpoint
+    fetch(`${searchUrl}?${queryString}`)
+      .then(response => response.json())
+      .then(data => {setArchive(data.response.docs)})
+      .catch(error => console.error(error));    
+
+}
+
 export const uploadEdits = (props) => {
     const {editData, id, type, setEditUploaded} = props
     const requestOptions = {
