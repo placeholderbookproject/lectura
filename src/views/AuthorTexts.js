@@ -3,11 +3,13 @@ import labels from './labels.js';
 import {Link} from 'react-router-dom';
 import Select from 'react-select';
 import {fetchDataEffect, fetchSearchResults} from './apiEffects.js'
+import { ArchiveList } from './AuthorTable.js';
 
 const TextRow = (props) => {
     return (
         <tr><td>
-                {props.data.text_id !== ""?<Link to={"/text/"+props.data.text_id}>{props.data.label}</Link>:props.data.label}
+            {props.data.text_id !== ""?<Link to={"/text/"+props.data.text_id}>{props.data.label}</Link>:props.data.label}
+            <ArchiveList title={props.data.text_title} name={props.data.text_author}/>
         </td></tr>
     )
 }

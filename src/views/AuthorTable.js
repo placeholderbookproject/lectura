@@ -151,13 +151,7 @@ const TextsWikiTable = (props) => {
 const SubTextsTable = (props) => {
     const {bookLabel, publYear,dopYear, inceptionYear, book} = props.data
     const [detailed, setDetailed] = useState(false);
-    const [archive, setArchive] = useState();
-    const [showArchive, setShowArchive] = useState(false)
     const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
-    useEffect(() => {
-        detailed?archiveEffect({title: bookLabel, name:props.name, setArchive})():void(0);
-    },[detailed]);
-//    console.log(archive)
     return (
         <div className="text-info">
             <p><a href={book}>{bookLabel}{selectedDate&&" ("+transformYear(dateCoalesce(publYear, dopYear, inceptionYear))+ ")"}</a>
@@ -168,16 +162,7 @@ const SubTextsTable = (props) => {
             {detailed
             ?<>
                 <DetailedTexts data = {props.data} name={props.name}/>
-                {detailed&&archive&&archive.length>0&&<p onClick = {() => setShowArchive(!showArchive)}>
-                    <span style={{fontWeight:600}}>Archive.org Results</span></p>}
-                {showArchive&&
-                    archive.map((result) => 
-                    <p><a href={'https://archive.org/details/'+result.identifier}>
-                    {`${result.title} by ${result.creator} (${result.year}) (${result.downloads} downloads) (${result.language}) (${result.mediatype})`}
-                    </a>
-                    </p>
-                    )
-                    }
+                {detailed&&<ArchiveList title={bookLabel} name={props.name}/>}
             </>
             :<></>}
 
@@ -185,7 +170,30 @@ const SubTextsTable = (props) => {
     )
 }
 
+export const ArchiveList = (props) => {
+    const [archive, setArchive] = useState();
+    const [showArchive, setShowArchive] = useState(false)
+    const {title, name} = props
+    useEffect(() => {archiveEffect({title, name, setArchive})();},[])
+    return (
+    <div>
+        {archive&&archive.length>0&&
+        <p onClick = {() => setShowArchive(!showArchive)}>
+            <span style={{fontWeight:600}}>Archive.org Results</span>
+        </p>}
+        {showArchive&&
+        archive.map((result) => 
+        <p key={result.identifier}>
+            <a href={'https://archive.org/details/'+result.identifier}>
+        {`${result.title} by ${result.creator} (${result.year}) (${result.downloads} downloads) (${result.language}) (${result.mediatype})`}
+            </a>
+        </p>
+        )
+        }
+    </div>
+    )
 
+}
 
 const DetailedTexts = (props) => {
     const {bookLabel, bookdesc, titleLabel, typeLabel, genreLabel, publYear, publication, languageLabel, origincountryLabel
