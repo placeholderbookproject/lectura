@@ -4,7 +4,7 @@ import TableRow from './ViewRow.js';
 import labels from './labels.js';
 import AuthorTexts from './AuthorTexts.js';
 import {searchWikipediaEffect, fetchComments, fetchDataEffect, wikidataEffect} from './apiEffects.js';
-import {checkStr, transformYear} from './formattingFuncs.js';
+import {checkStr, transformYear, reformatWikidata, reformatWikitexts, dateCoalesce} from './formattingFuncs.js';
 import {AuthorEdit} from './EditWindow.js';
 import {editRowAll} from './filters.js';
 import { Comment } from './Comments.js';
@@ -13,7 +13,6 @@ const parse = require('html-react-parser');
 
 const AuthorTable = (props) => {
     const [wiki, setWiki] = useState("");
-    const [wikidata, setWikidata] = useState();
     const [data, setData] = useState();
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState("");
@@ -26,12 +25,6 @@ const AuthorTable = (props) => {
     const mainOccupation = occupationList[0];
     const author_id = id;
     useEffect(fetchDataEffect({type:'authors', id:id, setData:setData}) , [id]);
-    useEffect(() => 
-        {
-           const author_q = data&&(data.author_q!==undefined)?data.author_q.replace("http://www.wikidata.org/entity/",""):null; 
-            author_q?wikidataEffect({q_number:author_q, setWikidata})():console.log("no author_q");
-        }
-        ,[data])
     useEffect(() => {setData(id)},[id])
     useEffect(fetchComments({author_id, setComments}),[id])
     useEffect (searchWikipediaEffect({setWiki, edit, name:name[0], mainOccupation}),[name,mainOccupation, edit, id])
@@ -105,55 +98,85 @@ const AuthorTable = (props) => {
                 {comments.map((comment) => 
                     (<tr><td><Comment comment={comment}/></td></tr>
                 ))}
-                {/*wikidata?reformatWikidata(wikidata):null*/}
             </tbody></table>
-            {wikidata?<AuthorWikiTable data = {wikidata}/>:<></>}
+            {data && data.author_q?<AuthorWikiTable data = {data.author_q.replace("http://www.wikidata.org/entity/","")}/>:<></>}
             </div>
     );
   }
 
 const AuthorWikiTable = (props) => {
-    const reformatWikidata = (wiki) => {
-        const columns = wiki.head.vars;
-        let reformData = {};
-        for (let i = 0; i<columns.length; i++) {
-            let col = columns[i], dataPoint = "";
-            const resultLength = wiki.results.bindings.length
-            for (let j = 0;j<resultLength;j++){
-                const row = wiki.results.bindings[j]
-                if (Object.keys(row).includes(col)){
-                    const val = row[col].value;
-                    if(val===undefined) {continue}
-                    else if (j ===0){dataPoint = dataPoint+val}
-                    else if (!dataPoint.includes(val)&&j!==resultLength) {dataPoint = dataPoint + ", " + val }
-                    else if (!dataPoint.includes(val)&&j===resultLength){dataPoint = dataPoint + ", " + val}
-                } else {dataPoint = null}
-            }
-            reformData[col] = dataPoint;
-        } return reformData
-    };
-    const data = reformatWikidata(props.data);
-    const transl = wikiTranslations;
+    const [wikidata, setWikidata] = useState();
+    useEffect(() => {wikidataEffect({q_number:props.data, setWikidata, type:"author"})();},[])
+    const {author, authordesc, authorLabel, genderLabel, birthdate, birthyear, birthplaceLabel, birthplacecountryLabel,
+    deathdate, deathyear, deathplaceLabel,deathplacecountryLabel, floruit, occupationsLabel, languagesLabel, nativenameLabel, imageLabel} 
+        = wikidata?reformatWikidata(wikidata):{};
     return (
-        <div>
-          <table>
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th>Label</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.keys(data).map((item) => (
-                <tr key={item}>
-                  <td>{transl[item]}</td>
-                  <td>{data[item]}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="person-info">
+            <h2>Wikidata</h2>
+            <h2><a href={author&&author}>{authorLabel}</a></h2>
+            {nativenameLabel&&<p>{`Native Name: ${nativenameLabel}`}{genderLabel&&` (${genderLabel})`}</p>}
+            {imageLabel && <img src={imageLabel} style={{ width: "200px", height: "200px", objectFit: "cover" }} />}
+            {authordesc&&<p>{authordesc}</p>}
+            {birthyear&&<p>{`Born: `+transformYear(birthyear) + ` (${birthplaceLabel}` 
+                    + `, ${birthplacecountryLabel})`}</p>}
+            {deathyear&&
+                <p>{`Died: `+transformYear(deathyear) + ` (${deathplaceLabel}` + `, ${deathplacecountryLabel})`}
+                </p>}
+            {!(birthdate||deathdate)&&floruit&&
+                <p>{`Floruit: ${floruit}`}</p>
+            }
+            {occupationsLabel&& <p>{`Occupations: ${occupationsLabel}`}</p>}
+            {languagesLabel&&<p>{`Languages: ${languagesLabel}`}</p>}
+            {wikidata?<TextsWikiTable data={props.data} name={authorLabel}/>:<></>}
         </div>
       );
 };
+
+const TextsWikiTable = (props) => {
+    const [wikidata, setWikidata] = useState();
+    const [expandTexts, setExpandTexts] = useState(false)
+    useEffect(() => {wikidataEffect({q_number:props.data,setWikidata,type:"author_texts"})();},[]);
+    const textsReform = wikidata?reformatWikitexts(wikidata):null;
+    return (
+    <div>
+        {textsReform&&textsReform.length>0&&<h3>{props.name+"'s Texts "}
+            <button onClick = {() => setExpandTexts(!expandTexts)}>{expandTexts?"Collapse":"Show All"}</button></h3>}
+        {textsReform&&textsReform.slice(0,(!expandTexts?5:textsReform.length)).map((text) => <SubTextsTable data={text} key={text.book}/>)}
+    </div>)
+}
+
+const SubTextsTable = (props) => {
+    const {bookLabel, bookdesc, titleLabel, typeLabel, genreLabel, publYear, publication, languageLabel, origincountryLabel
+    ,dopYear, inception, inceptionYear, metreLabel, book, publisherLabel} = props.data
+    const [detailed, setDetailed] = useState(false);
+    const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
+    return (
+        <div className="text-info">
+            <p><a href={book}>{bookLabel}{selectedDate&&" ("+transformYear(dateCoalesce(publYear, dopYear, inceptionYear))+ ")"}</a>
+                <button onClick = {() => {setDetailed(!detailed)}}>{detailed?"Collapse":"Expand"}</button>
+            </p>
+            {detailed
+            ?<DetailedTexts data = {props.data}/>
+            :<></>}
+        </div>
+    )
+}
+
+const DetailedTexts = (props) => {
+    const {bookLabel, bookdesc, titleLabel, typeLabel, genreLabel, publYear, publication, languageLabel, origincountryLabel
+        ,dopYear, inception, inceptionYear, metreLabel, book, publisherLabel} = props.data
+    const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
+    return (
+        <>
+            {titleLabel&&<p><span style = {{"fontWeight": 600,}}>Original Title </span>{titleLabel}</p>}
+            {selectedDate&&<p><span style = {{"fontWeight": 600,}}>Written </span>{transformYear(selectedDate)}</p>}
+            {languageLabel&&<p><span style = {{"fontWeight": 600,}}>Language </span>{languageLabel}</p>}
+            {genreLabel&&<p><span style = {{"fontWeight": 600,}}>Genre </span>{genreLabel}</p>}
+            {typeLabel&&<p><span style = {{"fontWeight": 600,}}>Type </span>{typeLabel}</p>}
+            {metreLabel&&<p><span style = {{"fontWeight": 600,}}>Metre </span>{metreLabel}</p>}
+            {publisherLabel&&<p><span style = {{"fontWeight": 600,}}>Publishers </span>{publisherLabel}</p>}
+        </>
+    )
+}
 
 export default AuthorTable;
