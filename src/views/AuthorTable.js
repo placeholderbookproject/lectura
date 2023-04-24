@@ -8,7 +8,6 @@ import {checkStr, transformYear, reformatWikidata, reformatWikitexts, dateCoales
 import {AuthorEdit} from './EditWindow.js';
 import {editRowAll} from './filters.js';
 import { Comment } from './Comments.js';
-import { wikiTranslations } from './filters.js';
 const parse = require('html-react-parser');
 
 const AuthorTable = (props) => {
@@ -149,7 +148,7 @@ const TextsWikiTable = (props) => {
 }
 
 const SubTextsTable = (props) => {
-    const {bookLabel, publYear,dopYear, inceptionYear, book} = props.data
+    const {bookLabel, publYear,dopYear, inceptionYear, book, titleLabel} = props.data
     const [detailed, setDetailed] = useState(false);
     const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
     return (
@@ -162,7 +161,7 @@ const SubTextsTable = (props) => {
             {detailed
             ?<>
                 <DetailedTexts data = {props.data} name={props.name}/>
-                {detailed&&<ArchiveList title={bookLabel} name={props.name}/>}
+                {detailed&&<ArchiveList title={bookLabel} name={props.name} originalTitle={titleLabel}/>}
             </>
             :<></>}
 
@@ -173,8 +172,8 @@ const SubTextsTable = (props) => {
 export const ArchiveList = (props) => {
     const [archive, setArchive] = useState();
     const [showArchive, setShowArchive] = useState(false)
-    const {title, name} = props
-    useEffect(() => {archiveEffect({title, name, setArchive})();},[])
+    const {title, name, originalTitle} = props
+    useEffect(() => {archiveEffect({title, name, setArchive, originalTitle})();},[])
     return (
     <div>
         {archive&&archive.length>0&&
@@ -197,7 +196,7 @@ export const ArchiveList = (props) => {
 
 const DetailedTexts = (props) => {
     const {bookLabel, bookdesc, titleLabel, typeLabel, genreLabel, publYear, publication, languageLabel, origincountryLabel
-        ,dopYear, inception, inceptionYear, metreLabel, book, publisherLabel} = props.data
+        ,dopYear, inception, inceptionYear, metreLabel, book, publisherLabel, lengthLabel} = props.data
     const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
     return (
         <>
@@ -207,6 +206,7 @@ const DetailedTexts = (props) => {
             {genreLabel&&<p><span style = {{"fontWeight": 600,}}>Genre </span>{genreLabel}</p>}
             {typeLabel&&<p><span style = {{"fontWeight": 600,}}>Type </span>{typeLabel}</p>}
             {metreLabel&&<p><span style = {{"fontWeight": 600,}}>Metre </span>{metreLabel}</p>}
+            {lengthLabel&&<p><span style={{"fontWeight":600,}}>Length </span>{lengthLabel + " pages"}</p>}
             {publisherLabel&&<p><span style = {{"fontWeight": 600,}}>Publishers </span>{publisherLabel}</p>}
         </>
     )

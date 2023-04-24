@@ -10,6 +10,14 @@ export const fetchDataEffect = props => () => {
     .finally(() => (type===null?props.setLoading(true):void(0)))
 }
 
+export const fetchList = props => () => {
+    const {setData, filters} = props
+    const query = `lists?language=${filters.language}&country=${filters.country}`
+    fetch(server+query)
+    .then(response=>{if(response.ok){return response.json()}throw response})
+    .then(results=>{setData(results)})
+}
+
 export const fetchComments = props => () => {
     const {id, setComments} = props;
     fetch(server+'extract_comments')
@@ -65,10 +73,10 @@ export const wikidataEffect = props => () => {
 }
 
 export const archiveEffect = props => () => {
-    const {title, name, setArchive} = props
+    const {title, name, setArchive, originalTitle} = props
     const searchUrl = 'https://archive.org/advancedsearch.php';
-    //const apiUrlBase = 'https://archive.org/details/';
-    const search = 'title:"'+title+'" AND ' + 'text:"'+name+'"';
+    const lastName = name.split(/[, ]+/).pop()
+    const search = `(title:"${title}" OR title:"${originalTitle}") AND (text:"${name}" OR text:"${lastName}")`;
     const params = {
       q: search,
       output: 'json',
@@ -80,13 +88,11 @@ export const archiveEffect = props => () => {
     const queryString = Object.keys(params)
       .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
       .join('&');
-    
     // send the GET request to the search API endpoint
     fetch(`${searchUrl}?${queryString}`)
       .then(response => response.json())
       .then(data => {setArchive(data.response.docs)})
       .catch(error => console.error(error));    
-
 }
 
 export const uploadEdits = (props) => {

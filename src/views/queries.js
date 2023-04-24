@@ -61,6 +61,7 @@ SELECT distinct ?book
 (YEAR(?inception) as ?inceptionYear)
 ?metreLabel
 ?publisherLabel
+?lengthLabel
 #?charactersLabel
 
 WHERE
@@ -70,7 +71,7 @@ WHERE
                              wd:Q36279 wd:Q699 wd:Q4184 wd:Q112983 wd:Q25839930 wd:Q17518461 
                              wd:Q482 wd:Q856713 wd:Q1318295 wd:Q59126 wd:Q25372 wd:Q37484 wd:Q58854 
                              wd:Q241996 wd:Q8242 wd:Q40831 wd:Q182659 wd:Q24723 wd:Q80930 wd:Q182357 
-                             wd:Q44342 wd:Q128758 wd:Q114375 wd:Q208628 wd:Q1640824 wd:Q179461
+                             wd:Q44342 wd:Q128758 wd:Q114375 wd:Q208628 wd:Q1640824 wd:Q179461 wd:Q17518870
 }.
   ?book wdt:P50 wd:q_number.
   ?book wdt:P31 ?instance.
@@ -88,6 +89,7 @@ WHERE
   OPTIONAL {?book wdt:P2551 ?metre.}
   OPTIONAL {?book wdt:P123 ?publisher}
   #OPTIONAL {?book wdt:P674 ?characters.}
+  OPTIONAL {?book wdt:P1104 ?length.}
   {#Checks if language exists
     SELECT DISTINCT ?language
     WHERE {

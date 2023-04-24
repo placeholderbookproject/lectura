@@ -69,11 +69,11 @@ export const reformatWikitexts = (wiki) => {
 export const dateCoalesce = (date1, date2, date3) => {
     let selectedDate
     if (date1) {
-        selectedDate = date1;
+        selectedDate = date1.split(", ")[0];
     } else if (date2) {
-        selectedDate = date2;
+        selectedDate = date2.split(", ")[0];
     } else if (date3){
-        selectedDate = date3;
+        selectedDate = date3.split(", ")[0];
     }
     return selectedDate
 }
