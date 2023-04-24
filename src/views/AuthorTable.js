@@ -116,7 +116,7 @@ const AuthorWikiTable = (props) => {
             {/*<h2>Wikidata</h2>*/}
             <h2><a href={author&&author}>{authorLabel}</a></h2>
             {nativenameLabel&&<p>{`Native Name: ${nativenameLabel}`}{genderLabel&&` (${genderLabel})`}</p>}
-            {imageLabel && <img src={imageLabel} style={{ width: "200px", height: "200px", objectFit: "cover" }} />}
+            {imageLabel && <img src={imageLabel.split(", ")[0]} style={{ maxWidth: "400px", maxHeight: "200px", objectFit: "contain" }} />}
             {authordesc&&<p>{authordesc}</p>}
             {birthyear&&<p><span style = {{fontWeight:600}}>Born </span>{``+transformYear(birthyear) + ` (${birthplaceLabel}` 
                     + `, ${birthplacecountryLabel})`}</p>}
@@ -153,10 +153,10 @@ const SubTextsTable = (props) => {
     const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
     return (
         <div className="text-info">
-            <p><a href={book}>{bookLabel}{selectedDate&&" ("+transformYear(dateCoalesce(publYear, dopYear, inceptionYear))+ ")"}</a>
+            <p><a href={book}>{bookLabel.split(", ")[0]}{selectedDate&&" ("+transformYear(dateCoalesce(publYear, dopYear, inceptionYear))+ ")"}</a>
                 <button onClick = {() => {setDetailed(!detailed)}}>
-                    {detailed?"Collapse":"Expand"}
-                    </button>
+                    {detailed?"-":"+"}{/*<img src="https://cdn.iconscout.com/icon/premium/png-512-thumb/dropdown-1427583-1209253.png?f=avif&w=512" width="4" height="2"/>*/}
+                    </button>{/*"https://cdn.iconscout.com/icon/free/png-512/free-dropdown-keyboard-arrow-menu-key-direction-30471.png?f=avif&w=512"*/}
             </p>
             {detailed
             ?<>
@@ -173,7 +173,7 @@ export const ArchiveList = (props) => {
     const [archive, setArchive] = useState();
     const [showArchive, setShowArchive] = useState(false)
     const {title, name, originalTitle} = props
-    useEffect(() => {archiveEffect({title, name, setArchive, originalTitle})();},[])
+    useEffect(() => {archiveEffect({title:title.split(", "[0]), name, setArchive, originalTitle})();},[])
     return (
     <div>
         {archive&&archive.length>0&&

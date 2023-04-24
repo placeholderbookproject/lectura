@@ -81,8 +81,10 @@ WHERE
   OPTIONAL {?book wdt:P136 ?genre}
   OPTIONAL {?book wdt:P1476 ?title.}
   OPTIONAL {?book wdt:P577 ?publication.}
-  OPTIONAL {?book wdt:P407 ?language.}
-  OPTIONAL {?book wdt:P495 ?origincountry.}
+  OPTIONAL { ?book wdt:P407 ?language. 
+    ?language wdt:P424 ?languagecode.
+    }
+OPTIONAL {?book wdt:P495 ?origincountry.}
   OPTIONAL {?book wdt:P571 ?inception.}
   OPTIONAL {?book wdt:P1191 ?dop.}
   OPTIONAL {?book wdt:P571 ?inception.}
@@ -90,12 +92,14 @@ WHERE
   OPTIONAL {?book wdt:P123 ?publisher}
   #OPTIONAL {?book wdt:P674 ?characters.}
   OPTIONAL {?book wdt:P1104 ?length.}
-  {#Checks if language exists
-    SELECT DISTINCT ?language
+  OPTIONAL {{#Checks if language exists
+    SELECT DISTINCT ?language ?languagecode
     WHERE {
         wd:[q2] (wdt:P1412|wdt:P6886) ?language.
+        ?language wdt:P424 ?languagecode
     }
-  }
+  }}
+  OPTIONAL {?book rdfs:label ?bookLabel. FILTER (lang(?bookLabel) = "en" || lang(?bookLabel) = ?languagecode).}
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } 
   BIND(COALESCE(YEAR(?publication), YEAR(?dop), YEAR(?inception), 9999) as ?orderDate)
 }
