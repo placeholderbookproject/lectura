@@ -16,7 +16,8 @@ const AuthorTable = (props) => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState("");
     const [edit, setEdit] = useState(false);
-    const { id } = useParams();
+    let { id } = useParams();
+    props.id?id=props.id:void(0);
     const editRowData = editRowAll["authors"];
     const name = data && data.author_name ? data.author_name.split(",") : "";
     const numNames = name.length;
@@ -49,7 +50,7 @@ const AuthorTable = (props) => {
         return Math.random().toString(36).substr(2, 9);
       };
     return (
-        <div style = {{display:'inline-flex'}}>
+        <div style = {{display:'inline-flex', backgroundColor: "white"}}>
         {data&&!data.author_q&&
         <table id = "authorTableWindow"><tbody>
             <tr className = "Header">

@@ -268,5 +268,17 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   font-weight: 600;
 }
 
+.table-row-content {
+  position: relative;
+}
+.popup {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  z-index: 99999;
+}
+.popup {
+  min-width: 500px;
+}
 
 
