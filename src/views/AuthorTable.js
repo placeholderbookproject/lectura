@@ -52,15 +52,13 @@ const AuthorTable = (props) => {
     return (
         <div style = {{display:'inline-flex', backgroundColor: "white"}}>
         {data&&!data.author_q&&
-        <table id = "authorTableWindow"><tbody>
-            <tr className = "Header">
-                <th>{name[0]}
+        <div id = "authorTableWindow" className="person-info">
+                <h2 className ="Header">{name[0]}
                     <button className = "editBtn" onClick = {setEditWindow} style = {{border:'None'}}>{/*!edit?labels.editBtn:labels.exitEditBtn*/}
                         <img src = "https://upload.wikimedia.org/wikipedia/commons/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg" alt = "edit" width="25" height="30"/>
                     </button>
-                </th>
-            </tr>
-            <tr><td>{numNames>1?labels.aka + name.slice(1,numNames).join(", "):<></>}</td></tr>
+                </h2>
+            <p>{numNames>1?labels.aka + name.slice(1,numNames).join(", "):<></>}</p>
             {!edit&&data
                 ?<>
                     <TableRow label = {labels.nationality + " "}>{data.author_nationality}</TableRow>
@@ -92,14 +90,14 @@ const AuthorTable = (props) => {
                     type = "authors" id = {id}/>:<></>
             }
                 <AuthorTexts edit = {edit} author_id = {id}/>
-                <tr><td>
+                <p>
                     <input value={newComment} onChange={(e) => setNewComment(e.target.value)} />
                     <button onClick={handleAddComment}>Add Comment</button>
-                </td></tr>
+                </p>
                 {comments.map((comment) => 
-                    (<tr><td><Comment comment={comment}/></td></tr>
+                    (<Comment comment={comment}/>
                 ))}
-            </tbody></table>
+            </div>
             }
             {data && data.author_q?<AuthorWikiTable data = {data.author_q.replace("http://www.wikidata.org/entity/","")}/>:<></>}
             </div>

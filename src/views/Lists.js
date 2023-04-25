@@ -10,9 +10,7 @@ const ListsTable = props => {
     const [data, setData] = useState();
     const country = filters.country==="All"?"":" from " + filters.country
     const language = filters.language==="All"?"":" using " + filters.language
-    const handleMouseOver = (event, result) => {
-        setPopupData(result.author_id);
-      };
+    const handleMouseOver = (event, result) => {setPopupData(result.author_id);};
     useEffect(() => {if(filters.country!=="All"||filters.language!=="All") {fetchList({setData, filters})()}},[country, language])
     return (
         <>

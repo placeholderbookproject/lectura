@@ -82,10 +82,10 @@ const TextTable = (props) => {
                     :<></>
                     }
                     <TableRow label = {labels.text_q + " "}>
-                        <a href={data.text_q}>{data.text_q!==undefined?data.text_q.replace("http://www.wikidata.org/entity/",""):""}</a>
+                        <a href={data.text_q}>{data.text_q&&data.text_q.replace("http://www.wikidata.org/entity/","")}</a>
                     </TableRow>
                     <TableRow label = {labels.text_author_q + " "}>
-                        {data.text_author_q!==undefined?data.text_author_q.split(", ").map((author) => 
+                        {data.text_author_q?data.text_author_q.split(", ").map((author) => 
                             <a href={author}>{author.replace("http://www.wikidata.org/entity/","")+" "}</a>
                         ):<></>}
                     </TableRow>

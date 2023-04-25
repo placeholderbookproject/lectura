@@ -7,10 +7,10 @@ import { ArchiveList } from './AuthorTable.js';
 
 const TextRow = (props) => {
     return (
-        <tr><td>
+        <>
             {props.data.text_id !== ""?<Link to={"/text/"+props.data.text_id}>{props.data.label}</Link>:props.data.label}
             <ArchiveList title={props.data.text_title} name={props.data.text_author}/>
-        </td></tr>
+        </>
     )
 }
 
@@ -42,16 +42,15 @@ const AuthorTexts = (props) => {
       }    
     return (
         <>
-            <tr className = "Works" style = {{textDecoration: 'underline 1px rgb(100, 88, 71)'}}>
-                <td>{typeof textsData !== Object && textsData !== ""?labels.works:labels.worksUnknown}</td>
-            </tr>
+            <h3 className = "Works" style = {{textDecoration: 'underline 1px rgb(100, 88, 71)'}}>
+                {typeof textsData !== Object && textsData !== ""?labels.works:labels.worksUnknown}
+            </h3>
         {!edit
             ?(typeof textsData !== Object && textsData !== "") 
                 ?(textsData.map((work) => (<TextRow key={work.text_id} data={work}/>))):<></>
             :textsData !== ""
                 ?textsData.map((work) => 
-                    <tr key = {textsData.indexOf(work)}>
-                        <td style = {{display:'inline-flex'}}>
+                    <p key = {textsData.indexOf(work)} style = {{display:'inline-flex'}}>
                             <Select style = {{width: 300}}
                                 placeholder={work.label?work.label:"find a book in the system"}
                                 options = {typeof searchResults === 'object'?(searchResults):void(0)}
@@ -59,10 +58,9 @@ const AuthorTexts = (props) => {
                                 onChange = {(e) => searchSelect (e,textsData.indexOf(work))}
                             />
                             <button onClick = {(e) => removeWork(e,textsData.indexOf(work))}>X</button>
-                        </td>
-                    </tr>)
+                    </p>)
                 :<></>}
-        {edit?<tr><td><button onClick = {addWork}>+</button></td></tr>:<></>}            
+        {edit?<p><button onClick = {addWork}>+</button></p>:<></>}            
         </>
     )
 }

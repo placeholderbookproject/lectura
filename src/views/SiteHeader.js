@@ -51,11 +51,11 @@ const SiteHeader = () => {
             <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/"}><button className="homeBtn">{labels.homeBtn}</button></Link>
             <MainSearch />
             <Link to = {"/search"} style={{paddingLeft: "1rem",paddingRight: "1rem"}}><button className="detailedSearchBtn">{labels.detailedSearchBtn}</button></Link>
-              <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/import"}><button className="importBtn">{labels.importDataBtn}</button></Link>{/*className="importBtn"*/}
-              <AddNew label = "+"/>
-            <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/admin"}><button className="adminBtn">{labels.adminBtn}</button></Link>
+            {/*<Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/import"}><button className="importBtn">{labels.importDataBtn}</button></Link>*/}
+              {/*<AddNew label = "+"/>*/}
+            {/*<Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/admin"}><button className="adminBtn">{labels.adminBtn}</button></Link>*/}
             <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/lists"}><button className="listsBtn">Lists</button></Link>
-            <LoginWindow/>
+            {/*<LoginWindow/>*/}
        </Navbar>
       </Container>
   )
