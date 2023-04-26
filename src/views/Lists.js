@@ -33,8 +33,8 @@ const ListsTable = props => {
                                     <div className = "popup">
                                     {result.author_id===popupData&&
                                         <>
-                                        <AuthorTable className="popup" id = {popupData}/>
                                         <button onClick = {() =>setPopupData(null)}>X</button>
+                                        <AuthorTable className="popup" id = {popupData}/>
                                         </>}
                                     </div>
                                 </div>

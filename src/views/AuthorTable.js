@@ -3,146 +3,96 @@ import { useParams} from 'react-router-dom';
 import TableRow from './ViewRow.js';
 import labels from './labels.js';
 import AuthorTexts from './AuthorTexts.js';
-import {searchWikipediaEffect, fetchComments, fetchDataEffect, wikidataEffect, archiveEffect} from './apiEffects.js';
+import {searchWikipediaEffect, /*fetchComments,*/ fetchDataEffect, wikidataEffect, archiveEffect} from './apiEffects.js';
 import {checkStr, transformYear, reformatWikidata, reformatWikitexts, dateCoalesce} from './formattingFuncs.js';
 import {AuthorEdit} from './EditWindow.js';
 import {editRowAll} from './filters.js';
-import { Comment } from './Comments.js';
+//import { Comment } from './Comments.js';
 const parse = require('html-react-parser');
+
+const checkData = (data1,data2) => {
+    if(data1===null||data1===undefined||data1===""){return data2}
+    else{return data1}
+}
 
 const AuthorTable = (props) => {
     const [wiki, setWiki] = useState("");
     const [data, setData] = useState();
-    const [comments, setComments] = useState([]);
-    const [newComment, setNewComment] = useState("");
     const [edit, setEdit] = useState(false);
+//    const [wikiResults, setWikiResults] = useState();
+    const [wikidata, setWikidata] = useState();
+    const [wikiTextdata, setWikiTextdata] = useState();
+    const authorReform = wikidata?reformatWikidata(wikidata):{};
+    const textsReform = wikiTextdata?reformatWikitexts(wikiTextdata):null;
+    const {author, authordesc, authorLabel, genderLabel, birthdate, birthyear, birthplaceLabel, birthplacecountryLabel,
+        deathdate, deathyear, deathplaceLabel,deathplacecountryLabel, floruit, occupationsLabel, languagesLabel, nativenameLabel, imageLabel} 
+        = authorReform    
     let { id } = useParams();
     props.id?id=props.id:void(0);
     const editRowData = editRowAll["authors"];
     const name = data && data.author_name ? data.author_name.split(",") : "";
     const numNames = name.length;
     const occupationList = data?.author_positions?.split(", ") ?? "";
-    const mainOccupation = occupationList[0];
-    const author_id = id;
+    useEffect(() => {
+        if(data && data.author_q){
+            const q_number = data.author_q.replace("http://www.wikidata.org/entity/","")
+            wikidataEffect({q_number, setWikidata, type:"author"})();
+        wikidataEffect({q_number,setWikidata:setWikiTextdata,type:"author_texts"})();}
+    },[data])
     useEffect(fetchDataEffect({type:'authors', id:id, setData:setData}) , [id]);
-    useEffect(() => {setData(id)},[id])
-    useEffect(fetchComments({author_id, setComments}),[id])
-    useEffect (searchWikipediaEffect({setWiki, edit, name:name[0], mainOccupation}),[name,mainOccupation, edit, id])
+    //useEffect(() => {setData(id)},[id])
+    //useEffect (searchWikipediaEffect({setWiki, edit, name:name[0], mainOccupation}),[name,mainOccupation, edit, id])
     const setEditWindow = () => {!edit?setEdit(true):setEdit(false)}
-    const handleAddComment = () => {
-        const commentId = generateUniqueId(); // Generate a unique id for the new comment
-        const newCommentObj = {
-          id: commentId,
-          comment: newComment,
-          user_id: "user_id",
-          date: new Date().toISOString(),
-          likes: 0,
-          replies: []
-        };
-        // Add the new comment to the existing comments dictionary
-        const updatedComments = comments;
-        updatedComments.push(newCommentObj);
-        setComments(updatedComments);
-        // Reset the input field for adding new comments
-        setNewComment("");
-      };
-      const generateUniqueId = () => {
-        return Math.random().toString(36).substr(2, 9);
-      };
     return (
-        <div style = {{display:'inline-flex', backgroundColor: "white"}}>
-        {data&&!data.author_q&&
-        <div id = "authorTableWindow" className="person-info">
-                <h2 className ="Header">{name[0]}
+        <div id = "authorTableWindow" className="person-info" style={{backgroundColor:"white"}}>
+                <h2 className ="Header">{checkData(authorLabel,name[0]) + " "}
+                    {data && data.author_q?<a href={data && data.author_q?data.author_q:""}>{`(Wiki)`}</a>:<></>}
                     <button className = "editBtn" onClick = {setEditWindow} style = {{border:'None'}}>{/*!edit?labels.editBtn:labels.exitEditBtn*/}
                         <img src = "https://upload.wikimedia.org/wikipedia/commons/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg" alt = "edit" width="25" height="30"/>
                     </button>
                 </h2>
+                {nativenameLabel&&<p>{`${labels.nativeName}: ${nativenameLabel}`}{genderLabel&&` (${genderLabel})`}</p>}
+                {imageLabel && <img src={imageLabel.split(", ")[0]} style={{ maxWidth: "400px", maxHeight: "200px", objectFit: "contain" }} />}
+                {authordesc&&<p>{authordesc}</p>}
             <p>{numNames>1?labels.aka + name.slice(1,numNames).join(", "):<></>}</p>
             {!edit&&data
                 ?<>
                     <TableRow label = {labels.nationality + " "}>{data.author_nationality}</TableRow>
                     <TableRow label = {labels.born + " "}>
-                        {transformYear(data.author_birth_year, labels.unspecified)}
-                        {" " +checkStr(data.author_birth_city, data.author_birth_country)}
+                        {transformYear(checkData(birthyear,data.author_birth_year), labels.unspecified)}
+                        {" " +checkStr(checkData(birthplaceLabel,data.author_birth_city), checkData(birthplacecountryLabel,data.author_birth_country))}
                     </TableRow>
                     <TableRow label = {labels.died + " "}>
-                        {transformYear(data.author_death_year, labels.unspecified)}
-                        {" " + checkStr(data.author_death_city, data.author_death_country)}
+                        {transformYear(checkData(deathyear,data.author_death_year), labels.unspecified)}
+                        {" " + checkStr(checkData(deathplaceLabel,data.author_death_city), checkData(deathplacecountryLabel,data.author_death_country))}
                     </TableRow>
                         {(data.author_birth_year === null|data.author_death_year === null) && data.author_floruit !==null
-                            ?<TableRow label = {labels.floruit + " "}>
-                                {" " + data.author_floruit}
-                            </TableRow>
+                            ?<TableRow label = {labels.floruit + " "}>{checkData(floruit,data.author_floruit)}</TableRow>
                             :<></>}
-                    <TableRow label = {labels.occupation + " "}>
-                        {mainOccupation}
-                        {occupationList.length>1
-                            ?", " + labels.other_occupations + occupationList.slice(1,occupationList.length).join(", ")
-                            :<></>}
-                    </TableRow>
-                    <TableRow> {typeof wiki !== Object && wiki !== ""? parse(wiki):<></>}</TableRow>
-                    <TableRow label = {labels.author_q + " "}>
-                        <a href={data.author_q}>{data.author_q?data.author_q.replace("http://www.wikidata.org/entity/",""):""}</a>
-                    </TableRow>
+                    <TableRow label = {labels.occupation + " "}>{checkData(occupationsLabel,data.author_positions)}</TableRow>
+                    <TableRow label={labels.languages + " "}>{checkData(languagesLabel, data.author_name_language)}</TableRow>
+                    {/*<TableRow> {typeof wiki !== Object && wiki !== ""? parse(wiki):<></>}</TableRow>*/}
                 </>:<></>}
-                {edit?<AuthorEdit cols = {editRowData} data = {data} origData = {id} setData = {setData}
-                    type = "authors" id = {id}/>:<></>
+                {/*edit?<AuthorEdit cols = {editRowData} data = {data} origData = {id} setData = {setData}
+                    type = "authors" id = {id}/>:<></>*/
             }
-                <AuthorTexts edit = {edit} author_id = {id}/>
-                <p>
-                    <input value={newComment} onChange={(e) => setNewComment(e.target.value)} />
-                    <button onClick={handleAddComment}>Add Comment</button>
-                </p>
-                {comments.map((comment) => 
-                    (<Comment comment={comment}/>
-                ))}
-            </div>
-            }
-            {data && data.author_q?<AuthorWikiTable data = {data.author_q.replace("http://www.wikidata.org/entity/","")}/>:<></>}
+                {/*<AuthorTexts edit = {edit} author_id = {id}/>*/}
+                {textsReform && textsReform.length>0
+                    ?<TextsWikiTable texts={textsReform} name={authorLabel}/>
+                    :<></>}
             </div>
     );
   }
 
-const AuthorWikiTable = (props) => {
-    const [wikidata, setWikidata] = useState();
-    useEffect(() => {wikidataEffect({q_number:props.data, setWikidata, type:"author"})();},[])
-    const {author, authordesc, authorLabel, genderLabel, birthdate, birthyear, birthplaceLabel, birthplacecountryLabel,
-    deathdate, deathyear, deathplaceLabel,deathplacecountryLabel, floruit, occupationsLabel, languagesLabel, nativenameLabel, imageLabel} 
-        = wikidata?reformatWikidata(wikidata):{};
-    return (
-        <div className="person-info">
-            {/*<h2>Wikidata</h2>*/}
-            <h2><a href={author&&author}>{authorLabel}</a></h2>
-            {nativenameLabel&&<p>{`Native Name: ${nativenameLabel}`}{genderLabel&&` (${genderLabel})`}</p>}
-            {imageLabel && <img src={imageLabel.split(", ")[0]} style={{ maxWidth: "400px", maxHeight: "200px", objectFit: "contain" }} />}
-            {authordesc&&<p>{authordesc}</p>}
-            {birthyear&&<p><span style = {{fontWeight:600}}>Born </span>{``+transformYear(birthyear) + ` (${birthplaceLabel}` 
-                    + `, ${birthplacecountryLabel})`}</p>}
-            {deathyear&&
-                <p><span style = {{fontWeight:600}}>Died </span>{``+transformYear(deathyear) + ` (${deathplaceLabel}` + `, ${deathplacecountryLabel})`}
-                </p>}
-            {!(birthdate||deathdate)&&floruit&&
-                <p>{`Floruit: ${floruit}`}</p>
-            }
-            {occupationsLabel&& <p><span style = {{fontWeight:600}}>Occupations </span>{`${occupationsLabel}`}</p>}
-            {languagesLabel&&<p><span style = {{fontWeight:600}}>Languages </span>{`${languagesLabel}`}</p>}
-            {wikidata?<TextsWikiTable data={props.data} name={authorLabel}/>:<></>}
-        </div>
-      );
-};
-
-const TextsWikiTable = (props) => {
-    const [wikidata, setWikidata] = useState();
+  const TextsWikiTable = (props) => {
+    const {texts, name} = props
     const [expandTexts, setExpandTexts] = useState(false)
-    useEffect(() => {wikidataEffect({q_number:props.data,setWikidata,type:"author_texts"})();},[]);
-    const textsReform = wikidata?reformatWikitexts(wikidata):null;
     return (
     <div>
-        {textsReform&&textsReform.length>0&&<h3>{props.name+"'s Texts "}{`(${textsReform.length})`}</h3>}
-        {textsReform&&textsReform.slice(0,(!expandTexts?5:textsReform.length)).map((text) => <SubTextsTable data={text} key={text.book} name = {props.name}/>)}
-        {textsReform&&textsReform.length>5&&
-            <button onClick = {() => setExpandTexts(!expandTexts)}>{expandTexts?"Collapse":"Show Remaining "+(textsReform.length-5) + " texts"}</button>}
+        <h3>{name+"'s Texts "}{`(${texts.length})`}</h3>
+        {texts&&texts.slice(0,(!expandTexts?5:texts.length)).map((text) => <SubTextsTable data={text} key={text.book} name = {props.name}/>)}
+        {texts&&texts.length>5&&
+            <button onClick = {() => setExpandTexts(!expandTexts)}>{expandTexts?"Collapse":"Show Remaining "+(texts.length-5) + " texts"}</button>}
     </div>)
 }
 
@@ -209,6 +159,44 @@ const DetailedTexts = (props) => {
             {publisherLabel&&<p><span style = {{"fontWeight": 600,}}>Publishers </span>{publisherLabel}</p>}
         </>
     )
+}
+
+const AuthorComments = props => {
+    //const [comments, setComments] = useState([]);
+    //const [newComment, setNewComment] = useState("");
+    //const author_id = id;
+    //useEffect(fetchComments({author_id, setComments}),[id])
+    /*const handleAddComment = () => {
+        const commentId = generateUniqueId(); // Generate a unique id for the new comment
+        const newCommentObj = {
+          id: commentId,
+          comment: newComment,
+          user_id: "user_id",
+          date: new Date().toISOString(),
+          likes: 0,
+          replies: []
+        };
+        // Add the new comment to the existing comments dictionary
+        const updatedComments = comments;
+        updatedComments.push(newCommentObj);
+        setComments(updatedComments);
+        // Reset the input field for adding new comments
+        setNewComment("");
+      };
+      const generateUniqueId = () => {
+        return Math.random().toString(36).substr(2, 9);
+      };*/
+
+    return (
+            {/*<p>
+            <input value={newComment} onChange={(e) => setNewComment(e.target.value)} />
+            <button onClick={handleAddComment}>Add Comment</button>
+        </p>*/
+        /*comments.map((comment) => 
+            (<Comment comment={comment}/>
+        ))*/}
+    )
+
 }
 
 export default AuthorTable;

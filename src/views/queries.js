@@ -23,8 +23,8 @@ export const authorQuery = `
     WHERE
     {
       VALUES ?author {wd:q_number}
-      ?author schema:description ?authordesc.
-      FILTER(LANG(?authordesc) = "en").
+      OPTIONAL{?author schema:description ?authordesc.
+      FILTER(LANG(?authordesc) = "en").}
       OPTIONAL {?author wdt:P569 ?birthdate.}
       OPTIONAL {?author wdt:P19 ?birthplace.
                OPTIONAL {?birthplace wdt:P17 ?birthplacecountry.}
