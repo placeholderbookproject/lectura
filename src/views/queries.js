@@ -9,7 +9,7 @@ SELECT ?propertyLabel ?value WHERE {
     }
 `
 export const authorQuery = `
-    SELECT DISTINCT ?author ?authordesc ?authorLabel ?genderLabel
+    SELECT DISTINCT ?author ?authordesc ?authorLabel ?akaLabel ?genderLabel
     ?birthdate (YEAR(?birthdate) AS ?birthyear) (MONTH(?birthdate) AS ?birthmonth) (DAY(?birthdate) AS ?birthday) ?birthplace ?birthplaceLabel ?birthplacecountryLabel
     ?deathdate (YEAR(?deathdate) as ?deathyear) (MONTH(?deathdate) as ?deathmonth) (day(?deathdate) as ?deathday) 
     ?deathplace ?deathplaceLabel ?deathplacecountry ?deathplacecountryLabel
@@ -25,6 +25,7 @@ export const authorQuery = `
       VALUES ?author {wd:q_number}
       OPTIONAL{?author schema:description ?authordesc.
       FILTER(LANG(?authordesc) = "en").}
+      OPTIONAL {?author skos:altLabel ?akaLabel. FILTER (lang(?akaLabel) = "en").}
       OPTIONAL {?author wdt:P569 ?birthdate.}
       OPTIONAL {?author wdt:P19 ?birthplace.
                OPTIONAL {?birthplace wdt:P17 ?birthplacecountry.}
@@ -48,6 +49,7 @@ export const authorQuery = `
 export const authorTextQuery = `
 SELECT distinct ?book 
 ?bookLabel
+?akaLabel
 ?bookdesc
 ?titleLabel
 ?typeLabel
@@ -75,8 +77,9 @@ WHERE
 }.
   ?book wdt:P50 wd:q_number.
   ?book wdt:P31 ?instance.
-  ?book schema:description ?bookdesc.
-  FILTER(LANG(?bookdesc)="en").
+  OPTIONAL{?book schema:description ?bookdesc.
+  FILTER(LANG(?bookdesc)="en").}
+  OPTIONAL {?book skos:altLabel ?akaLabel. FILTER (lang(?akaLabel) = "en").}
   OPTIONAL {?book wdt:P31 ?type.}
   OPTIONAL {?book wdt:P136 ?genre}
   OPTIONAL {?book wdt:P1476 ?title.}

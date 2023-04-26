@@ -24,7 +24,7 @@ const AuthorTable = (props) => {
     const [wikiTextdata, setWikiTextdata] = useState();
     const authorReform = wikidata?reformatWikidata(wikidata):{};
     const textsReform = wikiTextdata?reformatWikitexts(wikiTextdata):null;
-    const {author, authordesc, authorLabel, genderLabel, birthdate, birthyear, birthplaceLabel, birthplacecountryLabel,
+    const {author, authordesc, authorLabel, akaLabel,genderLabel, birthdate, birthyear, birthplaceLabel, birthplacecountryLabel,
         deathdate, deathyear, deathplaceLabel,deathplacecountryLabel, floruit, occupationsLabel, languagesLabel, nativenameLabel, imageLabel} 
         = authorReform    
     let { id } = useParams();
@@ -51,10 +51,10 @@ const AuthorTable = (props) => {
                         <img src = "https://upload.wikimedia.org/wikipedia/commons/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg" alt = "edit" width="25" height="30"/>
                     </button>
                 </h2>
-                {nativenameLabel&&<p>{`${labels.nativeName}: ${nativenameLabel}`}{genderLabel&&` (${genderLabel})`}</p>}
+                <TableRow label = {labels.aka + " "}>{checkData(akaLabel,numNames>1?name.slice(1,numNames).join(", "):null)}</TableRow>
+                <TableRow label = {labels.nativeName + " "}>{nativenameLabel}{genderLabel&&` (${genderLabel})`}</TableRow>
                 {imageLabel && <img src={imageLabel.split(", ")[0]} style={{ maxWidth: "400px", maxHeight: "200px", objectFit: "contain" }} />}
                 {authordesc&&<p>{authordesc}</p>}
-            <p>{numNames>1?labels.aka + name.slice(1,numNames).join(", "):<></>}</p>
             {!edit&&data
                 ?<>
                     <TableRow label = {labels.nationality + " "}>{data.author_nationality}</TableRow>

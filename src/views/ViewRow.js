@@ -1,9 +1,8 @@
 const TableRow = (props) => {
+    const {children, label} = props
     return (
-        <p>
-            <span style = {{"fontWeight": 600,}}>{props.label}</span>
-            {props.children}
-        </p>
+        children&&
+        <p><span style = {{"fontWeight": 600,}}>{label}</span>{props.children}</p>
     )
 }
 
