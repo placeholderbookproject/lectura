@@ -276,9 +276,9 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   top: 0;
   left: 100%;
   z-index: 99999;
+  min-width:500px;
 }
-.popup {
-  min-width: 500px;
-}
+
+.popup p {background-color: white;}
 
 

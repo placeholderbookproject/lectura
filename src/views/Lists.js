@@ -69,9 +69,9 @@ export const AuthorPopup = props => {
     return (
         <div className="table-row-content">
             <div onMouseOver={() => setPopupData(author)}>{children}</div>
-                {author&&author===popupData&&
+                {popupData&&author&&
                     <div className = "popup" onMouseLeave={() => setPopupData(null)}>
-                        <button onClick = {() =>setPopupData(null)}>X</button>
+                        <p><a href={"/author/"+author}>Go to the Page</a><button onClick = {() =>setPopupData(null)}> X</button></p>
                         <AuthorTable className="popup" id = {popupData}/>
                     </div>}
         </div>
