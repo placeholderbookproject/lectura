@@ -52,3 +52,40 @@ const CommentForm = (props) => {
     );
   }
   
+export const AuthorComments = props => {
+    //const [comments, setComments] = useState([]);
+    //const [newComment, setNewComment] = useState("");
+    //const author_id = id;
+    //useEffect(fetchComments({author_id, setComments}),[id])
+    /*const handleAddComment = () => {
+        const commentId = generateUniqueId(); // Generate a unique id for the new comment
+        const newCommentObj = {
+          id: commentId,
+          comment: newComment,
+          user_id: "user_id",
+          date: new Date().toISOString(),
+          likes: 0,
+          replies: []
+        };
+        // Add the new comment to the existing comments dictionary
+        const updatedComments = comments;
+        updatedComments.push(newCommentObj);
+        setComments(updatedComments);
+        // Reset the input field for adding new comments
+        setNewComment("");
+      };
+      const generateUniqueId = () => {
+        return Math.random().toString(36).substr(2, 9);
+      };*/
+
+    return (
+            {/*<p>
+            <input value={newComment} onChange={(e) => setNewComment(e.target.value)} />
+            <button onClick={handleAddComment}>Add Comment</button>
+        </p>*/
+        /*comments.map((comment) => 
+            (<Comment comment={comment}/>
+        ))*/}
+    )
+
+}

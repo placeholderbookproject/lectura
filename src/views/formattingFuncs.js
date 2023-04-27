@@ -11,6 +11,11 @@ export const transformYear = (year, label) => {
     else {return label}
 }
 
+export const checkData = (data1,data2) => {
+    if(data1===null||data1===undefined||data1===""){return data2}
+    else{return data1}
+}
+
 export const reformatWikidata = (wiki) => {
     const columns = wiki.head.vars;
     let reformData = {};
@@ -77,3 +82,21 @@ export const dateCoalesce = (date1, date2, date3) => {
     }
     return selectedDate
 }
+
+export const removeDuplicateList = (listA,listB, key) => {
+    if(!listB){return listA}
+    const result = [...listB];
+    listA.forEach((a) => {
+      const existingB = result.find((b) => b[key] === a[key]);
+      if (!existingB) {
+        result.push(a);
+      } else {
+        Object.entries(a).forEach(([k, v]) => {
+          if (!(k in existingB)) {
+            existingB[k] = v;
+          }
+        });
+      }
+    });
+    return result;
+  }

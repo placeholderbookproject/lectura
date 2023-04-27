@@ -2,18 +2,13 @@ import React, {/*useRef,*/ useState, useEffect} from 'react';
 import { useParams} from 'react-router-dom';
 import TableRow from './ViewRow.js';
 import labels from './labels.js';
-import AuthorTexts from './AuthorTexts.js';
+//import AuthorTexts from './AuthorTexts.js';
 import {searchWikipediaEffect, /*fetchComments,*/ fetchDataEffect, wikidataEffect, archiveEffect} from './apiEffects.js';
-import {checkStr, transformYear, reformatWikidata, reformatWikitexts, dateCoalesce} from './formattingFuncs.js';
+import {checkStr, transformYear, reformatWikidata, reformatWikitexts, dateCoalesce, removeDuplicateList, checkData} from './formattingFuncs.js';
 import {AuthorEdit} from './EditWindow.js';
 import {editRowAll} from './filters.js';
 //import { Comment } from './Comments.js';
 const parse = require('html-react-parser');
-
-const checkData = (data1,data2) => {
-    if(data1===null||data1===undefined||data1===""){return data2}
-    else{return data1}
-}
 
 const AuthorTable = (props) => {
     const [wiki, setWiki] = useState("");
@@ -39,11 +34,12 @@ const AuthorTable = (props) => {
             wikidataEffect({q_number, setWikidata, type:"author"})();
         wikidataEffect({q_number,setWikidata:setWikiTextdata,type:"author_texts"})();}
     },[data])
-    useEffect(fetchDataEffect({type:'authors', id:id, setData:setData}) , [id]);
+    useEffect(fetchDataEffect({type:'authors', id, setData}) , [id]);
     useEffect(() => {setData(id)},[id])
     //useEffect (searchWikipediaEffect({setWiki, edit, name:name[0], mainOccupation}),[name,mainOccupation, edit, id])
     const setEditWindow = () => {!edit?setEdit(true):setEdit(false)}
     return (
+        name&&
         <div id = "authorTableWindow" className="person-info" style={{backgroundColor:"white"}}>
                 <h2 className ="Header">{checkData(authorLabel,name[0]) + " "}
                     {data && data.author_q?<a href={data && data.author_q?data.author_q:""}>{`(Wiki)`}</a>:<></>}
@@ -76,24 +72,26 @@ const AuthorTable = (props) => {
                 {/*edit?<AuthorEdit cols = {editRowData} data = {data} origData = {id} setData = {setData}
                     type = "authors" id = {id}/>:<></>*/
             }
-                {/*<AuthorTexts edit = {edit} author_id = {id}/>*/}
-                {textsReform && textsReform.length>0
-                    ?<TextsWikiTable texts={textsReform} name={authorLabel}/>
-                    :<></>}
+                <TextsWikiTable wikitexts={textsReform} name={checkData(authorLabel,name[0])} author = {id}/>
             </div>
     );
   }
 
-  const TextsWikiTable = (props) => {
-    const {texts, name} = props
+const TextsWikiTable = (props) => {
+    const {wikitexts, name, author} = props
+    const [storedtexts,setStoredtexts] = useState();
     const [expandTexts, setExpandTexts] = useState(false)
+    useEffect (fetchDataEffect({setData:setStoredtexts, id:author, type:'texts', by: "author"}),[author])
+    const texts = storedtexts&&removeDuplicateList(storedtexts,wikitexts, "text_q")
     return (
+    texts&&texts.length>0&&
     <div>
         <h3>{name+"'s Texts "}{`(${texts.length})`}</h3>
-        {texts&&texts.slice(0,(!expandTexts?5:texts.length)).map((text) => <SubTextsTable data={text} key={text.book} name = {props.name}/>)}
+        {texts&&texts.slice(0,(!expandTexts?5:texts.length)).map((text) => 
+            <SubTextsTable data={text} key={text.book} name = {props.name}/>)}
         {texts&&texts.length>5&&
             <button onClick = {() => setExpandTexts(!expandTexts)}>{expandTexts?"Collapse":"Show Remaining "+(texts.length-5) + " texts"}</button>}
-    </div>)
+    </div>)    
 }
 
 const SubTextsTable = (props) => {
@@ -102,19 +100,33 @@ const SubTextsTable = (props) => {
     const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
     return (
         <div className="text-info">
-            <p><a href={book}>{bookLabel.split(", ")[0]}{selectedDate&&" ("+transformYear(dateCoalesce(publYear, dopYear, inceptionYear))+ ")"}</a>
-                <button onClick = {() => {setDetailed(!detailed)}}>
-                    {detailed?"-":"+"}{/*<img src="https://cdn.iconscout.com/icon/premium/png-512-thumb/dropdown-1427583-1209253.png?f=avif&w=512" width="4" height="2"/>*/}
-                    </button>{/*"https://cdn.iconscout.com/icon/free/png-512/free-dropdown-keyboard-arrow-menu-key-direction-30471.png?f=avif&w=512"*/}
+            <p>
+                <a href={book}>{bookLabel.split(", ")[0]}{selectedDate&&" ("+transformYear(dateCoalesce(publYear, dopYear, inceptionYear))+ ")"}</a>
+                <button onClick = {() => {setDetailed(!detailed)}}>{detailed?"-":"+"}</button>
             </p>
             {detailed
-            ?<>
+            &&<>
                 <DetailedTexts data = {props.data} name={props.name}/>
                 {detailed&&<ArchiveList title={bookLabel} name={props.name} originalTitle={titleLabel}/>}
-            </>
-            :<></>}
+            </>}
+        </div>)
+}
 
-        </div>
+const DetailedTexts = (props) => {
+    const {bookLabel, bookdesc, titleLabel, typeLabel, genreLabel, publYear, publication, languageLabel, origincountryLabel
+        ,dopYear, inception, inceptionYear, metreLabel, book, publisherLabel, lengthLabel} = props.data
+    const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
+    return (
+        <>
+            <TableRow label={labels.original_title}>{titleLabel}</TableRow>
+            <TableRow label={labels.written_date}>{transformYear(selectedDate)}</TableRow>
+            <TableRow label={labels.language}>{languageLabel}</TableRow>
+            <TableRow label={labels.genre}>{genreLabel}</TableRow>
+            <TableRow label={labels.type}>{typeLabel}</TableRow>
+            <TableRow label={labels.metre}>{metreLabel}</TableRow>
+            {lengthLabel&&<TableRow label={labels.length}>{lengthLabel + " pages"}</TableRow>}
+            <TableRow label={labels.publishers}>{publisherLabel}</TableRow>
+        </>
     )
 }
 
@@ -135,68 +147,8 @@ export const ArchiveList = (props) => {
             <a href={'https://archive.org/details/'+result.identifier}>
         {`${result.title} by ${result.creator} (${result.year}) (${result.downloads} downloads) (${result.language}) (${result.mediatype})`}
             </a>
-        </p>
-        )
-        }
-    </div>
-    )
-
-}
-
-const DetailedTexts = (props) => {
-    const {bookLabel, bookdesc, titleLabel, typeLabel, genreLabel, publYear, publication, languageLabel, origincountryLabel
-        ,dopYear, inception, inceptionYear, metreLabel, book, publisherLabel, lengthLabel} = props.data
-    const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
-    return (
-        <>
-            {titleLabel&&<p><span style = {{"fontWeight": 600,}}>Original Title </span>{titleLabel}</p>}
-            {selectedDate&&<p><span style = {{"fontWeight": 600,}}>Written </span>{transformYear(selectedDate)}</p>}
-            {languageLabel&&<p><span style = {{"fontWeight": 600,}}>Language </span>{languageLabel}</p>}
-            {genreLabel&&<p><span style = {{"fontWeight": 600,}}>Genre </span>{genreLabel}</p>}
-            {typeLabel&&<p><span style = {{"fontWeight": 600,}}>Type </span>{typeLabel}</p>}
-            {metreLabel&&<p><span style = {{"fontWeight": 600,}}>Metre </span>{metreLabel}</p>}
-            {lengthLabel&&<p><span style={{"fontWeight":600,}}>Length </span>{lengthLabel + " pages"}</p>}
-            {publisherLabel&&<p><span style = {{"fontWeight": 600,}}>Publishers </span>{publisherLabel}</p>}
-        </>
-    )
-}
-
-const AuthorComments = props => {
-    //const [comments, setComments] = useState([]);
-    //const [newComment, setNewComment] = useState("");
-    //const author_id = id;
-    //useEffect(fetchComments({author_id, setComments}),[id])
-    /*const handleAddComment = () => {
-        const commentId = generateUniqueId(); // Generate a unique id for the new comment
-        const newCommentObj = {
-          id: commentId,
-          comment: newComment,
-          user_id: "user_id",
-          date: new Date().toISOString(),
-          likes: 0,
-          replies: []
-        };
-        // Add the new comment to the existing comments dictionary
-        const updatedComments = comments;
-        updatedComments.push(newCommentObj);
-        setComments(updatedComments);
-        // Reset the input field for adding new comments
-        setNewComment("");
-      };
-      const generateUniqueId = () => {
-        return Math.random().toString(36).substr(2, 9);
-      };*/
-
-    return (
-            {/*<p>
-            <input value={newComment} onChange={(e) => setNewComment(e.target.value)} />
-            <button onClick={handleAddComment}>Add Comment</button>
-        </p>*/
-        /*comments.map((comment) => 
-            (<Comment comment={comment}/>
-        ))*/}
-    )
-
+        </p>)}
+    </div>)
 }
 
 export default AuthorTable;

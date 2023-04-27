@@ -47,7 +47,8 @@ export const authorQuery = `
     }
 `
 export const authorTextQuery = `
-SELECT distinct ?book 
+SELECT distinct (?book as ?text_q)
+?book
 ?bookLabel
 ?akaLabel
 ?bookdesc
