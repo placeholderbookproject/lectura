@@ -1,16 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import { countries } from '../div/countries';
 import { languages } from '../div/languages';
+import Popup from './AddNew';
 import { fetchList } from './apiEffects';
 import AuthorTable from './AuthorTable';
 
-const ListsTable = props => {
+const ListsTable = () => {
     const [filters, setFilters] = useState({"country":"All", "language":"All"});
-    const [popupData, setPopupData] = useState();
     const [data, setData] = useState();
     const country = filters.country==="All"?"":" from " + filters.country
     const language = filters.language==="All"?"":" using " + filters.language
-    const handleMouseOver = (event, result) => {setPopupData(result.author_id);};
     useEffect(() => {if(filters.country!=="All"||filters.language!=="All") {fetchList({setData, filters})()}},[country, language])
     return (
         <>
@@ -27,17 +26,10 @@ const ListsTable = props => {
                     {data.sort((a,b)=>b.texts-a.texts).map(result => (
                         <>
                         <tr key={result.author_id}>
-                            <td onMouseOver={(e) => handleMouseOver(e, result)}>
-                                <div className="table-row-content">
-                                <a href={"/author/"+result.author_id}>{result.label}</a>
-                                    <div className = "popup">
-                                    {result.author_id===popupData&&
-                                        <>
-                                        <button onClick = {() =>setPopupData(null)}>X</button>
-                                        <AuthorTable className="popup" id = {popupData}/>
-                                        </>}
-                                    </div>
-                                </div>
+                            <td>
+                                <AuthorPopup author={result.author_id}>
+                                    <a href={"/author/"+result.author_id}>{result.label}</a>
+                                </AuthorPopup>
                             </td>
                             <td>{result.author_positions}</td>
                             <td>{result.nationality}</td><td>{result.language}</td><td>{result.texts}</td>
@@ -67,6 +59,21 @@ const DropdownMenu = props => {
             <select  value = {selected} onChange = {handleChange}>
                 {options.map((option) => (<option key = {option} value = {option}>{option}</option>) )}
             </select>
+        </div>
+    )
+}
+
+export const AuthorPopup = props => {
+    const [popupData, setPopupData] = useState(null);
+    const {author, children} = props;
+    return (
+        <div className="table-row-content">
+            <div onMouseOver={() => setPopupData(author)}>{children}</div>
+                {author&&author===popupData&&
+                    <div className = "popup" onMouseLeave={() => setPopupData(null)}>
+                        <button onClick = {() =>setPopupData(null)}>X</button>
+                        <AuthorTable className="popup" id = {popupData}/>
+                    </div>}
         </div>
     )
 }

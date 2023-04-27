@@ -40,7 +40,7 @@ const AuthorTable = (props) => {
         wikidataEffect({q_number,setWikidata:setWikiTextdata,type:"author_texts"})();}
     },[data])
     useEffect(fetchDataEffect({type:'authors', id:id, setData:setData}) , [id]);
-    //useEffect(() => {setData(id)},[id])
+    useEffect(() => {setData(id)},[id])
     //useEffect (searchWikipediaEffect({setWiki, edit, name:name[0], mainOccupation}),[name,mainOccupation, edit, id])
     const setEditWindow = () => {!edit?setEdit(true):setEdit(false)}
     return (
@@ -52,7 +52,7 @@ const AuthorTable = (props) => {
                     </button>
                 </h2>
                 <TableRow label = {labels.aka + " "}>{checkData(akaLabel,numNames>1?name.slice(1,numNames).join(", "):null)}</TableRow>
-                <TableRow label = {labels.nativeName + " "}>{nativenameLabel}{genderLabel&&` (${genderLabel})`}</TableRow>
+                {nativenameLabel&&<TableRow label = {labels.nativeName + " "}>{nativenameLabel}{genderLabel&&` (${genderLabel})`}</TableRow>}
                 {imageLabel && <img src={imageLabel.split(", ")[0]} style={{ maxWidth: "400px", maxHeight: "200px", objectFit: "contain" }} />}
                 {authordesc&&<p>{authordesc}</p>}
             {!edit&&data
