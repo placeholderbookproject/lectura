@@ -64,7 +64,7 @@ export const reformatWikitexts = (wiki) => {
         let row = { book: book };
         for (let key in group) {
         let values = group[key];
-        row[key] = values.join(", ");
+        row[key] = values.join(" | ");
         }
         output.push(row);
     }
@@ -81,6 +81,15 @@ export const dateCoalesce = (date1, date2, date3) => {
         selectedDate = date3.split(", ")[0];
     }
     return selectedDate
+}
+
+export const removeWorksOutOfBounds = (works, birth, death) => {
+    const newBirth = birth, newDeath = death, newWorks = []
+    for (const work in works) {
+        const text = works[work]
+        const dateToCheck = dateCoalesce(text.publYear,text.dopYear, text.inceptionYear)
+        if ((dateToCheck>=newBirth&&dateToCheck<=newDeath)||dateToCheck===null||dateToCheck===undefined) {newWorks.push(text)}
+    } return newWorks
 }
 
 export const removeDuplicateList = (listA,listB, key) => {

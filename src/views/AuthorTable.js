@@ -3,46 +3,45 @@ import { useParams} from 'react-router-dom';
 import TableRow from './ViewRow.js';
 import labels from './labels.js';
 //import AuthorTexts from './AuthorTexts.js';
-import {searchWikipediaEffect, /*fetchComments,*/ fetchDataEffect, wikidataEffect, archiveEffect} from './apiEffects.js';
-import {checkStr, transformYear, reformatWikidata, reformatWikitexts, dateCoalesce, removeDuplicateList, checkData} from './formattingFuncs.js';
+import { /*fetchComments,*/ fetchDataEffect, wikidataEffect, archiveEffect} from './apiEffects.js';
+import {checkStr, transformYear, reformatWikidata, reformatWikitexts, dateCoalesce, removeDuplicateList, checkData, removeWorksOutOfBounds} from './formattingFuncs.js';
 import {AuthorEdit} from './EditWindow.js';
 import {editRowAll} from './filters.js';
 //import { Comment } from './Comments.js';
-const parse = require('html-react-parser');
+//const parse = require('html-react-parser');
 
 const AuthorTable = (props) => {
-    const [wiki, setWiki] = useState("");
-    const [data, setData] = useState();
+    const [data, setData] = useState({});
     const [edit, setEdit] = useState(false);
-//    const [wikiResults, setWikiResults] = useState();
     const [wikidata, setWikidata] = useState();
     const [wikiTextdata, setWikiTextdata] = useState();
     const authorReform = wikidata?reformatWikidata(wikidata):{};
-    const textsReform = wikiTextdata?reformatWikitexts(wikiTextdata):null;
     const {author, authordesc, authorLabel, akaLabel,genderLabel, birthdate, birthyear, birthplaceLabel, birthplacecountryLabel,
         deathdate, deathyear, deathplaceLabel,deathplacecountryLabel, floruit, occupationsLabel, languagesLabel, nativenameLabel, imageLabel} 
-        = authorReform    
+        = authorReform;
+    const {author_q, author_name, author_nationality, author_birth_year, author_birth_city, author_birth_country,
+        author_death_year, author_death_city, author_death_country, author_floruit, author_positions, author_name_language
+    } = data
+    const textsReform = wikiTextdata?reformatWikitexts(wikiTextdata):null;
     let { id } = useParams();
     props.id?id=props.id:void(0);
-    const editRowData = editRowAll["authors"];
-    const name = data && data.author_name ? data.author_name.split(",") : "";
+    //const editRowData = editRowAll["authors"];
+    const name = data && author_name ? author_name.split(",") : "";
     const numNames = name.length;
-    const occupationList = data?.author_positions?.split(", ") ?? "";
     useEffect(() => {
-        if(data && data.author_q){
-            const q_number = data.author_q.replace("http://www.wikidata.org/entity/","")
+        if(data && author_q){
+            const q_number = author_q.replace("http://www.wikidata.org/entity/","")
             wikidataEffect({q_number, setWikidata, type:"author"})();
         wikidataEffect({q_number,setWikidata:setWikiTextdata,type:"author_texts"})();}
     },[data])
     useEffect(fetchDataEffect({type:'authors', id, setData}) , [id]);
     useEffect(() => {setData(id)},[id])
-    //useEffect (searchWikipediaEffect({setWiki, edit, name:name[0], mainOccupation}),[name,mainOccupation, edit, id])
     const setEditWindow = () => {!edit?setEdit(true):setEdit(false)}
     return (
         name&&
         <div id = "authorTableWindow" className="person-info" style={{backgroundColor:"white"}}>
                 <h2 className ="Header">{checkData(authorLabel,name[0]) + " "}
-                    {data && data.author_q?<a href={data && data.author_q?data.author_q:""}>{`(Wiki)`}</a>:<></>}
+                    {data && author_q?<a href={data && author_q?author_q:""}>{`(Wiki)`}</a>:<></>}
                     <button className = "editBtn" onClick = {setEditWindow} style = {{border:'None'}}>{/*!edit?labels.editBtn:labels.exitEditBtn*/}
                         <img src = "https://upload.wikimedia.org/wikipedia/commons/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg" alt = "edit" width="25" height="30"/>
                     </button>
@@ -53,26 +52,25 @@ const AuthorTable = (props) => {
                 {authordesc&&<p>{authordesc}</p>}
             {!edit&&data
                 ?<>
-                    <TableRow label = {labels.nationality + " "}>{data.author_nationality}</TableRow>
+                    <TableRow label = {labels.nationality + " "}>{author_nationality}</TableRow>
                     <TableRow label = {labels.born + " "}>
-                        {transformYear(checkData(birthyear,data.author_birth_year), labels.unspecified)}
-                        {" " +checkStr(checkData(birthplaceLabel,data.author_birth_city), checkData(birthplacecountryLabel,data.author_birth_country))}
+                        {transformYear(checkData(birthyear&&birthyear.split(", ").pop(),author_birth_year), labels.unspecified)}
+                        {" " +checkStr(checkData(birthplaceLabel,author_birth_city), checkData(birthplacecountryLabel,author_birth_country))}
                     </TableRow>
                     <TableRow label = {labels.died + " "}>
-                        {transformYear(checkData(deathyear,data.author_death_year), labels.unspecified)}
-                        {" " + checkStr(checkData(deathplaceLabel,data.author_death_city), checkData(deathplacecountryLabel,data.author_death_country))}
+                        {transformYear(checkData(deathyear&&deathyear.split(", ").pop(),author_death_year), labels.unspecified)}
+                        {" " + checkStr(checkData(deathplaceLabel,author_death_city), checkData(deathplacecountryLabel,author_death_country))}
                     </TableRow>
-                        {(data.author_birth_year === null|data.author_death_year === null) && data.author_floruit !==null
-                            ?<TableRow label = {labels.floruit + " "}>{checkData(floruit,data.author_floruit)}</TableRow>
+                        {(author_birth_year === null|author_death_year === null) && author_floruit !==null
+                            ?<TableRow label = {labels.floruit + " "}>{checkData(floruit,author_floruit)}</TableRow>
                             :<></>}
-                    <TableRow label = {labels.occupation + " "}>{checkData(occupationsLabel,data.author_positions)}</TableRow>
-                    <TableRow label={labels.languages + " "}>{checkData(languagesLabel, data.author_name_language)}</TableRow>
-                    {/*<TableRow> {typeof wiki !== Object && wiki !== ""? parse(wiki):<></>}</TableRow>*/}
+                    <TableRow label = {labels.occupation + " "}>{checkData(occupationsLabel,author_positions)}</TableRow>
+                    <TableRow label={labels.languages + " "}>{checkData(languagesLabel, author_name_language)}</TableRow>
                 </>:<></>}
                 {/*edit?<AuthorEdit cols = {editRowData} data = {data} origData = {id} setData = {setData}
                     type = "authors" id = {id}/>:<></>*/
             }
-                <TextsWikiTable wikitexts={textsReform} name={checkData(authorLabel,name[0])} author = {id}/>
+            <TextsWikiTable wikitexts={textsReform} name={checkData(authorLabel,name[0])} author = {data}/>
             </div>
     );
   }
@@ -81,33 +79,37 @@ const TextsWikiTable = (props) => {
     const {wikitexts, name, author} = props
     const [storedtexts,setStoredtexts] = useState();
     const [expandTexts, setExpandTexts] = useState(false)
-    useEffect (fetchDataEffect({setData:setStoredtexts, id:author, type:'texts', by: "author"}),[author])
-    const texts = storedtexts&&removeDuplicateList(storedtexts,wikitexts, "text_q")
+    useEffect (fetchDataEffect({setData:setStoredtexts, id:author.id, type:'texts', by: "author"}),[author])
+    const texts = storedtexts&&
+        removeWorksOutOfBounds(removeDuplicateList(storedtexts,wikitexts, "text_q"),author.author_birth_year, author.author_death_year)
     return (
     texts&&texts.length>0&&
     <div>
         <h3>{name+"'s Texts "}{`(${texts.length})`}</h3>
-        {texts&&texts.slice(0,(!expandTexts?5:texts.length)).map((text) => 
-            <SubTextsTable data={text} key={text.book} name = {props.name}/>)}
+        {texts&&texts.slice(0,(!expandTexts?5:texts.length)).map(
+            (text) => 
+                <SubTextsTable data={text} key={text.book} name = {props.name}/>)}
         {texts&&texts.length>5&&
             <button onClick = {() => setExpandTexts(!expandTexts)}>{expandTexts?"Collapse":"Show Remaining "+(texts.length-5) + " texts"}</button>}
     </div>)    
 }
 
 const SubTextsTable = (props) => {
-    const {bookLabel, publYear,dopYear, inceptionYear, book, titleLabel} = props.data
+    const {bookLabel, publYear,dopYear, inceptionYear, book, titleLabel, text_id} = props.data
+    const bookLabelReform = bookLabel.split(" | ").length>1?bookLabel.split(" | ").pop():bookLabel
+    const link = text_id&&"/text/"+text_id
     const [detailed, setDetailed] = useState(false);
     const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
     return (
         <div className="text-info">
             <p>
-                <a href={book}>{bookLabel.split(", ")[0]}{selectedDate&&" ("+transformYear(dateCoalesce(publYear, dopYear, inceptionYear))+ ")"}</a>
+                <a href={checkData(link,book)}>{bookLabelReform}{selectedDate&&" ("+transformYear(dateCoalesce(publYear, dopYear, inceptionYear))+ ")"}</a>
                 <button onClick = {() => {setDetailed(!detailed)}}>{detailed?"-":"+"}</button>
             </p>
             {detailed
             &&<>
                 <DetailedTexts data = {props.data} name={props.name}/>
-                {detailed&&<ArchiveList title={bookLabel} name={props.name} originalTitle={titleLabel}/>}
+                {detailed&&<ArchiveList title={bookLabelReform} name={props.name} originalTitle={titleLabel}/>}
             </>}
         </div>)
 }
@@ -126,6 +128,7 @@ const DetailedTexts = (props) => {
             <TableRow label={labels.metre}>{metreLabel}</TableRow>
             {lengthLabel&&<TableRow label={labels.length}>{lengthLabel + " pages"}</TableRow>}
             <TableRow label={labels.publishers}>{publisherLabel}</TableRow>
+            <TableRow label={"Wiki "}><a href={book}>{book.replace("http://www.wikidata.org/entity/","")}</a></TableRow>
         </>
     )
 }

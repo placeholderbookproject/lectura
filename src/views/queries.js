@@ -105,6 +105,7 @@ OPTIONAL {?book wdt:P495 ?origincountry.}
   }}
   OPTIONAL {?book rdfs:label ?bookLabel. FILTER (lang(?bookLabel) = "en").}
   OPTIONAL  {?language wdt:P424 ?lang. ?book rdfs:label ?bookLabel. FILTER (lang(?bookLabel) != "en" && lang(?bookLabel) = ?lang).}
+  OPTIONAL {?language wdt:P424 ?lang. BIND(SUBSTR(?lang,2) AS ?langsim). ?book rdfs:label ?bookLabel. FILTER (lang(?bookLabel) != "en" && lang(?bookLabel) = ?langsim). }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } 
   BIND(COALESCE(YEAR(?publication), YEAR(?dop), YEAR(?inception), 9999) as ?orderDate)
 }
