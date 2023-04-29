@@ -59,17 +59,18 @@ export const searchWikipediaEffect = props =>  () => {
 }
 
 export const wikidataEffect = props => () => {
-    const {type, q_number, setWikidata} = props
+    const {type, q_number, setWikidata, language} = props
     const headers = { Accept: "application/sparql-results+json" };
+    const lang = language?`"${language}"`:'"en"'
     let query;
-    if (type==="author") {query = authorQuery}
-    else if (type==="author_texts") {query = authorTextQuery};
-    query = query.replace("wd:q_number","wd:"+q_number).replace("[q2]",q_number);
+    if (type==="author") {query = authorQuery.replaceAll('"en"', lang)}
+    else if (type==="author_texts") {query = authorTextQuery.replaceAll('"en"',lang)};
+    query = query.replace("wd:q_number","wd:"+q_number).replace("[q2]",q_number).replace("en_fixed", "en");
     const url = `https://query.wikidata.org/sparql?query=${encodeURIComponent(query)}`;
     fetch(url, {headers})
     .then(response => {
         if (response.ok) {return response.json()} throw response;})
-    .then (data => {setWikidata(data)})       
+    .then (data => {setWikidata(data);})       
 }
 
 export const archiveEffect = props => () => {

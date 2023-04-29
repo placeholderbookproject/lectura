@@ -7,6 +7,7 @@ import labels from './labels.js'
 import {fetchSearchResults} from './apiEffects.js'
 import {AddNew} from './AddNew.js'
 import LoginWindow from './Login.js'
+import { langCodes } from '../div/langcodes.js';
 
 const MainSearch = () => {
     const [enterSearch,setEnterSearch] = useState(false);
@@ -43,7 +44,8 @@ const MainSearch = () => {
     )
 }
 
-const SiteHeader = () => {
+const SiteHeader = (props) => {
+  const handleChange = e => {props.setLang(e.target.value);}
   return (
       <Container className = "flexbox-container" 
           style={{backgroundColor: '#dedbdb', position: 'sticky', borderBottom: '1.5px solid #8a8a8a', top: 0,}}>
@@ -55,6 +57,9 @@ const SiteHeader = () => {
               {/*<AddNew label = "+"/>*/}
             {/*<Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/admin"}><button className="adminBtn">{labels.adminBtn}</button></Link>*/}
             <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/lists"}><button className="listsBtn">Lists</button></Link>
+            <select value = {props.lang.value} label={props.lang.value} onChange = {handleChange}>
+                {langCodes.map((option) => (<option key = {option.value+option.label} value = {option.value}>{option.label}</option>) )}
+            </select>
             {/*<LoginWindow/>*/}
        </Navbar>
       </Container>

@@ -8,9 +8,9 @@ import {checkStr, transformYear, reformatWikidata, reformatWikitexts, dateCoales
 import {AuthorEdit} from './EditWindow.js';
 import {editRowAll} from './filters.js';
 //import { Comment } from './Comments.js';
-//const parse = require('html-react-parser');
 
 const AuthorTable = (props) => {
+    const language = props.lang
     const [data, setData] = useState({});
     const [edit, setEdit] = useState(false);
     const [wikidata, setWikidata] = useState();
@@ -31,9 +31,9 @@ const AuthorTable = (props) => {
     useEffect(() => {
         if(data && author_q){
             const q_number = author_q.replace("http://www.wikidata.org/entity/","")
-            wikidataEffect({q_number, setWikidata, type:"author"})();
-        wikidataEffect({q_number,setWikidata:setWikiTextdata,type:"author_texts"})();}
-    },[data])
+            wikidataEffect({q_number, setWikidata, type:"author", language})();
+        wikidataEffect({q_number,setWikidata:setWikiTextdata,type:"author_texts", language})();}
+    },[data, language])
     useEffect(fetchDataEffect({type:'authors', id, setData}) , [id]);
     useEffect(() => {setData(id)},[id])
     const setEditWindow = () => {!edit?setEdit(true):setEdit(false)}

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { countries } from '../div/countries';
 import { languages } from '../div/languages';
-import Popup from './AddNew';
+//import Popup from './AddNew';
 import { fetchList } from './apiEffects';
 import AuthorTable from './AuthorTable';
 
@@ -49,7 +49,7 @@ const ListsTable = () => {
     )
 }
 
-const DropdownMenu = props => {
+export const DropdownMenu = props => {
     const [selected, setSelected] = useState("all");
     const {name, options, setFilters, filters} = props;
     const handleChange = e => {
@@ -67,7 +67,7 @@ const DropdownMenu = props => {
     )
 }
 
-export const AuthorPopup = props => {
+export const AuthorPopup = (props) => {
     const [popupData, setPopupData] = useState(null);
     const {author, children} = props;
     return (
@@ -76,7 +76,7 @@ export const AuthorPopup = props => {
                 {popupData&&author&&
                     <div className = "popup" onMouseLeave={() => setPopupData(null)}>
                         <p><a href={"/author/"+author}>Go to the Page</a><button onClick = {() =>setPopupData(null)}> X</button></p>
-                        <AuthorTable className="popup" id = {popupData}/>
+                        <AuthorTable className="popup" id = {popupData} lang={props.lang}/>
                     </div>}
         </div>
     )

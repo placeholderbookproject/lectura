@@ -1,7 +1,7 @@
 import './App.css';
 import AuthorTable from './views/AuthorTable.js';
 import TextTable from './views/TextTable.js';
-import React from 'react';
+import React,{useState} from 'react';
 import SiteHeader from './views/SiteHeader.js';
 import SearchDetailed from './views/Search.js';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
@@ -18,25 +18,26 @@ import {IntroPage} from './views/IntroPage.js';
 */
 
 const RouteList = () => {
+  const [lang, setLang] = useState("en")
   return (
     <BrowserRouter>
     <Routes>
       <Route path = {"/"} element = {
         <>
-          <SiteHeader/>
-          <IntroPage/>
+          <SiteHeader setLang = {setLang} lang = {lang}/>
+          <IntroPage lang = {lang}/>
         </>
         }/>
         <Route path ={"/text/:id"} element = {
           <>
-            <SiteHeader/>
+            <SiteHeader setLang = {setLang} lang = {lang}/>
             <TextTable/>
           </>
         }/>
         <Route path={"/author/:id"} element={
           <div>
-            <SiteHeader/>
-            <AuthorTable/>
+            <SiteHeader setLang = {setLang} lang = {lang}/>
+            <AuthorTable lang = {lang}/>
           </div>
           }/>
       {/*dataList["editions"].map((edition) => 
@@ -52,28 +53,28 @@ const RouteList = () => {
       )*/}
     <Route path = {"/search"} element = {
       <>
-      <SiteHeader/>
+      <SiteHeader setLang = {setLang} lang = {lang}/>
       <SearchDetailed/>
       </>
       }                
     />
     <Route path={"/lists"} element = {
       <>
-        <SiteHeader/>
+        <SiteHeader setLang = {setLang} lang = {lang}/>
         <ListsTable/>
       </>
     }
     />
     <Route path = {"/import"} element = {
         <>
-          <SiteHeader/>
+          <SiteHeader setLang = {setLang} lang = {lang}/>
           {/*<ImportWindow/>*/}
         </>
       }
     />
     <Route path = {"/admin"} element = {
       <>
-        <SiteHeader/>
+        <SiteHeader setLang = {setLang} lang = {lang}/>
         {/*<Admin/>*/}
       </>
       }

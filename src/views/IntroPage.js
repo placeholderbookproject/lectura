@@ -7,12 +7,12 @@ import { AuthorPopup } from './Lists.js';
 export const IntroPage = (props) => {
     return (
         <>
-            <LatestChanges/>
+            <LatestChanges lang = {props.lang}/>
         </>
     )
 }
 
-export const LatestChanges = () => {
+export const LatestChanges = (props) => {
     const [data, setData] = useState();
     useEffect (fetchDataEffect({setData}),[])
     const types = ["authors", "texts"]
@@ -23,7 +23,7 @@ export const LatestChanges = () => {
                 <div className="latestAdditionsList" key = {type}>
                     <ul className="listHeader">{type.charAt(0).toUpperCase()+type.slice(1,type.length)}</ul>
                     {data[type].map((element) => 
-                        <AuthorPopup key={element["label"]} author={type==="authors"&&element["author_id"]}>
+                        <AuthorPopup key={element["label"]} author={type==="authors"&&element["author_id"]} lang={props.lang}>
                             <Link to = {type==="authors"?"/author/"+element["author_id"]:"/text/"+element["text_id"]} key = {element["label"]}>
                                 <li className="listRow">{element["label"]}</li>
                             </Link>

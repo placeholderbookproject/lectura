@@ -43,6 +43,7 @@ export const authorQuery = `
       OPTIONAL {?author wdt:P18 ?image.}
       OPTIONAL {?author wdt:P1559 ?nativename.}
       #OPTIONAL {?author wdt:P1343 ?descriptionsource.}
+      OPTIONAL {?author rdfs:label ?authorLabel. FILTER(LANG(?authorLabel)!="en"&&LANG(?authorLabel) = "en_fixed")}
       SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
     }
 `
@@ -79,7 +80,7 @@ WHERE
   ?book wdt:P50 wd:q_number.
   ?book wdt:P31 ?instance.
   OPTIONAL{?book schema:description ?bookdesc.
-  FILTER(LANG(?bookdesc)="en").}
+  FILTER(LANG(?bookdesc)= "en").}
   OPTIONAL {?book skos:altLabel ?akaLabel. FILTER (lang(?akaLabel) = "en").}
   OPTIONAL {?book wdt:P31 ?type.}
   OPTIONAL {?book wdt:P136 ?genre}
@@ -106,6 +107,7 @@ OPTIONAL {?book wdt:P495 ?origincountry.}
   OPTIONAL {?book rdfs:label ?bookLabel. FILTER (lang(?bookLabel) = "en").}
   OPTIONAL  {?language wdt:P424 ?lang. ?book rdfs:label ?bookLabel. FILTER (lang(?bookLabel) != "en" && lang(?bookLabel) = ?lang).}
   OPTIONAL {?language wdt:P424 ?lang. BIND(SUBSTR(?lang,2) AS ?langsim). ?book rdfs:label ?bookLabel. FILTER (lang(?bookLabel) != "en" && lang(?bookLabel) = ?langsim). }
+  OPTIONAL {?book rdfs:label ?bookLabel. FILTER(lang(?bookLabel)="en_fixed").}
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } 
   BIND(COALESCE(YEAR(?publication), YEAR(?dop), YEAR(?inception), 9999) as ?orderDate)
 }
