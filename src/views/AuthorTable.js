@@ -5,8 +5,8 @@ import labels from './labels.js';
 //import AuthorTexts from './AuthorTexts.js';
 import { /*fetchComments,*/ fetchDataEffect, wikidataEffect, archiveEffect} from './apiEffects.js';
 import {checkStr, transformYear, reformatWikidata, reformatWikitexts, dateCoalesce, removeDuplicateList, checkData, removeWorksOutOfBounds} from './formattingFuncs.js';
-import {AuthorEdit} from './EditWindow.js';
-import {editRowAll} from './filters.js';
+//import {AuthorEdit} from './EditWindow.js';
+//import {editRowAll} from './filters.js';
 //import { Comment } from './Comments.js';
 
 const AuthorTable = (props) => {
@@ -33,19 +33,19 @@ const AuthorTable = (props) => {
         if(data && author_q){
             const q_number = author_q.replace("http://www.wikidata.org/entity/","")
             wikidataEffect({q_number, setWikidata, type:"author", language})();
-        wikidataEffect({q_number,setWikidata:setWikiTextdata,type:"author_texts", language})();}
+            wikidataEffect({q_number,setWikidata:setWikiTextdata,type:"author_texts", language})();}
     },[data, language])
     useEffect(fetchDataEffect({type:'authors', id, setData}) , [id]);
     useEffect(() => {setData(id)},[id])
-    const setEditWindow = () => {!edit?setEdit(true):setEdit(false)}
+    //const setEditWindow = () => {!edit?setEdit(true):setEdit(false)}
     return (
         name&&
         <div id = "authorTableWindow" className="person-info" style={{backgroundColor:"white"}}>
                 <h2 className ="Header">{checkData(authorLabel,name[0]) + " "}
                     {data && author_q?<a href={data && author_q?author_q:""}>{`(Wiki)`}</a>:<></>}
-                    <button className = "editBtn" onClick = {setEditWindow} style = {{border:'None'}}>{/*!edit?labels.editBtn:labels.exitEditBtn*/}
-                        <img src = "https://upload.wikimedia.org/wikipedia/commons/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg" alt = "edit" width="25" height="30"/>
-                    </button>
+                    {/*<button className = "editBtn" onClick = {setEditWindow} style = {{border:'None'}}>*/}{/*!edit?labels.editBtn:labels.exitEditBtn*/}
+                        {/*<img src = "https://upload.wikimedia.org/wikipedia/commons/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg" alt = "edit" width="25" height="30"/>
+                    </button>*/}
                 </h2>
                 <TableRow label = {labels.aka + " "}>{checkData(akaWiki,numNames>1?name.slice(1,numNames).join(", "):null)}</TableRow>
                 {nativenameLabel&&<TableRow label = {labels.nativeName + " "}>{nativenameLabel}{genderLabel&&` (${genderLabel})`}</TableRow>}
@@ -80,7 +80,7 @@ const TextsWikiTable = (props) => {
     const {wikitexts, name, author} = props
     const [storedtexts,setStoredtexts] = useState();
     const [expandTexts, setExpandTexts] = useState(false)
-    useEffect (fetchDataEffect({setData:setStoredtexts, id:author.id, type:'texts', by: "author"}),[author])
+    useEffect (fetchDataEffect({setData:setStoredtexts, id:author.author_id, type:'texts', by: "author"}),[author])
     const texts = storedtexts&&
         removeWorksOutOfBounds(removeDuplicateList(storedtexts,wikitexts, "text_q"),author.author_birth_year, author.author_death_year)
     return (
@@ -107,8 +107,7 @@ const SubTextsTable = (props) => {
                 <a href={checkData(link,book)}>{bookLabelReform}{selectedDate&&" ("+transformYear(dateCoalesce(publYear, dopYear, inceptionYear))+ ")"}</a>
                 <button onClick = {() => {setDetailed(!detailed)}}>{detailed?"-":"+"}</button>
             </p>
-            {detailed
-            &&<>
+            {detailed&&<>
                 <DetailedTexts data = {props.data} name={props.name}/>
                 {detailed&&<ArchiveList title={bookLabelReform} name={props.name} originalTitle={titleLabel}/>}
             </>}

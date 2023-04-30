@@ -114,3 +114,62 @@ OPTIONAL {?book wdt:P495 ?origincountry.}
 }
 ORDER BY ASC(?orderDate)
 `
+
+export const textQuery = `
+SELECT distinct (?book as ?text_q)
+?author
+?bookLabel
+?authorLabel
+?image
+?akaLabel
+?bookdesc
+?titleLabel
+?typeLabel
+?genreLabel
+(YEAR(?publication) as ?publYear)
+?publication
+?languageLabel
+?origincountryLabel
+(YEAR(?dop) as ?dopYear)
+?inception
+(YEAR(?inception) as ?inceptionYear)
+?metreLabel
+?publisherLabel
+?lengthLabel
+?timeperiodLabel
+?awardsLabel
+#?charactersLabel
+?publishedInLabel
+?copyrightLabel
+#?charactersLabel
+
+WHERE
+{
+  VALUES ?book { wd:q_number}.
+  ?book wdt:P50 ?author.
+  OPTIONAL {?book wdt:P18 ?image.}
+  OPTIONAL{?book schema:description ?bookdesc. FILTER(LANG(?bookdesc)= "en").}
+  OPTIONAL {?book skos:altLabel ?akaLabel. FILTER (lang(?akaLabel) = "en").}
+  OPTIONAL {?book wdt:P31 ?type.}
+  OPTIONAL {?book wdt:P136 ?genre}
+  OPTIONAL {?book wdt:P1476 ?title.}
+  OPTIONAL {?book wdt:P577 ?publication.}
+  OPTIONAL { ?book wdt:P407 ?language. ?language wdt:P424 ?languagecode.}
+  OPTIONAL {?book wdt:P495 ?origincountry.}
+  OPTIONAL {?book wdt:P571 ?inception.}
+  OPTIONAL {?book wdt:P1191 ?dop.}
+  OPTIONAL {?book wdt:P571 ?inception.}
+  OPTIONAL {?book wdt:P2551 ?metre.}
+  OPTIONAL {?book wdt:P123 ?publisher}
+  OPTIONAL {?book wdt:P2408 ?timeperiod.}
+  OPTIONAL {?book wdt:P166 ?awards.}
+  #OPTIONAL {?book wdt:P674 ?characters.}
+  OPTIONAL {?book wdt:P1104 ?length.}
+  #OPTIONAL {?book wdt:P674 ?characters.}
+  OPTIONAL {?book wdt:P1433 ?publishedIn.}
+  OPTIONAL {?book wdt:P6216 ?copyright.}
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } 
+  #BIND(COALESCE(YEAR(?publication), YEAR(?dop), YEAR(?inception), 9999) as ?orderDate)
+}
+#ORDER BY ASC(?orderDate)
+`
