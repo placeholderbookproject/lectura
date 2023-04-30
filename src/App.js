@@ -18,7 +18,7 @@ import {IntroPage} from './views/IntroPage.js';
 */
 
 const RouteList = () => {
-  const [lang, setLang] = useState("en")
+  const [lang, setLang] = useState({value:"en", label:"English"})
   return (
     <BrowserRouter>
     <Routes>
@@ -61,7 +61,7 @@ const RouteList = () => {
     <Route path={"/lists"} element = {
       <>
         <SiteHeader setLang = {setLang} lang = {lang}/>
-        <ListsTable/>
+        <ListsTable lang={lang}/>
       </>
     }
     />

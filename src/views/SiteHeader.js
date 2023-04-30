@@ -45,7 +45,7 @@ const MainSearch = () => {
 }
 
 const SiteHeader = (props) => {
-  const handleChange = e => {props.setLang(e.target.value);}
+  const handleChange = e => {props.setLang({value:e.target.value, label:e.target.label});}
   return (
       <Container className = "flexbox-container" 
           style={{backgroundColor: '#dedbdb', position: 'sticky', borderBottom: '1.5px solid #8a8a8a', top: 0,}}>

@@ -10,7 +10,7 @@ import {editRowAll} from './filters.js';
 //import { Comment } from './Comments.js';
 
 const AuthorTable = (props) => {
-    const language = props.lang
+    const language = props.lang.value
     const [data, setData] = useState({});
     const [edit, setEdit] = useState(false);
     const [wikidata, setWikidata] = useState();
@@ -28,6 +28,7 @@ const AuthorTable = (props) => {
     //const editRowData = editRowAll["authors"];
     const name = data && author_name ? author_name.split(",") : "";
     const numNames = name.length;
+    const akaWiki = akaLabel&&(akaLabel.split(", ").length>5?akaLabel.split(", ").slice(0,4).join(", "):akaLabel)
     useEffect(() => {
         if(data && author_q){
             const q_number = author_q.replace("http://www.wikidata.org/entity/","")
@@ -46,7 +47,7 @@ const AuthorTable = (props) => {
                         <img src = "https://upload.wikimedia.org/wikipedia/commons/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg" alt = "edit" width="25" height="30"/>
                     </button>
                 </h2>
-                <TableRow label = {labels.aka + " "}>{checkData(akaLabel,numNames>1?name.slice(1,numNames).join(", "):null)}</TableRow>
+                <TableRow label = {labels.aka + " "}>{checkData(akaWiki,numNames>1?name.slice(1,numNames).join(", "):null)}</TableRow>
                 {nativenameLabel&&<TableRow label = {labels.nativeName + " "}>{nativenameLabel}{genderLabel&&` (${genderLabel})`}</TableRow>}
                 {imageLabel && <img src={imageLabel.split(", ")[0]} style={{ maxWidth: "400px", maxHeight: "200px", objectFit: "contain" }} />}
                 {authordesc&&<p>{authordesc}</p>}

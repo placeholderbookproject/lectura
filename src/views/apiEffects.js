@@ -63,7 +63,11 @@ export const wikidataEffect = props => () => {
     const headers = { Accept: "application/sparql-results+json" };
     const lang = language?`"${language}"`:'"en"'
     let query;
-    if (type==="author") {query = authorQuery.replaceAll('"en"', lang)}
+    if (type==="author") {
+            query = authorQuery.replaceAll('"en"', lang)
+            if (language==="en"){query = query.replace("[nativeHeader]","")}
+            else{query=query.replace("[nativeHeader]",'OPTIONAL {?author rdfs:label ?authorLabel. FILTER(LANG(?authorLabel)!="en"&&LANG(?authorLabel) = "en_fixed").}')}
+        }
     else if (type==="author_texts") {query = authorTextQuery.replaceAll('"en"',lang)};
     query = query.replace("wd:q_number","wd:"+q_number).replace("[q2]",q_number).replace("en_fixed", "en");
     const url = `https://query.wikidata.org/sparql?query=${encodeURIComponent(query)}`;

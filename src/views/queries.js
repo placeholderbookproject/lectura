@@ -43,7 +43,8 @@ export const authorQuery = `
       OPTIONAL {?author wdt:P18 ?image.}
       OPTIONAL {?author wdt:P1559 ?nativename.}
       #OPTIONAL {?author wdt:P1343 ?descriptionsource.}
-      OPTIONAL {?author rdfs:label ?authorLabel. FILTER(LANG(?authorLabel)!="en"&&LANG(?authorLabel) = "en_fixed")}
+      OPTIONAL {?author rdfs:label ?authorLabel. FILTER(LANG(?authorLabel)="en").}
+      [nativeHeader]
       SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
     }
 `

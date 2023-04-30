@@ -45,7 +45,7 @@ export const langCodes = [
     ,{label:'Nepali', value:'ne'}
     ,{label:'Dutch', value:'nl'}
     ,{label:'Nynorsk', value:'nn'}
-    ,{label:'Norwegian', value:'no'}
+    ,{label:'Norwegian', value:'nb'}
     ,{label:'Occitan', value:'oc'}
     ,{label:'Polish', value:'pl'}
     ,{label:'Portuguese', value:'pt'}

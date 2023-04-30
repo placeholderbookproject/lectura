@@ -5,7 +5,7 @@ import { languages } from '../div/languages';
 import { fetchList } from './apiEffects';
 import AuthorTable from './AuthorTable';
 
-const ListsTable = () => {
+const ListsTable = (props) => {
     const [filters, setFilters] = useState({"country":"All", "language":"All"});
     const [data, setData] = useState();
     const country = filters.country==="All"?"":" from " + filters.country
@@ -31,7 +31,7 @@ const ListsTable = () => {
                         <>
                         <tr key={result.author_id}>
                             <td>
-                                <AuthorPopup author={result.author_id} key={result.author_id}>
+                                <AuthorPopup author={result.author_id} key={result.author_id} lang={props.lang}>
                                     <a href={"/author/"+result.author_id}>{result.label}</a>
                                 </AuthorPopup>
                             </td>
