@@ -15,31 +15,31 @@ const MainSearch = () => {
     const [searchResults,setSearchResults] = useState();
     const [selectedValue, setSelectedValue] = useState();
     useEffect (()=> {setEnterSearch(false);},[enterSearch]);
-    const searchSelect = (event) => {      
-      setSelectedValue(event);
+    const searchSelect = (e) => {
       setEnterSearch(true);
-    }  
-    const testSelect = (event) => {
-      if (event.length>3){
-        setQuery(event);
-        fetchSearchResults({ setSearchResults, query})();
-      }
+      setSelectedValue(e);
     }
+    const Search = (event) => {
+      if (event.key==="Enter"){
+        setQuery(event.target.value)
+        fetchSearchResults({ setSearchResults, query})();
+      }}
     return (
       <>
         <div style={{width: '500px', position:'relative', margin:'0 auto',clear: 'left', height:'auto',zIndex:0,}}>
           <Select 
             placeholder="Search for an author or text"
             options={searchResults}
-            onInputChange={testSelect}
+            onKeyDown={Search}
             onChange={searchSelect}
+            value={selectedValue&&selectedValue.value}
             menuPortalTarget={document.body} 
             styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
           />
         </div>
       {(enterSearch) 
-        ?<Navigate to={"/"+selectedValue.type+"/"+selectedValue.value}/>
-        :(<></>)}
+        &&<Navigate to={"/"+selectedValue.type+"/"+selectedValue.value}/>
+        }
     </>
     )
 }

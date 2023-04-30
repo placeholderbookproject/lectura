@@ -281,4 +281,11 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
 
 .popup p {background-color: white;}
 
-
+select {
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #333;
+  font-size: 15px;
+  padding: 8px 12px;
+  border-radius: 4px;
+}

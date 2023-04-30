@@ -17,7 +17,8 @@ const AuthorTable = (props) => {
     const [wikiTextdata, setWikiTextdata] = useState();
     const authorReform = wikidata?reformatWikidata(wikidata):{};
     const {author, authordesc, authorLabel, akaLabel,genderLabel, birthdate, birthyear, birthplaceLabel, birthplacecountryLabel,
-        deathdate, deathyear, deathplaceLabel,deathplacecountryLabel, floruit, occupationsLabel, languagesLabel, nativenameLabel, imageLabel} 
+        deathdate, deathyear, deathplaceLabel,deathplacecountryLabel, floruit, occupationsLabel, languagesLabel, nativenameLabel, imageLabel
+        ,citizenshipLabel} 
         = authorReform;
     const {author_q, author_name, author_nationality, author_birth_year, author_birth_city, author_birth_country,
         author_death_year, author_death_city, author_death_country, author_floruit, author_positions, author_name_language
@@ -53,7 +54,7 @@ const AuthorTable = (props) => {
                 {authordesc&&<p>{authordesc}</p>}
             {!edit&&data
                 ?<>
-                    <TableRow label = {labels.nationality + " "}>{author_nationality}</TableRow>
+                    <TableRow label = {labels.nationality + " "}>{checkData(citizenshipLabel,author_nationality)}</TableRow>
                     <TableRow label = {labels.born + " "}>
                         {transformYear(checkData(birthyear&&birthyear.split(", ").pop(),author_birth_year), labels.unspecified)}
                         {" " +checkStr(checkData(birthplaceLabel,author_birth_city), checkData(birthplacecountryLabel,author_birth_country))}
@@ -86,7 +87,7 @@ const TextsWikiTable = (props) => {
     return (
     texts&&texts.length>0&&
     <div>
-        <h3>{name+"'s Texts "}{`(${texts.length})`}</h3>
+        <h3 onClick = {() => setExpandTexts(!expandTexts)}>{name+"'s Texts "}{`(${texts.length})`}</h3>
         {texts&&texts.slice(0,(!expandTexts?5:texts.length)).map(
             (text) => 
                 <SubTextsTable data={text} key={text.book} name = {props.name}/>)}
