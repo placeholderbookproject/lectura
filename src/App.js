@@ -31,7 +31,7 @@ const RouteList = () => {
         <Route path ={"/text/:id"} element = {
           <>
             <SiteHeader setLang = {setLang} lang = {lang}/>
-            <TextTable/>
+            <TextTable lang={lang}/>
           </>
         }/>
         <Route path={"/author/:id"} element={

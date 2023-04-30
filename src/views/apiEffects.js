@@ -97,7 +97,7 @@ export const archiveEffect = props => () => {
     // send the GET request to the search API endpoint
     fetch(`${searchUrl}?${queryString}`)
       .then(response => response.json())
-      .then(data => {setArchive(data.response.docs)})
+      .then(data => {setArchive(data.response.docs);})
       .catch(error => console.error(error));    
 }
 

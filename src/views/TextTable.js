@@ -4,21 +4,23 @@ import labels from './labels.js'
 import {useState, useEffect} from 'react';
 import {transformYear, reformatWikidata, checkData, dateCoalesce} from './formattingFuncs';
 import {fetchDataEffect, wikidataEffect} from './apiEffects'
-import {TextEdit} from './EditWindow.js';
-import {editRowAll} from './filters.js';
+import { ArchiveList } from './AuthorTable.js';
+//import {TextEdit} from './EditWindow.js';
+//import {editRowAll} from './filters.js';
 
 const TextTable = (props) => {
+    const language = props.lang.value
     const [data, setData] = useState({});
     const [edit, setEdit] = useState(false);
     const [wikidata, setWikidata] = useState();
     const { id } = useParams();
-    const editRowData = editRowAll["texts"];
+    //const editRowData = editRowAll["texts"];
     const title = data&&data.text_title?data.text_title.split(","):"";
     const numTitles = title.length!==undefined?title.length:"";
     useEffect(()=> {
         if(data && data.text_q){
             const q_number = data.text_q.replace("http://www.wikidata.org/entity/","")
-            wikidataEffect({q_number, setWikidata, type:"texts"})();}},[data])
+            wikidataEffect({q_number, setWikidata, type:"texts", language})();}},[data, language])
     const wikiReform = wikidata?reformatWikidata(wikidata):{};
     const {akaLabel, authorLabel, awardsLabel, bookLabel, bookdesc, copyrightLabel, dopYear, genreLabel, image,
         inceptionYear, languageLabel, lengthLabel, metreLabel, origincountryLabel, publYear, publishedInLabel,author,
@@ -64,6 +66,7 @@ const TextTable = (props) => {
                         (text_original_publication_length_type !== "" && " " + text_original_publication_length_type + "")}
                     </TableRow>}
                 <TableRow label={"Copyright Status "}>{copyrightLabel}</TableRow>
+                {wikiReform&&bookLabel&&<ArchiveList title={bookLabel} name={authorLabel} originalTitle={titleLabel}/>}
             </>}
             {/*edit?<>
                 <TextEdit cols = {editRowData} data = {data} origData = {props.text} setData = {setData}

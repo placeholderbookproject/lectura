@@ -37,7 +37,6 @@ export const reformatWikidata = (wiki) => {
 };
 
 export const reformatWikitexts = (wiki) => {
-    console.log(wiki)
     const results = wiki.results.bindings;
     // group the results by the "book" column
     let grouped = {}
