@@ -19,7 +19,7 @@ export const fetchList = props => () => {
 }
 
 export const fetchComments = props => () => {
-    const {id, setComments} = props;
+    const {setComments} = props;
     fetch(server+'extract_comments')
     .then(response => {if(response.ok) {return response.json()}throw response})
     .then(results => {setComments(results)})

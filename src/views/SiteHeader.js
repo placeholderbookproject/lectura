@@ -5,8 +5,8 @@ import React, {useState, useEffect} from 'react';
 import { Navbar, Container } from "react-bootstrap";
 import labels from './labels.js'
 import {fetchSearchResults} from './apiEffects.js'
-import {AddNew} from './AddNew.js'
-import LoginWindow from './Login.js'
+//import {AddNew} from './AddNew.js'
+//import LoginWindow from './Login.js'
 import { langCodes } from '../div/langcodes.js';
 
 const MainSearch = () => {
@@ -14,10 +14,13 @@ const MainSearch = () => {
     const [query, setQuery] = useState("");
     const [searchResults,setSearchResults] = useState();
     const [selectedValue, setSelectedValue] = useState();
+    const [menuIsOpen, setMenuIsOpen] = useState(false);
     useEffect (()=> {setEnterSearch(false);},[enterSearch]);
+    useEffect(()=>{searchResults&&setMenuIsOpen(true)},[searchResults])
     const searchSelect = (e) => {
       setEnterSearch(true);
       setSelectedValue(e);
+      setMenuIsOpen(false)
     }
     const Search = (event) => {
       if (event.key==="Enter"){
@@ -33,15 +36,13 @@ const MainSearch = () => {
             onKeyDown={Search}
             onChange={searchSelect}
             value={selectedValue&&selectedValue.value}
+            menuIsOpen={menuIsOpen}
             menuPortalTarget={document.body} 
             styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
           />
         </div>
-      {(enterSearch) 
-        &&<Navigate to={"/"+selectedValue.type+"/"+selectedValue.value}/>
-        }
-    </>
-    )
+      {enterSearch &&<Navigate to={"/"+selectedValue.type+"/"+selectedValue.value}/>}
+    </>)
 }
 
 const SiteHeader = (props) => {

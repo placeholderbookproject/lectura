@@ -1,5 +1,5 @@
 export const langCodes = [
-    ,{label:'Afrikaans', value:'af'}
+    {label:'Afrikaans', value:'af'}
     ,{label:'Arabic', value:'ar'}
     ,{label:'Azerbaijani', value:'az'}
     ,{label:'Balinese', value:'ban'}

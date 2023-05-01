@@ -16,14 +16,14 @@ const AuthorTable = (props) => {
     const [wikidata, setWikidata] = useState();
     const [wikiTextdata, setWikiTextdata] = useState();
     const authorReform = wikidata?reformatWikidata(wikidata):{};
-    const {author, authordesc, authorLabel, akaLabel,genderLabel, birthdate, birthyear, birthplaceLabel, birthplacecountryLabel,
-        deathdate, deathyear, deathplaceLabel,deathplacecountryLabel, floruit, occupationsLabel, languagesLabel, nativenameLabel, imageLabel
+    const {authordesc, authorLabel, akaLabel,genderLabel, birthyear, birthplaceLabel, birthplacecountryLabel,
+        deathyear, deathplaceLabel,deathplacecountryLabel, floruit, occupationsLabel, languagesLabel, nativenameLabel, imageLabel
         ,citizenshipLabel} 
         = authorReform;
     const {author_q, author_name, author_nationality, author_birth_year, author_birth_city, author_birth_country,
         author_death_year, author_death_city, author_death_country, author_floruit, author_positions, author_name_language
     } = data
-    const textsReform = wikiTextdata?reformatWikitexts(wikiTextdata):null;
+    const textsReform = wikiTextdata&&reformatWikitexts(wikiTextdata);
     let { id } = useParams();
     props.id?id=props.id:void(0);
     //const editRowData = editRowAll["authors"];
@@ -116,11 +116,12 @@ const SubTextsTable = (props) => {
 }
 
 const DetailedTexts = (props) => {
-    const {bookLabel, bookdesc, titleLabel, typeLabel, genreLabel, publYear, publication, languageLabel, origincountryLabel
-        ,dopYear, inception, inceptionYear, metreLabel, book, publisherLabel, lengthLabel} = props.data
+    const { bookdesc, titleLabel, typeLabel, genreLabel, publYear,languageLabel
+        ,dopYear, inceptionYear, metreLabel, book, publisherLabel, lengthLabel} = props.data
     const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
     return (
         <>
+            <TableRow>{bookdesc}</TableRow>
             <TableRow label={labels.original_title}>{titleLabel}</TableRow>
             <TableRow label={labels.written_date}>{transformYear(selectedDate)}</TableRow>
             <TableRow label={labels.language}>{languageLabel}</TableRow>
@@ -129,7 +130,7 @@ const DetailedTexts = (props) => {
             <TableRow label={labels.metre}>{metreLabel}</TableRow>
             {lengthLabel&&<TableRow label={labels.length}>{lengthLabel + " pages"}</TableRow>}
             <TableRow label={labels.publishers}>{publisherLabel}</TableRow>
-            <TableRow label={"Wiki "}><a href={book}>{book.replace("http://www.wikidata.org/entity/","")}</a></TableRow>
+            {book&&<TableRow label={"Wiki "}><a href={book}>{book.replace("http://www.wikidata.org/entity/","")}</a></TableRow>}
         </>
     )
 }
@@ -138,7 +139,7 @@ export const ArchiveList = (props) => {
     const [archive, setArchive] = useState();
     const [showArchive, setShowArchive] = useState(false)
     const {title, name, originalTitle} = props
-    useEffect(() => {archiveEffect({title:title.split(", "[0]), name, setArchive, originalTitle})();},[])
+    useEffect(() => {archiveEffect({title:title.split(", "[0]), name, setArchive, originalTitle})();},[title, name, originalTitle])
     return (
     <div>
         {archive&&archive.length>0&&

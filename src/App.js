@@ -5,9 +5,9 @@ import React,{useState} from 'react';
 import SiteHeader from './views/SiteHeader.js';
 import SearchDetailed from './views/Search.js';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
-import EditionTable from './views/EditionTable.js';
-import ImportWindow from './views/Import.js';
-import Admin from './views/Admin.js';
+//import EditionTable from './views/EditionTable.js';
+//import ImportWindow from './views/Import.js';
+//import Admin from './views/Admin.js';
 import ListsTable from './views/Lists';
 import {IntroPage} from './views/IntroPage.js';
 

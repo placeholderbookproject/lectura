@@ -1,5 +1,5 @@
 export const languages = [
-    ,"All"
+    "All"
     ,"English"
     ,"French"
     ,"German"

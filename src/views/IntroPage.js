@@ -1,8 +1,7 @@
 import labels from './labels.js';
-import {Link} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import {fetchDataEffect} from './apiEffects.js'
-import { AuthorPopup } from './Lists.js';
+import ComponentPopup from './Popup.js';
 
 export const IntroPage = (props) => {
     return (
@@ -18,20 +17,17 @@ export const LatestChanges = (props) => {
     const types = ["authors", "texts"]
     return (
         <div className = "latestAdditions">
-            {data?<header className="latestAdditionsHeader">{labels.latestAdditions}</header>:<></>}
-            {data?types.map((type) => 
+            {data&&<header className="latestAdditionsHeader">{labels.latestAdditions}</header>}
+            {data&&types.map((type) => 
                 <div className="latestAdditionsList" key = {type}>
                     <ul className="listHeader">{type.charAt(0).toUpperCase()+type.slice(1,type.length)}</ul>
                     {data[type].map((element) => 
-                        <AuthorPopup key={element["label"]} author={type==="authors"&&element["author_id"]} lang={props.lang}>
-                            <Link to = {type==="authors"?"/author/"+element["author_id"]:"/text/"+element["text_id"]} key = {element["label"]}>
-                                <li className="listRow">{element["label"]}</li>
-                            </Link>
-                        </AuthorPopup>
+                        <ComponentPopup key={element["label"]} id={type==="authors"?element["author_id"]:element["text_id"]} 
+                            lang={props.lang} type={type.replace("s","")}>
+                            <li className="listRow">{element["label"]}</li>
+                        </ComponentPopup>
                     )}
-                </div>)
-            :<></>
-            }
+                </div>)}
         </div>
         )
 }
