@@ -1,3 +1,30 @@
+import React, {/*useRef,*/ useState, useEffect} from 'react';
+import TableRow from './ViewRow';
+import { wikidataEffect } from './apiEffects';
+
+export const WikiExternalsList = (props) => {
+  const [wikidata, setWikidata] = useState();
+  const [selectedExternal, setSelectedExternal] = useState();
+  let {q_number, language} = props;
+  useEffect(() => {
+      if(q_number){
+          q_number = q_number.replace("http://www.wikidata.org/entity/","")
+          wikidataEffect({q_number, setWikidata, type:"externals", language})();}
+  },[props])
+  return (
+      wikidata&&wikidata.results&&
+      <div>
+          <TableRow label="Select an external site">:</TableRow>
+          <select style={{maxWidth:400}} value = {selectedExternal&&selectedExternal.value} 
+              label={selectedExternal&&selectedExternal.propertyLabel} onChange = {(e) => setSelectedExternal(e.target.value)}>
+              {wikidata.results.bindings.map((option) => 
+                  (<option key = {option.value.value+option.propertyLabel.value} value = {option.value.value}>{option.propertyLabel.value}</option>) )}
+          </select>
+          <a href={selectedExternal&&selectedExternal}>{selectedExternal}</a>
+      </div>
+  )
+}
+
 export const externalsQuery = `
 SELECT ?propertyLabel ?value WHERE { 
     ?property wikibase:propertyType wikibase:ExternalId . 

@@ -1,6 +1,6 @@
 import './App.css';
 import AuthorComponent from './views/AuthorTable.js';
-import TextTable from './views/TextTable.js';
+import TextComponent from './views/TextTable.js';
 import React,{useState} from 'react';
 import SiteHeader from './views/SiteHeader.js';
 import SearchDetailed from './views/Search.js';
@@ -31,7 +31,7 @@ const RouteList = () => {
         <Route path ={"/text/:id"} element = {
           <>
             <SiteHeader setLang = {setLang} lang = {lang}/>
-            <TextTable lang={lang}/>
+            <TextComponent lang={lang}/>
           </>
         }/>
         <Route path={"/author/:id"} element={

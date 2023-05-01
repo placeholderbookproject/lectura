@@ -6,10 +6,21 @@ import {transformYear, reformatWikidata, checkData, dateCoalesce} from './format
 import {fetchDataEffect, wikidataEffect} from './apiEffects'
 import { ArchiveList } from './AuthorTable.js';
 import ComponentPopup from './Popup.js';
+import { WikiExternalsList } from './wikidata.js';
 //import {TextEdit} from './EditWindow.js';
 //import {editRowAll} from './filters.js';
 
-const TextTable = (props) => {
+const TextComponent = props => {
+    const [q, setQ] = useState();
+    return (
+        <div className="dropdowns-container">
+            <TextTable setQ={setQ} lang={props.lang}/>
+            {q&&<WikiExternalsList q_number={q} language={props.lang.value}/>}
+        </div>
+    )
+}
+
+export const TextTable = (props) => {
     const language = props.lang.value
     const [data, setData] = useState({});
     const [edit, setEdit] = useState(false);
@@ -21,6 +32,7 @@ const TextTable = (props) => {
     props.id?id=props.id:void(0);
     useEffect(()=> {
         if(data && data.text_q){
+            props.setQ&&props.setQ(data.text_q);
             const q_number = data.text_q.replace("http://www.wikidata.org/entity/","")
             wikidataEffect({q_number, setWikidata, type:"texts", language})();}},[data, language])
     const wikiReform = wikidata?reformatWikidata(wikidata):{};
@@ -78,4 +90,4 @@ const TextTable = (props) => {
     )
   }
 
-  export default TextTable;
+  export default TextComponent;

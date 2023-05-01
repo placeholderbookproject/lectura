@@ -8,13 +8,14 @@ import {checkStr, transformYear, reformatWikidata, reformatWikitexts, dateCoales
 //import {AuthorEdit} from './EditWindow.js';
 //import {editRowAll} from './filters.js';
 //import { Comment } from './Comments.js';
+import { WikiExternalsList } from './wikidata.js';
 
 export const AuthorComponent = (props) => {
     const [q, setQ] = useState();
     return (
         <div className="dropdowns-container">
             <AuthorTable setQ={setQ} lang={props.lang}/>
-            {q&&<WikiExternalsList q_number={q}/>}
+            {q&&<WikiExternalsList q_number={q} language={props.lang.value}/>}
         </div>
     )
 }
@@ -165,30 +166,6 @@ export const ArchiveList = (props) => {
             </a>
         </p>)}
     </div>)
-}
-
-export const WikiExternalsList = (props) => {
-    const [wikidata, setWikidata] = useState();
-    const [selectedExternal, setSelectedExternal] = useState();
-    let {q_number, language} = props;
-    const handleChange = e => {setSelectedExternal(e.target.value);}
-    useEffect(() => {
-        if(q_number){
-            q_number = q_number.replace("http://www.wikidata.org/entity/","")
-            wikidataEffect({q_number, setWikidata, type:"externals"})();}
-    },[props])
-    return (
-        wikidata&&wikidata.results&&
-        <div>
-            <TableRow label="Select an external site">:</TableRow>
-            <select style={{maxWidth:400}} value = {selectedExternal&&selectedExternal.value} 
-                label={selectedExternal&&selectedExternal.propertyLabel} onChange = {(e) => setSelectedExternal(e.target.value)}>
-                {wikidata.results.bindings.map((option) => 
-                    (<option key = {option.value.value+option.propertyLabel.value} value = {option.value.value}>{option.propertyLabel.value}</option>) )}
-            </select>
-            <a href={selectedExternal&&selectedExternal}>{selectedExternal}</a>
-        </div>
-    )
 }
 
 export default AuthorComponent;
