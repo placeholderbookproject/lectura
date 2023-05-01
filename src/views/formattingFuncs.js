@@ -73,18 +73,14 @@ export const reformatWikitexts = (wiki) => {
 
 export const dateCoalesce = (date1, date2, date3) => {
     let selectedDate
-    if (date1) {
-        selectedDate = date1.split(", ")[0];
-    } else if (date2) {
-        selectedDate = date2.split(", ")[0];
-    } else if (date3){
-        selectedDate = date3.split(", ")[0];
-    }
+    if (date1) {selectedDate = date1.split(", ")[0];
+    } else if (date2) {selectedDate = date2.split(", ")[0];
+    } else if (date3){selectedDate = date3.split(", ")[0];}
     return selectedDate
 }
 
 export const removeWorksOutOfBounds = (works, birth, death) => {
-    const newBirth = birth, newDeath = death, newWorks = []
+    const newBirth = Math.floor(birth/100)*100, newDeath = Math.ceil(death/100)*100, newWorks = []
     for (const work in works) {
         const text = works[work]
         const dateToCheck = dateCoalesce(text.publYear,text.dopYear, text.inceptionYear)
@@ -101,13 +97,7 @@ export const removeDuplicateList = (listA,listB, key) => {
       const existingB = result.find((b) => b[key] === a[key]);
       if (!existingB) {
         result.push(a);
-      } else {
-        Object.entries(a).forEach(([k, v]) => {
-          if (!(k in existingB)) {
-            existingB[k] = v;
-          }
-        });
-      }
+      } else {Object.entries(a).forEach(([k, v]) => {if (!(k in existingB)) {existingB[k] = v;}});}
     });
     return result;
   }

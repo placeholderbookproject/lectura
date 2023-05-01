@@ -1,61 +1,32 @@
 import { authorQuery, authorTextQuery, textQuery } from "./queries";
 const server = 'http://127.0.0.1:8000/'
 
+const fetchFunc = (query, setData) => {
+    fetch(query).then(response => {if(response.ok) {return response.json()}throw response}).then(results => {setData(results)})
+}
+
 export const fetchDataEffect = props => () => {
     const {type, id, setData, by} = props
-    let search = type===null||type===undefined?"":"type="+type+"&id="+id+(by!==null?"&by="+by:"")
-    fetch(server+'data?'+search)
-    .then(response => {if(response.ok) {return response.json()}throw response})
-    .then(results => {setData(results)})
-    .finally(() => (type===null?props.setLoading(true):void(0)))
+    const search = type===null||type===undefined?"":"type="+type+"&id="+id+(by!==null?"&by="+by:"")
+    fetchFunc(server+'data?'+search, setData)
 }
 
 export const fetchList = props => () => {
     const {setData, filters} = props
     const query = `lists?language=${filters.language}&country=${filters.country}`
-    fetch(server+query)
-    .then(response=>{if(response.ok){return response.json()}throw response})
-    .then(results=>{setData(results)})
+    fetchFunc(server+query, setData)
 }
 
 export const fetchComments = props => () => {
     const {setComments} = props;
-    fetch(server+'extract_comments')
-    .then(response => {if(response.ok) {return response.json()}throw response})
-    .then(results => {setComments(results)})
+    fetchFunc(server+'extract_comments', setComments)
 }
 
 export const fetchSearchResults = props => () => {
     const {setSearchResults, query, type, filters} = props
     const searchType = type===undefined?"":"&searchtype="+type
     if(query!==undefined && query.length>3) {
-          fetch(server+'search?query='+query+searchType+"&filters="+JSON.stringify(filters))
-          .then(response => {
-              if (response.ok) {return response.json()} throw response;})
-          .then (data => {setSearchResults(data)})
-        }
-    else {void(0)}
-}
-
-export const searchWikipediaEffect = props =>  () => {
-    const {name, mainOccupation, setWiki, edit} = props
-    const searchWikipedia = async () => {
-        const searchQuery = name + " " + mainOccupation;
-        const endpoint = `https://en.wikipedia.org/w/api.php?action=query&list=search&prop=info&inprop=url&utf8=&format=json&origin=*&srlimit=20&srsearch=${searchQuery}`;
-        const response = await fetch(endpoint);
-        if (!response.ok) {throw Error(response.statusText);}
-        const json = await response.json();
-        const title = json["query"]["search"][0]["title"]//["query"]//["search"][0]
-        //const extractText = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&exlimit=20&titles=${title}&explaintext=1&exsectionformat=plain`;
-        const extractText = `https://en.wikipedia.org/api/rest_v1/page/summary/${title}`;
-        const responseTwo = await fetch(extractText)
-        if (!responseTwo.ok) {throw Error(responseTwo.statusText);}
-        const result = await responseTwo.json();
-        const url = result["content_urls"]["desktop"]["page"]
-        console.log(json)
-        setWiki(result["extract"] + " (source: <a href = '" + url + "'>wikipedia</a>)");//return json;
-    }
-    !edit?searchWikipedia():void(0);
+        fetchFunc(server+'search?query='+query+searchType+"&filters="+JSON.stringify(filters), setSearchResults)}
 }
 
 export const wikidataEffect = props => () => {
@@ -69,12 +40,15 @@ export const wikidataEffect = props => () => {
             else{query=query.replace("[nativeHeader]",'OPTIONAL {?author rdfs:label ?authorLabel. FILTER(LANG(?authorLabel)!="en"&&LANG(?authorLabel) = "en_fixed").}')}
         }
     else if (type==="author_texts") {query = authorTextQuery.replaceAll('"en"',lang)}
-    else if (type==="texts") {query = textQuery.replaceAll('"en"',lang)};
+    else if (type==="texts") {
+        query = textQuery.replaceAll('"en"',lang)
+        if (language==="en"){query = query.replace("[nativeHeader]","")}
+        else{query=query.replace("[nativeHeader]",`OPTIONAL {?book rdfs:label ?bookLabel. FILTER(LANG(?bookLabel)!=${lang}&&LANG(?bookLabel) = "en_fixed").}`)}
+    };
     query = query.replace("wd:q_number","wd:"+q_number).replace("[q2]",q_number).replace("en_fixed", "en");
     const url = `https://query.wikidata.org/sparql?query=${encodeURIComponent(query)}`;
     fetch(url, {headers})
-    .then(response => {
-        if (response.ok) {return response.json()} throw response;})
+    .then(response => {if (response.ok) {return response.json()} throw response;})
     .then (data => {setWikidata(data)})       
 }
 
@@ -129,16 +103,14 @@ export const submitEdits = props => () => {
 }
 
 export const uploadNew = (props) => () => {
-    const {data/*, setData*/, type, setSubmissionUploaded} = props
+    const {data, type, setSubmissionUploaded} = props
     const requestOptions = {
         method: 'POST',
         body: JSON.stringify(data)
     };
     fetch(server+'new?type='+type, requestOptions)
         .then(response => response.json())
-        .finally(() => {setSubmissionUploaded(true)
-                        //setData({})
-                    }                
+        .finally(() => {setSubmissionUploaded(true)}                
         )
 }
 
@@ -157,7 +129,6 @@ export const uploadData = (props) => () => {
         }
         newData.push(newDataElement)
     }
-    
     const inputName = (inputFile["current"]["value"].split("\\").slice(inputFile["current"]["value"].split("\\").length-1)[0].split(".")[0]) + "_" + importType
     const date = new Date()
     const curr_date = [date.getFullYear(), date.getMonth()+1, date.getDate()].join("-")

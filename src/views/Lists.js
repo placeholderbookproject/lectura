@@ -22,13 +22,11 @@ const ListsTable = (props) => {
             <button className="homeBtn" onClick={() => {setData(null)}}>Clear Search</button>
         </div>
         <div>
-            {data
-                ?<>
+            {data&&<>
                 <p>{`There are ${data.length} authors${country}${language} with a total of ${data.reduce((acc, cur)=>acc+cur.texts,0)} texts`}</p>
                 <table id="listTable"><tbody>
                     <tr><th>Author</th><th>Occupations</th><th>Nationality</th><th>Language</th><th>#Texts</th></tr>
                     {data.sort((a,b)=>b.texts-a.texts).map(result => (
-                        <>
                         <tr key={result.author_id}>
                             <td>
                                 <ComponentPopup id={result.author_id} key={result.author_id} lang={props.lang} type="author">
@@ -38,11 +36,9 @@ const ListsTable = (props) => {
                             <td>{result.author_positions}</td>
                             <td>{result.nationality}</td><td>{result.language}</td><td>{result.texts}</td>
                         </tr>
-                        </>
                     ))}
                 </tbody></table>
                 </>
-                :<></>
             }
         </div>
         </>

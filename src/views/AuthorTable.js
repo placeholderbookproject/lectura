@@ -82,7 +82,7 @@ const TextsWikiTable = (props) => {
     const [storedtexts,setStoredtexts] = useState();
     const [expandTexts, setExpandTexts] = useState(false)
     useEffect (fetchDataEffect({setData:setStoredtexts, id:author.author_id, type:'texts', by: "author"}),[author])
-    const texts = storedtexts&&
+    const texts = storedtexts&&author&&
         removeWorksOutOfBounds(removeDuplicateList(storedtexts,wikitexts, "text_q"),author.author_birth_year, author.author_death_year)
     return (
     texts&&texts.length>0&&

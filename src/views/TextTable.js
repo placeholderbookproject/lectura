@@ -74,7 +74,6 @@ const TextTable = (props) => {
             </>
             :<></>*/
             }
-            {/*<TextEditionsTable text_id = {props.text} />*/}
         </div>
     )
   }

@@ -1,5 +1,5 @@
 import Select from 'react-select';
-import 'react-select-search/style.css';
+//import 'react-select-search/style.css';
 import {Navigate, Link} from 'react-router-dom'
 import React, {useState, useEffect} from 'react';
 import { Navbar, Container } from "react-bootstrap";

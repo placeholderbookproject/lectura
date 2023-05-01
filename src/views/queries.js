@@ -170,7 +170,9 @@ WHERE
   #OPTIONAL {?book wdt:P674 ?characters.}
   OPTIONAL {?book wdt:P1433 ?publishedIn.}
   OPTIONAL {?book wdt:P6216 ?copyright.}
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } 
+  OPTIONAL {?book rdfs:label ?bookLabel. FILTER(LANG(?bookLabel)="en").}
+[nativeHeader]
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
   #BIND(COALESCE(YEAR(?publication), YEAR(?dop), YEAR(?inception), 9999) as ?orderDate)
 }
 #ORDER BY ASC(?orderDate)
