@@ -1,5 +1,5 @@
 import './App.css';
-import AuthorTable from './views/AuthorTable.js';
+import AuthorComponent from './views/AuthorTable.js';
 import TextTable from './views/TextTable.js';
 import React,{useState} from 'react';
 import SiteHeader from './views/SiteHeader.js';
@@ -37,7 +37,7 @@ const RouteList = () => {
         <Route path={"/author/:id"} element={
           <div>
             <SiteHeader setLang = {setLang} lang = {lang}/>
-            <AuthorTable lang = {lang}/>
+            <AuthorComponent lang = {lang}/>
           </div>
           }/>
       {/*dataList["editions"].map((edition) => 

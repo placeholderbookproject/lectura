@@ -42,29 +42,22 @@ export const reformatWikitexts = (wiki) => {
     let grouped = {}
     for (let row of results) {
       let book = row.book.value;
-      if (!grouped[book]) {
-        grouped[book] = {};
-      }
+      if (!grouped[book]) {grouped[book] = {};}
       for (let key in row) {
         if (key !== "book") {
           let val = row[key].value;
           if (grouped[book][key]) {
-            if (!grouped[book][key].includes(val)) {
-              grouped[book][key].push(val);
-            }
-          } else {
-            grouped[book][key] = [val];
-          }
-        }
-      }
+            if (!grouped[book][key].includes(val)) {grouped[book][key].push(val);}
+          } else {grouped[book][key] = [val];}
+        }}
     }    
     let output = [];
     for (let book in grouped) {
         let group = grouped[book];
         let row = { book: book };
         for (let key in group) {
-        let values = group[key];
-        row[key] = values.join(" | ");
+            let values = group[key];
+            row[key] = values.join(" | ");
         }
         output.push(row);
     }
@@ -94,10 +87,9 @@ export const removeDuplicateList = (listA,listB, key) => {
     if(!listB){return listA}
     const result = [...listB];
     listA.forEach((a) => {
-      const existingB = result.find((b) => b[key] === a[key]);
-      if (!existingB) {
-        result.push(a);
-      } else {Object.entries(a).forEach(([k, v]) => {if (!(k in existingB)) {existingB[k] = v;}});}
+        const existingB = result.find((b) => b[key] === a[key]);
+        if (!existingB) {result.push(a);}
+        else {Object.entries(a).forEach(([k, v]) => {if (!(k in existingB)) {existingB[k] = v;}});}
     });
     return result;
   }

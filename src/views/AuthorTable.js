@@ -9,7 +9,17 @@ import {checkStr, transformYear, reformatWikidata, reformatWikitexts, dateCoales
 //import {editRowAll} from './filters.js';
 //import { Comment } from './Comments.js';
 
-const AuthorTable = (props) => {
+export const AuthorComponent = (props) => {
+    const [q, setQ] = useState();
+    return (
+        <div className="dropdowns-container">
+            <AuthorTable setQ={setQ} lang={props.lang}/>
+            {q&&<WikiExternalsList q_number={q}/>}
+        </div>
+    )
+}
+
+export const AuthorTable = (props) => {
     const language = props.lang.value
     const [data, setData] = useState({});
     const [edit, setEdit] = useState(false);
@@ -32,6 +42,7 @@ const AuthorTable = (props) => {
     const akaWiki = akaLabel&&(akaLabel.split(", ").length>5?akaLabel.split(", ").slice(0,4).join(", "):akaLabel)
     useEffect(() => {
         if(data && author_q){
+            props.setQ&&props.setQ(author_q);
             const q_number = author_q.replace("http://www.wikidata.org/entity/","")
             wikidataEffect({q_number, setWikidata, type:"author", language})();
             wikidataEffect({q_number,setWikidata:setWikiTextdata,type:"author_texts", language})();}
@@ -52,8 +63,8 @@ const AuthorTable = (props) => {
                 {nativenameLabel&&<TableRow label = {labels.nativeName + " "}>{nativenameLabel}{genderLabel&&` (${genderLabel})`}</TableRow>}
                 {imageLabel && <img src={imageLabel.split(", ")[0]} style={{ maxWidth: "400px", maxHeight: "200px", objectFit: "contain" }} />}
                 {authordesc&&<p>{authordesc}</p>}
-            {!edit&&data
-                ?<>
+            {!edit&&data&&
+                <>
                     <TableRow label = {labels.nationality + " "}>{checkData(citizenshipLabel,author_nationality)}</TableRow>
                     <TableRow label = {labels.born + " "}>
                         {transformYear(checkData(birthyear&&birthyear.split(", ").pop(),author_birth_year), labels.unspecified)}
@@ -68,7 +79,7 @@ const AuthorTable = (props) => {
                             :<></>}
                     <TableRow label = {labels.occupation + " "}>{checkData(occupationsLabel,author_positions)}</TableRow>
                     <TableRow label={labels.languages + " "}>{checkData(languagesLabel, author_name_language)}</TableRow>
-                </>:<></>}
+                </>}
                 {/*edit?<AuthorEdit cols = {editRowData} data = {data} origData = {id} setData = {setData}
                     type = "authors" id = {id}/>:<></>*/
             }
@@ -156,4 +167,28 @@ export const ArchiveList = (props) => {
     </div>)
 }
 
-export default AuthorTable;
+export const WikiExternalsList = (props) => {
+    const [wikidata, setWikidata] = useState();
+    const [selectedExternal, setSelectedExternal] = useState();
+    let {q_number, language} = props;
+    const handleChange = e => {setSelectedExternal(e.target.value);}
+    useEffect(() => {
+        if(q_number){
+            q_number = q_number.replace("http://www.wikidata.org/entity/","")
+            wikidataEffect({q_number, setWikidata, type:"externals"})();}
+    },[props])
+    return (
+        wikidata&&wikidata.results&&
+        <div>
+            <TableRow label="Select an external site">:</TableRow>
+            <select style={{maxWidth:400}} value = {selectedExternal&&selectedExternal.value} 
+                label={selectedExternal&&selectedExternal.propertyLabel} onChange = {(e) => setSelectedExternal(e.target.value)}>
+                {wikidata.results.bindings.map((option) => 
+                    (<option key = {option.value.value+option.propertyLabel.value} value = {option.value.value}>{option.propertyLabel.value}</option>) )}
+            </select>
+            <a href={selectedExternal&&selectedExternal}>{selectedExternal}</a>
+        </div>
+    )
+}
+
+export default AuthorComponent;

@@ -3,8 +3,8 @@ SELECT ?propertyLabel ?value WHERE {
     ?property wikibase:propertyType wikibase:ExternalId . 
     ?property wikibase:directClaim ?propertyclaim . 
     OPTIONAL {?property wdt:P1630 ?formatterURL .}  
-    wd:Q343607 ?propertyclaim ?_value .   
-    BIND(IF(BOUND(?formatterURL), IRI(REPLACE(?formatterURL, "\\$", ?_value)) , ?_value) AS ?value) 
+    wd:q_number ?propertyclaim ?_value .   
+    BIND(IF(BOUND(?formatterURL), IRI(REPLACE(?formatterURL, "\\\\$1", ?_value)) , ?_value) AS ?value) 
     SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } 
     }
 `

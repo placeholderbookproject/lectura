@@ -1,4 +1,4 @@
-import { authorQuery, authorTextQuery, textQuery } from "./queries";
+import { authorQuery, authorTextQuery, textQuery, externalsQuery } from "./queries";
 const server = 'http://127.0.0.1:8000/'
 
 const fetchFunc = (query, setData) => {
@@ -44,7 +44,8 @@ export const wikidataEffect = props => () => {
         query = textQuery.replaceAll('"en"',lang)
         if (language==="en"){query = query.replace("[nativeHeader]","")}
         else{query=query.replace("[nativeHeader]",`OPTIONAL {?book rdfs:label ?bookLabel. FILTER(LANG(?bookLabel)!=${lang}&&LANG(?bookLabel) = "en_fixed").}`)}
-    };
+    }
+    else if (type==="externals"){query = externalsQuery.replaceAll('"en"',lang)};
     query = query.replace("wd:q_number","wd:"+q_number).replace("[q2]",q_number).replace("en_fixed", "en");
     const url = `https://query.wikidata.org/sparql?query=${encodeURIComponent(query)}`;
     fetch(url, {headers})

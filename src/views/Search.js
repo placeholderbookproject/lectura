@@ -132,10 +132,9 @@ const SearchDetailed = (props) => {
                     :<></>}
                 </tr>
                 {search.length>0 
-                ?(((searchResults.length>100)?searchResults.slice(0,100):searchResults).map //Limitation to first 100 values
+                &&(((searchResults.length>100)?searchResults.slice(0,100):searchResults).map //Limitation to first 100 values
                     (result => (
-                        <tr key = {searchType === "author"?result.author_id:result.text_id}><CreateList data = {result} type = {searchType}/></tr>)))
-                :(<></>)}
+                        <tr key = {searchType === "author"?result.author_id:result.text_id}><CreateList data = {result} type = {searchType}/></tr>)))}
           </tbody></table>
       </div>
     )
