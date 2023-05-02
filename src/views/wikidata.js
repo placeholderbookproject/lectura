@@ -2,25 +2,47 @@ import React, {/*useRef,*/ useState, useEffect} from 'react';
 import TableRow from './ViewRow';
 import { wikidataEffect } from './apiEffects';
 
+const findIndex = (list, search) => {
+  const ind = list.findIndex((obj) => obj.propertyLabel.value.includes(search))
+  if(ind===-1){return null}
+  return list[ind].value.value
+}
+const externalsStaples = [
+  {logo:"https://d.gr-assets.com/misc/1454549143-1454549143_goodreads_misc.png", label: "Goodreads"}
+  ,{logo:"https://openlibrary.org/static/images/openlibrary-logo-tighter.svg", label:"Open Library ID"}
+  ,{logo:"https://sites.tufts.edu/perseuscatalog/files/2013/05/medusa_pegasus.png", label: "Perseus"}
+  ,{logo:"https://catalogue.bnf.fr/images/Logo_BNF_Web.png", label:"Bibliothèque nationale de France"}
+]
+
 export const WikiExternalsList = (props) => {
-  const [wikidata, setWikidata] = useState();
+  const [externals,setExternals] = useState()
+  const {setExternalStaples} = props;
   const [selectedExternal, setSelectedExternal] = useState();
   let {q_number, language} = props;
   useEffect(() => {
       if(q_number){
           q_number = q_number.replace("http://www.wikidata.org/entity/","")
-          wikidataEffect({q_number, setWikidata, type:"externals", language})();}
+          wikidataEffect({q_number, setWikidata:setExternals, type:"externals", language})();}
   },[props])
+  useEffect(() => {externals&&externals.results&&
+    setExternalStaples(
+    externalsStaples.map((external) => (
+      findIndex(externals.results.bindings,external.label)&&
+      <a href={findIndex(externals.results.bindings,external.label)}>
+        <img src={external.logo} style={{ maxWidth: "40px", maxHeight: "30px", objectFit: "contain" }} alt={external.label}></img>
+      </a>
+    )))
+  },[externals])
   return (
-      wikidata&&wikidata.results&&
+      externals&&externals.results&&
       <div>
-          <TableRow label="Select an external site">:</TableRow>
-          <select style={{maxWidth:400}} value = {selectedExternal&&selectedExternal.value} 
-              label={selectedExternal&&selectedExternal.propertyLabel} onChange = {(e) => setSelectedExternal(e.target.value)}>
-              {wikidata.results.bindings.map((option) => 
-                  (<option key = {option.value.value+option.propertyLabel.value} value = {option.value.value}>{option.propertyLabel.value}</option>) )}
-          </select>
-          <a href={selectedExternal&&selectedExternal}>{selectedExternal}</a>
+        <TableRow label="Select an external site">:</TableRow>
+        <select style={{maxWidth:400}} value = {selectedExternal&&selectedExternal.value} 
+            label={selectedExternal&&selectedExternal.propertyLabel} onChange = {(e) => setSelectedExternal(e.target.value)}>
+            {externals.results.bindings.map((option) => 
+                (<option key = {option.value.value+option.propertyLabel.value} value = {option.value.value}>{option.propertyLabel.value}</option>) )}
+        </select>
+        <a href={selectedExternal&&selectedExternal}>{selectedExternal}</a>
       </div>
   )
 }

@@ -12,10 +12,11 @@ import { WikiExternalsList } from './wikidata.js';
 
 export const AuthorComponent = (props) => {
     const [q, setQ] = useState();
+    const [externalStaples, setExternalStaples] = useState();
     return (
         <div className="dropdowns-container">
-            <AuthorTable setQ={setQ} lang={props.lang}/>
-            {q&&<WikiExternalsList q_number={q} language={props.lang.value}/>}
+            <AuthorTable setQ={setQ} lang={props.lang} externalStaples={externalStaples}/>
+            {q&&<WikiExternalsList q_number={q} language={props.lang.value} setExternalStaples={setExternalStaples}/>}
         </div>
     )
 }
@@ -54,6 +55,7 @@ export const AuthorTable = (props) => {
     return (
         name&&
         <div id = "authorTableWindow" className="person-info" style={{backgroundColor:"white"}}>
+                {props.externalStaples&&props.externalStaples}
                 <h2 className ="Header">{checkData(authorLabel,name[0]) + " "}
                     {data && author_q?<a href={data && author_q?author_q:""}>{`(Wiki)`}</a>:<></>}
                     {/*<button className = "editBtn" onClick = {setEditWindow} style = {{border:'None'}}>*/}{/*!edit?labels.editBtn:labels.exitEditBtn*/}

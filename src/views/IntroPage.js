@@ -3,13 +3,7 @@ import {useState, useEffect} from 'react';
 import {fetchDataEffect} from './apiEffects.js'
 import ComponentPopup from './Popup.js';
 
-export const IntroPage = (props) => {
-    return (
-        <>
-            <LatestChanges lang = {props.lang}/>
-        </>
-    )
-}
+export const IntroPage = (props) => {return (<LatestChanges lang = {props.lang}/>)}
 
 export const LatestChanges = (props) => {
     const [data, setData] = useState();

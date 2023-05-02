@@ -11,12 +11,6 @@ import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import ListsTable from './views/Lists';
 import {IntroPage} from './views/IntroPage.js';
 
-//Options for language dropdown
-/*const languageOptions = [
-  {label: 'English', value: 'en'},
-];
-*/
-
 const RouteList = () => {
   const [lang, setLang] = useState({value:"en", label:"English"})
   return (
@@ -38,8 +32,8 @@ const RouteList = () => {
           <div>
             <SiteHeader setLang = {setLang} lang = {lang}/>
             <AuthorComponent lang = {lang}/>
-          </div>
-          }/>
+          </div>}
+        />
       {/*dataList["editions"].map((edition) => 
         <Route path = {"/text/"+edition.text_id+"/edition/"+edition.edition_id} key = {edition.edition_id}
           element={
@@ -55,29 +49,25 @@ const RouteList = () => {
       <>
       <SiteHeader setLang = {setLang} lang = {lang}/>
       <SearchDetailed/>
-      </>
-      }                
+      </>}                
     />
     <Route path={"/lists"} element = {
       <>
         <SiteHeader setLang = {setLang} lang = {lang}/>
         <ListsTable lang={lang}/>
-      </>
-    }
+      </>}
     />
     <Route path = {"/import"} element = {
         <>
           <SiteHeader setLang = {setLang} lang = {lang}/>
           {/*<ImportWindow/>*/}
-        </>
-      }
+        </>}
     />
     <Route path = {"/admin"} element = {
       <>
         <SiteHeader setLang = {setLang} lang = {lang}/>
         {/*<Admin/>*/}
-      </>
-      }
+      </>}
     />
     </Routes>
     </BrowserRouter>
