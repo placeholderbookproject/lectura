@@ -9,9 +9,17 @@ const findIndex = (list, search) => {
 }
 const externalsStaples = [
   {logo:"https://d.gr-assets.com/misc/1454549143-1454549143_goodreads_misc.png", label: "Goodreads"}
-  ,{logo:"https://openlibrary.org/static/images/openlibrary-logo-tighter.svg", label:"Open Library ID"}
+  ,{logo:"https://openlibrary.org/static/images/openlibrary-logo-tighter.svg", label:"Open Library"}
   ,{logo:"https://sites.tufts.edu/perseuscatalog/files/2013/05/medusa_pegasus.png", label: "Perseus"}
   ,{logo:"https://catalogue.bnf.fr/images/Logo_BNF_Web.png", label:"Bibliothèque nationale de France"}
+  ,{logo:"https://www.letempsretrouve.nl/wp-content/uploads/2021/06/Logo-La-Ple%CC%81iade.jpeg", label:"Bibliothèque de la Pléiade"}
+  ,{logo:"https://upload.wikimedia.org/wikipedia/commons/a/a7/LibraryThing_Logo_medium.png", label:"LibraryThing"}
+  ,{logo:"https://www.gutenberg.org/gutenberg/pg-logo-129x80.png", label:"Gutenberg"}
+  ,{logo:"https://librivox.org/images/librivox-logo.png", label:"LibriVox"}
+  ,{logo:"https://latin.packhum.org/images/ornament.png", label:"PHI Latin Texts"}
+  ,{logo:"https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png", label:"Google Knowledge"}
+  ,{logo:"https://aboutbrepolis.files.wordpress.com/2023/04/clacla.png?w=250&h=180", label:"Clavis Patrum"}
+  ,{label: "Musisque Deoque", alt: "MQDQ"}
 ]
 
 export const WikiExternalsList = (props) => {
@@ -23,13 +31,14 @@ export const WikiExternalsList = (props) => {
       if(q_number){
           q_number = q_number.replace("http://www.wikidata.org/entity/","")
           wikidataEffect({q_number, setWikidata:setExternals, type:"externals", language})();}
-  },[props])
+  },[props.q_number])
   useEffect(() => {externals&&externals.results&&
     setExternalStaples(
     externalsStaples.map((external) => (
       findIndex(externals.results.bindings,external.label)&&
       <a href={findIndex(externals.results.bindings,external.label)}>
-        <img src={external.logo} style={{ maxWidth: "40px", maxHeight: "30px", objectFit: "contain" }} alt={external.label}></img>
+        {external.logo&&<img src={external.logo} style={{ maxWidth: "40px", maxHeight: "30px", objectFit: "contain" }} alt={external.label}></img>}
+        {!external.logo&&external.alt}
       </a>
     )))
   },[externals])
@@ -176,6 +185,7 @@ SELECT distinct (?book as ?text_q)
 ?bookdesc
 ?titleLabel
 ?typeLabel
+?formLabel
 ?genreLabel
 (YEAR(?publication) as ?publYear)
 ?publication
@@ -202,6 +212,7 @@ WHERE
   OPTIONAL{?book schema:description ?bookdesc. FILTER(LANG(?bookdesc)= "en").}
   OPTIONAL {?book skos:altLabel ?akaLabel. FILTER (lang(?akaLabel) = "en").}
   OPTIONAL {?book wdt:P31 ?type.}
+  OPTIONAL {?book wdt:P7937 ?form.}
   OPTIONAL {?book wdt:P136 ?genre}
   OPTIONAL {?book wdt:P1476 ?title.}
   OPTIONAL {?book wdt:P577 ?publication.}

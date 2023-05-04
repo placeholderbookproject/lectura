@@ -24,6 +24,7 @@ export const reformatWikidata = (wiki) => {
         const resultLength = wiki.results.bindings.length
         for (let j = 0;j<resultLength;j++){
             const row = wiki.results.bindings[j]
+            if(Object.keys(row)===null){continue}
             if (Object.keys(row).includes(col)){
                 const val = row[col].value;
                 if(val===undefined) {continue}

@@ -39,12 +39,15 @@ export const TextTable = (props) => {
     const wikiReform = wikidata?reformatWikidata(wikidata):{};
     const {akaLabel, authorLabel, awardsLabel, bookLabel, bookdesc, copyrightLabel, dopYear, genreLabel, image,
         inceptionYear, languageLabel, lengthLabel, metreLabel, origincountryLabel, publYear, publishedInLabel,
-        publisherLabel, titleLabel, typeLabel} = wikiReform
+        publisherLabel, titleLabel, typeLabel, formLabel} = wikiReform
     const {text_author, author_id, text_language, text_original_publication_year, text_original_publication_length,
         text_original_publication_length_type} = data
     const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
-    useEffect(fetchDataEffect({type:'texts', id, setData}),[id]);
-    useEffect(() => {setData(id)},[id])
+    useEffect(() => {
+        setData(id);
+        fetchDataEffect({type:'texts', id, setData})();
+    },[id]);
+    //useEffect(() => {setData(id)},[id])
     //const setEditWindow = () => {!edit?setEdit(true):setEdit(false)}
     return (
         <div id = "textTableWindow" className="person-info">
@@ -70,6 +73,7 @@ export const TextTable = (props) => {
                 <TableRow label={"Origin Country "}>{origincountryLabel}</TableRow>
                 <TableRow label={labels.genre}>{genreLabel}</TableRow>
                 <TableRow label ={labels.type}>{typeLabel}</TableRow>
+                <TableRow label={"Form "}>{formLabel}</TableRow>
                 <TableRow label={labels.metre}>{metreLabel}</TableRow>
                 <TableRow label={"Published in "}>{publishedInLabel}</TableRow>
                 <TableRow label={labels.publishers}>{publisherLabel}</TableRow>
