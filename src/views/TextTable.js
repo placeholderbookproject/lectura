@@ -4,11 +4,9 @@ import labels from './labels.js'
 import {useState, useEffect} from 'react';
 import {transformYear, reformatWikidata, checkData, dateCoalesce} from './formattingFuncs';
 import {fetchDataEffect, wikidataEffect} from './apiEffects'
-import { ArchiveList } from './AuthorTable.js';
+import ArchiveList from './ArchiveList.js';
 import ComponentPopup from './Popup.js';
 import { WikiExternalsList } from './wikidata.js';
-//import {TextEdit} from './EditWindow.js';
-//import {editRowAll} from './filters.js';
 
 const TextComponent = props => {
     const [q, setQ] = useState();
@@ -27,7 +25,6 @@ export const TextTable = (props) => {
     const [edit, setEdit] = useState(false);
     const [wikidata, setWikidata] = useState();
     let { id } = useParams();
-    //const editRowData = editRowAll["texts"];
     const title = data&&data.text_title?data.text_title.split(","):"";
     const numTitles = title.length!==undefined?title.length:"";
     props.id?id=props.id:void(0);
@@ -47,7 +44,6 @@ export const TextTable = (props) => {
         setData(id);
         fetchDataEffect({type:'texts', id, setData})();
     },[id]);
-    //useEffect(() => {setData(id)},[id])
     //const setEditWindow = () => {!edit?setEdit(true):setEdit(false)}
     return (
         <div id = "textTableWindow" className="person-info">

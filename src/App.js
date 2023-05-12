@@ -1,5 +1,5 @@
 import './App.css';
-import AuthorComponent from './views/AuthorTable.js';
+import AuthorComponent from './views/author/AuthorTable.js';
 import TextComponent from './views/TextTable.js';
 import React,{useState} from 'react';
 import SiteHeader from './views/SiteHeader.js';

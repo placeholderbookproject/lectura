@@ -38,7 +38,7 @@ export const WikiExternalsList = (props) => {
     setExternalStaples(
     externalsStaples.map((external) => (
       findIndex(externals.results.bindings,external.label)&&
-      <a href={findIndex(externals.results.bindings,external.label)}>
+      <a href={findIndex(externals.results.bindings,external.label)} key={findIndex(externals.results.bindings,external.label)}>
         {external.logo&&<img src={external.logo} style={{ maxWidth: "40px", maxHeight: "30px", objectFit: "contain" }} alt={external.label}></img>}
         {!external.logo&&external.alt}
       </a>
@@ -47,7 +47,7 @@ export const WikiExternalsList = (props) => {
   return (
       externals&&externals.results&&
       <div>
-        <TableRow label="Select an external site">:</TableRow>
+        <TableRow label="External Identifiers">:</TableRow>
         <select style={{maxWidth:400}} value = {selectedExternal&&selectedExternal.value} 
             label={selectedExternal&&selectedExternal.propertyLabel} onChange = {(e) => setSelectedExternal(e.target.value)}>
             {externals.results.bindings.map((option) => 
@@ -239,5 +239,6 @@ WHERE
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
   #BIND(COALESCE(YEAR(?publication), YEAR(?dop), YEAR(?inception), 9999) as ?orderDate)
 }
-#ORDER BY ASC(?orderDate)
-`
+#ORDER BY ASC(?orderDate)`
+
+export default WikiExternalsList
