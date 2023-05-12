@@ -10,6 +10,12 @@ import {checkStr, transformYear, reformatWikidata, reformatWikitexts, dateCoales
 //import { Comment } from './Comments.js';
 import { WikiExternalsList } from './wikidata.js';
 
+const sortKeys = [
+    { keys: ['publYear', 'dopYear', 'inceptionYear'], label: 'Publication' },
+    //{ key: 'date', label: 'Date' },
+    // Add more keys as needed
+  ];
+
 export const AuthorComponent = (props) => {
     const [q, setQ] = useState();
     const [externalStaples, setExternalStaples] = useState();
@@ -95,14 +101,35 @@ const TextsWikiTable = (props) => {
     const {wikitexts, name, author} = props
     const [storedtexts,setStoredtexts] = useState();
     const [expandTexts, setExpandTexts] = useState(false)
+    const [sortKey, setSortKey] = useState(sortKeys[0]);
+    const [texts, setTexts] = useState();
+    const sortList = (list,keys, direction) => {
+        return list.map((element) => {
+            const priorityKey = keys.find((key) => element[key]);
+            return { ...element, priorityKey:element[priorityKey]};
+          }).sort((a, b) => {
+            if (a.priorityKey < b.priorityKey) {return direction?-1:1;}
+            if (a.priorityKey > b.priorityKey) {return direction?1:-1;}
+            return 0;
+          });
+    }
+    const handleSortChange = () => {
+        const oldDirection = sortKey.direction
+        setSortKey({ ...sortKey, direction: !oldDirection });
+    };        
+    useEffect(() => {storedtexts&&author
+            &&setTexts(removeWorksOutOfBounds(removeDuplicateList(storedtexts,wikitexts, "text_q"),author.author_birth_year, author.author_death_year))}
+        ,[storedtexts, wikitexts])
     useEffect (fetchDataEffect({setData:setStoredtexts, id:author.author_id, type:'texts', by: "author"}),[author])
-    const texts = storedtexts&&author&&
-        removeWorksOutOfBounds(removeDuplicateList(storedtexts,wikitexts, "text_q"),author.author_birth_year, author.author_death_year)
+    console.log(texts)
     return (
     texts&&texts.length>0&&
     <div>
         <h3 onClick = {() => setExpandTexts(!expandTexts)}>{name+"'s Texts "}{`(${texts.length})`}</h3>
-        {texts&&texts.slice(0,(!expandTexts?5:texts.length)).map(
+        <div>
+            <button id="sortKey" value={sortKey.keys} onClick={handleSortChange}>{`Sort by Publ. Year (${sortKey.direction?"Desc":"Asc"})`}</button>
+        </div>
+        {texts&&sortList(texts,sortKey.keys, sortKey.direction).slice(0,(!expandTexts?5:texts.length)).map(
             (text) => 
                 <SubTextsTable data={text} key={text.book} name = {props.name}/>)}
         {texts&&texts.length>5&&
@@ -130,7 +157,7 @@ const SubTextsTable = (props) => {
 }
 
 const DetailedTexts = (props) => {
-    const { bookdesc, titleLabel, typeLabel, genreLabel, publYear,languageLabel
+    const { bookdesc, titleLabel, typeLabel, genreLabel, formLabel, publYear,languageLabel
         ,dopYear, inceptionYear, metreLabel, book, publisherLabel, lengthLabel} = props.data
     const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
     return (
@@ -141,10 +168,11 @@ const DetailedTexts = (props) => {
             <TableRow label={labels.language}>{languageLabel}</TableRow>
             <TableRow label={labels.genre}>{genreLabel}</TableRow>
             <TableRow label={labels.type}>{typeLabel}</TableRow>
+            <TableRow label={labels.form}>{formLabel}</TableRow>
             <TableRow label={labels.metre}>{metreLabel}</TableRow>
             {lengthLabel&&<TableRow label={labels.length}>{lengthLabel + " pages"}</TableRow>}
             <TableRow label={labels.publishers}>{publisherLabel}</TableRow>
-            {book&&<TableRow label={"Wiki "}><a href={book}>{book.replace("http://www.wikidata.org/entity/","")}</a></TableRow>}
+            {book&&<TableRow label={labels.wiki}><a href={book}>{book.replace("http://www.wikidata.org/entity/","")}</a></TableRow>}
         </>
     )
 }

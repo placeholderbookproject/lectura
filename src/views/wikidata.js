@@ -20,6 +20,8 @@ const externalsStaples = [
   ,{logo:"https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png", label:"Google Knowledge"}
   ,{logo:"https://aboutbrepolis.files.wordpress.com/2023/04/clacla.png?w=250&h=180", label:"Clavis Patrum"}
   ,{label: "Musisque Deoque", alt: "MQDQ"}
+  ,{label:"Hymnary", alt:"Hymnary"}
+  ,{logo:"https://topostext.org/images/logo1_2.png", label:"ToposText", alt: "ToposText"}
 ]
 
 export const WikiExternalsList = (props) => {
@@ -116,6 +118,7 @@ SELECT distinct (?book as ?text_q)
 ?bookdesc
 ?titleLabel
 ?typeLabel
+?formLabel
 ?genreLabel
 (YEAR(?publication) as ?publYear)
 ?publication
@@ -144,6 +147,7 @@ WHERE
   FILTER(LANG(?bookdesc)= "en").}
   OPTIONAL {?book skos:altLabel ?akaLabel. FILTER (lang(?akaLabel) = "en").}
   OPTIONAL {?book wdt:P31 ?type.}
+  OPTIONAL {?book wdt:P7937 ?form.}
   OPTIONAL {?book wdt:P136 ?genre}
   OPTIONAL {?book wdt:P1476 ?title.}
   OPTIONAL {?book wdt:P577 ?publication.}
