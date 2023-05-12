@@ -10,18 +10,14 @@ import {checkStr, transformYear, reformatWikidata, reformatWikitexts, dateCoales
 //import { Comment } from './Comments.js';
 import { WikiExternalsList } from './wikidata.js';
 
-const sortKeys = [
-    { keys: ['publYear', 'dopYear', 'inceptionYear'], label: 'Publication' },
-    //{ key: 'date', label: 'Date' },
-    // Add more keys as needed
-  ];
-
 export const AuthorComponent = (props) => {
     const [q, setQ] = useState();
     const [externalStaples, setExternalStaples] = useState();
+    const [author, setAuthor] = useState();
     return (
         <div className="dropdowns-container">
-            <AuthorTable setQ={setQ} lang={props.lang} externalStaples={externalStaples}/>
+            <AuthorTable setQ={setQ} lang={props.lang} externalStaples={externalStaples} setAuthor={setAuthor}/>
+            {author&&<TextsWikiTable author = {author} language={props.lang}/>}
             {q&&<WikiExternalsList q_number={q} language={props.lang.value} setExternalStaples={setExternalStaples}/>}
         </div>
     )
@@ -32,7 +28,6 @@ export const AuthorTable = (props) => {
     const [data, setData] = useState({});
     const [edit, setEdit] = useState(false);
     const [wikidata, setWikidata] = useState();
-    const [wikiTextdata, setWikiTextdata] = useState();
     const authorReform = wikidata?reformatWikidata(wikidata):{};
     const {authordesc, authorLabel, akaLabel,genderLabel, birthyear, birthplaceLabel, birthplacecountryLabel,
         deathyear, deathplaceLabel,deathplacecountryLabel, floruit, occupationsLabel, languagesLabel, nativenameLabel, imageLabel
@@ -41,7 +36,6 @@ export const AuthorTable = (props) => {
     const {author_q, author_name, author_nationality, author_birth_year, author_birth_city, author_birth_country,
         author_death_year, author_death_city, author_death_country, author_floruit, author_positions, author_name_language
     } = data
-    const textsReform = wikiTextdata&&reformatWikitexts(wikiTextdata);
     let { id } = useParams();
     props.id?id=props.id:void(0);
     //const editRowData = editRowAll["authors"];
@@ -52,11 +46,13 @@ export const AuthorTable = (props) => {
         if(data && author_q){
             props.setQ&&props.setQ(author_q);
             const q_number = author_q.replace("http://www.wikidata.org/entity/","")
-            wikidataEffect({q_number, setWikidata, type:"author", language})();
-            wikidataEffect({q_number,setWikidata:setWikiTextdata,type:"author_texts", language})();}
+            wikidataEffect({q_number, setWikidata, type:"author", language})();}
     },[data, language])
-    useEffect(fetchDataEffect({type:'authors', id, setData}) , [id]);
-    useEffect(() => {setData(id)},[id])
+    useEffect(() => {fetchDataEffect({type:'authors', id, setData})();
+                    setData(id);
+            } , [id]);
+    //useEffect(() => {setData(id)},[id])
+    useEffect(() => {props.setAuthor&&props.setAuthor(data)},[data])
     //const setEditWindow = () => {!edit?setEdit(true):setEdit(false)}
     return (
         name&&
@@ -92,16 +88,17 @@ export const AuthorTable = (props) => {
                 {/*edit?<AuthorEdit cols = {editRowData} data = {data} origData = {id} setData = {setData}
                     type = "authors" id = {id}/>:<></>*/
             }
-            <TextsWikiTable wikitexts={textsReform} name={checkData(authorLabel,name[0])} author = {data}/>
-            </div>
+            {/*<TextsWikiTable wikitexts={textsReform} name={checkData(authorLabel,name[0])} author = {data}/>*/}
+        </div>
     );
   }
 
 const TextsWikiTable = (props) => {
-    const {wikitexts, name, author} = props
+    const {author, language} = props
+    const [wikiTextdata, setWikiTextdata] = useState();
     const [storedtexts,setStoredtexts] = useState();
     const [expandTexts, setExpandTexts] = useState(false)
-    const [sortKey, setSortKey] = useState(sortKeys[0]);
+    const [sortKey, setSortKey] = useState({ keys: ['publYear', 'dopYear', 'inceptionYear'] });
     const [texts, setTexts] = useState();
     const sortList = (list,keys, direction) => {
         return list.map((element) => {
@@ -117,25 +114,30 @@ const TextsWikiTable = (props) => {
         const oldDirection = sortKey.direction
         setSortKey({ ...sortKey, direction: !oldDirection });
     };        
+    useEffect (() => {if(author&&author.author_q) {
+                        fetchDataEffect({setData:setStoredtexts, id:author.author_id, type:'texts', by: "author"})();
+                        wikidataEffect({q_number:author.author_q.replace('http://www.wikidata.org/entity/','')
+                            ,setWikidata:setWikiTextdata,type:"author_texts", language:language.value})();
+                    }}
+    ,[author])
+    const textsReform = wikiTextdata&&reformatWikitexts(wikiTextdata);
     useEffect(() => {storedtexts&&author
-            &&setTexts(removeWorksOutOfBounds(removeDuplicateList(storedtexts,wikitexts, "text_q"),author.author_birth_year, author.author_death_year))}
-        ,[storedtexts, wikitexts])
-    useEffect (fetchDataEffect({setData:setStoredtexts, id:author.author_id, type:'texts', by: "author"}),[author])
-    console.log(texts)
+            &&setTexts(removeWorksOutOfBounds(removeDuplicateList(storedtexts,textsReform, "text_q"),author.author_birth_year, author.author_death_year))}
+        ,[storedtexts, wikiTextdata])
     return (
-    texts&&texts.length>0&&
-    <div>
-        <h3 onClick = {() => setExpandTexts(!expandTexts)}>{name+"'s Texts "}{`(${texts.length})`}</h3>
+        texts&&texts.length>0&&
         <div>
-            <button id="sortKey" value={sortKey.keys} onClick={handleSortChange}>{`Sort by Publ. Year (${sortKey.direction?"Desc":"Asc"})`}</button>
-        </div>
-        {texts&&sortList(texts,sortKey.keys, sortKey.direction).slice(0,(!expandTexts?5:texts.length)).map(
-            (text) => 
-                <SubTextsTable data={text} key={text.book} name = {props.name}/>)}
-        {texts&&texts.length>5&&
-            <button onClick = {() => setExpandTexts(!expandTexts)}>{expandTexts?"Collapse":"Show Remaining "+(texts.length-5) + " texts"}</button>}
-    </div>)    
-}
+            <h3 onClick = {() => setExpandTexts(!expandTexts)}>{`${author.author_name}'s Texts `}{`(${texts.length})`}</h3>
+            <div>
+                <button id="sortKey" value={sortKey.keys} onClick={handleSortChange}>{`Sort by Publ. Year (${sortKey.direction?"Desc":"Asc"})`}</button>
+            </div>
+            {texts&&sortList(texts,sortKey.keys, sortKey.direction).slice(0,(!expandTexts?5:texts.length)).map(
+                (text) => 
+                    <SubTextsTable data={text} key={text.book} name = {author.author_name}/>)}
+            {texts&&texts.length>5&&
+                <button onClick = {() => setExpandTexts(!expandTexts)}>{expandTexts?"Collapse":"Show Remaining "+(texts.length-5) + " texts"}</button>}
+        </div>   
+)}
 
 const SubTextsTable = (props) => {
     const {bookLabel, publYear,dopYear, inceptionYear, book, titleLabel, text_id} = props.data
@@ -189,13 +191,13 @@ export const ArchiveList = (props) => {
             <span style={{fontWeight:600}}>Archive.org Results</span>
         </p>}
         {showArchive&&
-        archive.map((result) => 
-        <p key={result.identifier}>
-            <a href={'https://archive.org/details/'+result.identifier}>
-        {`${result.title} by ${result.creator} (${result.year}) (${result.downloads} downloads) (${result.language}) (${result.mediatype})`}
-            </a>
-        </p>)}
-    </div>)
-}
+        archive.map((result) =>
+            <p key={result.identifier}>
+                <a href={'https://archive.org/details/'+result.identifier}>
+            {`${result.title} by ${result.creator} (${result.year}) (${result.downloads} downloads) (${result.language}) (${result.mediatype})`}
+                </a>
+            </p>)}
+    </div>
+)}
 
 export default AuthorComponent;
