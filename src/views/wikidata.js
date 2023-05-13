@@ -46,14 +46,14 @@ export const WikiExternalsList = (props) => {
   },[externals])
   return (
       externals&&externals.results&&
-      <div>
+      <div className="wikiExternals">
         <TableRow label="External Identifiers">:</TableRow>
         <select style={{maxWidth:400}} value = {selectedExternal&&selectedExternal.value} 
             label={selectedExternal&&selectedExternal.propertyLabel} onChange = {(e) => setSelectedExternal(e.target.value)}>
             {externals.results.bindings.map((option) => 
                 (<option key = {option.value.value+option.propertyLabel.value} value = {option.value.value}>{option.propertyLabel.value}</option>) )}
         </select>
-        <a href={selectedExternal&&selectedExternal}>{selectedExternal}</a>
+        <p><a href={selectedExternal&&selectedExternal}>{selectedExternal}</a></p>
       </div>
   )
 }

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {AuthorTable} from './author/AuthorTable';
+import AuthorTable from './author/AuthorTable';
 import {TextTable} from './TextTable';
 
 export const ComponentPopup = (props) => {

@@ -4,23 +4,6 @@ import TableRow from '../ViewRow.js';
 import labels from '../labels.js';
 import {fetchDataEffect, wikidataEffect} from '../apiEffects.js';
 import {checkStr, transformYear, reformatWikidata, checkData} from '../formattingFuncs.js';
-import WikiExternalsList  from '../wikidata.js';
-import TextsWikiTable from './AuthorTexts.js';
-
-export const AuthorComponent = (props) => {
-    const [q, setQ] = useState();
-    const [externalStaples, setExternalStaples] = useState();
-    const [author, setAuthor] = useState();
-    return (
-        <div className="dropdowns-container">
-            <div>
-                <AuthorTable setQ={setQ} lang={props.lang} externalStaples={externalStaples} setAuthor={setAuthor}/>
-                {q&&<WikiExternalsList q_number={q} language={props.lang.value} setExternalStaples={setExternalStaples}/>}
-            </div>
-            {author&&<TextsWikiTable author = {author} language={props.lang}/>}
-        </div>
-    )
-}
 
 export const AuthorTable = (props) => {
     const language = props.lang.value
@@ -81,4 +64,4 @@ export const AuthorTable = (props) => {
     );
   }
 
-export default AuthorComponent;
+export default AuthorTable;
