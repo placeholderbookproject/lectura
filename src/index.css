@@ -26,6 +26,26 @@
   padding: 5px;
 }
 
+.reorderBtn {
+  background-color: #ffffff;
+  border: none;
+  color: #000000;
+  font-size: 12px;
+  padding: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align:left;
+  border-bottom: 0.5px solid #a8a7a7;
+}
+
+.reorderBtn:hover {
+  background-color:#012443;
+  color:white;}
+
+.reorderBtn:active {
+  background-color: #ccc;
+}
+
 .person-info, .person-texts {
   /*border: 0.5px solid #ccc;*/
   margin: 10px;
@@ -67,8 +87,8 @@
 }
 
 .tab-button-inactive {
-  background-color: #fff;
-  color: #000;
+  background-color: #7e7a7a;
+  color: #ffffff;
   border: none;
   border-bottom: 1px solid #a8a7a7;
   cursor: pointer;
@@ -233,14 +253,8 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
 ,.listsBtn
 {
   top:0;
-  /*background-color: #054777;*/
   background-color: #dedbdb;
-  /*border: 1px solid transparent;*/
   border: none;
-  /*border-radius: 3px;
-  box-shadow: rgba(255, 255, 255, .4) 0 1px 0 0 inset;
-  box-sizing: border-box;*/
-  /*color: #fff;*/
   color: black;
   cursor: pointer;
   display: inline-block;
@@ -292,7 +306,7 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   cursor: pointer;
   font-size: 14px;
 }
-.collapsible:hover {background-color: #012443; color:white;}
+.collapsible:hover, .dropdown-toggle:hover {background-color: #012443; color:white;}
 .collapsible:after {
   color: #000;
   font-weight: bold;
@@ -308,7 +322,7 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   font-size: 24px;
 }
 
-.dropdowns-container {
+.dropdowns-container, .dropdown-menu, .filterTexts {
   display: flex;
   flex-direction: row;
   justify-content: left;
