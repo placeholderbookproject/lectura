@@ -4,13 +4,14 @@ import TableRow from '../ViewRow.js';
 import labels from '../labels.js';
 import {fetchDataEffect, wikidataEffect} from '../apiEffects.js';
 import {checkStr, transformYear, reformatWikidata, checkData} from '../formattingFuncs.js';
+import { WikiExternalsLabels } from '../wikidata.js';
 
 export const AuthorTable = (props) => {
     const language = props.lang.value
     const [data, setData] = useState({});
     const [wikidata, setWikidata] = useState();
     const authorReform = wikidata?reformatWikidata(wikidata):{};
-    const {authordesc, authorLabel, akaLabel,genderLabel, birthyear, birthplaceLabel, birthplacecountryLabel,
+    const {authordesc, akaLabel,genderLabel, birthyear, birthplaceLabel, birthplacecountryLabel,
         deathyear, deathplaceLabel,deathplacecountryLabel, floruit, occupationsLabel, languagesLabel, nativenameLabel, imageLabel
         ,citizenshipLabel} 
         = authorReform;
@@ -36,10 +37,7 @@ export const AuthorTable = (props) => {
     return (
         name&&
         <div id = "authorTableWindow" className="person-info" style={{backgroundColor:"white"}}>
-                {props.externalStaples&&props.externalStaples}
-                <h2 className ="Header">{checkData(authorLabel,name[0]) + " "}
-                    {data && author_q&&<a href={data && author_q?author_q:""}>{`(Wiki)`}</a>}
-                </h2>
+                {author_q&&<WikiExternalsLabels q_number={author_q} language={language}/>}
                 <TableRow label = {labels.aka + " "}>{checkData(akaWiki,numNames>1?name.slice(1,numNames).join(", "):null)}</TableRow>
                 {nativenameLabel&&<TableRow label = {labels.nativeName + " "}>{nativenameLabel}{genderLabel&&` (${genderLabel})`}</TableRow>}
                 {imageLabel && <img src={imageLabel.split(", ")[0]} style={{ maxWidth: "400px", maxHeight: "200px", objectFit: "contain" }} />}

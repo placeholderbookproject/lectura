@@ -6,15 +6,14 @@ import {transformYear, reformatWikidata, checkData, dateCoalesce} from './format
 import {fetchDataEffect, wikidataEffect} from './apiEffects'
 import ArchiveList from './ArchiveList.js';
 import ComponentPopup from './Popup.js';
-import { WikiExternalsList } from './wikidata.js';
+import { WikiExternalsList, WikiExternalsLabels } from './wikidata.js';
 
 const TextComponent = props => {
     const [q, setQ] = useState();
-    const [externalStaples, setExternalStaples] = useState();
     return (
         <div className="dropdowns-container">
-            <TextTable setQ={setQ} lang={props.lang} externalStaples={externalStaples}/>
-            {q&&<WikiExternalsList q_number={q} language={props.lang.value} setExternalStaples={setExternalStaples}/>}
+            <TextTable setQ={setQ} lang={props.lang}/>
+            {q&&<WikiExternalsList q_number={q} language={props.lang.value}/>}
         </div>
     )
 }
@@ -38,21 +37,16 @@ export const TextTable = (props) => {
         inceptionYear, languageLabel, lengthLabel, metreLabel, origincountryLabel, publYear, publishedInLabel,
         publisherLabel, titleLabel, typeLabel, formLabel} = wikiReform
     const {text_author, author_id, text_language, text_original_publication_year, text_original_publication_length,
-        text_original_publication_length_type} = data
+        text_original_publication_length_type, text_q} = data
     const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
     useEffect(() => {
         setData(id);
         fetchDataEffect({type:'texts', id, setData})();
     },[id]);
-    //const setEditWindow = () => {!edit?setEdit(true):setEdit(false)}
     return (
         <div id = "textTableWindow" className="person-info">
-            {props.externalStaples&&props.externalStaples}
-            <h2 className = "Header">{checkData(bookLabel,title[0])} <a href={data.text_q}>(Wiki)</a>
-            {/*<button className = "editBtn" onClick = {setEditWindow} style = {{border:'None'}}>
-                <img src = "https://upload.wikimedia.org/wikipedia/commons/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg" alt = "edit" width="25" height="30"/>
-            </button>*/}
-            </h2>
+            {text_q&&<WikiExternalsLabels q_number={text_q} language={language}/>}
+            <h2 className = "Header">{checkData(bookLabel,title[0])} <a href={data.text_q}>(Wiki)</a></h2>
             {titleLabel!==title[0]&&<TableRow label={labels.original_title}>{titleLabel}</TableRow>}
             {image && <img src={image.split(", ")[0]} style={{ maxWidth: "400px", maxHeight: "200px", objectFit: "contain" }} alt="img" />}
             <TableRow label={labels.aka}>{(numTitles>1)&&checkData(akaLabel,title.slice(1,numTitles).join(", "))}</TableRow>
@@ -82,12 +76,6 @@ export const TextTable = (props) => {
                 <TableRow label={"Copyright Status "}>{copyrightLabel}</TableRow>
                 {wikiReform&&bookLabel&&<ArchiveList title={bookLabel} name={authorLabel} originalTitle={titleLabel}/>}
             </>}
-            {/*edit?<>
-                <TextEdit cols = {editRowData} data = {data} origData = {props.text} setData = {setData}
-                    type = "texts" id = {props.text} />
-            </>
-            :<></>*/
-            }
         </div>
     )
   }

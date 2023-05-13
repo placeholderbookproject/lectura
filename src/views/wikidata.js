@@ -1,5 +1,4 @@
 import React, {/*useRef,*/ useState, useEffect} from 'react';
-import TableRow from './ViewRow';
 import { wikidataEffect } from './apiEffects';
 
 const findIndex = (list, search) => {
@@ -24,9 +23,28 @@ const externalsStaples = [
   ,{logo:"https://topostext.org/images/logo1_2.png", label:"ToposText", alt: "ToposText"}
 ]
 
+export const WikiExternalsLabels = (props) => {
+  const [externals,setExternals] = useState()
+  let {q_number, language} = props;
+  useEffect(() => {
+    if(q_number){
+        q_number = q_number.replace("http://www.wikidata.org/entity/","")
+        wikidataEffect({q_number, setWikidata:setExternals, type:"externals", language})();}
+  },[props.q_number])
+  return (
+    externals&&externals.results&&
+    externalsStaples.map((external) => (
+      findIndex(externals.results.bindings,external.label)&&
+      <a href={findIndex(externals.results.bindings,external.label)} key={findIndex(externals.results.bindings,external.label)}>
+        {external.logo&&<img src={external.logo} style={{ maxWidth: "40px", maxHeight: "30px", objectFit: "contain" }} alt={external.label}></img>}
+        {!external.logo&&external.alt}
+      </a>
+    ))
+  )
+}
+
 export const WikiExternalsList = (props) => {
   const [externals,setExternals] = useState()
-  const {setExternalStaples} = props;
   const [selectedExternal, setSelectedExternal] = useState();
   let {q_number, language} = props;
   useEffect(() => {
@@ -34,20 +52,9 @@ export const WikiExternalsList = (props) => {
           q_number = q_number.replace("http://www.wikidata.org/entity/","")
           wikidataEffect({q_number, setWikidata:setExternals, type:"externals", language})();}
   },[props.q_number])
-  useEffect(() => {externals&&externals.results&&
-    setExternalStaples(
-    externalsStaples.map((external) => (
-      findIndex(externals.results.bindings,external.label)&&
-      <a href={findIndex(externals.results.bindings,external.label)} key={findIndex(externals.results.bindings,external.label)}>
-        {external.logo&&<img src={external.logo} style={{ maxWidth: "40px", maxHeight: "30px", objectFit: "contain" }} alt={external.label}></img>}
-        {!external.logo&&external.alt}
-      </a>
-    )))
-  },[externals])
   return (
       externals&&externals.results&&
       <div className="wikiExternals">
-        <TableRow label="External Identifiers">:</TableRow>
         <select style={{maxWidth:400}} value = {selectedExternal&&selectedExternal.value} 
             label={selectedExternal&&selectedExternal.propertyLabel} onChange = {(e) => setSelectedExternal(e.target.value)}>
             {externals.results.bindings.map((option) => 

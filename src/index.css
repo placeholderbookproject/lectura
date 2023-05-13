@@ -26,21 +26,15 @@
   padding: 5px;
 }
 
-.person-info {
+.person-info, .person-texts {
   /*border: 0.5px solid #ccc;*/
   margin: 10px;
   width: 400px;
   max-height: 600px;
 }
-.person-texts {
-  /*border: 0.5px solid #ccc;*/
-  width:400px;
-  margin:10px;
-}
-.wikiExternals {
-  margin: 10px;
-}
-.person-texts h2 { cursor:pointer;}
+.person-info {max-height:600px;}
+.wikiExternals {margin: 10px;}
+.person-texts h3 {cursor:pointer;}
 
 .person-info h2 {
   margin: 0;
@@ -290,15 +284,34 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   border: 0.5px solid black;
 }
 
-.importBtn {
-  padding-left: 10px;
+.importBtn {padding-left: 10px;}
+.collapsible {background-color: #fff;
+  color: #000;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+}
+.collapsible:hover {background-color: #012443; color:white;}
+.collapsible:after {
+  color: #000;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.authorContainer {border: 0.5px solid black;}
+.authorContainer h2 {
+  text-align: center;
+  padding-bottom:5px;
+  margin: 0;
+  font-size: 24px;
 }
 
 .dropdowns-container {
   display: flex;
   flex-direction: row;
   justify-content: left;
-  border: 0.5px solid black;
   /*width: 100%;*/
 }
 

@@ -6,25 +6,23 @@ import TextsWikiTable from './AuthorTexts';
 export const AuthorComponent = (props) => {
     const [tabOpen, setTabOpen] = useState({Biography:true, Literature:true, Identifiers:false})
     const [q, setQ] = useState();
-    const [externalStaples, setExternalStaples] = useState();
     const [author, setAuthor] = useState();
-    const setTab = (name) => {
-        const oldTab = tabOpen
-        setTabOpen({...oldTab, [name]:!tabOpen[name]})
+    const setTab = (event) => {
+        const oldTab = tabOpen,tab = event.target.textContent
+        setTabOpen({...oldTab, [tab]:!tabOpen[tab]})
     }
+    const tabs = [{tabName:"Biography",component:<AuthorTable setQ={setQ} lang={props.lang} setAuthor={setAuthor}/>},
+                {tabName:"Literature",component:author&&<TextsWikiTable author = {author} language={props.lang}/>},
+            {tabName:"Identifiers",component:q&&<WikiExternalsList q_number={q} language={props.lang.value}/>}]
     return (
-        <div className="dropdowns-container">
-            <div>
-                <button className={`tab-button${tabOpen.Biography?'':"-inactive"}`} onClick = {() => setTab("Biography")}>Biography</button>
-                {tabOpen.Biography&&<AuthorTable setQ={setQ} lang={props.lang} externalStaples={externalStaples} setAuthor={setAuthor}/>}
-            </div>
-            <div>
-                <button className={`tab-button${tabOpen.Literature?'':"-inactive"}`} onClick = {() => setTab("Literature")}>Literature</button>
-                {author&&tabOpen.Literature&&<TextsWikiTable author = {author} language={props.lang}/>}
-            </div>
-            <div>
-                <button className={`tab-button${tabOpen.Identifiers?'':"-inactive"}`} onClick = {() => setTab("Identifiers")}>Identifiers</button>
-                {q&&tabOpen.Identifiers&&<WikiExternalsList q_number={q} language={props.lang.value} setExternalStaples={setExternalStaples}/>}
+        <div className="authorContainer">
+            {author&&<h2>{author.author_name} <a href={author.author_q?author.author_q:""}>{`(Wiki)`}</a></h2>}
+            <div className="dropdowns-container">
+                {tabs.map((tab) => (
+                    <div key={tab.tabName}>
+                        <button className={`tab-button${tabOpen[tab.tabName]?'':"-inactive"}`} onClick = {(e) => setTab(e)}>{tab.tabName}</button>
+                        {tabOpen[tab.tabName]&&tab.component}
+                    </div>))}
             </div>
         </div>
     )

@@ -39,7 +39,7 @@ const TextsWikiTable = (props) => {
     return (
         texts&&texts.length>0&&
         <div className="person-texts">
-            <h2 onClick = {() => setExpandTexts(!expandTexts)}>{`${author.author_name}'s Texts `}{`(${texts.length})`}</h2>
+            <h3 onClick = {() => setExpandTexts(!expandTexts)}>{`${author.author_name}'s Works `}{`(${texts.length})`}</h3>
             <div>
                 <button id="sortKey" value={sortKey.keys} onClick={handleSortChange}>{`Sort by Publ. Year (${sortKey.descending?"Desc":"Asc"})`}</button>
             </div>
@@ -52,43 +52,29 @@ const TextsWikiTable = (props) => {
 )}
 
 const SubTextsTable = (props) => {
-    const {bookLabel, publYear,dopYear, inceptionYear, book, titleLabel, text_id} = props.data
+    const {bookLabel, text_id,bookdesc, titleLabel, typeLabel, genreLabel, formLabel, publYear,languageLabel
+        ,dopYear, inceptionYear, metreLabel, book, publisherLabel, lengthLabel} = props.data
     const bookLabelReform = bookLabel.split(" | ").length>1?bookLabel.split(" | ").pop():bookLabel
     const link = text_id&&"/text/"+text_id
     const [detailed, setDetailed] = useState(false);
     const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
+    const rows = [{label:"",content:bookdesc},{label:labels.original_title,content:titleLabel}
+                ,{label:labels.written_date,content:transformYear(selectedDate)},{label:labels.language,content:languageLabel}
+                ,{label:labels.genre,content:genreLabel},{label:labels.type, content:typeLabel}
+                ,{label:labels.form, content:formLabel},{label:labels.metre,content:metreLabel}
+            ,{label:labels.length, content:lengthLabel+ " pages"},{label:labels.publishers,content:publisherLabel}
+            ,{label:labels.wiki, content:<a href={book}>{book.replace("http://www.wikidata.org/entity/","")}</a>}]
     return (
         <div className="text-info">
             <p>
                 <a href={checkData(link,book)}>{bookLabelReform}{selectedDate&&" ("+transformYear(dateCoalesce(publYear, dopYear, inceptionYear))+ ")"}</a>
-                <button onClick = {() => {setDetailed(!detailed)}}>{detailed?"-":"+"}</button>
+                <button onClick = {() => {setDetailed(!detailed)}} className="collapsible">{detailed?"-":"+"}</button>
             </p>
             {detailed&&<>
-                <DetailedTexts data = {props.data} name={props.name}/>
+                {rows.map((row) => (row.content&&<TableRow label={row.label} key={row.content}>{row.content}</TableRow>))}
                 {detailed&&<ArchiveList title={bookLabelReform} name={props.name} originalTitle={titleLabel}/>}
             </>}
         </div>)
-}
-
-const DetailedTexts = (props) => {
-    const { bookdesc, titleLabel, typeLabel, genreLabel, formLabel, publYear,languageLabel
-        ,dopYear, inceptionYear, metreLabel, book, publisherLabel, lengthLabel} = props.data
-    const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
-    return (
-        <>
-            <TableRow>{bookdesc}</TableRow>
-            <TableRow label={labels.original_title}>{titleLabel}</TableRow>
-            <TableRow label={labels.written_date}>{transformYear(selectedDate)}</TableRow>
-            <TableRow label={labels.language}>{languageLabel}</TableRow>
-            <TableRow label={labels.genre}>{genreLabel}</TableRow>
-            <TableRow label={labels.type}>{typeLabel}</TableRow>
-            <TableRow label={labels.form}>{formLabel}</TableRow>
-            <TableRow label={labels.metre}>{metreLabel}</TableRow>
-            {lengthLabel&&<TableRow label={labels.length}>{lengthLabel + " pages"}</TableRow>}
-            <TableRow label={labels.publishers}>{publisherLabel}</TableRow>
-            {book&&<TableRow label={labels.wiki}><a href={book}>{book.replace("http://www.wikidata.org/entity/","")}</a></TableRow>}
-        </>
-    )
 }
 
 export default TextsWikiTable;

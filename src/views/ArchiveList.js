@@ -9,9 +9,7 @@ const ArchiveList = (props) => {
     return (
     <div>
         {archive&&archive.length>0&&
-            <p onClick = {() => setShowArchive(!showArchive)}>
-                <span style={{fontWeight:600}}>Archive.org Results</span>
-            </p>}
+            <p onClick = {() => setShowArchive(!showArchive)}><span style={{fontWeight:600}}>Archive.org Results</span></p>}
         {showArchive&&
             archive.map((result) =>
                 <p key={result.identifier}>
