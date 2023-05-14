@@ -127,6 +127,7 @@ SELECT distinct (?book as ?text_q)
 ?typeLabel
 ?formLabel
 ?genreLabel
+?image
 (YEAR(?publication) as ?publYear)
 ?publication
 ?languageLabel
@@ -158,6 +159,7 @@ WHERE
   OPTIONAL {?book wdt:P136 ?genre}
   OPTIONAL {?book wdt:P1476 ?title.}
   OPTIONAL {?book wdt:P577 ?publication.}
+  OPTIONAL {?book wdt:P18 ?image.}
   OPTIONAL { ?book wdt:P407 ?language. 
     ?language wdt:P424 ?languagecode.
     }

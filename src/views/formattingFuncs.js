@@ -81,7 +81,8 @@ export const removeWorksOutOfBounds = (works, birth, death) => {
         if ((dateToCheck>=newBirth&&dateToCheck<=newDeath)||dateToCheck===null||dateToCheck===undefined) {newWorks.push(text)}
         else if ((dateToCheck>=newBirth&&newDeath===null)||dateToCheck===null||dateToCheck===undefined) {newWorks.push(text)}
         else if ((newBirth===null&&newDeath===null)) {newWorks.push(text)}
-    } return newWorks
+        else if ((newDeath===0)){newWorks.push(text)}
+    }return newWorks
 }
 
 export const removeDuplicateList = (listA,listB, key) => {

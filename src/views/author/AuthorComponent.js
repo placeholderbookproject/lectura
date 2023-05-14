@@ -13,6 +13,7 @@ export const AuthorComponent = (props) => {
     }
     const tabs = [{tabName:"Biography",component:<AuthorTable setQ={setQ} lang={props.lang} setAuthor={setAuthor}/>},
                 {tabName:"Literature",component:author&&<TextsWikiTable author = {author} language={props.lang}/>},
+                {tabName:"Lit. detailed", component:<></>},
             {tabName:"Identifiers",component:q&&<WikiExternalsList q_number={q} language={props.lang.value}/>}]
     return (
         <div className="authorContainer">
@@ -24,8 +25,7 @@ export const AuthorComponent = (props) => {
                         {tabOpen[tab.tabName]&&tab.component}
                     </div>))}
             </div>
-        </div>
-    )
+        </div>)
 }
 
 export default AuthorComponent
