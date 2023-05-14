@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {fetchDataEffect, wikidataEffect} from '../apiEffects.js';
-import {transformYear, reformatWikitexts, dateCoalesce, removeDuplicateList, checkData, removeWorksOutOfBounds} from '../formattingFuncs.js';
+import {transformYear, reformatWikitexts, dateCoalesce, removeDuplicateList, checkData, removeWorksOutOfBounds, getUniquePropertyValues} from '../formattingFuncs.js';
 import TableRow from '../ViewRow.js';
 import labels from '../labels.js';
 import ArchiveList from '../ArchiveList.js';
@@ -24,21 +24,14 @@ const TextsWikiTable = (props) => {
           });
     }
     const handleSortChange = () => {setSortKey({ ...sortKey, descending: !sortKey.descending });};  
-    const filterOptions = texts && [{ label:"Form",property: "formLabel",values: 
-                    [...new Set(texts.reduce((acc, element) => {
-                        const forms = element.formLabel?element.formLabel.split(" | "):[];
-                        return [...acc, ...forms];}, []))],},
-                        {label:"Language",property: "languageLabel",values: [...new Set(texts.reduce((acc, element) => {
-                            const languages = element.languageLabel?element.languageLabel.split(" | "):[];
-                            return [...acc, ...languages];}, []))],},
-                        { label:"Genre",property: "genreLabel",values: [...new Set(texts.reduce((acc, element) => {
-                            const languages = element.genreLabel?element.genreLabel.split(" | "):[];
-                            return [...acc, ...languages];}, []))]}
-                        ];
+    const filterOptions = texts && [
+        {label: 'Form', property: 'formLabel', values: getUniquePropertyValues(texts, 'formLabel') },
+        {label: 'Language', property: 'languageLabel', values: getUniquePropertyValues(texts, 'languageLabel') },
+        {label: 'Genre', property: 'genreLabel', values: getUniquePropertyValues(texts, 'genreLabel') },];
     useEffect (() => {if(author&&author.author_q) {
                         fetchDataEffect({setData:setStoredtexts, id:author.author_id, type:'texts', by: "author"})();
                         wikidataEffect({q_number:author.author_q.replace('http://www.wikidata.org/entity/','')
-                            ,setWikidata:setWikiTextdata,type:"author_texts", language:language.value})();
+                        ,setWikidata:setWikiTextdata,type:"author_texts", language:language.value})();
                     }}
     ,[author, language])
     const textsReform = wikiTextdata&&reformatWikitexts(wikiTextdata);
@@ -70,26 +63,25 @@ const SubTextsTable = (props) => {
     const link = text_id&&"/text/"+text_id
     const [detailed, setDetailed] = useState(false);
     const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
-    const rows = [{label:"",content:bookdesc},{label:labels.original_title,content:titleLabel}
-                ,{label:labels.written_date,content:transformYear(selectedDate)},{label:labels.language,content:languageLabel}
-                ,{label:labels.genre,content:genreLabel},{label:labels.type, content:typeLabel}
+    const rows = [{label:labels.original_title,content:titleLabel},{label:labels.written_date,content:transformYear(selectedDate)}
+                ,{label:labels.language,content:languageLabel},{label:labels.genre,content:genreLabel},{label:labels.type, content:typeLabel}
                 ,{label:labels.form, content:formLabel},{label:labels.metre,content:metreLabel}
             ,{label:labels.length, content:lengthLabel&&lengthLabel+ " pages"},{label:labels.publishers,content:publisherLabel}
             ,{label:labels.wiki, content:<a href={book}>{book&&book.replace("http://www.wikidata.org/entity/","")}</a>}]
     return (
         <div className="text-info">
-            <p className="textBox">
-                {image && <img src={image.split("| ")[0]} style={{ width: "50px", height: "75px", objectFit: "contain" }} alt="img" />}
+            <div className="textBox">
+                {image && <img src={image.split("| ")[0]} className="textImg" alt="img" />}
                 <div className="textInfo">
                     <a href={checkData(link,book)} className = "textRow">{bookLabelReform}{selectedDate&&" ("+transformYear(dateCoalesce(publYear, dopYear, inceptionYear))+ ")"}</a>
                     <p className="textRowSub">{bookdesc}</p>
                 </div>
                 <button onClick = {() => {setDetailed(!detailed)}} className="collapsible">{detailed?"-":"+"}</button>
-            </p>
-            {detailed&&<>
-                {rows.map((row) => (row.content&&<TableRow label={row.label} key={row.content}>{row.content}</TableRow>))}
-                {detailed&&<ArchiveList title={bookLabelReform} name={props.name} originalTitle={titleLabel}/>}
-            </>}
+            </div>           
+                {detailed&&<div className="textRowDetailed">
+                    {rows.map((row) => (row.content&&<TableRow label={row.label} key={row.content}>{row.content}</TableRow>))}
+                    {detailed&&<ArchiveList title={bookLabelReform} name={props.name} originalTitle={titleLabel}/>}
+                </div>}
         </div>)
 }
 

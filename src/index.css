@@ -72,29 +72,39 @@
 .person-texts h3 {cursor:pointer}
 .person-texts h3:hover {border-bottom:1px solid black;}
 .person-texts {position:relative;}
+.textImg {
+  width:50px;
+  height:75px;
+  object-fit:contain;
+}
 
 .person-info h2 {
   margin: 0;
   font-size: 24px;
 }
 
-.person-info p, .person-texts p{
-  margin: 5px 0;
-}
+.person-info p, .person-texts p{margin: 5px;}
+.person-info p {margin-left:0;}
 
-.textRow {
+.textRow, .archiveRow {
   color: #000000;
   text-decoration: none;
   margin:2px;
+  margin-left: 5px;
 }
 .textRowSub {
   font-style:italic;
   font-size: 12px;
+  margin-left: 5px;
 }
-.textRow:hover {border-bottom:1px solid black;}
+.textRowDetailed {
+  border-bottom: 0.5px dotted black;
+  border-top: 0.5px dotted black;
+}
+.textRow:hover, .archiveRow:hover {border-bottom:1px solid black;}
 .textInfo {display: flex;
   flex-direction: column;}
-.textBox {
+.textBox, .filters {
   display: flex;
   flex-direction: row;
   align-items: center;

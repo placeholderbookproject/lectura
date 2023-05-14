@@ -85,6 +85,10 @@ export const removeWorksOutOfBounds = (works, birth, death) => {
     }return newWorks
 }
 
+export const getUniquePropertyValues = (objects, property) =>  {
+    return [...new Set(objects.flatMap(object => (object[property] || '').split(' | ')))].filter(Boolean);
+  }
+
 export const removeDuplicateList = (listA,listB, key) => {
     if(!listB){return listA}
     const result = [...listB];

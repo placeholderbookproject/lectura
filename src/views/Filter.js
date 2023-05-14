@@ -30,25 +30,27 @@ const Filters = (props) => {
       };
     return (
         <div className="dropdown">
-            <div className="dropdown-toggle" onClick={() => setIsOpen(!isOpen)}>Filters <span className="dropdown-arrow">&#9660;</span></div>
+            <div className="filters">
+                <div className="dropdown-toggle" onClick={() => setIsOpen(!isOpen)}>Filters <span className="dropdown-arrow">&#9660;</span></div>
+                <button className="clearDropdown" onClick={() => setSelectedFilters([])}>Clear Filters</button>
+            </div>
             {isOpen && (
                 <div className="dropdown-popup">
-                <button className="clearDropdown" onClick={() => setSelectedFilters([])}>Clear Filters</button>
-                <div className="dropdown-menu">
-                {filterOptions.map((filterOption) => (
-                    <div key={filterOption.property}>
-                    {filterOption.values.length>0&&<div className="dropdown-menu-label">{filterOption.label}</div>}
-                    {filterOption.values.map((value) => (
-                        <div key={value} className={`dropdown-menu-option`}>
-                            {value}
-                            <input type = "checkbox" onClick={() => handleFilterClick(filterOption.property, value)} 
-                                onChange={() =>handleFilterClick(filterOption.property, value)}
-                                checked={selectedFilters.some((filter) =>
-                                filter.property === filterOption.property && filter.options.includes(value))}/>
-                            </div>))}
+                    <div className="dropdown-menu">
+                    {filterOptions.map((filterOption) => (
+                        <div key={filterOption.property}>
+                        {filterOption.values.length>0&&<div className="dropdown-menu-label">{filterOption.label}</div>}
+                        {filterOption.values.map((value) => (
+                            <div key={value} className={`dropdown-menu-option`}>
+                                {value}
+                                <input type = "checkbox" onClick={() => handleFilterClick(filterOption.property, value)} 
+                                    onChange={() =>handleFilterClick(filterOption.property, value)}
+                                    checked={selectedFilters.some((filter) =>
+                                    filter.property === filterOption.property && filter.options.includes(value))}/>
+                                </div>))}
+                        </div>
+                    ))}
                     </div>
-                ))}
-                </div>
                 </div>
             )}
         </div>)
