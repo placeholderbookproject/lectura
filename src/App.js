@@ -34,6 +34,12 @@ const RouteList = () => {
             <AuthorComponent lang = {lang}/>
           </div>}
         />
+        <Route path={"/author/:id/text/:text_id"} element={
+          <div>
+            <SiteHeader setLang = {setLang} lang = {lang}/>
+            <AuthorComponent lang = {lang}/>
+          </div>}
+        />
       {/*dataList["editions"].map((edition) => 
         <Route path = {"/text/"+edition.text_id+"/edition/"+edition.edition_id} key = {edition.edition_id}
           element={

@@ -2,18 +2,29 @@ import React, {useState} from 'react';
 import AuthorTable from './AuthorTable';
 import WikiExternalsList from '../wikidata';
 import TextsWikiTable from './AuthorTexts';
+import { useParams, useNavigate} from 'react-router-dom';
+import TextComponent from '../TextTable';
 
 export const AuthorComponent = (props) => {
-    const [tabOpen, setTabOpen] = useState({Biography:true, Literature:true, Identifiers:false})
+    let { text_id } = useParams();
+    const navigate = useNavigate();
+    const [tabOpen, setTabOpen] = useState(text_id===undefined?{Biography:true, Literature:true}:{Biography:true,["Lit. detailed"]:true})
     const [q, setQ] = useState();
     const [author, setAuthor] = useState();
+    const handleClick = (id) => {
+        const url = `/author/${author.author_id}/text/${id}`
+        text_id = id
+        const detailed = tabOpen["Lit. detailed."]
+        setTabOpen({...tabOpen, ["Lit. detailed"]:!detailed})
+        navigate(url)
+    }
     const setTab = (event) => {
         const oldTab = tabOpen,tab = event.target.textContent
         setTabOpen({...oldTab, [tab]:!tabOpen[tab]})
     }
     const tabs = [{tabName:"Biography",component:<AuthorTable setQ={setQ} lang={props.lang} setAuthor={setAuthor}/>},
-                {tabName:"Literature",component:author&&<TextsWikiTable author = {author} language={props.lang}/>},
-                {tabName:"Lit. detailed", component:<></>},
+                {tabName:"Literature",component:author&&<TextsWikiTable author = {author} language={props.lang} handleClick={handleClick}/>},
+                {tabName:"Lit. detailed", component:<TextComponent lang={props.lang} id={text_id}/>},
             {tabName:"Identifiers",component:q&&<WikiExternalsList q_number={q} language={props.lang.value}/>}]
     return (
         <div className="authorContainer">

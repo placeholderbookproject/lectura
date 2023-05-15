@@ -12,7 +12,7 @@ const TextComponent = props => {
     const [q, setQ] = useState();
     return (
         <div className="dropdowns-container">
-            <TextTable setQ={setQ} lang={props.lang}/>
+            <TextTable setQ={setQ} lang={props.lang} id = {props.id}/>
             {q&&<WikiExternalsList q_number={q} language={props.lang.value}/>}
         </div>
     )

@@ -7,7 +7,7 @@ import ArchiveList from '../ArchiveList.js';
 import Filters from '../Filter.js';
 
 const TextsWikiTable = (props) => {
-    const {author, language} = props
+    const {author, language, handleClick} = props
     const [wikiTextdata, setWikiTextdata] = useState();
     const [storedtexts,setStoredtexts] = useState();
     const [expandTexts, setExpandTexts] = useState(false)
@@ -50,7 +50,7 @@ const TextsWikiTable = (props) => {
                     setTexts={setTexts} filterOptions = {filterOptions}    />
             </div>
             {texts&&texts.length>0&&sortList(texts,sortKey.keys, sortKey.descending).slice(0,(!expandTexts?5:texts.length)).map(
-                (text) => <SubTextsTable data={text} key={text.book} name = {author.author_name}/>)}
+                (text) => <SubTextsTable data={text} key={text.book} author = {author} handleClick={handleClick}/>)}
             {texts&&texts.length>5&&
                 <button className="expandBtn" onClick = {() => setExpandTexts(!expandTexts)}>{expandTexts?"Collapse":"Show Remaining "+(texts.length-5) + " texts"}</button>}
         </div>   
@@ -59,8 +59,9 @@ const TextsWikiTable = (props) => {
 const SubTextsTable = (props) => {
     const {bookLabel, text_id,bookdesc, titleLabel, typeLabel, genreLabel, formLabel, publYear,languageLabel
         ,dopYear, inceptionYear, metreLabel, book, publisherLabel, lengthLabel, image} = props.data
+    const {author_name, author_id} = props.author
     const bookLabelReform = bookLabel.split(" | ").length>1?bookLabel.split(" | ").pop():bookLabel
-    const link = text_id&&"/text/"+text_id
+    const link = text_id&&("/author/"+author_id+"/text/"+text_id)
     const [detailed, setDetailed] = useState(false);
     const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
     const rows = [{label:labels.original_title,content:titleLabel},{label:labels.written_date,content:transformYear(selectedDate)}
@@ -73,14 +74,15 @@ const SubTextsTable = (props) => {
             <div className="textBox">
                 {image && <img src={image.split("| ")[0]} className="textImg" alt="img" />}
                 <div className="textInfo">
-                    <a href={checkData(link,book)} className = "textRow">{bookLabelReform}{selectedDate&&" ("+transformYear(dateCoalesce(publYear, dopYear, inceptionYear))+ ")"}</a>
+                    {link&&<a className="textRow" onClick = {() => props.handleClick(text_id)}>{bookLabelReform}{selectedDate&&" ("+transformYear(dateCoalesce(publYear, dopYear, inceptionYear))+ ")"}</a>}
+                    {!link&&<a href={book} className = "textRow">{bookLabelReform}{selectedDate&&" ("+transformYear(dateCoalesce(publYear, dopYear, inceptionYear))+ ")"}</a>}
                     <p className="textRowSub">{bookdesc}</p>
                 </div>
                 <button onClick = {() => {setDetailed(!detailed)}} className="collapsible">{detailed?"-":"+"}</button>
             </div>           
                 {detailed&&<div className="textRowDetailed">
                     {rows.map((row) => (row.content&&<TableRow label={row.label} key={row.content}>{row.content}</TableRow>))}
-                    {detailed&&<ArchiveList title={bookLabelReform} name={props.name} originalTitle={titleLabel}/>}
+                    {detailed&&<ArchiveList title={bookLabelReform} name={author_name} originalTitle={titleLabel}/>}
                 </div>}
         </div>)
 }

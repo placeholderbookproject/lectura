@@ -40,7 +40,7 @@ export const AuthorTable = (props) => {
                 {author_q&&<WikiExternalsLabels q_number={author_q} language={language}/>}
                 <TableRow label = {labels.aka + " "}>{checkData(akaWiki,numNames>1?name.slice(1,numNames).join(", "):null)}</TableRow>
                 {nativenameLabel&&<TableRow label = {labels.nativeName + " "}>{nativenameLabel}{genderLabel&&` (${genderLabel})`}</TableRow>}
-                {imageLabel && <img src={imageLabel.split(", ")[0]} style={{ maxWidth: "400px", maxHeight: "200px", objectFit: "contain" }} />}
+                <div>{imageLabel && <img src={imageLabel.split(", ")[0]} style={{ maxWidth: "400px", maxHeight: "200px", objectFit: "contain" }} />}</div>
                 {authordesc&&<p>{authordesc}</p>}
             {data&&
                 <>
