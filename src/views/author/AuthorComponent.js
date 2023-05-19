@@ -13,10 +13,10 @@ export const AuthorComponent = (props) => {
     const [tabOpen, setTabOpen] = useState(text_id===undefined?defaultTabs:{...defaultTabs, ["Lit. detailed"]:true})
     const [q, setQ] = useState();
     const [author, setAuthor] = useState();
-    const handleClick = (id) => {
+    const handleClick = (id = null) => {
         const url = `/author/${author.author_id}/text/${id}`
         text_id = id
-        if (url!==location.pathname) {
+        if (url!==location.pathname && id) {
             const detailed = tabOpen["Lit. detailed."]
             setTabOpen({...tabOpen, ["Lit. detailed"]:!detailed})
             url !== location && navigate(url)

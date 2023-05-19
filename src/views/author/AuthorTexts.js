@@ -85,8 +85,9 @@ const SubTextsTable = (props) => {
             <div className="textBox">
                 {image && <img src={image.split("| ")[0]} className="textImg" alt="img" />}
                 <div className="textInfo">
-                    {link&&<a className="textRow" onClick = {() => props.handleClick(text_id)}>{bookLabelReform}{selectedDate&&" ("+transformYear(dateCoalesce(publYear, dopYear, inceptionYear))+ ")"}</a>}
-                    {!link&&<a className = "textRow" onClick ={() => setDetailed(!detailed)}>{bookLabelReform}{selectedDate&&" ("+transformYear(dateCoalesce(publYear, dopYear, inceptionYear))+ ")"}</a>}
+                    <a className="textRow" onClick = {() => {props.handleClick(text_id&&text_id);!text_id&&setDetailed(!detailed)}}>
+                        {bookLabelReform}{selectedDate&&" ("+transformYear(dateCoalesce(publYear, dopYear, inceptionYear))+ ")"}
+                    </a>
                     <p className="textRowSub">{bookdesc}</p>
                 </div>
             </div>           
