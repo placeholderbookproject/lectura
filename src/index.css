@@ -69,8 +69,12 @@
 }
 .person-info {max-height:600px;}
 .wikiExternals {margin: 10px;}
-.person-texts h3 {cursor:pointer}
-.person-texts h3:hover {border-bottom:1px solid black;}
+.person-texts h3, .authorHeader a {cursor:pointer}
+.person-texts h3:hover, .authorHeader:hover {border-bottom:1px solid black;}
+.authorHeader {color: #000000;
+  text-decoration: none;
+  cursor:pointer
+}
 .person-texts {position:relative;}
 .textImg {
   width:50px;
@@ -101,7 +105,7 @@
   border-bottom: 0.5px dotted black;
   border-top: 0.5px dotted black;
 }
-.textRow:hover, .archiveRow:hover {border-bottom:1px solid black;}
+.textRow:hover, .archiveRow:hover {border-bottom:1px solid black; cursor:pointer;}
 .textInfo {display: flex;
   flex-direction: column;}
 .textBox, .filters {
@@ -360,7 +364,7 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   margin-left: 5px;
 }
 
-.authorContainer {border: 0.5px solid black;}
+.authorContainer {border: 0.5px solid black; position:relative;}
 .authorContainer h2 {
   text-align: center;
   padding-bottom:5px;
@@ -372,7 +376,7 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   display: flex;
   flex-direction: row;
   justify-content: left;
-  /*width: 100%;*/
+  overflow-y:auto;
 }
 
 .dropdown {

@@ -32,7 +32,7 @@ const Filters = (props) => {
         <div className="dropdown">
             <div className="filters">
                 <div className="dropdown-toggle" onClick={() => setIsOpen(!isOpen)}>Filters <span className="dropdown-arrow">&#9660;</span></div>
-                <button className="clearDropdown" onClick={() => setSelectedFilters([])}>Clear Filters</button>
+                <button className="clearDropdown" onClick={() => setSelectedFilters([])}>Clear Search</button>
             </div>
             {isOpen && (
                 <div className="dropdown-popup">
