@@ -1,6 +1,6 @@
 import './App.css';
-import AuthorComponent from './views/author/AuthorComponent';
-import TextComponent from './views/TextTable.js';
+import AuthorComponent from './views/authorView/AuthorComponent';
+import TextComponent from './views/authorView/TextTable.js';
 import React,{useState} from 'react';
 import SiteHeader from './views/SiteHeader.js';
 import SearchDetailed from './views/Search.js';

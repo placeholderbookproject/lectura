@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import AuthorTable from './author/AuthorTable';
-import {TextTable} from './TextTable';
+import AuthorTable from './authorView/AuthorTable';
+import {TextTable} from './authorView/TextTable';
 
 export const ComponentPopup = (props) => {
     const [popupData, setPopupData] = useState(null);
