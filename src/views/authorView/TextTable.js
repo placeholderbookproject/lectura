@@ -6,13 +6,23 @@ import {transformYear, reformatWikidata, checkData, dateCoalesce} from '../forma
 import {fetchDataEffect, wikidataEffect} from '../apiEffects'
 import ArchiveList from '../ArchiveList.js';
 import { WikiExternalsList, WikiExternalsLabels } from '../wikidata.js';
+import { setTab } from './commonFuncs.js';
 
 const TextComponent = props => {
     const [q, setQ] = useState();
+    const defaultTabs = {"Text Info":true};
+    const [tabOpen, setTabOpen] = useState({...defaultTabs})
+    const tabs = [{tabName:"Text Info", component:<><TextTable setQ={setQ} lang={props.lang} id = {props.id}/>
+                    {q&&<WikiExternalsList q_number={q} language={props.lang.value}/>}</>}]
     return (
         <div className="dropdowns-container">
-            <TextTable setQ={setQ} lang={props.lang} id = {props.id}/>
-            {q&&<WikiExternalsList q_number={q} language={props.lang.value}/>}
+            {tabs.map((tab) => (
+                <div key={tab.tabName}>
+                    <button className={`tab-button${tabOpen[tab.tabName]?'':"-inactive"}`} onClick = {(e) => setTab(e, tabOpen, setTabOpen)}>
+                        {tab.tabName}
+                    </button>
+                    {tabOpen[tab.tabName]&&tab.component}
+                </div>))}
         </div>
     )
 }
@@ -20,7 +30,6 @@ const TextComponent = props => {
 export const TextTable = (props) => {
     const language = props.lang.value
     const [data, setData] = useState({});
-    const [edit, setEdit] = useState(false);
     const [wikidata, setWikidata] = useState();
     let { id } = useParams();
     const title = data&&data.text_title?data.text_title.split(","):"";
@@ -56,9 +65,9 @@ export const TextTable = (props) => {
             {text_q&&<WikiExternalsLabels q_number={text_q} language={language}/>}
             <h2 className = "Header">{checkData(bookLabel,title[0])} <a href={data.text_q}>(Wiki)</a></h2>
             {titleLabel!==title[0]&&<TableRow label={labels.original_title}>{titleLabel}</TableRow>}
-            {image && <img src={image.split(", ")[0]} style={{ maxWidth: "400px", maxHeight: "200px", objectFit: "contain" }} alt="img" />}
+            {image && !image.split(", ")[0].includes("djvu")&&<img src={image.split(", "[0])} style={{ maxWidth: "400px", maxHeight: "200px", objectFit: "contain" }} alt="img" />}
             <TableRow label={labels.aka}>{(numTitles>1)&&checkData(akaLabel,title.slice(1,numTitles).join(", "))}</TableRow>
-            {!edit&&data
+            {data
             &&<>
                 {rows.map((row) => row.content&&<TableRow label={row.label} key={row.content+row.label}>{row.content}</TableRow>)}
                 {wikiReform&&bookLabel&&<ArchiveList title={bookLabel} name={authorLabel} originalTitle={titleLabel}/>}

@@ -26,7 +26,7 @@ const TextsWikiTable = (props) => {
           });
     }
     useEffect(() => {
-        const toSearch = storedtexts&&author&&  removeWorksOutOfBounds(removeDuplicateList(storedtexts,textsReform, "text_q"),author_birth_year, author_death_year)
+        const toSearch = storedtexts&&author&& removeWorksOutOfBounds(removeDuplicateList(storedtexts,textsReform, "text_q"),author_birth_year, author_death_year)
         if(search==="") {setTexts(toSearch)}
         else if(texts && search) {
             const results = toSearch.filter((item) => item.bookLabel.toLowerCase().includes(search.toLowerCase()))//Object.values(item).some((bookLabel) => bookLabel === search))
@@ -56,7 +56,7 @@ const TextsWikiTable = (props) => {
                 <button className="reorderBtn" value={sortKey.keys} onClick={handleSortChange}>
                     {`Sort by Publ. (${sortKey.descending?"Desc":"Asc"})`}
                 </button>
-                <input type="text" placeholder="Search" value={search} onChange={(e) => setSearch(e.target.value)}></input>
+                {texts.length>5&&<input type="text" placeholder="Search" value={search} onChange={(e) => setSearch(e.target.value)}></input>}
                 <Filters texts={removeWorksOutOfBounds(removeDuplicateList(storedtexts,textsReform, "text_q"),author_birth_year, author_death_year)} 
                     setTexts={setTexts} filterOptions = {filterOptions}/>
             </div>
@@ -70,9 +70,8 @@ const TextsWikiTable = (props) => {
 const SubTextsTable = (props) => {
     const {bookLabel, text_id,bookdesc, titleLabel, typeLabel, genreLabel, formLabel, publYear,languageLabel
         ,dopYear, inceptionYear, metreLabel, book, publisherLabel, lengthLabel, image} = props.data
-    const {author_name, author_id} = props.author
+    const {author_name} = props.author
     const bookLabelReform = bookLabel.split(" | ").length>1?bookLabel.split(" | ").pop():bookLabel
-    const link = text_id&&("/author/"+author_id+"/text/"+text_id)
     const [detailed, setDetailed] = useState(false);
     const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
     const rows = [{label:labels.original_title,content:titleLabel},{label:labels.written_date,content:transformYear(selectedDate)}
@@ -83,7 +82,7 @@ const SubTextsTable = (props) => {
     return (
         <div className="text-info">
             <div className="textBox">
-                {image && <img src={image.split("| ")[0]} className="textImg" alt="img" />}
+                {image && !image.split("| ")[0].includes("djvu") &&<img src={image.split("| ")[0]} className="textImg" alt="img" />}
                 <div className="textInfo">
                     <a className="textRow" onClick = {() => {props.handleClick(text_id&&text_id);!text_id&&setDetailed(!detailed)}}>
                         {bookLabelReform}{selectedDate&&" ("+transformYear(dateCoalesce(publYear, dopYear, inceptionYear))+ ")"}

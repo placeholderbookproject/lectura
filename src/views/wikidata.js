@@ -45,7 +45,8 @@ export const WikiExternalsLabels = (props) => {
 
 export const WikiExternalsList = (props) => {
   const [externals,setExternals] = useState()
-  const [selectedExternal, setSelectedExternal] = useState();
+  const defaultExternal = externals&&externals.results.bindings.length==1&&externals.results.bindings[0].value.value;
+  const [selectedExternal, setSelectedExternal] = useState(defaultExternal);
   let {q_number, language} = props;
   useEffect(() => {
       if(q_number){
@@ -53,8 +54,9 @@ export const WikiExternalsList = (props) => {
           wikidataEffect({q_number, setWikidata:setExternals, type:"externals", language})();}
   },[props.q_number])
   return (
-      externals&&externals.results&&
+      externals&&externals.results.bindings.length>0&&
       <div className="wikiExternals">
+        <p className="viewRow"><span style = {{"fontWeight": 600,}}>{"External Identifiers"}</span></p>
         <select style={{maxWidth:400}} value = {selectedExternal&&selectedExternal.value} 
             label={selectedExternal&&selectedExternal.propertyLabel} onChange = {(e) => setSelectedExternal(e.target.value)}>
             {externals.results.bindings.map((option) => 
