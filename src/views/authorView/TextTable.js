@@ -5,29 +5,9 @@ import {useState, useEffect} from 'react';
 import {transformYear, reformatWikidata, checkData, dateCoalesce} from '../formattingFuncs';
 import {fetchDataEffect, wikidataEffect} from '../apiEffects'
 import ArchiveList from '../ArchiveList.js';
-import { WikiExternalsList, WikiExternalsLabels } from '../wikidata.js';
-import { setTab } from './commonFuncs.js';
+import { WikiExternalsLabels } from '../wikidata.js';
 
-const TextComponent = props => {
-    const [q, setQ] = useState();
-    const defaultTabs = {"Text Info":true};
-    const [tabOpen, setTabOpen] = useState({...defaultTabs})
-    const tabs = [{tabName:"Text Info", component:<><TextTable setQ={setQ} lang={props.lang} id = {props.id}/>
-                    {q&&<WikiExternalsList q_number={q} language={props.lang.value}/>}</>}]
-    return (
-        <div className="dropdowns-container">
-            {tabs.map((tab) => (
-                <div key={tab.tabName}>
-                    <button className={`tab-button${tabOpen[tab.tabName]?'':"-inactive"}`} onClick = {(e) => setTab(e, tabOpen, setTabOpen)}>
-                        {tab.tabName}
-                    </button>
-                    {tabOpen[tab.tabName]&&tab.component}
-                </div>))}
-        </div>
-    )
-}
-
-export const TextTable = (props) => {
+const TextTable = (props) => {
     const language = props.lang.value
     const [data, setData] = useState({});
     const [wikidata, setWikidata] = useState();
@@ -66,9 +46,7 @@ export const TextTable = (props) => {
             <h2 className = "Header">{checkData(bookLabel,title[0])} <a href={data.text_q}>(Wiki)</a></h2>
             {titleLabel!==title[0]&&<TableRow label={labels.original_title}>{titleLabel}</TableRow>}
             {image && !image.split(", ")[0].includes("djvu")&&<img src={image.split(", "[0])} style={{ maxWidth: "400px", maxHeight: "200px", objectFit: "contain" }} alt="img" />}
-            <TableRow label={labels.aka}>{(numTitles>1)&&checkData(akaLabel,title.slice(1,numTitles).join(", "))}</TableRow>
-            {data
-            &&<>
+            {data&&<>
                 {rows.map((row) => row.content&&<TableRow label={row.label} key={row.content+row.label}>{row.content}</TableRow>)}
                 {wikiReform&&bookLabel&&<ArchiveList title={bookLabel} name={authorLabel} originalTitle={titleLabel}/>}
             </>}
@@ -76,4 +54,4 @@ export const TextTable = (props) => {
     )
   }
 
-  export default TextComponent;
+export default TextTable;

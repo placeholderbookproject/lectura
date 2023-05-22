@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState/*, useEffect*/} from 'react';
 import AuthorTable from './AuthorTable';
 import WikiExternalsList from '../wikidata';
 import TextsWikiTable from './AuthorTexts';
@@ -7,7 +7,7 @@ import TextComponent from './TextTable';
 import { setTab } from './commonFuncs.js';
 
 export const AuthorComponent = (props) => {
-    let { text_id, id } = useParams();
+    let { text_id/*, id*/ } = useParams();
     const navigate = useNavigate();
     const location = useLocation()
     const defaultTabs = {Biography:true, Literature:true}
@@ -27,7 +27,8 @@ export const AuthorComponent = (props) => {
 //    useEffect(() => {location.pathname!==baseLink&&navigate(baseLink);},[id])
     const tabs = [{tabName:"Biography",component:<><AuthorTable setQ={setQ} lang={props.lang} setAuthor={setAuthor}/>{q&&<WikiExternalsList q_number={q} language={props.lang.value}/>}</>},
                 {tabName:"Literature",component:author&&<TextsWikiTable author = {author} language={props.lang} handleClick={handleClick}/>},
-                {tabName:"Lit. detailed", component:<TextComponent lang={props.lang} id={text_id}/>},]
+                /*<div className="dropdowns-container"><TextsWikiTable author = {author} language={props.lang} handleClick={handleClick}/><TextComponent lang={props.lang} id={text_id}/></div>}*/
+                {tabName:"Lit. detailed", component:text_id?<TextComponent lang={props.lang} id={text_id}/>:<p>Please Select a Text</p>},]
     const returnMain = () => {navigate(baseLink);setTabOpen(defaultTabs)}
     return (
         <div className="authorContainer">

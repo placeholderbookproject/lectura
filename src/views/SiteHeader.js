@@ -1,58 +1,18 @@
-import Select from 'react-select';
-//import 'react-select-search/style.css';
-import {Navigate, Link} from 'react-router-dom'
-import React, {useState, useEffect} from 'react';
+import {Link} from 'react-router-dom'
+import React from 'react';
 import { Navbar, Container } from "react-bootstrap";
 import labels from './labels.js'
-import {fetchSearchResults} from './apiEffects.js'
-//import {AddNew} from './AddNew.js'
-//import LoginWindow from './Login.js'
 import { langCodes } from '../div/langcodes.js';
-
-const MainSearch = () => {
-    const [enterSearch,setEnterSearch] = useState(false);
-    const [query, setQuery] = useState("");
-    const [searchResults,setSearchResults] = useState();
-    const [selectedValue, setSelectedValue] = useState();
-    const [menuIsOpen, setMenuIsOpen] = useState(false);
-    useEffect (()=> {setEnterSearch(false);},[enterSearch]);
-    useEffect(()=>{searchResults&&setMenuIsOpen(true)},[searchResults])
-    const searchSelect = (e) => {
-      setEnterSearch(true);
-      setSelectedValue(e);
-      setMenuIsOpen(false)
-    }
-    const Search = (event) => {
-      if (event.key==="Enter"){
-        setQuery(event.target.value)
-        fetchSearchResults({ setSearchResults, query})();
-      }}
-    return (
-      <>
-        <div style={{width: '500px', position:'relative', margin:'0 auto',clear: 'left', height:'auto',zIndex:0,}}>
-          <Select 
-            placeholder="Search for an author or text"
-            options={searchResults}
-            onKeyDown={Search}
-            onChange={searchSelect}
-            value={selectedValue&&selectedValue.value}
-            menuIsOpen={menuIsOpen}
-            menuPortalTarget={document.body} 
-            styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
-          />
-        </div>
-      {enterSearch &&<Navigate to={"/"+selectedValue.type+"/"+selectedValue.value}/>}
-    </>)
-}
+import MainSearch from './MainSearch.js';
 
 const SiteHeader = (props) => {
   const handleChange = e => {props.setLang({value:e.target.value, label:e.target.label});}
   return (
-      <Container className = "flexbox-container" 
-          style={{backgroundColor: '#dedbdb', position: 'sticky', borderBottom: '1.5px solid #8a8a8a', top: 0,}}>
+    <div>
+      <Container className = "flexbox-container">
         <Navbar style = {{backgroundColor: '#dedbdb', paddingBottom: 5,paddingTop: 5,}}>{/*https://retool.com/blog/building-a-react-navbar/ */}
             <Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/"}><button className="homeBtn">{labels.homeBtn}</button></Link>
-            <MainSearch />
+            <MainSearch/>
             <Link to = {"/search"} style={{paddingLeft: "1rem",paddingRight: "1rem"}}><button className="detailedSearchBtn">{labels.detailedSearchBtn}</button></Link>
             {/*<Link style={{paddingLeft: "1rem",paddingRight: "1rem"}} to = {"/import"}><button className="importBtn">{labels.importDataBtn}</button></Link>*/}
               {/*<AddNew label = "+"/>*/}
@@ -62,9 +22,9 @@ const SiteHeader = (props) => {
                 {langCodes.map((option) => (<option key = {option.value+option.label} value = {option.value}>{option.label}</option>) )}
             </select>
             {/*<LoginWindow/>*/}
-       </Navbar>
+        </Navbar>
       </Container>
+    </div>
   )
 }
-
 export default SiteHeader;

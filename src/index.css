@@ -5,6 +5,17 @@
 .listHeader {
   font-weight:700;
 }
+
+.search-dropdown-popup {
+  position: absolute;
+  top: 40px; /* adjust this value to position the filter component vertically */
+  left: 100px;
+  z-index: 1;
+  background-color: white;
+  border: 1px solid black;
+  padding: 10px;
+}
+
 .latestAdditionsList ul {
   border-bottom: 0.5px dotted;
 }
@@ -251,7 +262,22 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
 .flexbox-container {
   display: flex;/*this causes the stickyness of select window (right below search as desired)*/
   flex-direction: row;
-  /*justify-content:center;*/
+  position:relative;
+  z-index:1;
+  background-color: #dedbdb;
+  position: sticky;
+  border-bottom: 1.5px solid #8a8a8a; 
+  top: 0;
+}
+
+.search-input {
+  width:500px;
+  justify-content:center;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  font-size: 14px;
 }
 
 .siteHeader {
@@ -383,7 +409,10 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position:relative;
 }
+
+.absolute {position:absolute;}
 
 .dropdown-label {
   margin-bottom: 5px;

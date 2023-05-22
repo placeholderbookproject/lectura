@@ -3,7 +3,7 @@ import AuthorComponent from './views/authorView/AuthorComponent';
 import TextComponent from './views/authorView/TextTable.js';
 import React,{useState} from 'react';
 import SiteHeader from './views/SiteHeader.js';
-import SearchDetailed from './views/Search.js';
+import SearchDetailed from './views/SearchDetailed.js';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
 //import EditionTable from './views/EditionTable.js';
 //import ImportWindow from './views/Import.js';
