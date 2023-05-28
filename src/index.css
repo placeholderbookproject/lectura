@@ -2,9 +2,7 @@
   font-weight: 700;
   font-size: 1.2em;
 }
-.listHeader {
-  font-weight:700;
-}
+.listHeader {font-weight:700;}
 
 .search-dropdown-popup {
   position: absolute;
@@ -13,15 +11,11 @@
   z-index: 1;
   background-color: white;
   border: 1px solid black;
-  padding: 10px;
+  /*padding: 10px;*/
 }
 
-.latestAdditionsList ul {
-  border-bottom: 0.5px dotted;
-}
-.latestAdditionsList {
-  padding-right: 15px;
-}
+.latestAdditionsList ul {border-bottom: 0.5px dotted;}
+.latestAdditionsList {padding-right: 15px;}
 .latestAdditions {
   font-family: Arial;
   list-style-type: none;
@@ -51,10 +45,6 @@
   margin:5px;
 }
 
-.reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover {
-  background-color:#012443;
-  color:white;}
-
 .dropdown-popup {
   position: absolute;
   top: 70px; /* adjust this value to position the filter component vertically */
@@ -70,60 +60,16 @@
   border-bottom: 0.5px solid #a8a7a7;
   margin: 5px;
 }
-.dropdown-menu-option {margin: 5px;}
-
-.person-info, .person-texts {
-  /*border: 0.5px solid #ccc;*/
-  margin: 10px;
-  width: 400px;
-  max-height: 600px;
-}
-.person-info {max-height:600px;}
-.wikiExternals {margin: 10px;}
-.person-texts h3, .authorHeader a {cursor:pointer}
-.person-texts h3:hover, .authorHeader:hover {border-bottom:1px solid black;}
-.authorHeader {color: #000000;
-  text-decoration: none;
-  cursor:pointer
-}
-.person-texts {position:relative;}
-.textImg {
-  width:50px;
-  height:75px;
-  object-fit:contain;
-}
-
-.person-info h2 {
+/*Author View */
+.author-container-header {display: flex; flex-direction:row; position:relative; align-items: center}
+.author-container {border: 0.5px solid black; position:relative;}
+.author-container h2 {
+  text-align: center;
+  padding-bottom:5px;
   margin: 0;
   font-size: 24px;
 }
-
-.person-info p, .person-texts p{margin: 5px;}
-.person-info p {margin-left:0;}
-
-.textRow, .archiveRow {
-  color: #000000;
-  text-decoration: none;
-  margin:2px;
-  margin-left: 5px;
-}
-.textRowSub {
-  font-style:italic;
-  font-size: 12px;
-  margin-left: 5px;
-}
-.textRowDetailed {
-  border-bottom: 0.5px dotted black;
-  border-top: 0.5px dotted black;
-}
-.textRow:hover, .archiveRow:hover {border-bottom:1px solid black; cursor:pointer;}
-.textInfo {display: flex;
-  flex-direction: column;}
-.textBox, .filters {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
+.author-header {color: #000000;text-decoration: none;cursor:pointer}
 
 .tab-button {
   background-color: #fff;
@@ -138,13 +84,9 @@
   font-weight:600;
 }
 
-.tab-content {
-  display: none;
-}
+.tab-content {display: none;}
 
-.tab-content.active {
-  display: block;
-}
+.tab-content.active {display: block;}
 
 .tab-button-inactive {
   background-color: #7e7a7a;
@@ -158,10 +100,42 @@
   width:100px;  
 }
 
-.tab-button:hover, .tab-button-inactive:hover {
-  background-color:#012443;
-  color:white;
+.person-info, .person-texts {margin: 10px; width: 400px; max-height: 600px;}
+.person-info h2 {margin: 0; font-size: 24px;}
+.person-info p, .person-texts p, .dropdown-menu-option {margin: 5px;}
+.person-info p {margin-left:0;}
+
+.person-texts {position:relative;}
+
+.wikiExternals {margin: 10px;}
+
+.textImg {width:50px; height:75px; object-fit:contain;}
+
+.text-row, .archiveRow {
+  color: #000000;
+  text-decoration: none;
+  margin:2px;
+  margin-left: 5px;
 }
+.text-row-sub {
+  font-style:italic;
+  font-size: 12px;
+  margin-left: 5px;
+}
+.text-row-detailed {
+  border-bottom: 0.5px dotted black;
+  border-top: 0.5px dotted black;
+}
+.text-row:hover, .archiveRow:hover, .person-texts h3:hover, .author-header:hover {border-bottom:1px solid black; cursor:pointer;}
+
+.textInfo {display: flex; flex-direction: column;}
+
+.textBox, .filters {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+/*Author View End */
 
 .input-group {
   display: flex;
@@ -211,46 +185,16 @@
   transition: height ease-in-out 0.2s;
 }
 
-.collapsibleBtn{
-  cursor:s-resize;
-} 
+.collapsibleBtn {cursor:s-resize;} 
 
 .occupationList td:hover {background-color: rgb(230, 230, 230);}
 
 .navbar {
-  /*height: 50px;*/
-  background-color: #fffcf8;
+  background-color: #dedbdb;
   position: relative;
   display: inline-flex;
 }
 
-table#authorTable tr, table#authorTable td
-{
-  border:solid thin;
-  padding: 1px;
-  border-collapse: collapse;
-}
-
-table#authorTableWindow .Header th, table#textTableWindow th, table#editionTableWindow th {
-  font-size: 40px;
-  font-family: Arial;
-  font-weight: 700;
-  padding-bottom: 5px;
-  text-decoration: underline 1px rgb(100, 88, 71);
-}
-
-table#authorTableWindow, table#textTableWindow, table#editionTableWindow{
-  border: 0.5px solid;
-}
-
-table#authorTableWindow .Works td, table#textTableWindow .Editions td {
-  padding-bottom: 5px;
-  padding-top: 20px;
-  font-size: 20px;
-  font-weight: 700;
-}
-
-/* Dropdown Button */
 .dropbtn .mainSearch {
   background-color: #04AA6D;
   color: white;
@@ -271,62 +215,54 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
 }
 
 .search-input {
-  width:500px;
-  justify-content:center;
+  width: 500px;
+  justify-content: center;
   padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: none;
   outline: none;
   font-size: 14px;
 }
-
-.siteHeader {
-  padding-bottom: 30px;
-  padding-top: 10px;
+.search-result {cursor:pointer; margin:8px; padding-left:0px;}
+.search-result:hover {background-color:#bebebe}
+.search-bar {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color:white;
+  flex-direction:row;
+  display: flex;
 }
+.clear-search-button {border: none; background-color: white;}
+.clear-search-button:hover {background-color:rgb(221, 220, 220); cursor:pointer;}
 
-.searchText {
-  width:500px;
-}
-
-#detailedSearchResults td, #detailedSearchResults th, #importPreview td, #importPreview th, #listTable th, #listTable td {
+#detailed-search-results td, #detailed-search-results th, #importPreview td, #importPreview th, #listTable th, #listTable td {
   border: 1px dotted rgb(117, 115, 115);
   padding: 8px;
 }
-#detailedSearchResults, #importPreview, #listTable {
+#detailed-search-results, #importPreview, #listTable {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 100%;
   border: 1px solid;
 }
-#detailedSearchResults th, #listTable th {
+#detailed-search-results th, #listTable th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
   background-color: #08153f;
   color: white;
-  /*position: sticky;*/
   top: 0px;
   cursor:pointer;
 }
-
-#importPreview th {
-  background-color: #bebebe;
-}
-
-#detailedSearchResults tr, #importPreview tr, #listTable tr {background-color: #ffffff;}
-
-#detailedSearchResults tr:hover, #importPreview tr:hover {background-color: #ddd;}
-
+#detailed-search-results tr, #importPreview tr, #listTable tr {background-color: #ffffff;}
+#detailed-search-results tr:hover, #importPreview tr:hover {background-color: #ddd;}
 #detailedSearchHead .container {
   position: sticky;
   top: 0px;
 }
 
-/* CSS */
-.homeBtn, .detailedSearchBtn, .importBtn, .adminBtn, .editBtn, .submitEditBtn, .changeSearchVersionBtn, .resetEditBtn, .addNewBtn
-,.listsBtn
-{
+.header-btn {padding-left:1rem; padding-right:1rem;}
+
+.header-btn button, .changeSearchVersionBtn, .resetEditBtn, .addNewBtn,.listsBtn {
   top:0;
   background-color: #dedbdb;
   border: none;
@@ -350,31 +286,25 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   white-space: nowrap;
 }
 
-.editBtn, .submitEditBtn, .changeSearchVersionBtn, .resetEditBtn, .listsBtn {
+.header-btn button {
   background: none;
 }
 
-.homeBtn:hover, .detailedSearchBtn:hover, .importBtn:hover, .adminBtn:hover, .editBtn:hover, .submitEditBtn:hover, .changeSearchVersionBtn:hover 
-, .resetEditBtn:hover, .addNewBtn:hover, .listsBtn:hover
-/*,.homeBtn:focus, .detailedSearchBtn:focus, .importBtn:focus, .adminBtn:focus*/
-{
+.header-btn:hover button, .changeSearchVersionBtn:hover,.resetEditBtn:hover, .addNewBtn:hover, .listsBtn:hover, .collapsible:hover
+,.dropdown-toggle:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover, .tab-button:hover, .tab-button-inactive:hover
+,.reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover {
   background-color: #012443;
   color:white;
 }
 
-.homeBtn:active, .detailedSearchBtn:active, .importBtn:active
-, .adminBtn:active, .editBtn:active, .submitEditBtn:active, .changeSearchVersionBtn:active, .addNewBtn:active, .listsBtn:active {
+.header-btn:active button, .editBtn:active, .submitEditBtn:active, .changeSearchVersionBtn:active, .addNewBtn:active, .listsBtn:active {
   background-color: #012443;
   color: white;
   box-shadow: none;
 }
 
-.editBtn, .submitEditBtn,  .resetEditBtn {
-  border: 0.5px solid black;
-}
-
-.importBtn {padding-left: 10px;}
-.collapsible {background-color: #fff;
+.collapsible {
+  background-color: #fff;
   color: #000;
   border: none;
   text-align: left;
@@ -382,20 +312,11 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   font-size: 14px;
 }
 
-.collapsible:hover, .dropdown-toggle:hover {background-color: #012443; color:white;}
 .collapsible:after {
   color: #000;
   font-weight: bold;
   float: right;
   margin-left: 5px;
-}
-
-.authorContainer {border: 0.5px solid black; position:relative;}
-.authorContainer h2 {
-  text-align: center;
-  padding-bottom:5px;
-  margin: 0;
-  font-size: 24px;
 }
 
 .dropdowns-container, .dropdown-menu, .filterTexts {
@@ -420,9 +341,8 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   font-weight: 600;
 }
 
-.table-row-content {
-  position: relative;
-}
+.table-row-content {position: relative;}
+
 .popup {
   position: absolute;
   top: 0;
@@ -430,8 +350,8 @@ table#authorTableWindow .Works td, table#textTableWindow .Editions td {
   z-index: 99999;
   min-width:500px;
 }
-
 .popup p {background-color: white;}
+.popupArea { cursor:pointer;}
 
 select {
   border: 1px solid #ccc;
@@ -441,5 +361,3 @@ select {
   padding: 8px 12px;
   border-radius: 4px;
 }
-
-.popupArea { cursor:pointer;}

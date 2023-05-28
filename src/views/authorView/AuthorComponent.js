@@ -31,9 +31,12 @@ export const AuthorComponent = (props) => {
                 {tabName:"Lit. detailed", component:text_id?<TextComponent lang={props.lang} id={text_id}/>:<p>Please Select a Text</p>},]
     const returnMain = () => {navigate(baseLink);setTabOpen(defaultTabs)}
     return (
-        <div className="authorContainer">
-            {author&&<h2><a onClick={() => {returnMain()}} className="authorHeader">{author.author_name} </a> 
-                <a href={author.author_q?author.author_q:""}>{`(Wiki)`}</a></h2>}
+        <div className="author-container">
+            {author&&<div className="author-container-header">
+                <h2><a onClick={() => {returnMain()}} className="author-header">{author.author_name} </a>
+                    <a href={author.author_q?author.author_q:""}>{`(Wiki)`}</a></h2>
+                <button>Delete</button>                
+                </div>}
             <div className="dropdowns-container">
                 {tabs.map((tab) => (
                     <div key={tab.tabName}>

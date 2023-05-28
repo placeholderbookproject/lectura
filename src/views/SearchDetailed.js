@@ -86,8 +86,8 @@ const SearchDetailed = (props) => {
         fetchSearchResults({ setSearchResults, query:search, type:searchType, filters})();
     },[filters])
     return (
-      <div className = "detailedSearch">
-        <div id = "detailedSearchHeader">
+      <div className = "detailed-search">
+        <div className = "detailed-search-header">
             <button className="changeSearchVersionBtn" onClick={() => changeVersion (searchType)}>
                 {(searchType === "authors")? "Texts":"Authors"}</button>
             <FormControl sx={{ m: 1, width: "50ch" }} variant="outlined">
@@ -122,7 +122,7 @@ const SearchDetailed = (props) => {
                 isMulti
             />
         </div>
-          <table id = "detailedSearchResults"><tbody>
+          <table id = "detailed-search-results"><tbody>
                 <tr>
                     {filters.length>0
                     ? filters.map((filter) => (
