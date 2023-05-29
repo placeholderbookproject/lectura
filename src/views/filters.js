@@ -1,9 +1,9 @@
 import labels from './labels.js';
 
 const textFilters = [
-    //{value: '#', label: "#"},
     {value: 'text_title', label: 'Title'},
     {value: 'text_author', label: 'Author'},
+    {value: 'author_id', label:'author_id'},
     {value: 'text_original_publication_year',label: 'Publication Year'},
     {value: 'text_language', label: 'Language'},
     {value: 'text_type', label: 'Type'},
@@ -28,8 +28,9 @@ const authorFilters = [
     {value: 'author_floruit', label: 'Floruit'},
     //{value: 'works', label: 'Works'},
 ]
+const allFilters = [{value:"label", label:"Label"},{value:"type",label:"Type"},{value:"author_id",label:"author_id"},{value:"value",label:"value"}]
 
-export const options = {"authors":authorFilters, "texts":textFilters,}
+export const options = {"authors":authorFilters, "texts":textFilters, "all":allFilters}
 
 const editRowTexts = [
     {label:labels.original_language+" ", input: [{value:'text_language', label: 'original language'}]},
@@ -54,19 +55,19 @@ const editRowAuthors = [
     {label: labels.floruit+" ", input: [{value:'author_floruit', label: 'floruit'}]},
 ]
 
-const editRowEditions = [
+/*const editRowEditions = [
     {label:labels.original_title+" ", input: [{value:'text_title', label: 'edition title'}]},
     {label: labels.author+ " ", input: [{value: 'text_author', label: 'author'},{value:'edition_editor', label: 'editors'}]},
     {label: labels.publication+ " ", input: [{value: 'edition_publication_year', type: "number", label: 'edition publication year'}
         ,{value: 'edition_publisher', label: 'edition publisher'}]},
     {label: labels.length+" ", input: [{value:'edition_length', type: "number", label: 'edition length'},{value:'edition_binding', label: 'binding type'}]},
     {label: labels.isbn+" ", input: [{value: 'edition_isbn', label: 'isbn'},{value:'edition_isbn13', label: 'isbn13'}]},
-]
+]*/
 
-export const editRowAll = {texts: editRowTexts, authors: editRowAuthors, editions: editRowEditions}
+export const editRowAll = {texts: editRowTexts, authors: editRowAuthors}
 
 export const wikiTranslations = {
-    'author':'Q Number'
+'author':'Q Number'
 ,'authordesc':'Description'
 ,'authorLabel':'Name'
 ,'genderLabel':'Gender'

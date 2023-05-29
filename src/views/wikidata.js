@@ -45,7 +45,7 @@ export const WikiExternalsLabels = (props) => {
 
 export const WikiExternalsList = (props) => {
   const [externals,setExternals] = useState()
-  const defaultExternal = externals&&externals.results.bindings.length==1&&externals.results.bindings[0].value.value;
+  const defaultExternal = externals&&externals.results.bindings.length===1&&externals.results.bindings[0].value.value;
   const [selectedExternal, setSelectedExternal] = useState(defaultExternal);
   let {q_number, language} = props;
   useEffect(() => {

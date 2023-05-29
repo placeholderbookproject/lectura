@@ -12,7 +12,6 @@ const SiteHeader = (props) => {
       <Navbar style = {{paddingBottom: 5,paddingTop: 5,}}>{/*https://retool.com/blog/building-a-react-navbar/ */}
           <Link className="header-btn" to = {"/"}><button>{labels.homeBtn}</button></Link>
           <MainSearch/>
-          <Link className="header-btn" to = {"/search"}><button>{labels.detailedSearchBtn}</button></Link>
           <Link className="header-btn" to = {"/lists"}><button>Lists</button></Link>
           <select value = {props.lang.value} label={props.lang.value} onChange = {handleChange}>
               {langCodes.map((option) => (<option key = {option.value+option.label} value = {option.value}>{option.label}</option>) )}

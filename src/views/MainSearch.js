@@ -1,6 +1,9 @@
 import {useNavigate} from 'react-router-dom'
 import React, {useState, useEffect} from 'react';
 import {fetchSearchResults} from './apiEffects.js'
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@material-ui/icons/Search";
+import ClearIcon from '@material-ui/icons/Clear';
 
 const MainSearch = () => {
     const navigate = useNavigate();
@@ -10,8 +13,8 @@ const MainSearch = () => {
     const searchSelect = (e) => {setQuery(e.target.value);}
     const search = (event) => {
       if (event.key==="Enter"){
-        setQuery(event.target.value);
-        fetchSearchResults({ setSearchResults, query})();
+        setQuery("");
+        navigate(`/search?query=${query}&type=authors`)
       }
       else if (event.key==="Escape") {setQuery("");setSearchResults();}
     }
@@ -27,7 +30,8 @@ const MainSearch = () => {
           <div className="search-dropdown-popup">{searchResults.map((result) => 
             <p className="search-result" key={result.label} onClick = {() => enterLink(result)}>{result.label}</p>)}
           </div>}
-          <button className="clear-search-button" onClick = {() => {setQuery("");setSearchResults()}}>X</button>    
+          <IconButton onClick = {() => {setQuery("");navigate(`/search?query=${query}&type=authors`)}} aria-label="Search Button" edge="end"><SearchIcon/></IconButton>
+          <IconButton onClick = {() => {setQuery("");setSearchResults()}} aria-label="Clear Search Button" edge="end"><ClearIcon/></IconButton>
       </div>
     )
 }

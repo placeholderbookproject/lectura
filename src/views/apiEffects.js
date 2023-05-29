@@ -24,7 +24,7 @@ export const fetchComments = props => () => {
 
 export const fetchSearchResults = props => () => {
     const {setSearchResults, query, type, filters} = props
-    const searchType = type===undefined?"":"&searchtype="+type
+    const searchType = type===undefined||type===null?"":"&searchtype="+type
     if(query!==undefined && query.length>3) {
         fetchFunc(server+'search?query='+query+searchType+"&filters="+JSON.stringify(filters), setSearchResults)}
 }

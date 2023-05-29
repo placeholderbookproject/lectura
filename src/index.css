@@ -223,7 +223,7 @@
   font-size: 14px;
 }
 .search-result {cursor:pointer; margin:8px; padding-left:0px;}
-.search-result:hover {background-color:#bebebe}
+.search-result:hover, .text-row:hover {background-color:#bebebe}
 .search-bar {
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -231,14 +231,14 @@
   flex-direction:row;
   display: flex;
 }
-.clear-search-button {border: none; background-color: white;}
+.clear-search-button {border: none; background-color: white;border-radius: 30px;}
 .clear-search-button:hover {background-color:rgb(221, 220, 220); cursor:pointer;}
 
 #detailed-search-results td, #detailed-search-results th, #importPreview td, #importPreview th, #listTable th, #listTable td {
   border: 1px dotted rgb(117, 115, 115);
   padding: 8px;
 }
-#detailed-search-results, #importPreview, #listTable {
+#detailed-search-results, #importPreview, #listTable, .search-result-all {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 100%;
@@ -263,6 +263,7 @@
 .header-btn {padding-left:1rem; padding-right:1rem;}
 
 .header-btn button, .changeSearchVersionBtn, .resetEditBtn, .addNewBtn,.listsBtn {
+  border-radius: 30px;
   top:0;
   background-color: #dedbdb;
   border: none;

@@ -12,12 +12,13 @@ const TextTable = (props) => {
     const [data, setData] = useState({});
     const [wikidata, setWikidata] = useState();
     let { id } = useParams();
+    const {setQ} = props;
     const title = data&&data.text_title?data.text_title.split(","):"";
     const numTitles = title.length!==undefined?title.length:"";
     props.id?id=props.id:void(0);
     useEffect(()=> {
         if(data && data.text_q){
-            props.setQ&&props.setQ(data.text_q);
+            setQ&&setQ(data.text_q);
             const q_number = data.text_q.replace("http://www.wikidata.org/entity/","")
             wikidataEffect({q_number, setWikidata, type:"texts", language})();}},[data, language])
     const wikiReform = wikidata?reformatWikidata(wikidata):{};

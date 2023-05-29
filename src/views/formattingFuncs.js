@@ -99,3 +99,5 @@ export const removeDuplicateList = (listA,listB, key) => {
     });
     return result;
   }
+
+export const filterArray = (array, removals) => {return array.filter(item => !removals.includes(item.value));}

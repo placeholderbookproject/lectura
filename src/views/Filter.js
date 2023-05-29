@@ -8,7 +8,7 @@ const Filters = (props) => {
         let newTexts = texts
         for (let i=0;i<selectedFilters.length;i++) {
             const option = selectedFilters[i]
-            if(option.options.length==0){continue}
+            if(option.options.length===0){continue}
             newTexts = newTexts.filter((element) => {
                 const propertyValues = element[option.property]?element[option.property].split(" | "):[];
                 return propertyValues.some((value) => option.options.includes(value));
@@ -45,8 +45,7 @@ const Filters = (props) => {
                                 {value}
                                 <input type = "checkbox" onClick={() => handleFilterClick(filterOption.property, value)} 
                                     onChange={() =>handleFilterClick(filterOption.property, value)}
-                                    checked={selectedFilters.some((filter) =>
-                                    filter.property === filterOption.property && filter.options.includes(value))}/>
+                                    checked={selectedFilters.some((filter)=>filter.property === filterOption.property && filter.options.includes(value))}/>
                                 </div>))}
                         </div>
                     ))}

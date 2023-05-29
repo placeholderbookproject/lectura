@@ -12,47 +12,13 @@ import Select from 'react-select';
 import {Link, useSearchParams} from 'react-router-dom';
 import {options} from './filters.js';
 import { fetchSearchResults } from './apiEffects.js';
+import { filterArray } from './formattingFuncs.js';
 
-const CreateList = (props) => {
-    const values = props.data
-    const idType = props.type=="authors"?"author_id":"text_id"
-    return (
-        Object.keys(values).map((value) => {
-            if (value === "Author") {
-                return <td key={value+values[value]+values["author_id"]}><Link to={"/author/"+values["author_id"]}>{values["Author"]}</Link></td>;
-            } else if (value === "Title") {
-                return <td key={value+values[value]+values["text_id"]}><Link to={"/text/"+values["text_id"]}>{values["Title"]}</Link></td>;
-            } 
-            else if (value==="author_id" || value==="text_id") {return null;}
-            else if (values[value]===null){return <td key={value+values[idType]}></td>;}
-            else {return <td key={value+values[value]+values[idType]}>{values[value]}</td>;}
-        }));    
- }
-
-const SearchDetailed = (props) => {
-    let [searchParams,setSearchParams] = useSearchParams();
-    const [searchType, setSearchType] = useState("authors");
-    const [filters, setFilters] = useState(options["authors"].slice(0,6));
-    const [search, setSearch] = useState("");
-    let [searchResults,setSearchResults] = useState([]);
+const SearchResults = (props) => {
+    const removals = ["author_id","text_id","value","type"]
+    const filters = filterArray(props.filters,removals) 
+    const searchResults = props.searchResults, searchType=props.searchType;
     const [searchOrder, setSearchOrder] = useState("asc");
-    const changeVersion = (searchType) =>  {
-        setSearchResults([]);
-        const newType = searchType==="authors"?"texts":"authors"
-        setSearchType(newType);
-        setFilters(options[newType].slice(0,6));
-        setSearch("")
-    }
-    const searchFunction = (searchVar = search) => {
-        const searchInput = searchVar;
-        setSearchParams({'query':searchInput,'type':searchType/*, filter:JSON.stringify(filters)*/})
-        fetchSearchResults({ setSearchResults, query:searchInput, type:searchType, filters})();
-    }
-    const onEnter = (e) => {if(e.keyCode === 13){searchFunction()}}
-    const clearSearch = () => {
-        setSearch("");
-        setSearchResults([]);
-    }
     const sortFunction = (event) => {
         if (searchOrder==="asc"){setSearchOrder("desc")}
         else {setSearchOrder("asc")}
@@ -71,71 +37,97 @@ const SearchDetailed = (props) => {
               return 0;
             }
         sortedData = sortedData.sort(compare)
-        setSearchResults(sortedData);
+        props.setSearchResults(sortedData);
     }
+    return (
+        searchType!=="all"?
+        <table id = "detailed-search-results"><tbody>
+            <tr>
+                {filters.length>0 && filters.map((filter) => ( //Headers mapping with tooltip
+                <Tooltip sx = {{fontSize:15}} key={filter.value} title="Click to sort" placement="top" arrow followCursor>
+                    <th onClick={sortFunction}>{filter.label}</th>
+                </Tooltip>))}
+            </tr>
+            {searchResults.length>0&&
+                ((searchResults.length>100)?searchResults.slice(0,100):searchResults).map //Limitation to first 100 values
+                    (result => (
+                        <tr key = {searchType === "author"?result.author_id:result.text_id}>
+                            {Object.keys(result).map((col) => {
+                                if(removals.includes(col)){return null}
+                                else if (col === "Author"||col==="Title") 
+                                    {return <td key={col+result[col]+result["author_id"]}><Link to={`${result["author_id"]?"/author/"+result["author_id"]:""}/text/${result["text_id"]}`}>{result[col]}</Link></td>}
+                                else if (result[col]===null){return <td key={col+result[searchType]}></td>}
+                                else {return <td key={col+result[col]+result[searchType]}>{result[col]}</td>}
+                            }
+                            )}
+                        </tr>)
+                    )}
+        </tbody></table>
+        :<div className="search-result-all">
+            {searchResults.map((result) => 
+                <p><a className="text-row" href={result.type==="text"?`${result.author_id&&"/author/"+result.author_id}/text/${result.value}`:`/${result.type}/${result.value}`}>{result["label"]}</a></p>
+            )}
+        </div>
+    )
+}
+
+const SearchDetailed = () => {
+    let [searchParams,setSearchParams] = useSearchParams();
+    const searchOptions = ["authors","texts","all"]
+    const [searchType, setSearchType] = useState("all");
+    const [filters, setFilters] = useState([]);
+    const [search, setSearch] = useState("");
+    const [searchResults,setSearchResults] = useState([]);
+    const searchFunction = (searchVar = search, type=searchType) => {
+        const searchInput = searchVar;
+        const searchFilters = options[type].slice(0,6);
+        setSearchParams({'query':searchInput,'type':type})
+        fetchSearchResults({ setSearchResults, query:searchInput, type:type==="all"?null:type, filters:searchFilters})();
+    }
+    const onEnter = (e) => {if(e.key==="Enter"){searchFunction()}}
+    const clearSearch = () => {setSearch("");setSearchResults([]);}
     useEffect (() => {//Search if a search query parameter exists in the url
-        const searchQuery = [...searchParams];
-        if(searchQuery.length>0 && searchQuery[0][0]==="query" && searchQuery[0][1] !== ""){
-            searchFunction(searchQuery[0][1]);
-            setSearch(searchQuery[0][1]);
+        const searchQuery = searchParams;
+        if(searchQuery.size>0 && searchQuery.query && searchQuery.type !== ""){
+            searchFunction(searchQuery.query);
+            setSearch(searchQuery.query);
         }
     },[searchParams] // eslint-disable-line react-hooks/exhaustive-deps
     )
-    useEffect(() => {
-        setSearchParams({'query':search,'type':searchType})
-        fetchSearchResults({ setSearchResults, query:search, type:searchType, filters})();
-    },[filters])
+    const clickRadio = (option) => {
+        setSearchParams({'query':search,'type':option})
+        setFilters(options[option].slice(0,6));
+        setSearchType(option);
+        searchFunction(search,option)
+    }
     return (
       <div className = "detailed-search">
         <div className = "detailed-search-header">
-            <button className="changeSearchVersionBtn" onClick={() => changeVersion (searchType)}>
-                {(searchType === "authors")? "Texts":"Authors"}</button>
             <FormControl sx={{ m: 1, width: "50ch" }} variant="outlined">
                 <InputLabel>Search</InputLabel>
-                <OutlinedInput
-                    type="text"
-                    inputProps={{style: {fontSize: 20, height: 10}}}
+                <OutlinedInput type="text" inputProps={{style: {fontSize: 20, height: 10}}}
                     endAdornment={
                         <InputAdornment position="end">
-                            <IconButton onClick = {() => searchFunction()} aria-label="Search Button" edge="end"                        >
-                                <SearchIcon />
-                            </IconButton>
-                            <IconButton onClick = {clearSearch} aria-label="Clear Search Button" edge="end">
-                                <ClearIcon />
-                            </IconButton>
-                        </InputAdornment>
-                    }
-                    label="Search"
-                    value = {search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    onKeyDown = {onEnter}
-                />
-                <FormHelperText>
-                    {(searchResults.length>0)?"Your query returned #" + searchResults.length +" results":""}
-                </FormHelperText>
+                            <IconButton onClick = {() => searchFunction()} aria-label="Search Button" edge="end"><SearchIcon/></IconButton>
+                            <IconButton onClick = {clearSearch} aria-label="Clear Search Button" edge="end"><ClearIcon/></IconButton>
+                        </InputAdornment>}
+                    label="Search" value = {search}
+                    onChange={(e) => setSearch(e.target.value)} onKeyDown = {onEnter}/>
+                <FormHelperText>{(searchResults.length>0)?"Your query returned #" + searchResults.length +" results":""}</FormHelperText>
             </FormControl>
-            <Select 
-                options = {(searchType === "authors") ? options["authors"]:options["texts"]}
+            <fieldset>{searchOptions.map((option) => 
+                <><input type = "radio" id={option} name="search-type" key={option} onClick={()=>clickRadio(option)} checked={option===searchType}
+                    onChange={() => clickRadio(option)}/>
+                    <label>{option.charAt(0).toUpperCase()+option.slice(1)}</label>
+                </>)}
+            </fieldset>
+            {searchType!=="all"&&<Select options = {(searchType === "authors") ? options["authors"]:options["texts"]}
                 onChange = {(e) => setFilters(e)}
-                value = {filters}
-                placeholder = {"Select search filters"}
+                value = {filters} placeholder = {"Select search filters"}
                 isMulti
-            />
+            />}
         </div>
-          <table id = "detailed-search-results"><tbody>
-                <tr>
-                    {filters.length>0
-                    ? filters.map((filter) => (
-                    <Tooltip sx = {{fontSize:15}}key={filter.value} title="Click to sort" placement="top" arrow followCursor>
-                        <th onClick={sortFunction}>{filter.label}</th>
-                    </Tooltip>))
-                    :<></>}
-                </tr>
-                {search.length>0 
-                &&(((searchResults.length>100)?searchResults.slice(0,100):searchResults).map //Limitation to first 100 values
-                    (result => (
-                        <tr key = {searchType === "author"?result.author_id:result.text_id}><CreateList data = {result} type = {searchType}/></tr>)))}
-          </tbody></table>
+        <SearchResults filters={filters} searchResults={searchResults} setSearchResults={setSearchResults} searchType={searchType}/>
       </div>
     )
   }

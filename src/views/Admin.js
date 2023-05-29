@@ -16,18 +16,15 @@ const Admin = () => {
                 <button onClick = {openImportWindow}>{labels.import_databtn}</button>
                 <button>{labels.latest_editsbtn}</button>
             </div>
-            {importWindow?
+            {importWindow&&
             <>
                 <div style = {{paddingBottom: 10}}>
                     <button onClick = {() => setImportType(labels.import_type_authors.toLowerCase())}>{labels.import_type_authors}</button>
                     <button onClick = {() => setImportType(labels.import_type_texts.toLowerCase())}>{labels.import_type_texts}</button>
                     <button onClick = {() => setImportType(labels.import_type_editions.toLowerCase())}>{labels.import_type_editions}</button>
                 </div>
-            {importType !== ""?    
-            <ImportTable type = {importType}/>
-            :<></>}
+            {importType !== ""&&<ImportTable type = {importType}/>}
             </>
-            :<></>
         }
         </>
     )
