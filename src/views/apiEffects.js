@@ -1,8 +1,10 @@
 import { authorQuery, authorTextQuery, textQuery, externalsQuery } from "./wikidata";
 const server = 'http://127.0.0.1:8000/'
 
-const fetchFunc = (query, setData) => {
-    fetch(query).then(response => {if(response.ok) {return response.json()}throw response}).then(results => {setData(results)})
+const fetchFunc = (query, setData, signal) => {
+    console.log(query)
+    fetch(query, {signal}).then(response => {if(response.ok) {return response.json()}throw response}).then(results => {setData(results)})
+    .catch((error) => {if(error.name!=='AbortError'){console.log("Error:", error);}});
 }
 
 export const fetchDataEffect = props => () => {
@@ -23,10 +25,10 @@ export const fetchComments = props => () => {
 }
 
 export const fetchSearchResults = props => () => {
-    const {setSearchResults, query, type, filters} = props
+    const {setSearchResults, query, type, filters, signal} = props
     const searchType = type===undefined||type===null?"":"&searchtype="+type
     if(query!==undefined && query.length>3) {
-        fetchFunc(server+'search?query='+query+searchType+"&filters="+JSON.stringify(filters), setSearchResults)}
+        fetchFunc(server+'search?query='+query+searchType+"&filters="+JSON.stringify(filters), setSearchResults, signal)}
 }
 
 export const wikidataEffect = props => () => {

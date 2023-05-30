@@ -54,7 +54,7 @@ const RouteList = () => {
     <Route path = {"/search"} element = {
       <>
       <SiteHeader setLang = {setLang} lang = {lang}/>
-      <SearchDetailed/>
+      <SearchDetailed lang={lang}/>
       </>}                
     />
     <Route path={"/lists"} element = {

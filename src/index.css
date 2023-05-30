@@ -244,6 +244,8 @@
   width: 100%;
   border: 1px solid;
 }
+.search-result-all,.search-type {width:fit-content;}
+.search-result-all-elements {flex-direction:row; display: flex}
 #detailed-search-results th, #listTable th {
   padding-top: 12px;
   padding-bottom: 12px;

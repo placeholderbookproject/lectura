@@ -13,6 +13,7 @@ import {Link, useSearchParams} from 'react-router-dom';
 import {options} from './filters.js';
 import { fetchSearchResults } from './apiEffects.js';
 import { filterArray } from './formattingFuncs.js';
+import ComponentPopup from './Popup.js';
 
 const SearchResults = (props) => {
     const removals = ["author_id","text_id","value","type"]
@@ -55,45 +56,46 @@ const SearchResults = (props) => {
                             {Object.keys(result).map((col) => {
                                 if(removals.includes(col)){return null}
                                 else if (col === "Author"||col==="Title") 
-                                    {return <td key={col+result[col]+result["author_id"]}><Link to={`${result["author_id"]?"/author/"+result["author_id"]:""}/text/${result["text_id"]}`}>{result[col]}</Link></td>}
+                                    {return <td key={col+result[col]+result["author_id"]}>
+                                        <Link to={`${result["author_id"]?"/author/"+result["author_id"]:""}${col!=="Author"?"/text/"+result["text_id"]:""}`}>{result[col]}</Link></td>}
                                 else if (result[col]===null){return <td key={col+result[searchType]}></td>}
                                 else {return <td key={col+result[col]+result[searchType]}>{result[col]}</td>}
-                            }
-                            )}
+                            })}
                         </tr>)
                     )}
         </tbody></table>
-        :<div className="search-result-all">
-            {searchResults.map((result) => 
+        :<div className="search-result-all"> 
+        {searchResults.map((result) => 
+            <div className="search-result-all-elements">
                 <p><a className="text-row" href={result.type==="text"?`${result.author_id&&"/author/"+result.author_id}/text/${result.value}`:`/${result.type}/${result.value}`}>{result["label"]}</a></p>
+                <ComponentPopup key={result["label"]} id={result.value} lang={props.lang} type={result.type}><p style={{fontWeight:600}}> &#x2193;</p></ComponentPopup>        
+            </div>   
             )}
         </div>
     )
 }
 
-const SearchDetailed = () => {
-    let [searchParams,setSearchParams] = useSearchParams();
-    const searchOptions = ["authors","texts","all"]
+const SearchDetailed = (props) => {
+    const [searchParams,setSearchParams] = useSearchParams();
+    const searchOptions = ["all","authors","texts"]
     const [searchType, setSearchType] = useState("all");
     const [filters, setFilters] = useState([]);
     const [search, setSearch] = useState("");
     const [searchResults,setSearchResults] = useState([]);
     const searchFunction = (searchVar = search, type=searchType) => {
-        const searchInput = searchVar;
         const searchFilters = options[type].slice(0,6);
-        setSearchParams({'query':searchInput,'type':type})
-        fetchSearchResults({ setSearchResults, query:searchInput, type:type==="all"?null:type, filters:searchFilters})();
+        setSearchParams({'query':searchVar,'type':type})
+        fetchSearchResults({ setSearchResults, query:searchVar, type:type==="all"?null:type, filters:type!=="all"?searchFilters:""})();
     }
     const onEnter = (e) => {if(e.key==="Enter"){searchFunction()}}
     const clearSearch = () => {setSearch("");setSearchResults([]);}
     useEffect (() => {//Search if a search query parameter exists in the url
-        const searchQuery = searchParams;
-        if(searchQuery.size>0 && searchQuery.query && searchQuery.type !== ""){
-            searchFunction(searchQuery.query);
-            setSearch(searchQuery.query);
+        const searchQuery = [...searchParams];
+        if(searchQuery.length>0 && searchQuery[0][0]==="query" && searchQuery[0][1] !== ""){
+            searchFunction(searchQuery[0][1]);
+            setSearch(searchQuery[0][1]);
         }
-    },[searchParams] // eslint-disable-line react-hooks/exhaustive-deps
-    )
+    },[]) // eslint-disable-line react-hooks/exhaustive-deps
     const clickRadio = (option) => {
         setSearchParams({'query':search,'type':option})
         setFilters(options[option].slice(0,6));
@@ -115,7 +117,7 @@ const SearchDetailed = () => {
                     onChange={(e) => setSearch(e.target.value)} onKeyDown = {onEnter}/>
                 <FormHelperText>{(searchResults.length>0)?"Your query returned #" + searchResults.length +" results":""}</FormHelperText>
             </FormControl>
-            <fieldset>{searchOptions.map((option) => 
+            <fieldset className="search-type">{searchOptions.map((option) => 
                 <><input type = "radio" id={option} name="search-type" key={option} onClick={()=>clickRadio(option)} checked={option===searchType}
                     onChange={() => clickRadio(option)}/>
                     <label>{option.charAt(0).toUpperCase()+option.slice(1)}</label>
@@ -127,7 +129,7 @@ const SearchDetailed = () => {
                 isMulti
             />}
         </div>
-        <SearchResults filters={filters} searchResults={searchResults} setSearchResults={setSearchResults} searchType={searchType}/>
+        <SearchResults filters={filters} searchResults={searchResults} setSearchResults={setSearchResults} searchType={searchType} lang={props.lang}/>
       </div>
     )
   }

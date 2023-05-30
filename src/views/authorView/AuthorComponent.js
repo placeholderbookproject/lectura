@@ -35,7 +35,7 @@ export const AuthorComponent = (props) => {
             {author&&<div className="author-container-header">
                 <h2><a onClick={() => {returnMain()}} className="author-header">{author.author_name} </a>
                     <a href={author.author_q?author.author_q:""}>{`(Wiki)`}</a></h2>
-                <button>Delete</button>                
+                {/*<button>Delete</button>*/}
                 </div>}
             <div className="dropdowns-container">
                 {tabs.map((tab) => (
