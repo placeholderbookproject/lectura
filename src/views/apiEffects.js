@@ -2,7 +2,6 @@ import { authorQuery, authorTextQuery, textQuery, externalsQuery } from "./wikid
 const server = 'http://127.0.0.1:8000/'
 
 const fetchFunc = (query, setData, signal) => {
-    console.log(query)
     fetch(query, {signal}).then(response => {if(response.ok) {return response.json()}throw response}).then(results => {setData(results)})
     .catch((error) => {if(error.name!=='AbortError'){console.log("Error:", error);}});
 }
@@ -14,8 +13,8 @@ export const fetchDataEffect = props => () => {
 }
 
 export const fetchList = props => () => {
-    const {setData, filters} = props
-    const query = `lists?language=${filters.language}&country=${filters.country}`
+    const {setData, filters, type} = props
+    const query = `lists?language=${filters.language}&country=${filters.country}&query_type=${type}`
     fetchFunc(server+query, setData)
 }
 

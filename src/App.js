@@ -8,9 +8,9 @@ import { BrowserRouter, Route, Routes} from 'react-router-dom';
 //import EditionTable from './views/EditionTable.js';
 //import ImportWindow from './views/Import.js';
 //import Admin from './views/Admin.js';
-import ListsTab from './views/listsView/Lists';
+import ListsTab from './views/listsView/ListsView';
 import {IntroPage} from './views/IntroPage.js';
-import ListItem from './views/listsView/ListsItem';
+import ListItem from './views/listsView/List';
 
 const RouteList = () => {
   const [lang, setLang] = useState({value:"en", label:"English"})
