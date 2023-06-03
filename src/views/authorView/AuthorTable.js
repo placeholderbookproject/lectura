@@ -11,9 +11,8 @@ export const AuthorTable = (props) => {
     const [data, setData] = useState({});
     const [wikidata, setWikidata] = useState();
     const authorReform = wikidata?reformatWikidata(wikidata):{};
-    const {authordesc, akaLabel,genderLabel, birthyear, birthplaceLabel, birthplacecountryLabel,
-        deathyear, deathplaceLabel,deathplacecountryLabel, floruit, occupationsLabel, languagesLabel, nativenameLabel, imageLabel
-        ,citizenshipLabel} 
+    const {authordesc, akaLabel,genderLabel, birthyear, birthplaceLabel, birthplacecountryLabel,deathyear
+        ,deathplaceLabel,deathplacecountryLabel, floruit, occupationsLabel, languagesLabel, nativenameLabel, imageLabel,citizenshipLabel} 
         = authorReform;
     const {author_q, author_name, author_nationality, author_birth_year, author_birth_city, author_birth_country,
         author_death_year, author_death_city, author_death_country, author_floruit, author_positions, author_name_language
@@ -29,10 +28,7 @@ export const AuthorTable = (props) => {
             const q_number = author_q.replace("http://www.wikidata.org/entity/","")
             wikidataEffect({q_number, setWikidata, type:"author", language})();}
     },[data, language])
-    useEffect(() => {
-                fetchDataEffect({type:'authors', id, setData})();
-                setData(id);
-    }, [id]);
+    useEffect(() => {fetchDataEffect({type:'authors', id, setData})();setData(id);}, [id]);
     useEffect(() => {props.setAuthor&&props.setAuthor(data)},[data])
     return (
         name&&
@@ -40,7 +36,7 @@ export const AuthorTable = (props) => {
                 {author_q&&<WikiExternalsLabels q_number={author_q} language={language}/>}
                 <TableRow label = {labels.aka + " "}>{checkData(akaWiki,numNames>1?name.slice(1,numNames).join(", "):null)}</TableRow>
                 {nativenameLabel&&<TableRow label = {labels.nativeName + " "}>{nativenameLabel}{genderLabel&&` (${genderLabel})`}</TableRow>}
-                <div>{imageLabel && <img src={imageLabel.split(", ")[0]} style={{ maxWidth: "400px", maxHeight: "200px", objectFit: "contain" }} />}</div>
+                <div>{imageLabel && <img src={imageLabel.split(", ")[0]} className="author-img"/>}</div>
                 {authordesc&&<p>{authordesc}</p>}
             {data&&
                 <>

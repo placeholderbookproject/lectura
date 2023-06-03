@@ -55,15 +55,6 @@ const editRowAuthors = [
     {label: labels.floruit+" ", input: [{value:'author_floruit', label: 'floruit'}]},
 ]
 
-/*const editRowEditions = [
-    {label:labels.original_title+" ", input: [{value:'text_title', label: 'edition title'}]},
-    {label: labels.author+ " ", input: [{value: 'text_author', label: 'author'},{value:'edition_editor', label: 'editors'}]},
-    {label: labels.publication+ " ", input: [{value: 'edition_publication_year', type: "number", label: 'edition publication year'}
-        ,{value: 'edition_publisher', label: 'edition publisher'}]},
-    {label: labels.length+" ", input: [{value:'edition_length', type: "number", label: 'edition length'},{value:'edition_binding', label: 'binding type'}]},
-    {label: labels.isbn+" ", input: [{value: 'edition_isbn', label: 'isbn'},{value:'edition_isbn13', label: 'isbn13'}]},
-]*/
-
 export const editRowAll = {texts: editRowTexts, authors: editRowAuthors}
 
 export const wikiTranslations = {
@@ -93,5 +84,3 @@ export const wikiTranslations = {
 ,'imageLabel':'Image'
 ,'nativenameLabel':'Native Name'
 }
-
-//export default options

@@ -12,7 +12,7 @@ const ListItem = props => {
     const info = availableLists[type].find(list => list.url === listname)
     return (
         <div className="list-tab">
-            <span><p onClick = {() => navigate("/lists/")} className="return-btn">&#8592; Return to List Overview</p></span>
+            <span><button onClick = {() => navigate("/lists/")} className="return-btn">&#8592; Return to List Overview</button></span>
             <div className="list-header">
                 <h2>{info.title}</h2>
                 <p>{info.descr}</p>

@@ -3,7 +3,7 @@ import React from 'react';
 import { Navbar, Container } from "react-bootstrap";
 import labels from './labels.js'
 import { langCodes } from '../div/langcodes.js';
-import MainSearch from './MainSearch.js';
+import MainSearch from './searchView/MainSearch.js';
 
 const SiteHeader = (props) => {
   const handleChange = e => {props.setLang({value:e.target.value, label:e.target.label});}

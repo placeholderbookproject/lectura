@@ -54,12 +54,12 @@ const TextsWikiTable = (props) => {
                 <button className="reorderBtn" value={sortKey.keys} onClick={handleSortChange}>
                     {`Sort by Publ. (${sortKey.descending?"Desc":"Asc"})`}
                 </button>
-                {/*texts.length>5&&*/<input type="text" placeholder="Search" value={search} onChange={(e) => setSearch(e.target.value)}></input>}
-                {texts&&texts.length>0&&<Filters texts={texts} setTexts={setTexts} filterOptions = {filterOptions}/>}
+                {storedtexts.length>5&&<input type="text" placeholder="Search" value={search} onChange={(e) => setSearch(e.target.value)}></input>}
+                <Filters texts={texts} setTexts={setTexts} filterOptions = {filterOptions}/>
             </div>
             {texts&&texts.length>0&&sortList(texts,sortKey.keys, sortKey.descending).slice(0,(!expandTexts?5:texts.length)).map(
                 (text) => <SubTextsTable data={text} key={text.book} author = {author} handleClick={handleClick}/>)}
-            {texts&&texts.length>5&&
+            {texts.length>5&&
                 <button className="expandBtn" onClick = {() => setExpandTexts(!expandTexts)}>{expandTexts?"Collapse":"Show Remaining "+(texts.length-5) + " texts"}</button>}
         </div>   
 )}

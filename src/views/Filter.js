@@ -39,8 +39,9 @@ const Filters = (props) => {
                     <div className="dropdown-menu">
                     {filterOptions.map((filterOption) => (
                         <div key={filterOption.property}>
-                        {filterOption.values.length>0&&<div className="dropdown-menu-label">{filterOption.label}</div>}
-                        {filterOption.values.map((value) => (
+                        {filterOption.values.length>1&&
+                            <div className="dropdown-menu-label">{filterOption.label}</div>}
+                            {filterOption.values.length>1&&filterOption.values.map((value) => (
                             <div key={value} className={`dropdown-menu-option`}>
                                 {value}
                                 <input type = "checkbox" onClick={() => handleFilterClick(filterOption.property, value)} 

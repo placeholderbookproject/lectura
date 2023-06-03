@@ -32,14 +32,12 @@ export const reformatWikidata = (wiki) => {
                 else if (!dataPoint.includes(val)&&j!==resultLength) {dataPoint = dataPoint + ", " + val }
                 else if (!dataPoint.includes(val)&&j===resultLength){dataPoint = dataPoint + ", " + val}
             } else {dataPoint = null}
-        }
-        reformData[col] = dataPoint;
+        }; reformData[col] = dataPoint;
     } return reformData
 };
 
 export const reformatWikitexts = (wiki) => {
     const results = wiki.results.bindings;
-    // group the results by the "book" column
     let grouped = {}
     for (let row of results) {
       let book = row.book.value;
@@ -61,8 +59,7 @@ export const reformatWikitexts = (wiki) => {
             row[key] = values.join(" | ");
         }
         output.push(row);
-    }
-    return output
+    }; return output
 }
 
 export const dateCoalesce = (date1, date2, date3) => {
@@ -86,8 +83,7 @@ export const removeWorksOutOfBounds = (works, birth, death) => {
 }
 
 export const getUniquePropertyValues = (objects, property) =>  {
-    return [...new Set(objects.flatMap(object => (object[property] || '').split(' | ')))].filter(Boolean);
-  }
+    return [...new Set(objects.flatMap(object => (object[property] || '').split(' | ')))].filter(Boolean);}
 
 export const removeDuplicateList = (listA,listB, key) => {
     if(!listB){return listA}
@@ -96,8 +92,6 @@ export const removeDuplicateList = (listA,listB, key) => {
         const existingB = result.find((b) => b[key] === a[key]);
         if (!existingB) {result.push(a);}
         else {Object.entries(a).forEach(([k, v]) => {if (!(k in existingB)) {existingB[k] = v;}});}
-    });
-    return result;
-  }
+    }); return result;}
 
 export const filterArray = (array, removals) => {return array.filter(item => !removals.includes(item.value));}

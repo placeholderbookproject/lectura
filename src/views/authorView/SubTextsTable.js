@@ -29,7 +29,7 @@ const SubTextsTable = (props) => {
             </div>           
                 {detailed&&<div className="text-row-detailed">
                     {rows.map((row) => (row.content&&<TableRow label={row.label} key={row.content+row.label}>{row.content}</TableRow>))}
-                    {detailed&&<ArchiveList title={bookLabelReform} name={author_name} originalTitle={titleLabel}/>}
+                    <ArchiveList title={bookLabelReform} name={author_name} originalTitle={titleLabel}/>
                 </div>}
         </div>)
 }

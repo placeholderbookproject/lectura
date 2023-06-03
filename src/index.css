@@ -50,7 +50,7 @@
 
 .dropdown-popup {
   position: absolute;
-  top: 70px; /* adjust this value to position the filter component vertically */
+  top: 90px; /* adjust this value to position the filter component vertically */
   right: -30px;
   z-index: 1;
   background-color: white;
@@ -107,6 +107,7 @@
 .person-info h2 {margin: 0; font-size: 24px;}
 .person-info p, .person-texts p, .dropdown-menu-option {margin: 5px;}
 .person-info p {margin-left:0;}
+.author-img {max-width:400px;max-height:200px;object-fit: contain;}
 
 .person-texts {position:relative;}
 
@@ -236,7 +237,8 @@
 }
 .clear-search-button {border: none; background-color: white;border-radius: 30px;}
 .clear-search-button:hover {background-color:rgb(221, 220, 220); cursor:pointer;}
-.return-btn {cursor:pointer; font-weight:600;}
+.return-btn {cursor:pointer; font-weight:600; background-color:white;border:none;}
+.return-btn:hover{border-bottom:0.5px solid black;}
 
 #detailed-search-results td, #detailed-search-results th, #importPreview td, #importPreview th, #listTable th, #listTable td {
   border: 1px dotted rgb(117, 115, 115);
@@ -337,7 +339,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  position:relative;
+  /*position:relative;*/
 }
 
 .absolute {position:absolute;}

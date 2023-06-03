@@ -1,6 +1,6 @@
 import {useNavigate} from 'react-router-dom'
 import React, {useState, useEffect/*, useRef*/} from 'react';
-import {fetchSearchResults} from './apiEffects.js'
+import {fetchSearchResults} from '../apiEffects.js'
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import ClearIcon from '@material-ui/icons/Clear';
