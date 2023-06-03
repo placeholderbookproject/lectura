@@ -4,6 +4,11 @@
 }
 .listHeader {font-weight:700;}
 
+.list-item {
+  border: 0.5px solid black;
+  background-color:#f3f1f1;
+}
+
 .search-dropdown-popup {
   position: absolute;
   top: 40px; /* adjust this value to position the filter component vertically */
@@ -71,7 +76,7 @@
 }
 .author-header {color: #000000;text-decoration: none;cursor:pointer}
 
-.tab-button {
+.tab-button, .lists-tab, .lists-tab-open {
   background-color: #fff;
   color: #000;
   border: none;
@@ -83,6 +88,8 @@
   width:400px;
   font-weight:600;
 }
+
+.lists-tab-open {background-color:rgb(95, 94, 93); color:white;}
 
 .tab-content {display: none;}
 
@@ -295,6 +302,7 @@
 
 .header-btn:hover button, .changeSearchVersionBtn:hover,.resetEditBtn:hover, .addNewBtn:hover, .listsBtn:hover, .collapsible:hover
 ,.dropdown-toggle:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover, .tab-button:hover, .tab-button-inactive:hover
+, .lists-tab:hover, .lists-tab-open:hover
 ,.reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover {
   background-color: #012443;
   color:white;
@@ -322,7 +330,7 @@
   margin-left: 5px;
 }
 
-.dropdowns-container, .dropdown-menu, .filterTexts {
+.dropdowns-container, .dropdown-menu, .filterTexts, .lists-header, .list-item {
   display: flex;
   flex-direction: row;
   justify-content: left;

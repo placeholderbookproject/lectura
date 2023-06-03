@@ -8,8 +8,9 @@ import { BrowserRouter, Route, Routes} from 'react-router-dom';
 //import EditionTable from './views/EditionTable.js';
 //import ImportWindow from './views/Import.js';
 //import Admin from './views/Admin.js';
-import ListsTable from './views/Lists';
+import ListsTab from './views/listsView/Lists';
 import {IntroPage} from './views/IntroPage.js';
+import ListItem from './views/listsView/ListsItem';
 
 const RouteList = () => {
   const [lang, setLang] = useState({value:"en", label:"English"})
@@ -60,7 +61,13 @@ const RouteList = () => {
     <Route path={"/lists"} element = {
       <>
         <SiteHeader setLang = {setLang} lang = {lang}/>
-        <ListsTable lang={lang}/>
+        <ListsTab lang={lang}/>
+      </>}
+    />
+    <Route path={"/lists/:type/:listname"} element = {
+      <>
+        <SiteHeader setLang = {setLang} lang = {lang}/>
+        <ListItem lang={lang}/>
       </>}
     />
     <Route path = {"/import"} element = {

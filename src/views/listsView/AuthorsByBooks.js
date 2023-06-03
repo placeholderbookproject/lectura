@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import { countries } from '../div/countries';
-import { languages } from '../div/languages';
+import { countries } from '../../div/countries';
+import { languages } from '../../div/languages';
 //import Popup from './AddNew';
-import { fetchList } from './apiEffects';
-import ComponentPopup from './Popup';
+import { fetchList } from '../apiEffects';
+import ComponentPopup from '../Popup';
+import DropdownMenu from './DropdownMenu';
 
-const ListsTable = (props) => {
+const AuthorsByBooksTable = (props) => {
     const [filters, setFilters] = useState({"country":"All", "language":"All"});
     const [data, setData] = useState();
     const country = filters.country==="All"?"":" from " + filters.country
@@ -45,22 +46,4 @@ const ListsTable = (props) => {
     )
 }
 
-export const DropdownMenu = props => {
-    const [selected, setSelected] = useState("all");
-    const {name, options, setFilters, filters} = props;
-    const handleChange = e => {
-        setSelected(e.target.value)
-        const newFilters = {...filters, [name]:e.target.value}
-        setFilters(newFilters)
-    }
-    return (
-        <div className="dropdown">
-            <label className="dropdown-label">{`Select a ${name}`}</label>
-            <select  value = {selected} onChange = {handleChange}>
-                {options.map((option) => (<option key = {option} value = {option}>{option}</option>) )}
-            </select>
-        </div>
-    )
-}
-
-export default ListsTable;
+export default AuthorsByBooksTable;
