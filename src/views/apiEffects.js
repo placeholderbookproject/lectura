@@ -71,9 +71,16 @@ export const archiveEffect = props => () => {
 }
 
 export const createNewUser = (input) => {
+    console.log(input.user_password)
     const requestBody = {user_name: input.user_name, user_email:input.user_email, user_password:input.user_password};
     return fetch(server+'create_user',{method: 'POST',body: JSON.stringify(requestBody)})
     .then(response => response.json())
     .then (data => data)
     .catch(error => console.log(error))
+}
+
+export const loginUser = (input) => {
+    return fetch(server+'login_user?'+'user='+input.user)
+        .then(response => response.json())
+        .catch(error => console.log(error))
 }

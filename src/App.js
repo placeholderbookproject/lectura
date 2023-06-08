@@ -9,10 +9,12 @@ import ListsTab from './views/listsView/ListsView';
 import {IntroPage} from './views/IntroPage.js';
 import ListItem from './views/listsView/List';
 import LoginView from './views/loginView/LoginForm';
+import CreateUserForm from './views/loginView/CreateUserForm';
 
 const RouteList = () => {
   const [lang, setLang] = useState({value:"en", label:"English"});
   const [userId, setUserId] = useState(false);
+  console.log(userId);
   return (
     <BrowserRouter>
     <Routes>
@@ -81,7 +83,14 @@ const RouteList = () => {
         {/*<Admin/>*/}
       </>}
     />
-    <Route path="/login" element={<LoginView setUserId={setUserId}/>}/>
+    <Route path="/login" element={<>
+      <SiteHeader setLang = {setLang} lang = {lang}/>
+      <LoginView setUserId={setUserId}/>
+      </>}/>
+    <Route path="/register" element={<>
+        <SiteHeader setLang = {setLang} lang = {lang}/>
+        <CreateUserForm setUserId={setUserId}/>
+        </>}/>
     </Routes>
     </BrowserRouter>
   )  

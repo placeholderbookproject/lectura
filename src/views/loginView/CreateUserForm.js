@@ -25,21 +25,22 @@ const CreateUserForm = (props) => {
             })
     }
     return (
-        <>
-        <h2>Create Account</h2>
-        <form className="form-container" >
-            {userExists&&<p className="email-error">Email already exists</p>}
-            {formInputs.map((inp) => (
-                <><label className="form-label" key={inp.label}>{inp.label}</label>
-                    <input type={inp.type} value={input[inp.name]} key={"input"+inp.label} onChange={changeInput}
-                        name={inp.name} className="register-input" required minLength="6" size="30" autoComplete={inp.autoComplete}/>
-                    {inp.name==="user_password_confirmation"&&(input.user_password!==input.user_password_confirmation)&&
-                        <p className="pw-error">Passwords do not match</p>}
-                </>
-                ))}
-            <button type="submit" onClick = {handleSubmit}>Submit</button>
-        </form>
-        </>
+        <div className="register-container">
+            <h2>Create Account</h2>
+            <form className="form-container" >
+                {userExists&&<p className="email-error">Email already exists</p>}
+                {formInputs.map((inp) => (
+                    <><label className="form-label" key={inp.label}>{inp.label}</label>
+                        <input type={inp.type} value={input[inp.name]} key={"input"+inp.label} onChange={changeInput}
+                            name={inp.name} className="register-input" required minLength="6" size="30" autoComplete={inp.autoComplete}/>
+                    </>
+                    ))}
+                {input.user_password!==""&&(input.user_password!==input.user_password_confirmation)&&
+                            <p className="pw-error">Passwords do not match</p>}
+                <button type="submit" className="form-label" onClick = {handleSubmit}>Submit</button>
+            </form>
+            <p>Already have an account? <button className="return-login-btn" onClick={()=>{navigate("/login")}}>Sign In</button></p>
+        </div>
     )
 }
 
