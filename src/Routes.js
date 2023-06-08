@@ -1,0 +1,35 @@
+import AuthorComponent from './views/authorView/AuthorComponent';
+import TextComponent from './views/authorView/TextTable.js';
+import React,{useState} from 'react';
+import SiteHeader from './views/SiteHeader.js';
+import SearchDetailed from './views/searchView/SearchDetailed.js';
+import { BrowserRouter, Route, Routes} from 'react-router-dom';
+import ListsTab from './views/listsView/ListsView';
+import {IntroPage} from './views/IntroPage.js';
+import ListItem from './views/listsView/List';
+import LoginView from './views/loginView/LoginForm';
+import CreateUserForm from './views/loginView/CreateUserForm';
+
+const RouteList = () => {
+    const [lang, setLang] = useState({value:"en", label:"English"});
+    const [userId, setUserId] = useState(false);
+    const routes = [{path:"/", element: <IntroPage lang = {lang}/>},
+      {path:"/text/:id",element:<TextComponent lang={lang}/>},
+      {path:"/author/:id",element:<AuthorComponent lang = {lang}/>},
+      {path:"/author/:id/text/:text_id",element:<AuthorComponent lang = {lang}/>},
+      {path:"/search", element:<SearchDetailed lang={lang}/>},
+      {path:"/lists",element:<ListsTab lang={lang}/>},
+      {path:"/lists/:type/:listname", element:<ListItem lang={lang}/>},
+      {path:"/login", element:<LoginView setUserId={setUserId}/>},
+      {path:"/register",element:<CreateUserForm setUserId={setUserId}/>}]
+    return (
+      <BrowserRouter>
+      <Routes>
+        {routes.map((route, index) => (
+          <Route key={index} path={route.path}element={<><SiteHeader setLang={setLang} lang={lang} />{route.element}</>}/>
+        ))}
+        </Routes>
+      </BrowserRouter>
+    ); 
+}
+export default RouteList; 
