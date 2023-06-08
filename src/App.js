@@ -5,15 +5,14 @@ import React,{useState} from 'react';
 import SiteHeader from './views/SiteHeader.js';
 import SearchDetailed from './views/searchView/SearchDetailed.js';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
-//import EditionTable from './views/EditionTable.js';
-//import ImportWindow from './views/Import.js';
-//import Admin from './views/Admin.js';
 import ListsTab from './views/listsView/ListsView';
 import {IntroPage} from './views/IntroPage.js';
 import ListItem from './views/listsView/List';
+import LoginView from './views/loginView/LoginForm';
 
 const RouteList = () => {
-  const [lang, setLang] = useState({value:"en", label:"English"})
+  const [lang, setLang] = useState({value:"en", label:"English"});
+  const [userId, setUserId] = useState(false);
   return (
     <BrowserRouter>
     <Routes>
@@ -82,6 +81,7 @@ const RouteList = () => {
         {/*<Admin/>*/}
       </>}
     />
+    <Route path="/login" element={<LoginView setUserId={setUserId}/>}/>
     </Routes>
     </BrowserRouter>
   )  

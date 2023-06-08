@@ -14,8 +14,8 @@ const ArchiveList = (props) => {
             archive.map((result) =>
                 <p key={result.identifier}>
                     <a href={'https://archive.org/details/'+result.identifier} className="archiveRow">
-                {`${result.title} by ${result.creator} (${result.year}) (
-                    ${result.downloads} downloads) (${result.language}) (${result.mediatype})`}
+                        {`${result.title} by ${result.creator} (${result.year}) (
+                        ${result.downloads} downloads) (${result.language}) (${result.mediatype})`}
                     </a>
                 </p>)}
     </div>

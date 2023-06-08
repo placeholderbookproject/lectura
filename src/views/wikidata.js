@@ -1,4 +1,4 @@
-import React, {/*useRef,*/ useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import { wikidataEffect } from './apiEffects';
 
 const findIndex = (list, search) => {
@@ -21,6 +21,7 @@ const externalsStaples = [
   ,{label: "Musisque Deoque", alt: "MQDQ"}
   ,{label:"Hymnary", alt:"Hymnary"}
   ,{logo:"https://topostext.org/images/logo1_2.png", label:"ToposText", alt: "ToposText"}
+  ,{logo:"https://isni.oclc.org:2443/isni/psi_images/img_psi/3.0/logos/logo_xml_isni.png", label:"ISNI", alt:"isni"}
 ]
 
 export const WikiExternalsLabels = (props) => {
@@ -28,17 +29,17 @@ export const WikiExternalsLabels = (props) => {
   let {q_number, language} = props;
   useEffect(() => {
     if(q_number){
-        q_number = q_number.replace("http://www.wikidata.org/entity/","")
+        q_number = q_number.replace("http://www.wikidata.org/entity/","");
         wikidataEffect({q_number, setWikidata:setExternals, type:"externals", language})();}
   },[props.q_number])
   return (
     externals&&externals.results&&
-    externalsStaples.map((external) => (
-      findIndex(externals.results.bindings,external.label)&&
-      <a href={findIndex(externals.results.bindings,external.label)} key={findIndex(externals.results.bindings,external.label)}>
-        {external.logo&&<img src={external.logo} style={{ maxWidth: "40px", maxHeight: "30px", objectFit: "contain" }} alt={external.label}></img>}
-        {!external.logo&&external.alt}
-      </a>
+      externalsStaples.map((external) => (
+        findIndex(externals.results.bindings,external.label)&&
+        <a href={findIndex(externals.results.bindings,external.label)} key={findIndex(externals.results.bindings,external.label)}>
+          {external.logo&&<img src={external.logo} style={{ maxWidth: "40px", maxHeight: "30px", objectFit: "contain" }} alt={external.label}></img>}
+          {!external.logo&&external.alt}
+        </a>
     ))
   )
 }

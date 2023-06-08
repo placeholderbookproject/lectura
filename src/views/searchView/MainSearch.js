@@ -18,18 +18,12 @@ const MainSearch = () => {
     },[query]);
     const searchSelect = (e) => {setQuery(e.target.value);}
     const search = (event) => {
-      if (event.key==="Enter"){
-        controller.abort()
-        setQuery("");
-        navigate(`/search?query=${query}&type=authors`)
-      }
-      else if (event.key==="Escape") {setQuery("");setSearchResults();}
+      if (event.key==="Enter"){controller.abort(); setQuery(""); navigate(`/search?query=${query}&type=authors`)}
+      else if (event.key==="Escape"){setQuery("");setSearchResults();}
     }
     const enterLink = (result) => {
         const link = result.type==="text"?`${result.author_id&&"/author/"+result.author_id}/text/${result.value}`:`/${result.type}/${result.value}`
-        navigate(link);
-        setQuery("");
-        setSearchResults();
+        navigate(link);setQuery("");setSearchResults();
     }
     return (
         <div className = "search-bar">

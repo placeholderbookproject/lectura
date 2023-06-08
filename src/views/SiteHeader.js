@@ -10,9 +10,10 @@ const SiteHeader = (props) => {
   return (
     <Container className = "flexbox-container">
       <Navbar style = {{paddingBottom: 5,paddingTop: 5,}}>{/*https://retool.com/blog/building-a-react-navbar/ */}
-          <Link className="header-btn" to = {"/"}><button>{labels.homeBtn}</button></Link>
+          <Link className="header-btn" to="/"><button>{labels.homeBtn}</button></Link>
           <MainSearch/>
-          <Link className="header-btn" to = {"/lists"}><button>Lists</button></Link>
+          <Link className="header-btn" to ="/lists"><button>Lists</button></Link>
+          <Link className="header-btn" to="/login"><button>Login</button></Link>
           <select value = {props.lang.value} label={props.lang.value} onChange = {handleChange}>
               {langCodes.map((option) => (<option key = {option.value+option.label} value = {option.value}>{option.label}</option>) )}
           </select>
