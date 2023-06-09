@@ -9,24 +9,28 @@ import {IntroPage} from './views/IntroPage.js';
 import ListItem from './views/listsView/List';
 import LoginView from './views/loginView/LoginForm';
 import CreateUserForm from './views/loginView/CreateUserForm';
+import Profile from './views/userView/Profile';
 
 const RouteList = () => {
     const [lang, setLang] = useState({value:"en", label:"English"});
-    const [userId, setUserId] = useState(false);
+    const [userData, setUserData] = useState(false);
     const routes = [{path:"/", element: <IntroPage lang = {lang}/>},
-      {path:"/text/:id",element:<TextComponent lang={lang}/>},
-      {path:"/author/:id",element:<AuthorComponent lang = {lang}/>},
-      {path:"/author/:id/text/:text_id",element:<AuthorComponent lang = {lang}/>},
-      {path:"/search", element:<SearchDetailed lang={lang}/>},
-      {path:"/lists",element:<ListsTab lang={lang}/>},
-      {path:"/lists/:type/:listname", element:<ListItem lang={lang}/>},
-      {path:"/login", element:<LoginView setUserId={setUserId}/>},
-      {path:"/register",element:<CreateUserForm setUserId={setUserId}/>}]
+        {path:"/text/:id",element:<TextComponent lang={lang}/>},
+        {path:"/author/:id",element:<AuthorComponent lang = {lang}/>},
+        {path:"/author/:id/text/:text_id",element:<AuthorComponent lang = {lang}/>},
+        {path:"/search", element:<SearchDetailed lang={lang}/>},
+        {path:"/lists",element:<ListsTab lang={lang}/>},
+        {path:"/lists/:type/:listname", element:<ListItem lang={lang}/>},
+        {path:"/login", element:<LoginView setUserData={setUserData}/>},
+        {path:"/register",element:<CreateUserForm setUserData={setUserData}/>},
+        {path:"/user/show/:user_site", element:<Profile setUserData={setUserData}/>}
+    ]
+    //console.log(userData);
     return (
       <BrowserRouter>
       <Routes>
         {routes.map((route, index) => (
-          <Route key={index} path={route.path}element={<><SiteHeader setLang={setLang} lang={lang} />{route.element}</>}/>
+          <Route key={index} path={route.path} element={<><SiteHeader setLang={setLang} lang={lang} userData={userData}/>{route.element}</>}/>
         ))}
         </Routes>
       </BrowserRouter>

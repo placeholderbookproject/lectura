@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../apiEffects";
 const bcrypt = require("bcryptjs");
@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 const Signin = (props) => {
     const [input, setInput] = useState({user_name:"", user_password:""});
     const [error, setError] = useState(false);
-    const [userId,setUserId] = useState(false);
+    const [user,setUser] = useState(false);
     const errors = {no_user:"There is no user with that user name or email", wrong_pw:"The password you entered is wrong"}
     const navigate = useNavigate();
     const formInputs = [{name:"user_name",type:"email", label:"User Name or Email ", autoComplete:"current-email"}
@@ -20,16 +20,15 @@ const Signin = (props) => {
         loginUser({user:input.user_name})
         .then((result) => {
             if(result!==false){
-                setUserId(result.user_id);
+                setUser({user_id:result.user_id, user_name:result.user_name})
                 return bcrypt.compare(input.user_password, result.pw)}
-            else {return "no_user"}
-            })
+            else {return "no_user"}})
         .then ((response) => {
-            if(response===true){props.setUserId(userId);navigate("/")}
+            if(response===true){navigate("/")}
             else if (response==="no_user"){setError("no_user")}
-            else {setError("wrong_pw")}
-        })
+            else {setError("wrong_pw")}})
     }
+    useEffect(() => {user!==false&&props.setUserData(user)},[user])
     return (
         <>
         <form className="form-container">
