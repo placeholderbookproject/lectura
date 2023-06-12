@@ -6,7 +6,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import ClearIcon from '@material-ui/icons/Clear';
 
 const MainSearch = () => {
-    let controller;
+    let controller = new AbortController();
     const navigate = useNavigate();
     const [query, setQuery] = useState("");
     const [searchResults,setSearchResults] = useState();
@@ -18,7 +18,7 @@ const MainSearch = () => {
     },[query]);
     const searchSelect = (e) => {setQuery(e.target.value);}
     const search = (event) => {
-      if (event.key==="Enter"){controller.abort(); setQuery(""); navigate(`/search?query=${query}&type=authors`)}
+      if (event.key==="Enter"){controller&&controller.abort(); setQuery(""); navigate(`/search?query=${query}&type=authors`)}
       else if (event.key==="Escape"){setQuery("");setSearchResults();}
     }
     const enterLink = (result) => {

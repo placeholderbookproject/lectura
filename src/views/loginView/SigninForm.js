@@ -38,7 +38,7 @@ const Signin = (props) => {
                         name={inp.name} className="register-input" required minLength="6" size="30" autoComplete={inp.autoComplete}/>
                 </>))}
             {error&&<p className="pw-error">{errors[error]}</p>}
-            <button type="submit" className="form-label" onClick = {handleSubmit}>Log In</button>
+            <button type="submit" className="submit-btn" onClick = {handleSubmit}>Log In</button>
         </form>
         <p>Do not have an account? <button className="return-register-btn" onClick={()=>{navigate("/register")}}>Create User</button></p>
         </>

@@ -6,6 +6,14 @@ const fetchFunc = (query, setData, signal) => {
     .catch((error) => {if(error.name!=='AbortError'){console.log("Error:", error);}});
 }
 
+export const createNewList = (list_info) => {
+    const requestBody = {user_id: list_info.user_id, list_name:list_info.list_title, list_description:list_info.list_description};
+    return fetch(server+'create_list',{method: 'POST',body: JSON.stringify(requestBody)})
+    .then(response => response.json())
+    .then(data => data)
+    .catch(error => console.log(error))
+}
+
 export const fetchDataEffect = props => () => {
     const {type, id, setData, by} = props
     const search = type===null||type===undefined?"":"type="+type+"&id="+id+(by!==null?"&by="+by:"")

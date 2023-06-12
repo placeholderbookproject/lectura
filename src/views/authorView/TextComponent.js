@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import TextTable from './TextTable.js';
 import { WikiExternalsList } from '../wikidata.js';
-import { setTab } from './commonFuncs.js';
+import { setTab } from '../commonFuncs.js';
 
 const TextComponent = props => {
     const [q, setQ] = useState();

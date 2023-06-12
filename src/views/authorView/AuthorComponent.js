@@ -4,7 +4,7 @@ import WikiExternalsList from '../wikidata';
 import TextsWikiTable from './AuthorTexts';
 import { useParams, useNavigate, useLocation} from 'react-router-dom';
 import TextComponent from './TextTable';
-import { setTab } from './commonFuncs.js';
+import { setTab } from '../commonFuncs.js';
 
 const AuthorComponent = (props) => {
     let { text_id } = useParams();

@@ -10,6 +10,7 @@ import ListItem from './views/listsView/List';
 import LoginView from './views/loginView/LoginForm';
 import CreateUserForm from './views/loginView/CreateUserForm';
 import Profile from './views/userView/Profile';
+import CreateNewList from './views/listsView/CreateNewList';
 
 const RouteList = () => {
     const [lang, setLang] = useState({value:"en", label:"English"});
@@ -19,13 +20,13 @@ const RouteList = () => {
         {path:"/author/:id",element:<AuthorComponent lang = {lang}/>},
         {path:"/author/:id/text/:text_id",element:<AuthorComponent lang = {lang}/>},
         {path:"/search", element:<SearchDetailed lang={lang}/>},
-        {path:"/lists",element:<ListsTab lang={lang}/>},
+        {path:"/lists",element:<ListsTab lang={lang} userData={userData}/>},
+        {path:"/lists/create_new", element:<CreateNewList lang={lang} userData={userData}/>},
         {path:"/lists/:type/:listname", element:<ListItem lang={lang}/>},
         {path:"/login", element:<LoginView setUserData={setUserData}/>},
         {path:"/register",element:<CreateUserForm setUserData={setUserData}/>},
-        {path:"/user/show/:user_site", element:<Profile setUserData={setUserData}/>}
+        {path:"/user/show/:user_site", element:<Profile setUserData={setUserData} userData={userData}/>}
     ]
-    //console.log(userData);
     return (
       <BrowserRouter>
       <Routes>

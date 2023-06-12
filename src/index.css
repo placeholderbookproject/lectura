@@ -1,5 +1,5 @@
 .latestAdditionsHeader {font-weight:700; font-size: 1.2em;}
-.listHeader {font-weight:700;}
+.listHeader, .profile-info {font-weight:700;}
 
 .list-item {
   border: 0.5px solid black;
@@ -250,7 +250,7 @@
   width: 100%;
   border: 1px solid;
 }
-.search-result-all,.search-type {width:fit-content;}
+.search-result-all,.search-type, .radio-container {width:fit-content;}
 .search-result-all-elements {flex-direction:row; display: flex}
 #detailed-search-results th, #listTable th {
   padding-top: 12px;
@@ -376,7 +376,6 @@ select {
 .login-container, .register-container {
   background-color:white; 
   border: 1px solid black;
-  /*width:300px;*/
   position: fixed;
   top: 50%;
   left: 50%;
@@ -392,6 +391,17 @@ select {
   flex-direction: column;
   align-items: left;
 }
-.pw-error, .email-error, .pw-error {color:red;}
+.pw-error, .email-error, .list-error {color:red;}
+.create-account-header, .create-list-header {margin:5px 5px; border-bottom: 0.5px solid black;}
 .return-login-btn, .return-register-btn {background-color:white; border:none; }
 .return-login-btn:hover, .return-register-btn:hover {border-bottom:1px solid black; cursor:pointer}
+.login-container p, .login-container button, .form-container p, .form-container button, .form-container label, .form-container input
+,.sign-in, .sign-in button
+{font-size: 16px; font-family: Arial; margin:5px 5px;}
+.login-container input {border-radius: 25px; border: 0.5px solid black; padding:5px;}
+.login-container button, .create-user, .submit-btn[type=submit], .return-login-btn
+ {border:none;background-color:white;font-weight: 700; margin:5px 5px;}
+.login-container button:hover, .create-user:hover, .submit-btn[type=submit]:hover {cursor:pointer; border-bottom:1px solid black;}
+.submit-btn[type=submit] {border: 1px solid black; border-radius:25px;margin-top:5px;}
+.submit-btn[type=submit]:hover {background-color:#ccc;}
+.radio-container {margin:5px;padding:none;}
