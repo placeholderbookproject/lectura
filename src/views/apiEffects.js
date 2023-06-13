@@ -7,12 +7,20 @@ const fetchFunc = (query, setData, signal) => {
 }
 
 export const createNewList = (list_info) => {
-    const requestBody = {user_id: list_info.user_id, list_name:list_info.list_title, list_description:list_info.list_description};
+    const requestBody = {user_id: list_info.user_id, list_name:list_info.list_title
+            , list_type:list_info.list_type,list_description:list_info.list_description};
     return fetch(server+'create_list',{method: 'POST',body: JSON.stringify(requestBody)})
     .then(response => response.json())
     .then(data => data)
     .catch(error => console.log(error))
 }
+
+export const fetchUserList = (list_id, setData) => {
+    const query = `${server}get_user_list?list_id=${list_id}`;
+    return fetchFunc(query, setData)
+}
+
+export const fetchAllLists = (setData) => {fetchFunc(`${server}get_all_lists`,setData);}
 
 export const fetchDataEffect = props => () => {
     const {type, id, setData, by} = props

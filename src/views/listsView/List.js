@@ -1,23 +1,26 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import AuthorsByBooksTable from './AuthorsByBooks';
 import { useParams, useNavigate} from 'react-router-dom';
-import { availableLists } from './availableLists';
+import { officialLists } from './availableLists';
+import { fetchUserList } from '../apiEffects';
 
 const ListItem = props => {
     const {lang} = props;
     const navigate = useNavigate();
-    const lists = {official:{"authors-by-books":<AuthorsByBooksTable lang={lang} type={"num_books"}/>,
-                    "authors-no-books":<AuthorsByBooksTable lang={lang} type={"no_books"}/>}};
     let {listname, type} = useParams();
-    const info = availableLists[type].find(list => list.url === listname)
+    const list_id = !isNaN(listname.split("_")[0])&&listname.split("_")[0];
+    const [info, setInfo] = useState(["all","official"].includes(type)&&officialLists.find(list => list.url === listname));
+    const lists = {"authors-by-books":<AuthorsByBooksTable lang={lang} type={"num_books"}/>,
+                    "authors-no-books":<AuthorsByBooksTable lang={lang} type={"no_books"}/>};
+    useEffect(() => {if(list_id){fetchUserList(list_id, setInfo)}},[])
     return (
         <div className="list-tab">
             <span><button onClick = {() => navigate("/lists/")} className="return-btn">&#8592; Return to List Overview</button></span>
             <div className="list-header">
-                <h2>{info.title}</h2>
-                <p>{info.descr}</p>
+                <h2>{info.list_name}</h2>
+                <p>{info.list_description}</p>
             </div>
-            {lists[type][listname]}
+            {["all","official"].includes(type)&&lists[listname]}
         </div>
     )
 }
