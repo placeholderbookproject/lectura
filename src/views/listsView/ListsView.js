@@ -8,7 +8,7 @@ const ListsTab = (props) => {
     const navigate = useNavigate();
     const [personal,setPersonal] = useState([])
     const listTabs = ["all", "official", "personal", "added by Me", "watchlist"]
-    const lists = {"official":officialLists,"personal":personal, "added by Me":personal&&personal.length>0&&personal.find(list => list.user_id === props.userData.user_id)}
+    const lists = {"official":officialLists,"personal":personal, "added by Me":personal&&personal.length>0&&[personal.find(list => list.user_id === props.userData.user_id)]}
     const [tab,setTab] = useState("all");
     useEffect(() => {fetchAllLists(setPersonal)},[]);
     return (

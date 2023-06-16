@@ -15,8 +15,8 @@ export const createNewList = (list_info) => {
     .catch(error => console.log(error))
 }
 
-export const fetchUserList = (list_id, setData) => {
-    const query = `${server}get_user_list?list_id=${list_id}`;
+export const fetchUserList = (list_id, setData, type) => {
+    const query = `${server}get_user_list?list_id=${list_id}&type=${type}`;
     return fetchFunc(query, setData)
 }
 

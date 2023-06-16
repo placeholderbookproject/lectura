@@ -22,7 +22,7 @@ const RouteList = () => {
         {path:"/search", element:<SearchDetailed lang={lang}/>},
         {path:"/lists",element:<ListsTab lang={lang} userData={userData}/>},
         {path:"/lists/create_new", element:<CreateNewList lang={lang} userData={userData}/>},
-        {path:"/lists/:type/:listname", element:<ListItem lang={lang}/>},
+        {path:"/lists/:type/:listname", element:<ListItem lang={lang} userData={userData}/>},
         {path:"/login", element:<LoginView setUserData={setUserData}/>},
         {path:"/register",element:<CreateUserForm setUserData={setUserData}/>},
         {path:"/user/show/:user_site", element:<Profile setUserData={setUserData} userData={userData}/>}

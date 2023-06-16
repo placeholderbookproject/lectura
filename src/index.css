@@ -4,8 +4,23 @@
 .list-item {
   border: 0.5px solid black;
   background-color:#fcfcfc;
+  display:flex;
+  position: relative;
 }
-.list-header {border-bottom: 1px solid grey;}
+.list-title{margin:2px;}
+.list-description{margin:5px 0;}
+.list-details {display:flex; justify-content:space-between; flex-direction:column; align-items:end; position:absolute; right:0; top:0; padding:10px;}
+.list-dates {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+.list-dates label {font-weight:700; margin-right:5px;}
+.list-created {margin:0;}
+.list-buttons {display: flex; gap: 10px;}
+
+.list-base-description {font-weight:bold;margin-top:0;}
+.list-header h2 {margin-bottom:0;}
 
 .search-dropdown-popup {
   position: absolute;
@@ -226,15 +241,28 @@
   outline: none;
   font-size: 14px;
 }
+.list-element-search {border:1px solid black;}
+.list-search-result,.list-element {display:flex;flex-direction:row;}
+.list-search-result p, .list-element p {margin:5px; border-bottom:0.5px solid black;}
+.list-search-result button, .list-element button {background-color: white; border:none;}
+.list-search-result button:hover, .list-element button:hover {cursor:pointer; border-bottom: 1px solid black;}
 .search-result {cursor:pointer; margin:8px; padding-left:0px;}
 .search-result:hover, .text-row:hover {background-color:#bebebe}
 .search-bar {
-  border: 1px solid #ccc;
+  border: 1px solid black;
   border-radius: 4px;
   background-color:white;
   flex-direction:row;
   display: flex;
 }
+.list-add-element-container{
+  max-height: 300px; /* set the maximum height */
+  overflow-y: auto;
+  overflow-x:auto;
+  max-width:500px;
+  border:0.5px solid black;
+}
+
 .clear-search-button {border: none; background-color: white;border-radius: 30px;}
 .clear-search-button:hover {background-color:rgb(221, 220, 220); cursor:pointer;}
 .return-btn {cursor:pointer; font-weight:600; background-color:white;border:none;}
@@ -328,7 +356,7 @@
   margin-left: 5px;
 }
 
-.dropdowns-container, .dropdown-menu, .filterTexts, .lists-header, .list-item {
+.dropdowns-container, .dropdown-menu, .filterTexts, .lists-header {
   display: flex;
   flex-direction: row;
   justify-content: left;
@@ -386,11 +414,12 @@ select {
 }
 
 .login-btn, .create-user, .create-user-terms, .form-label {max-width:400px;object-fit: contain; margin: 5px 5px;}
-.form-container {
+.form-container{
   display: flex;
   flex-direction: column;
   align-items: left;
 }
+
 .pw-error, .email-error, .list-error {color:red;}
 .create-account-header, .create-list-header {margin:5px 5px; border-bottom: 0.5px solid black;}
 .return-login-btn, .return-register-btn {background-color:white; border:none; }
@@ -405,3 +434,7 @@ select {
 .submit-btn[type=submit] {border: 1px solid black; border-radius:25px;margin-top:5px;}
 .submit-btn[type=submit]:hover {background-color:#ccc;}
 .radio-container {margin:5px;padding:none;}
+
+
+.edit-btn {background-color:white; border:none;}
+.edit-btn:hover{cursor:pointer; border-bottom:1px solid black;}
