@@ -15,15 +15,15 @@ const ListItem = props => {
     const [info, setInfo] = useState(["all","official"].includes(type)&&officialLists.find(list => list.url === listname));
     const lists = {"authors-by-books":<AuthorsByBooksTable lang={lang} type={"num_books"}/>,
                     "authors-no-books":<AuthorsByBooksTable lang={lang} type={"no_books"}/>};
-    useEffect(() => {if(list_id){fetchUserList(list_id, setInfo, type)}},[])
+    useEffect(() => {if(list_id){fetchUserList(list_id, setInfo)}},[])
     const dateOptions = { year: "numeric", month: "long", day: "numeric" };
-    const listInfo = info&&info.list_info
+    const listInfo = info&&info.list_info?info.list_info:info
     return (
         <div className="list-tab">
             <span><button onClick = {() => navigate("/lists/")} className="return-btn">&#8592; Return to List Overview</button></span>
             <div className="list-header">
                 <h2>{listInfo.list_name}
-                    {userData.user_id===listInfo.user_id&&<button onClick={()=>setEdit(!edit)} className="edit-btn">&#9998;</button>}
+                    {!["all","official"].includes(type)&&userData.user_id===listInfo.user_id&&<button onClick={()=>setEdit(!edit)} className="edit-btn">&#9998;</button>}
                 </h2>
                 <div className="list-description">
                     {listInfo&&listInfo.list_created&&<p className="list-base-description">{`A personal list of ${type} created by ${listInfo.user_name} on ${new Date(listInfo.list_created).toLocaleDateString(undefined, dateOptions)} 
@@ -38,14 +38,5 @@ const ListItem = props => {
         </div>
     )
 }
-
-/*To dos for list page:
-    (3. Format header part of list to also have (versioning, watchList))
-    4. Button to add titles -> search -> click => add
-    5. List Components in edit view -> remove ability, drag&drop ability, ((comments))
-    (6. Comments on list)
-    (7. Comments on individual list components)
-*/
-//Add user ID, User Name, list type,userData (who is logged in info) => match these => edit available => + click to add titles
 
 export default ListItem;

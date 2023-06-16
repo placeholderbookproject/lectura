@@ -12,7 +12,7 @@ const ListElement = (props) => {
     }
     return (
         info&&info.list_detail&&info.list_detail.map((element) => 
-            <span className="list-element"><p>{element.label}</p>{edit&&<button onClick = {() => removeElement(element)}>X</button>}</span>
+            <span className="list-element" key={element.value}><p>{element.label}</p>{edit&&<button onClick = {() => removeElement(element)}>X</button>}</span>
         )
     )
 }

@@ -18,7 +18,7 @@ const ListsTab = (props) => {
                     <button className={`lists-tab${tabBtn===tab?"-open":""}`} key={tabBtn} onClick = {() => setTab(tabBtn)}>{tabBtn.charAt(0).toUpperCase() + tabBtn.slice(1)}</button>)}
                 <button className="lists-tab" onClick={()=>navigate("/lists/create_new")}>Create a new list</button>
             </div>
-            {tab==="all"?<ListsOfLists lists={[...lists.official, ...lists.personal]}/>:<ListsOfLists lists={lists[tab]}/>}
+            {tab==="all"?<ListsOfLists lists={[...lists.official, ...lists.personal]} tab={tab}/>:<ListsOfLists lists={lists[tab]} tab={tab}/>}
         </div>
     )
 }

@@ -11,7 +11,7 @@ const ListAddElement = (props) => {
     useEffect (()=> {
         const cleanup = () => {if (controller) {controller.abort();}};
         controller = new AbortController();
-        query&&query.length>5&&fetchSearchResults({setSearchResults,query,/*type,*/signal:controller.signal})();
+        query&&query.length>3&&fetchSearchResults({setSearchResults,query,/*type,*/signal:controller.signal})();
         return cleanup
     },[query]);
     const search = (event) => {if (event.key==="Escape"){setQuery("");setSearchResults();}}
@@ -29,7 +29,7 @@ const ListAddElement = (props) => {
             </div>
             <div className="search-result-list">
             {results.map((item)=>
-                <span className="list-search-result"><p>{item.label}</p><button onClick = {()=>addElement(item)}>+</button></span>
+                <span className="list-search-result" key={item.value}><p>{item.label}</p><button onClick = {()=>addElement(item)}>+</button></span>
             )}
             </div>
         </div>

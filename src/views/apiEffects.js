@@ -15,8 +15,8 @@ export const createNewList = (list_info) => {
     .catch(error => console.log(error))
 }
 
-export const fetchUserList = (list_id, setData, type) => {
-    const query = `${server}get_user_list?list_id=${list_id}&type=${type}`;
+export const fetchUserList = (list_id, setData) => {
+    const query = `${server}get_user_list?list_id=${list_id}`;
     return fetchFunc(query, setData)
 }
 
@@ -42,7 +42,7 @@ export const fetchComments = props => () => {
 export const fetchSearchResults = props => () => {
     const {setSearchResults, query, type, filters, signal} = props
     const searchType = type===undefined||type===null?"":"&searchtype="+type
-    if(query!==undefined && query.length>3) {
+    if(query!==undefined && query.trim().length>3) {
         fetchFunc(server+'search?query='+query+searchType+"&filters="+JSON.stringify(filters), setSearchResults, signal)}
 }
 

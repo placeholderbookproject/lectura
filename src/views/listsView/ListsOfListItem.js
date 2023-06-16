@@ -6,11 +6,12 @@ const ListsListItem = (props) => {
     const list_url = `${!url?(list_id+"_"+list_name):url}`
     const navigate = useNavigate();
     const dateOptions = { year: "numeric", month: "long", day: "numeric" };
+    console.log(props.list_data)
     return (
         <div className="list-item">
             <div className="list-image">{img&&<img src={img} alt = {list_description}/>}</div>
             <div className="list-header">
-                <h3 className="list-title"><a /*href={`/lists/${list_type.toLowerCase()}/${list_url}`}*/ onClick={()=>navigate(`/lists/${list_type.toLowerCase()}/${list_url}`)}>{list_name}</a></h3>
+                <h3 className="list-title"><a /*href={`/lists/${list_type.toLowerCase()}/${list_url}`}*/ onClick={()=>navigate(`/lists/${props.tab}/${list_url}`)}>{list_name}</a></h3>
                 <p className="list-description">{list_description}</p>
             </div>
             <div className="list-details">
