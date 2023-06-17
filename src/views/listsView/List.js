@@ -28,7 +28,9 @@ const ListItem = props => {
         const oldChanges = changes;
         setChanges({...oldChanges, list_info:{...oldChanges.list_info, [event.target.name]:event.target.value}})
     }
-    const saveChanges = () => {updateUserList(changes)}
+    const saveChanges = () => {
+        if(changes.additions.length>0||changes.removals.length>0||Object.keys(changes.list_info).length>1)
+            {updateUserList(changes).then(() => setEdit(!edit)).catch((error) => console.log(error))}}
     return (
         <div className="list-tab">
             <span><button onClick = {() => navigate("/lists/")} className="return-btn">&#8592; Return to List Overview</button></span>
@@ -36,14 +38,14 @@ const ListItem = props => {
                 {<h2>{!edit?listInfo.list_name:<input type="text" value={listInfo.list_name} name="list_name" onChange={(e)=>changeInfo(e)}/>}
                     {userData.user_id===listInfo.user_id&&<>
                         <button onClick={()=>setEdit(!edit)} className="edit-btn">&#9998;</button>
-                        <button className="save-btn" onClick={()=>saveChanges()}>Save changes</button></>}
+                        {edit&&<button className="save-btn" onClick={()=>saveChanges()}>Push Changes</button>}</>}
                 </h2>}
                 <div className="list-description">
                     {listInfo&&listInfo.list_created&&<p className="list-base-description">{`A personal list of ${listInfo.list_type} created by ${listInfo.user_name} on ${new Date(listInfo.list_created).toLocaleDateString(undefined, dateOptions)} 
                         ${listInfo.list_modified!==listInfo.list_created?` (last modified on ${new Date(listInfo.list_modified).toLocaleDateString(undefined, dateOptions)})`:""}`}</p>}
                     {!edit
                         ?<p>{listInfo.list_description}</p>
-                        :<textarea name="list_description" value={listInfo.list_description} onChange={(e)=>changeInfo(e)}/>
+                        :<textarea className="list-text-area" name="list_description" value={listInfo.list_description} onChange={(e)=>changeInfo(e)}/>
                     }
                 </div>
             </div>

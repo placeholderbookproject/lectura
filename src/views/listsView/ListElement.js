@@ -1,7 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {options} from '../filters.js';
+import Select from 'react-select';
 
 const ListElement = (props) => {
     const {info, setInfo, edit, changes, setChanges} = props
+    const columnOptions = info.list_info&&options[info.list_info.list_type]
+    const [filters, setFilters] = useState(columnOptions&&columnOptions.slice(0,3))
     const removeElement = (element) => {
         setInfo(prevInfo => {
             const updatedInfo = { ...prevInfo };
@@ -18,10 +22,34 @@ const ListElement = (props) => {
         }
         setChanges({removals:[...oldChanges.removals,...[element]],additions:oldChanges.additions})
     }
+    const handleDragOver = (event) => {event.preventDefault();};
+    const handleDragStart = (event, rowIndex) => {event.dataTransfer.setData('text/plain', rowIndex);};
+    const handleDrop = (event, targetRowIndex) => {
+        const draggedRowIndex = event.dataTransfer.getData('text/plain');
+        const updatedTableData = [...info.list_detail];    
+        const draggedRow = updatedTableData[draggedRowIndex];
+        updatedTableData.splice(draggedRowIndex, 1);
+        updatedTableData.splice(targetRowIndex, 0, draggedRow);
+        setInfo({...info, list_detail:updatedTableData});
+      };
     return (
-        info&&info.list_detail&&info.list_detail.map((element) => 
-            <span className="list-element" key={element.value}><p>{element.label}</p>{edit&&<button onClick = {() => removeElement(element)}>X</button>}</span>
-        )
+        info&&info.list_detail&&
+        <div>
+            <Select options = {columnOptions} onChange = {(e) => setFilters(e)} value = {filters} placeholder = {"Select visible columns"} isMulti/>
+            {filters&&
+            <table className="drag-table">
+                <tbody>
+                <tr><th>#</th>{filters.map((col) => <th>{col.label}</th>)}<th></th></tr>
+                {info.list_detail.map((element, elementIndex) =>
+                    <tr key={elementIndex} draggable={edit} onDragOver={handleDragOver} onDragStart={(event) => handleDragStart(event, elementIndex)}
+                        onDrop={(event) => handleDrop(event, elementIndex)} className="list-element">
+                    <td>{elementIndex+1}</td>
+                    {filters.map((col, colIndex) => <td key={colIndex}>{element[col.value]}</td>)}
+                    {edit&&<td><button className="list-remove-element" onClick = {() => removeElement(element)}>X</button></td>}
+                    </tr>)}
+                </tbody>
+            </table>}
+        </div>
     )
 }
 export default ListElement
