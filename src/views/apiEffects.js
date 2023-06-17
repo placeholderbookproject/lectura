@@ -20,6 +20,14 @@ export const fetchUserList = (list_id, setData) => {
     return fetchFunc(query, setData)
 }
 
+export const updateUserList = (input) => {
+    const requestBody = {list_info: input.list_info, additions:input.additions, removals:input.removals};
+    return fetch(server+'update_user_list',{method: 'POST',body: JSON.stringify(requestBody)})
+    .then(response => response.json())
+    .then (data => data)
+    .catch(error => console.log(error))
+}
+
 export const fetchAllLists = (setData) => {fetchFunc(`${server}get_all_lists`,setData);}
 
 export const fetchDataEffect = props => () => {
@@ -87,7 +95,6 @@ export const archiveEffect = props => () => {
 }
 
 export const createNewUser = (input) => {
-    console.log(input.user_password)
     const requestBody = {user_name: input.user_name, user_email:input.user_email, user_password:input.user_password};
     return fetch(server+'create_user',{method: 'POST',body: JSON.stringify(requestBody)})
     .then(response => response.json())

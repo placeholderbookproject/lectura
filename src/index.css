@@ -8,6 +8,7 @@
   position: relative;
 }
 .list-title{margin:2px;}
+.list-title:hover {cursor: pointer; border-bottom:1px solid black;}
 .list-description{margin:5px 0;}
 .list-details {display:flex; justify-content:space-between; flex-direction:column; align-items:end; position:absolute; right:0; top:0; padding:10px;}
 .list-dates {
@@ -16,6 +17,7 @@
   align-items: flex-end;
 }
 .list-dates label {font-weight:700; margin-right:5px;}
+.list-user label{font-weight:700;}
 .list-created {margin:0;}
 .list-buttons {display: flex; gap: 10px;}
 

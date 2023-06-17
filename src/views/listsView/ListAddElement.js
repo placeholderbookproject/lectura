@@ -3,7 +3,7 @@ import { fetchSearchResults } from '../apiEffects';
 
 const ListAddElement = (props) => {
     const type = props.type.replace("s","")
-    const {info, setInfo} = props
+    const {info, setInfo, changes, setChanges} = props
     const [query, setQuery] = useState("")
     const searchSelect = (e) => {setQuery(e.target.value);}
     const [searchResults, setSearchResults] = useState([])
@@ -20,6 +20,8 @@ const ListAddElement = (props) => {
         const oldList = info;
         const newElement = [...oldList.list_detail,...[element]]
         setInfo({...oldList,list_detail:newElement})
+        const oldChanges = changes
+        setChanges({additions:[...oldChanges.additions,...[element]],removals:oldChanges.removals})
     }
     return (
         <div className="list-add-element-container">

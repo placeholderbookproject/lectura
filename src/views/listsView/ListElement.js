@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ListElement = (props) => {
-    const {info, setInfo, edit} = props
+    const {info, setInfo, edit, changes, setChanges} = props
     const removeElement = (element) => {
         setInfo(prevInfo => {
             const updatedInfo = { ...prevInfo };
@@ -9,6 +9,14 @@ const ListElement = (props) => {
             if (index !== -1) {updatedInfo.list_detail.splice(index, 1);}
             return updatedInfo;
         });
+        const oldChanges = changes
+        const index = oldChanges.additions.findIndex(item => item.value === element.value)
+        if(index !== -1) {
+            oldChanges.additions.splice(index,1)
+            setChanges({...oldChanges})
+            return;
+        }
+        setChanges({removals:[...oldChanges.removals,...[element]],additions:oldChanges.additions})
     }
     return (
         info&&info.list_detail&&info.list_detail.map((element) => 
