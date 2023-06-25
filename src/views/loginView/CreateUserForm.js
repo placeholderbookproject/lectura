@@ -18,8 +18,7 @@ const CreateUserForm = (props) => {
         .then(result => createNewUser({user_name:input.user_name, user_email:input.user_email, user_password:result}))
         .then((response) => {
                 if(response.message !== "Duplicate") {props.setUserId(response);navigate("/")}
-                else if(response.message==="Duplicate"){setUserExists(true)}
-            })
+                else if(response.message==="Duplicate"){setUserExists(true)}})
     }
     return (
         <div className="register-container">

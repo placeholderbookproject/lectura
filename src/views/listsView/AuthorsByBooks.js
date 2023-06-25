@@ -16,8 +16,7 @@ const AuthorsByBooksTable = (props) => {
         else{setData(null)}
     },[filters])
     return (
-        <>
-        <div className="dropdowns-container">
+        <><div className="dropdowns-container">
             <DropdownMenu options = {countries} name = {"country"} setFilters={setFilters} filters = {filters}/>
             <DropdownMenu options = {languages} name = {"language"} setFilters={setFilters} filters = {filters}/>
             <button className="homeBtn" onClick={() => {setData(null)}}>Clear Search</button>
@@ -42,8 +41,7 @@ const AuthorsByBooksTable = (props) => {
                 </tbody></table>
                 </>
             }
-        </div>
-        </>
+        </div></>
     )
 }
 

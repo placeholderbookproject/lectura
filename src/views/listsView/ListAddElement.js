@@ -26,8 +26,8 @@ const ListAddElement = (props) => {
     return (
         <div className="list-add-element-container">
             <div className="list-element-search">
-                <input type="text" placeholder="Search for an author or text" value = {query} 
-                    onChange = {searchSelect} onKeyDown={search} className="search-input"/>
+                <input type="text" placeholder="Search for an author or text" value = {query} onChange = {searchSelect} onKeyDown={search} 
+                    className="search-input"/>
             </div>
             <div className="search-result-list">
             {results.map((item)=>

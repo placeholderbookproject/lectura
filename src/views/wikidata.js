@@ -40,8 +40,7 @@ export const WikiExternalsLabels = (props) => {
           {external.logo&&<img src={external.logo} style={{ maxWidth: "40px", maxHeight: "30px", objectFit: "contain" }} alt={external.label}></img>}
           {!external.logo&&external.alt}
         </a>
-    ))
-  )
+    )))
 }
 
 export const WikiExternalsList = (props) => {
@@ -56,15 +55,15 @@ export const WikiExternalsList = (props) => {
   },[props.q_number])
   return (
       externals&&externals.results.bindings.length>0&&
-      <div className="wikiExternals">
-        <p className="viewRow"><span style = {{"fontWeight": 600,}}>{"External Identifiers"}</span></p>
-        <select style={{maxWidth:400}} value = {selectedExternal&&selectedExternal.value} 
-            label={selectedExternal&&selectedExternal.propertyLabel} onChange = {(e) => setSelectedExternal(e.target.value)}>
-            {externals.results.bindings.map((option) => 
-                (<option key = {option.value.value+option.propertyLabel.value} value = {option.value.value}>{option.propertyLabel.value}</option>) )}
-        </select>
-        <p><a href={selectedExternal&&selectedExternal}>{selectedExternal}</a></p>
-      </div>
+        <div className="wikiExternals">
+          <p className="viewRow"><span style = {{"fontWeight": 600,}}>{"External Identifiers"}</span></p>
+          <select style={{maxWidth:400}} value = {selectedExternal&&selectedExternal.value} 
+              label={selectedExternal&&selectedExternal.propertyLabel} onChange = {(e) => setSelectedExternal(e.target.value)}>
+              {externals.results.bindings.map((option) => 
+                  (<option key = {option.value.value+option.propertyLabel.value} value = {option.value.value}>{option.propertyLabel.value}</option>) )}
+          </select>
+          <p><a href={selectedExternal&&selectedExternal}>{selectedExternal}</a></p>
+        </div>
   )
 }
 
@@ -76,8 +75,8 @@ SELECT ?propertyLabel ?value WHERE {
     wd:q_number ?propertyclaim ?_value .   
     BIND(IF(BOUND(?formatterURL), IRI(REPLACE(?formatterURL, "\\\\$1", ?_value)) , ?_value) AS ?value) 
     SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } 
-    }
-`
+    }`
+
 export const authorQuery = `
     SELECT DISTINCT ?author ?authordesc ?authorLabel ?akaLabel ?genderLabel
     ?birthdate (YEAR(?birthdate) AS ?birthyear) (MONTH(?birthdate) AS ?birthmonth) (DAY(?birthdate) AS ?birthday) ?birthplace ?birthplaceLabel ?birthplacecountryLabel
@@ -118,8 +117,8 @@ export const authorQuery = `
       OPTIONAL {?author rdfs:label ?authorLabel. FILTER(LANG(?authorLabel)="en").}
       [nativeHeader]
       SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
-    }
-`
+    }`
+
 export const authorTextQuery = `
 SELECT distinct (?book as ?text_q)
 ?book
@@ -141,8 +140,6 @@ SELECT distinct (?book as ?text_q)
 ?metreLabel
 ?publisherLabel
 ?lengthLabel
-#?charactersLabel
-
 WHERE
 {
   VALUES ?instance { wd:Q7725634 wd:Q47461344 wd:Q571 wd:Q5185279 wd:Q49084 wd:Q8261 
@@ -188,8 +185,7 @@ OPTIONAL {?book wdt:P495 ?origincountry.}
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } 
   BIND(COALESCE(YEAR(?publication), YEAR(?dop), YEAR(?inception), 9999) as ?orderDate)
 }
-ORDER BY ASC(?orderDate)
-`
+ORDER BY ASC(?orderDate)`
 
 export const textQuery = `
 SELECT distinct (?book as ?text_q)
@@ -215,11 +211,8 @@ SELECT distinct (?book as ?text_q)
 ?lengthLabel
 ?timeperiodLabel
 ?awardsLabel
-#?charactersLabel
 ?publishedInLabel
 ?copyrightLabel
-#?charactersLabel
-
 WHERE
 {
   VALUES ?book { wd:q_number}.

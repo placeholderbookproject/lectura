@@ -19,8 +19,7 @@ const ListElement = (props) => {
             oldChanges.additions.splice(index,1)
             setChanges({...oldChanges})
             return;
-        }
-        setChanges({removals:[...oldChanges.removals,...[element]],additions:oldChanges.additions})
+        }; setChanges({removals:[...oldChanges.removals,...[element]],additions:oldChanges.additions});
     }
     const handleDragOver = (event) => {event.preventDefault();};
     const handleDragStart = (event, rowIndex) => {event.dataTransfer.setData('text/plain', rowIndex);};

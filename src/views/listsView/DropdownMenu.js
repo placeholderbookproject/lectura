@@ -12,7 +12,7 @@ const DropdownMenu = props => {
         <div className="dropdown">
             <label className="dropdown-label">{`Select a ${name}`}</label>
             <select  value = {selected} onChange = {handleChange}>
-                {options.map((option) => (<option key = {option} value = {option}>{option}</option>) )}
+                {options.map((option) => (<option key = {option} value = {option}>{option}</option>))}
             </select>
         </div>
     )

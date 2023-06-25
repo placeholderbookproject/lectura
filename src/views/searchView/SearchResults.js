@@ -30,8 +30,8 @@ const SearchResults = (props) => {
         props.setSearchResults(sortedData);
     }
     return (
-        searchType!=="all"?
-        <table id = "detailed-search-results"><tbody>
+        searchType!=="all"
+        ?<table id = "detailed-search-results"><tbody>
             <tr>
                 {filters.length>0 && filters.map((filter) => ( //Headers mapping with tooltip
                 <Tooltip sx = {{fontSize:15}} key={filter.value} title="Click to sort" placement="top" arrow followCursor>
@@ -50,16 +50,14 @@ const SearchResults = (props) => {
                                 else if (result[col]===null){return <td key={col+result[searchType]}></td>}
                                 else {return <td key={col+result[col]+result[searchType]}>{result[col]}</td>}
                             })}
-                        </tr>)
-                    )}
+                        </tr>))}
         </tbody></table>
         :<div className="search-result-all"> 
         {searchResults.map((result) => 
             <div className="search-result-all-elements">
                 <p><a className="text-row" href={result.type==="text"?`${result.author_id&&"/author/"+result.author_id}/text/${result.value}`:`/${result.type}/${result.value}`}>{result["label"]}</a></p>
                 <ComponentPopup key={result["label"]} id={result.value} lang={props.lang} type={result.type}><p style={{fontWeight:600}}> &#x2193;</p></ComponentPopup>        
-            </div>   
-            )}
+            </div>)}
         </div>
     )
 }

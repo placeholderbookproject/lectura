@@ -57,8 +57,7 @@ export const reformatWikitexts = (wiki) => {
         for (let key in group) {
             let values = group[key];
             row[key] = values.join(" | ");
-        }
-        output.push(row);
+        }; output.push(row);
     }; return output
 }
 

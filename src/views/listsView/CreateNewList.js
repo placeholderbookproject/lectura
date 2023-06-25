@@ -20,7 +20,7 @@ const CreateNewList = (props) => {
     const [error, setError] = useState(!props.userData?"not_logged_in":"");
     const errorMsg = {no_title:"Title cannot be empty", no_description:"Description cannot be empty"}
     const formInputs = [{type:"text",label:"List Title ", id:"list_title"},{type:"textarea",label:"List Description ", id:"list_description"},
-                {type:"radio", component:<RadioComponent/>}];
+                        {type:"radio", component:<RadioComponent/>}];
     const handleSubmit = (event) => {
         event.preventDefault();
         setError("");
@@ -34,15 +34,17 @@ const CreateNewList = (props) => {
             <h2 className="create-list-header">Create a new list</h2>
             <form className="form-container">
                 {formInputs.map((inp) => 
-                    (inp.type!=="radio"?
-                    <React.Fragment key={inp.id+"-label"}>
-                    <label>{inp.label}</label>
-                        {inp.type==="text"
-                        ?<input type={inp.type} id={inp.id} name={inp.id} key={inp.id+"-text"} onChange={(event) => changeFormInput (input, setInput, event)}/>
-                        :<textarea id={inp.id} name={inp.id} key={inp.id+"-textarea"} onChange={(event) => changeFormInput (input, setInput, event)}/>
-                        }
-                    </React.Fragment>
-                    :inp.type==="radio"&&<RadioComponent setInput={setInput} input={input} key={inp.id+"-radio"}/>))}
+                    (inp.type!=="radio"
+                        ?<React.Fragment key={inp.id+"-label"}>
+                            <label>{inp.label}</label>
+                                {inp.type==="text"
+                                ?<input type={inp.type} id={inp.id} name={inp.id} key={inp.id+"-text"} 
+                                        onChange={(event) => changeFormInput (input, setInput, event)}/>
+                                :<textarea id={inp.id} name={inp.id} key={inp.id+"-textarea"} 
+                                    onChange={(event) => changeFormInput (input, setInput, event)}/>
+                                }
+                            </React.Fragment>
+                        :inp.type==="radio"&&<RadioComponent setInput={setInput} input={input} key={inp.id+"-radio"}/>))}
                     <button type="submit" className="submit-btn" onClick = {handleSubmit}>Create List</button>
             </form>
             {error!==""&&<p className="list-error">{errorMsg[error]}</p>}
