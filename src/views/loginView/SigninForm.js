@@ -20,11 +20,11 @@ const Signin = (props) => {
         loginUser({user:input.user_name})
         .then((result) => {
             if(result!==false){
-                setUser({user_id:result.user_id, user_name:result.user_name})
+                setUser({user_id:result.user_id, user_name:result.user_name, user_email:result.user_email})
                 return bcrypt.compare(input.user_password, result.pw)}
             else {return "no_user"}})
         .then ((response) => {
-            if(response===true){navigate("/")}
+            if(response===true){navigate(`/`)}
             else if (response==="no_user"){setError("no_user")}
             else {setError("wrong_pw")}})
     }

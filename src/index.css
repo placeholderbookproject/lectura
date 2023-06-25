@@ -274,6 +274,7 @@ table.drag-table td, table.drag-table th {
   overflow-x:auto;
   max-width:500px;
   border:0.5px solid black;
+  margin-bottom:10px;
 }
 .list-text-area {width:500px; height:100px;}
 

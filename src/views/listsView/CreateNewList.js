@@ -31,6 +31,7 @@ const CreateNewList = (props) => {
     }
     return (
         <div className="register-container">
+        {props.userData&&<>
             <h2 className="create-list-header">Create a new list</h2>
             <form className="form-container">
                 {formInputs.map((inp) => 
@@ -38,16 +39,14 @@ const CreateNewList = (props) => {
                         ?<React.Fragment key={inp.id+"-label"}>
                             <label>{inp.label}</label>
                                 {inp.type==="text"
-                                ?<input type={inp.type} id={inp.id} name={inp.id} key={inp.id+"-text"} 
-                                        onChange={(event) => changeFormInput (input, setInput, event)}/>
-                                :<textarea id={inp.id} name={inp.id} key={inp.id+"-textarea"} 
-                                    onChange={(event) => changeFormInput (input, setInput, event)}/>
-                                }
+                                ?<input type={inp.type} id={inp.id} name={inp.id} key={inp.id+"-text"} onChange={(event) => changeFormInput (input, setInput, event)}/>
+                                :<textarea id={inp.id} name={inp.id} key={inp.id+"-textarea"} onChange={(event) => changeFormInput (input, setInput, event)}/>}
                             </React.Fragment>
                         :inp.type==="radio"&&<RadioComponent setInput={setInput} input={input} key={inp.id+"-radio"}/>))}
                     <button type="submit" className="submit-btn" onClick = {handleSubmit}>Create List</button>
             </form>
             {error!==""&&<p className="list-error">{errorMsg[error]}</p>}
+            </>}
             {error==="not_logged_in"&&<p className="sign-in">You are not logged in.<button className="return-login-btn" onClick={()=>{navigate("/login")}}>Login here</button></p>}
         </div>
     )

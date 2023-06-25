@@ -21,27 +21,20 @@ const AuthorsByBooksTable = (props) => {
             <DropdownMenu options = {languages} name = {"language"} setFilters={setFilters} filters = {filters}/>
             <button className="homeBtn" onClick={() => {setData(null)}}>Clear Search</button>
         </div>
-        <div>
-            {data&&<>
-                {type!=="no_books"&&<p>{`There are ${data.length} authors${country}${language} with a total of ${data.reduce((acc, cur)=>acc+cur.texts,0)} texts`}</p>}
-                <table id="listTable"><tbody>
-                    <tr><th>Author</th><th>Occupations</th><th>Nationality</th><th>Language</th>{type!=="no_books"&&<th>#Texts</th>}</tr>
-                    {data.sort((a,b)=>b.texts-a.texts).slice(0,1000).map(result => (
-                        <tr key={result.author_id} className="table-row">
-                            <td className="popup-row">
-                                <ComponentPopup id={result.author_id} key={result.author_id} lang={props.lang} type="author">
-                                    {result.label}
-                                </ComponentPopup>
-                            </td>
-                            <td>{result.author_positions}</td>
-                            <td>{result.nationality}</td><td>{result.language}</td>
-                            {result.texts&&<td>{result.texts}</td>}
-                        </tr>
-                    ))}
-                </tbody></table>
-                </>
-            }
-        </div></>
+        {data&&<div>
+            {type!=="no_books"&&<p>{`There are ${data.length} authors${country}${language} with a total of ${data.reduce((acc, cur)=>acc+cur.texts,0)} texts`}</p>}
+            <table id="listTable"><tbody>
+                <tr><th>Author</th><th>Occupations</th><th>Nationality</th><th>Language</th>{type!=="no_books"&&<th>#Texts</th>}</tr>
+                {data.sort((a,b)=>b.texts-a.texts).slice(0,1000).map(result => (
+                    <tr key={result.author_id} className="table-row">
+                        <td className="popup-row">
+                            <ComponentPopup id={result.author_id} key={result.author_id} lang={props.lang} type="author">{result.label}</ComponentPopup>
+                        </td>
+                        <td>{result.author_positions}</td><td>{result.nationality}</td><td>{result.language}</td>{result.texts&&<td>{result.texts}</td>}
+                    </tr>
+                ))}
+            </tbody></table>
+        </div>}</>
     )
 }
 

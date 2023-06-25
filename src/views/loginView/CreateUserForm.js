@@ -29,8 +29,7 @@ const CreateUserForm = (props) => {
                     <><label className="form-label" key={inp.label}>{inp.label}</label>
                         <input type={inp.type} value={input[inp.name]} key={"input"+inp.label} onChange={(event) => changeFormInput(input, setInput, event)}
                             name={inp.name} className="register-input" required minLength="6" size="30" autoComplete={inp.autoComplete}/>
-                    </>
-                    ))}
+                    </>))}
                 {input.user_password!==""&&(input.user_password!==input.user_password_confirmation)&&
                             <p className="pw-error">Passwords do not match</p>}
                 <button type="submit" className="submit-btn" onClick = {handleSubmit}>Submit</button>

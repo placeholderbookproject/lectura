@@ -29,7 +29,7 @@ const SearchDetailed = (props) => {
     const clearSearch = () => {setSearch("");setSearchResults([]);}
     useEffect (() => {//Search if a search query parameter exists in the url
         const searchQuery = [...searchParams];
-        if(searchQuery.length>0 && searchQuery[0][0]==="query" && searchQuery[0][1] !== ""){
+        if(searchQuery.length>0 && searchQuery[0][0]==="query" && searchQuery[0][1] !== "") {
             searchFunction(searchQuery[0][1]);
             setSearch(searchQuery[0][1]);
         }

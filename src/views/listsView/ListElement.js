@@ -10,21 +10,20 @@ const ListElement = (props) => {
         setInfo(prevInfo => {
             const updatedInfo = { ...prevInfo };
             const index = updatedInfo.list_detail.findIndex(item => item.value === element.value);
-            if (index !== -1) {updatedInfo.list_detail.splice(index, 1);}
-            return updatedInfo;
+            if (index !== -1) {updatedInfo.list_detail.splice(index, 1);} return updatedInfo;
         });
         const oldChanges = changes
         const index = oldChanges.additions.findIndex(item => item.value === element.value)
         if(index !== -1) {
-            oldChanges.additions.splice(index,1)
-            setChanges({...oldChanges})
+            oldChanges.additions.splice(index,1);
+            setChanges({...oldChanges});
             return;
         }; setChanges({removals:[...oldChanges.removals,...[element]],additions:oldChanges.additions});
     }
     const handleDragOver = (event) => {event.preventDefault();};
     const handleDragStart = (event, rowIndex) => {event.dataTransfer.setData('text/plain', rowIndex);};
     const handleDrop = (event, targetRowIndex) => {
-        let oldChanges = changes;
+        const oldChanges = changes;
         const draggedRowIndex = event.dataTransfer.getData('text/plain');
         const updatedTableData = [...info.list_detail];    
         const draggedRow = updatedTableData[draggedRowIndex];
@@ -46,10 +45,11 @@ const ListElement = (props) => {
         <div>
             <Select options = {columnOptions} onChange = {(e) => setFilters(e)} value = {filters} placeholder = {"Select visible columns"} isMulti/>
             {filters&&filters.length>0&&
-            <table className="drag-table">
-                <tbody>
-                <tr><th>#</th>{filters.map((col) => <th key={col.label}>{col.label}
-                        <button className="remove-col-btn" onClick={() => removeColumn(col)}>X</button></th>)}<th></th>
+            <table className="drag-table"><tbody>
+                <tr>
+                    <th>#</th>
+                    {filters.map((col) => 
+                    <th key={col.label}>{col.label}<button className="remove-col-btn" onClick={() => removeColumn(col)}>X</button></th>)}<th></th>
                 </tr>
                 {info.list_detail.map((element, elementIndex) =>
                     <tr key={elementIndex} draggable={edit} onDragOver={handleDragOver} onDragStart={(event) => handleDragStart(event, elementIndex)}
@@ -58,8 +58,7 @@ const ListElement = (props) => {
                     {filters.map((col, colIndex) => <td key={colIndex}>{element[col.value]}</td>)}
                     {edit&&<td><button className="list-remove-element" onClick = {() => removeElement(element)}>X</button></td>}
                     </tr>)}
-                </tbody>
-            </table>}
+            </tbody></table>}
         </div>
     )
 }
