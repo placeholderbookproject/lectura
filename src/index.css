@@ -246,8 +246,8 @@
 .list-element-search {border:1px solid black;}
 .list-search-result {display:flex;flex-direction:row;}
 .list-search-result p {margin:5px; border-bottom:0.5px solid black;}
-.list-search-result button, .list-remove-element {background-color: white; border:none;}
-.list-search-result button:hover, .list-remove-element:hover {cursor:pointer; border-bottom: 1px solid black;}
+.list-search-result button, .list-remove-element, .remove-col-btn {background-color: white; border:none;}
+.list-search-result:hover, .list-remove-element:hover,  .remove-col-btn:hover {cursor:pointer; border-bottom: 1px solid black;}
 
 .list-element[draggable] {cursor:move;}
 table.drag-table {

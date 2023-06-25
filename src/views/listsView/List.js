@@ -14,7 +14,7 @@ const ListItem = props => {
     const [edit, setEdit] = useState(false);
     const list_id = !isNaN(listname.split("_")[0])&&listname.split("_")[0];
     const [info, setInfo] = useState(["all","official"].includes(type)&&!list_id&&officialLists.find(list => list.url === listname));
-    const [changes,setChanges] = useState({additions:[], removals:[],list_info:{list_id:list_id}})
+    const [changes,setChanges] = useState({additions:[], removals:[],list_info:{list_id:list_id}, order_changes:[]})
     const lists = {"authors-by-books":<AuthorsByBooksTable lang={lang} type={"num_books"}/>,
                     "authors-no-books":<AuthorsByBooksTable lang={lang} type={"no_books"}/>};
     useEffect(() => {if(list_id){fetchUserList(list_id, setInfo)}},[])
@@ -29,8 +29,9 @@ const ListItem = props => {
         setChanges({...oldChanges, list_info:{...oldChanges.list_info, [event.target.name]:event.target.value}})
     }
     const saveChanges = () => {
-        if(changes.additions.length>0||changes.removals.length>0||Object.keys(changes.list_info).length>1)
-            {updateUserList(changes).then(() => setEdit(!edit)).catch((error) => console.log(error))}}
+        if(changes.additions.length>0||changes.removals.length>0||Object.keys(changes.list_info).length>1||changes.order_changes.length>0){
+            updateUserList(changes).then(() => setEdit(!edit)).catch((error) => console.log(error));
+            setChanges({additions:[], removals:[],list_info:{list_id:list_id}, order_changes:[]})}}
     return (
         <div className="list-tab">
             <span><button onClick = {() => navigate("/lists/")} className="return-btn">&#8592; Return to List Overview</button></span>
@@ -38,7 +39,7 @@ const ListItem = props => {
                 {<h2>{!edit?listInfo.list_name:<input type="text" value={listInfo.list_name} name="list_name" onChange={(e)=>changeInfo(e)}/>}
                     {userData.user_id===listInfo.user_id&&<>
                         <button onClick={()=>setEdit(!edit)} className="edit-btn">&#9998;</button>
-                        {edit&&<button className="save-btn" onClick={()=>saveChanges()}>Push Changes</button>}</>}
+                        {edit&&<button className="save-btn" onClick={()=>saveChanges()}>Save Changes</button>}</>}
                 </h2>}
                 <div className="list-description">
                     {listInfo&&listInfo.list_created&&<p className="list-base-description">{`A personal list of ${listInfo.list_type} created by ${listInfo.user_name} on ${new Date(listInfo.list_created).toLocaleDateString(undefined, dateOptions)} 

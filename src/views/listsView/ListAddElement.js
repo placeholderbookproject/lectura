@@ -21,17 +21,18 @@ const ListAddElement = (props) => {
         const newElement = [...oldList.list_detail,...[element]]
         setInfo({...oldList,list_detail:newElement})
         const oldChanges = changes
-        setChanges({additions:[...oldChanges.additions,...[element]],removals:oldChanges.removals})
+        setChanges({additions:[...oldChanges.additions,...[element]],removals:oldChanges.removals,
+             list_info:oldChanges.list_info, order_changes:oldChanges.order_changes})
     }
     return (
         <div className="list-add-element-container">
             <div className="list-element-search">
-                <input type="text" placeholder="Search for an author or text" value = {query} onChange = {searchSelect} onKeyDown={search} 
+                <input type="text" placeholder="Search to add another author or text to your list" value = {query} onChange = {searchSelect} onKeyDown={search} 
                     className="search-input"/>
             </div>
             <div className="search-result-list">
             {results.map((item)=>
-                <span className="list-search-result" key={item.value}><p>{item.label}</p><button onClick = {()=>addElement(item)}>+</button></span>
+                <span className="list-search-result" key={item.value}><p onClick = {()=>addElement(item)}>{item.label}</p></span>
             )}
             </div>
         </div>

@@ -21,7 +21,7 @@ export const fetchUserList = (list_id, setData) => {
 }
 
 export const updateUserList = (input) => {
-    const requestBody = {list_info: input.list_info, additions:input.additions, removals:input.removals};
+    const requestBody = {list_info: input.list_info, additions:input.additions, removals:input.removals, order_changes:input.order_changes};
     return fetch(server+'update_user_list',{method: 'POST',body: JSON.stringify(requestBody)})
     .then(response => response.json())
     .then (data => data)
