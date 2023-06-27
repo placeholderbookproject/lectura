@@ -47,7 +47,7 @@ const CreateNewList = (props) => {
             </form>
             {error!==""&&<p className="list-error">{errorMsg[error]}</p>}
             </>}
-            {error==="not_logged_in"&&<p className="sign-in">You are not logged in.<button className="return-login-btn" onClick={()=>{navigate("/login")}}>Login here</button></p>}
+            {error==="not_logged_in"&&<p className="sign-in">You need to be logged in to make a list.<button className="return-login-btn" onClick={()=>{navigate("/login")}}>Login here</button></p>}
         </div>
     )
 }
