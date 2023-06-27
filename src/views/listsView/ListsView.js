@@ -9,8 +9,7 @@ const ListsTab = (props) => {
     const navigate = useNavigate();
     const [personal,setPersonal] = useState([])
     const [searchType, setSearchType] = useState("all")
-    const [searchResults, setSearchResults] = useState({"personal":personal?personal:[]
-                                        , "official":officialLists?officialLists:[]
+    const [searchResults, setSearchResults] = useState({"personal":personal, "official":officialLists
                                         ,"added by Me":personal&&personal.length>0&&props.userData&&[personal.filter(list => list.user_id === props.userData.user_id)]
                                     });
     const [query, setQuery] = useState("");

@@ -53,7 +53,7 @@ const ListElement = (props) => {
                 </tr>
                 {info.list_detail.map((element, elementIndex) =>
                     <tr key={elementIndex} draggable={edit} onDragOver={handleDragOver} onDragStart={(event) => handleDragStart(event, elementIndex)}
-                        onDrop={(event) => handleDrop(event, elementIndex)} className="list-element">
+                        onDrop={(event) => handleDrop(event, elementIndex)} className={`list-element${edit?"-draggable":""}`}>
                     <td>{elementIndex+1}</td>
                     {filters.map((col, colIndex) => <td key={colIndex}>{element[col.value]}</td>)}
                     {edit&&<td><button className="list-remove-element" onClick = {() => removeElement(element)}>X</button></td>}

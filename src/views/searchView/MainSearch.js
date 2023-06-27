@@ -4,7 +4,7 @@ import {fetchSearchResults} from '../apiEffects.js'
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import ClearIcon from '@material-ui/icons/Clear';
-import { searchSelect } from '../commonFuncs.js';
+import { search } from '../commonFuncs.js';
 
 const MainSearch = () => {
     let controller = new AbortController();
@@ -17,10 +17,6 @@ const MainSearch = () => {
         query&&query.length>5&&fetchSearchResults({ setSearchResults, query, signal:controller.signal})();
         return cleanup
     },[query]);
-    const search = (event) => {
-      if (event.key==="Enter"){controller&&controller.abort(); setQuery(""); navigate(`/search?query=${query}&type=authors`)}
-      else if (event.key==="Escape"){setQuery("");setSearchResults();}
-    }
     const enterLink = (result) => {
         const link = result.type==="text"?`${result.author_id&&"/author/"+result.author_id}/text/${result.value}`:`/${result.type}/${result.value}`
         navigate(link);setQuery("");setSearchResults();
@@ -28,7 +24,7 @@ const MainSearch = () => {
     return (
         <div className = "search-bar">
           <input type="text" placeholder="Search for an author or text" value = {query} 
-            onChange = {(e) => searchSelect(setQuery,e)} onKeyDown={search} className="search-input"/>
+            onChange = {(e) => setQuery(e.target.value)} onKeyDown={(e) => search(controller=controller, setQuery, setSearchResults,() => navigate(`/search?query=${query}&type=authors`), e)} className="search-input"/>
         {searchResults&&searchResults.length>0&&query&&
           <div className="search-dropdown-popup">{searchResults.slice(0,10).map((result) => 
             <p className="search-result" key={result.label} onClick = {() => enterLink(result)}>{result.label}</p>)}

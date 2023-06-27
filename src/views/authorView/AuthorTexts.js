@@ -24,10 +24,10 @@ const TextsWikiTable = (props) => {
           });
     }
     useEffect(() => {
-        const toSearch = storedtexts&&author&& removeWorksOutOfBounds(removeDuplicateList(storedtexts,textsReform, "text_q"),author_birth_year, author_death_year)
+        const toSearch = storedtexts&&author&&removeWorksOutOfBounds(removeDuplicateList(storedtexts,textsReform, "text_q"),author_birth_year, author_death_year)
         if(search==="") {setTexts(toSearch)}
         else if(texts && search) {
-            const results = toSearch.filter((item) => item.bookLabel.toLowerCase().includes(search.toLowerCase()))//Object.values(item).some((bookLabel) => bookLabel === search))
+            const results = toSearch.filter((item) => item.bookLabel.toLowerCase().includes(search.toLowerCase()))
             setTexts(results);
         }
     },[search])
