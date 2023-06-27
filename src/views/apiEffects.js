@@ -107,3 +107,12 @@ export const loginUser = (input) => {
         .then(response => response.json())
         .catch(error => console.log(error))
 }
+
+export const deleteUser = (input) => {
+    const requestBody = input
+    console.log(requestBody)
+    return fetch(server+'delete_user', {method:"POST", body:JSON.stringify(requestBody)})
+            .then(response => response.json())
+            .then (data => data)
+            .catch(error => console.log(error))
+}
