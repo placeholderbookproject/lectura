@@ -12,6 +12,7 @@
     "bcryptjs": "^2.4.3",
     "crypto-js": "^4.1.1",
     "css-select": "^5.1.0",
+    "html-react-parser": "^4.0.0",
     "nth-check": "^2.1.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",

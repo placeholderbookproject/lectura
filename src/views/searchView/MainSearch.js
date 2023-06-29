@@ -30,7 +30,7 @@ const MainSearch = () => {
             <p className="search-result" key={result.label} onClick = {() => enterLink(result)}>{result.label}</p>)}
           </div>}
           <IconButton onClick = {() => {setQuery("");navigate(`/search?query=${query}&type=authors`)}} aria-label="Search Button" edge="end"><SearchIcon/></IconButton>
-          <IconButton onClick = {() => {setQuery("");setSearchResults()}} aria-label="Clear Search Button" edge="end"><ClearIcon/></IconButton>
+          <IconButton onClick = {() => {setQuery("");setSearchResults()}} aria-label="Clear Search Button" edge="end"><ClearIcon style={{paddingRight:5}}/></IconButton>
       </div>
     )
 }

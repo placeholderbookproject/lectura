@@ -1,16 +1,22 @@
+body {margin:0; margin-left:5px;}
+.watchlist-btn, .like-btn, .dislike-btn, .watchlist-btn-active, .like-btn-active, .dislike-btn-active 
+  {background-color:white; border: none; opacity:0.5;}
+.watchlist-btn:hover, .like-btn:hover, .dislike-btn:hover, .watchlist-btn-active:hover, .like-btn-active:hover, .dislike-btn-active:hover 
+  {border-bottom: 1px solid black; cursor: pointer;}
+.watchlist-btn-active, .like-btn-active, .dislike-btn-active {opacity:1;}
 .latestAdditionsHeader {font-weight:700; font-size: 1.2em;}
 .listHeader, .profile-info {font-weight:700;}
-
 .list-item {
   border: 0.5px solid black;
   background-color:#fcfcfc;
   display:flex;
   position: relative;
+  height:62px;
 }
-.list-title{margin:2px;}
+.list-title{margin:2px; margin-left:0;}
 .list-title:hover {cursor: pointer; border-bottom:1px solid black;}
 .list-description{margin:5px 0;}
-.list-details {display:flex; justify-content:space-between; flex-direction:column; align-items:end; position:absolute; right:0; top:0; padding:10px;}
+.list-details {display:flex; justify-content:space-between; flex-direction:column; align-items:end; position:absolute; right:0; top:0; padding:5px; padding-bottom:0;}
 .list-dates {
   display: flex;
   flex-direction: row;
@@ -42,6 +48,7 @@
   border: 1px solid;
   text-align: center;
   width: 250px;
+  margin-top:5px;
 }
 .latestAdditions header {padding-top: 5px;}
 
@@ -270,6 +277,7 @@ table.drag-table td, table.drag-table th {
   display: flex;
   max-width:500px;
 }
+.clear-search {padding-right:5px;}
 .list-search-bar {border:none}
 .list-add-element-container{
   max-height: 300px; /* set the maximum height */
@@ -416,12 +424,15 @@ table.drag-table td, table.drag-table th {
 .popupArea { cursor:pointer;}
 
 select {
-  border: 1px solid #ccc;
   background-color: #fff;
   color: #333;
   font-size: 15px;
-  padding: 8px 12px;
-  border-radius: 4px;
+  padding: 0px 12px;
+  display: flex;
+  align-items: center;
+  width:auto;
+  max-height:30px;
+  margin-top:10px;
 }
 
 .table-row:hover tr {background-color:lightgrey}

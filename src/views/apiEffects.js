@@ -2,33 +2,25 @@ import { authorQuery, authorTextQuery, textQuery, externalsQuery } from "./wikid
 const server = 'http://127.0.0.1:8000/'
 
 const fetchFunc = (query, setData, signal) => {
-    fetch(query, {signal}).then(response => {if(response.ok) {return response.json()}throw response}).then(results => {setData(results)})
+    return fetch(query, {signal}).then(response => {if(response.ok) {return response.json()}throw response}).then(results => {setData(results)})
     .catch((error) => {if(error.name!=='AbortError'){console.log("Error:", error);}});
 }
 
-export const createNewList = (list_info) => {
-    const requestBody = {user_id: list_info.user_id, list_name:list_info.list_title
-            , list_type:list_info.list_type,list_description:list_info.list_description};
-    return fetch(server+'create_list',{method: 'POST',body: JSON.stringify(requestBody)})
-    .then(response => response.json())
-    .then(data => data)
-    .catch(error => console.log(error))
-}
-
-export const fetchUserList = (list_id, setData) => {
-    const query = `${server}get_user_list?list_id=${list_id}`;
-    return fetchFunc(query, setData)
-}
-
-export const updateUserList = (input) => {
-    const requestBody = {list_info: input.list_info, additions:input.additions, removals:input.removals, order_changes:input.order_changes};
-    return fetch(server+'update_user_list',{method: 'POST',body: JSON.stringify(requestBody)})
+export const postFetch = (body, url) => {
+    return fetch(server+url,{method: 'POST',body: JSON.stringify(body)})
     .then(response => response.json())
     .then (data => data)
     .catch(error => console.log(error))
 }
 
+export const createNewList = (list_info) => {return postFetch(list_info, 'create_list')}
+export const updateUserList = (input) => {return postFetch(input, 'update_user_list')}
+export const updateListInteraction = (input) => {return postFetch(input, 'user_list_interaction')}
+
+export const fetchUserList = (list_id, setData) => {return fetchFunc(`${server}get_user_list?list_id=${list_id}`, setData)}
 export const fetchAllLists = (setData) => {fetchFunc(`${server}get_all_lists`,setData);}
+
+export const fetchListInteractions = (user_id, setListInteractions) => {return fetchFunc(`${server}get_list_interactions?user_id=${user_id}`, setListInteractions)}
 
 export const fetchDataEffect = props => () => {
     const {type, id, setData, by} = props
@@ -52,6 +44,14 @@ export const fetchSearchResults = props => () => {
     const searchType = type===undefined||type===null?"":"&searchtype="+type
     if(query!==undefined && query.trim().length>3) {
         fetchFunc(server+'search?query='+query+searchType+"&filters="+JSON.stringify(filters), setSearchResults, signal)}
+}
+
+export const createNewUser = (input) => {return postFetch(input, 'create_user')}
+export const deleteUser = (input) => {return postFetch(input, 'delete_user')}
+export const loginUser = (input) => {
+    return fetch(server+'login_user?'+'user='+input.user)
+        .then(response => response.json())
+        .catch(error => console.log(error))
 }
 
 export const wikidataEffect = props => () => {
@@ -92,27 +92,4 @@ export const archiveEffect = props => () => {
       .then(response => response.json())
       .then(data => {setArchive(data.response.docs);})
       .catch(error => console.error(error));    
-}
-
-export const createNewUser = (input) => {
-    const requestBody = {user_name: input.user_name, user_email:input.user_email, user_password:input.user_password};
-    return fetch(server+'create_user',{method: 'POST',body: JSON.stringify(requestBody)})
-    .then(response => response.json())
-    .then (data => data)
-    .catch(error => console.log(error))
-}
-
-export const loginUser = (input) => {
-    return fetch(server+'login_user?'+'user='+input.user)
-        .then(response => response.json())
-        .catch(error => console.log(error))
-}
-
-export const deleteUser = (input) => {
-    const requestBody = input
-    console.log(requestBody)
-    return fetch(server+'delete_user', {method:"POST", body:JSON.stringify(requestBody)})
-            .then(response => response.json())
-            .then (data => data)
-            .catch(error => console.log(error))
 }

@@ -10,7 +10,7 @@ const ListsSearch = props => {
         <>
         <div className="list-search-bar">
             <input type="text" placeholder="Search for a list" value = {query} onChange = {(e) => setQuery(e.target.value)} className="search-input"/>
-            <IconButton onClick = {() => setQuery("")} aria-label="Clear Search Button" edge="end"><ClearIcon/></IconButton>
+            <IconButton onClick = {() => setQuery("")} aria-label="Clear Search Button" edge="end"><ClearIcon style={{paddingRight:5}}/></IconButton>
         </div>
         <div>
         <fieldset className="list-search-type">{searchOptions.map((option) => 

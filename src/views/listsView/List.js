@@ -2,10 +2,9 @@ import React, {useState, useEffect} from 'react';
 import AuthorsByBooksTable from './AuthorsByBooks';
 import { useParams, useNavigate} from 'react-router-dom';
 import { officialLists } from './availableLists';
-import { fetchUserList } from '../apiEffects';
+import { fetchUserList, updateUserList } from '../apiEffects';
 import ListAddElement from './ListAddElement';
 import ListElement from './ListElement';
-import { updateUserList } from '../apiEffects';
 
 const ListItem = props => {
     const {lang, userData} = props;
@@ -46,8 +45,7 @@ const ListItem = props => {
                         ${listInfo.list_modified!==listInfo.list_created?` (last modified on ${new Date(listInfo.list_modified).toLocaleDateString(undefined, dateOptions)})`:""}`}</p>}
                     {!edit
                         ?<p>{listInfo.list_description}</p>
-                        :<textarea className="list-text-area" name="list_description" value={listInfo.list_description} onChange={(e)=>changeInfo(e)}/>
-                    }
+                        :<textarea className="list-text-area" name="list_description" value={listInfo.list_description} onChange={(e)=>changeInfo(e)}/>}
                 </div>
             </div>
             {["all","official"].includes(type)&&lists[listname]}
