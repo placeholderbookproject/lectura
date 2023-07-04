@@ -14,8 +14,8 @@ const ListsSearch = props => {
         </div>
         <div>
         <fieldset className="list-search-type">{searchOptions.map((option) => 
-                <><input type = "radio" id={option} name="search-type" key={option} onClick={()=>clickRadio(option)} checked={option===searchType}
-                    onChange={() => clickRadio(option)}/>
+                <><input type = "radio" id={option} name="search-type" key={option} onClick={()=>clickRadio(option)} 
+                        checked={option===searchType} onChange={() => clickRadio(option)}/>
                     <label>{option.charAt(0).toUpperCase()+option.slice(1)}</label>
                 </>)}
             </fieldset>

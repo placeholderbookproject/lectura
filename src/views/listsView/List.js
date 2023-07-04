@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import AuthorsByBooksTable from './AuthorsByBooks';
 import { useParams, useNavigate} from 'react-router-dom';
-import { officialLists } from './availableLists';
 import { fetchUserList, updateUserList } from '../apiEffects';
 import ListAddElement from './ListAddElement';
 import ListElement from './ListElement';
@@ -12,7 +11,7 @@ const ListItem = props => {
     const navigate = useNavigate();
     const [edit, setEdit] = useState(false);
     const list_id = !isNaN(listname.split("_")[0])&&listname.split("_")[0];
-    const [info, setInfo] = useState(["all","official"].includes(type)&&!list_id&&officialLists.find(list => list.url === listname));
+    const [info, setInfo] = useState(false);
     const [changes,setChanges] = useState({additions:[], removals:[],list_info:{list_id:list_id}, order_changes:[]})
     const lists = {"authors-by-books":<AuthorsByBooksTable lang={lang} type={"num_books"}/>,
                     "authors-no-books":<AuthorsByBooksTable lang={lang} type={"no_books"}/>};
@@ -36,7 +35,7 @@ const ListItem = props => {
             <span><button onClick = {() => navigate("/lists/")} className="return-btn">&#8592; Return to List Overview</button></span>
             <div className="list-header">
                 {<h2>{!edit?listInfo.list_name:<input type="text" value={listInfo.list_name} name="list_name" onChange={(e)=>changeInfo(e)}/>}
-                    {userData.user_id===listInfo.user_id&&<>
+                    {listInfo.user_id&&userData.user_id===listInfo.user_id&&<>
                         <button onClick={()=>setEdit(!edit)} className="edit-btn">&#9998;</button>
                         {edit&&<button className="save-btn" onClick={()=>saveChanges()}>Save Changes</button>}</>}
                 </h2>}
@@ -48,9 +47,9 @@ const ListItem = props => {
                         :<textarea className="list-text-area" name="list_description" value={listInfo.list_description} onChange={(e)=>changeInfo(e)}/>}
                 </div>
             </div>
-            {["all","official"].includes(type)&&lists[listname]}
+            {["all","official"].includes(type)&&info&&lists[info.list_info.list_url]}
             {edit&&<ListAddElement type={listInfo.list_type} info={info} setInfo={setInfo} changes={changes} setChanges={setChanges}/>}
-            {<ListElement edit={edit} info={info} setInfo={setInfo} changes={changes} setChanges={setChanges}/>}
+            {!(info&&lists[info.list_info.list_url])&&<ListElement edit={edit} info={info} setInfo={setInfo} changes={changes} setChanges={setChanges}/>}
         </div>
     )
 }
