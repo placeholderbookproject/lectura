@@ -13,6 +13,8 @@ export const postFetch = (body, url) => {
     .catch(error => console.log(error))
 }
 
+export const postComment = (data) => {return postFetch(data, 'upload_comment')}
+
 export const createNewList = (list_info) => {return postFetch(list_info, 'create_list')}
 export const updateUserList = (input) => {return postFetch(input, 'update_user_list')}
 export const updateListInteraction = (input) => {return postFetch(input, 'user_list_interaction')}

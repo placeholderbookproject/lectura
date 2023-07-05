@@ -4,6 +4,7 @@ import { useParams, useNavigate} from 'react-router-dom';
 import { fetchUserList, updateUserList } from '../apiEffects';
 import ListAddElement from './ListAddElement';
 import ListElement from './ListElement';
+import AddComment from '../commentsView/AddComment';
 
 const ListItem = props => {
     const {lang, userData} = props;
@@ -50,6 +51,7 @@ const ListItem = props => {
             {["all","official"].includes(type)&&info&&lists[info.list_info.list_url]}
             {edit&&<ListAddElement type={listInfo.list_type} info={info} setInfo={setInfo} changes={changes} setChanges={setChanges}/>}
             {!(info&&lists[info.list_info.list_url])&&<ListElement edit={edit} info={info} setInfo={setInfo} changes={changes} setChanges={setChanges}/>}
+            {userData&&<AddComment user_id={userData.user_id} type="list" type_id ={list_id}/>}
         </div>
     )
 }

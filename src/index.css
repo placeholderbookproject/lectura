@@ -30,6 +30,16 @@ body {margin:0; margin-left:5px;}
 .list-base-description {font-weight:bold;margin-top:0;}
 .list-header h2 {margin-bottom:0;}
 
+.add-comment {margin-top:5px; margin-bottom:5px;}
+.add-comment-btn, .submit-comment-btn {
+  background-color:rgb(251, 249, 249);
+  font-style: Arial; 
+  min-height:2rem; 
+  font-weight:bold; 
+  border: 0.5px solid black;
+}
+.add-comment-btn:hover, .submit-comment-btn:hover {cursor:pointer; background-color: #7e7a7a;}
+
 .search-dropdown-popup {
   position: absolute;
   top: 40px; /* adjust this value to position the filter component vertically */
