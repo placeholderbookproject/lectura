@@ -14,6 +14,7 @@ export const postFetch = (body, url) => {
 }
 
 export const postComment = (data) => {return postFetch(data, 'upload_comment')}
+export const getComments = (comment_type, comment_type_id, setData)=> {return fetchFunc(`${server}extract_comments?comment_type=${comment_type}&comment_type_id=${comment_type_id}`, setData)}
 
 export const createNewList = (list_info) => {return postFetch(list_info, 'create_list')}
 export const updateUserList = (input) => {return postFetch(input, 'update_user_list')}

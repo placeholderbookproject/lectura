@@ -5,6 +5,7 @@ import { fetchUserList, updateUserList } from '../apiEffects';
 import ListAddElement from './ListAddElement';
 import ListElement from './ListElement';
 import AddComment from '../commentsView/AddComment';
+import CommentView from '../commentsView/CommentView';
 
 const ListItem = props => {
     const {lang, userData} = props;
@@ -51,7 +52,8 @@ const ListItem = props => {
             {["all","official"].includes(type)&&info&&lists[info.list_info.list_url]}
             {edit&&<ListAddElement type={listInfo.list_type} info={info} setInfo={setInfo} changes={changes} setChanges={setChanges}/>}
             {!(info&&lists[info.list_info.list_url])&&<ListElement edit={edit} info={info} setInfo={setInfo} changes={changes} setChanges={setChanges}/>}
-            {userData&&<AddComment user_id={userData.user_id} type="list" type_id ={list_id}/>}
+            {userData&&<AddComment user_id={userData.user_id} type="list" type_id ={list_id} buttonName="New Comment"/>}
+            <CommentView comment_type="list" comment_type_id={list_id} userData={userData}/>
         </div>
     )
 }

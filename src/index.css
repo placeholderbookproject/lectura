@@ -40,6 +40,17 @@ body {margin:0; margin-left:5px;}
 }
 .add-comment-btn:hover, .submit-comment-btn:hover {cursor:pointer; background-color: #7e7a7a;}
 
+.comment-container {
+  display:flex; 
+  flex-direction:row;
+  min-height:200px;
+  border-bottom:1px solid grey;
+}
+.comment-user{min-width:100px;}
+.comment-content{min-width:400px;}
+.comment-date {min-width:50px;}
+.comment-div {display:flex;flex-direction:row; max-height:30px;}
+
 .search-dropdown-popup {
   position: absolute;
   top: 40px; /* adjust this value to position the filter component vertically */
