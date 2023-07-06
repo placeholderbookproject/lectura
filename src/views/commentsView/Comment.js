@@ -3,15 +3,17 @@ import AddComment from "./AddComment";
 const parse = require('html-react-parser');
 
 const Comment = (props) => {
-    const {comment_id, comment_content,comment_created_at, comment_edited_at, user_name, user_id} = props.data;
+    const {comment_id, comment_content,comment_created_at, comment_edited_at, comments
+            , user_name, user_id, comment_likes, comment_dislikes, replies, comment_type, comment_type_id} = props.data;
     const dateOptions = { year: "numeric", month: "long", day: "numeric" };
     const transformDate = (date) => new Date(date).toLocaleDateString(undefined, dateOptions)
     const [edit, setEdit] = useState(false);
-    return (<>
+    return (
         <div className="comment-container">
             <div className="comment-user"><p>{user_name}</p></div>
             <div className="comment-content">
                 {parse(comment_content)}
+                <div className="comment-sum-interactions"><p>{`${comment_likes+" likes"} - ${comment_dislikes+" dislikes"}`}</p></div>
                 <div className="comment-interaction-container">
                     <button className="like-btn">&#128077; Like</button>
                     <button className="dislike-btn">&#128078; Dislike</button>
@@ -25,7 +27,6 @@ const Comment = (props) => {
                 {props.userData.user_id === user_id&&<button className="edit-btn" onClick={() => setEdit(!edit)}>edit</button>}
             </div>
         </div>
-        </>
     )
 }
 export default Comment;
