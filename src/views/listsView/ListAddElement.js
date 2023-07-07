@@ -27,7 +27,7 @@ const ListAddElement = (props) => {
     return (
         <div className="list-add-element-container">
             <div className="list-element-search">
-                <input type="text" placeholder={`Add another ${info&&info.list_info.list_type.replace("s","")} to your list`} value = {query} onChange = {searchSelect} onKeyDown={search} 
+                <input type="text" placeholder={`Add a new ${info&&info.list_info.list_type.replace("s","")} to your list`} value = {query} onChange = {searchSelect} onKeyDown={search} 
                     className="search-input"/>
             </div>
             <div className="search-result-list">

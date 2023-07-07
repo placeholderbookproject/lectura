@@ -4,7 +4,7 @@ import { updateListInteraction } from "../apiEffects";
 const parse = require('html-react-parser');
 
 const ListsListItem = (props) => {
-    const {img, list_name, list_description, list_id, list_created, list_modified, user_name, watchlist, like, dislike/*, fav, dis*/} = props.list_data
+    const {img, list_name, list_description, list_id, list_created, list_modified, user_name, watchlist, like, dislike, list_deleted/*, fav, dis*/} = props.list_data
     const {searchResults, setSearchResults} = props
     const {user_id} = props.userData
     const [interactions, setInteractions] = useState({watchlist:watchlist, like:like, dislike:dislike})
@@ -25,6 +25,7 @@ const ListsListItem = (props) => {
         })
     }}
     return (
+    !list_deleted&&
         <div className="list-item">
             <div className="list-image">{img&&<img src={img} alt = {list_description}/>}</div>
             <div className="list-header">

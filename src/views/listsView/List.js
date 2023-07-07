@@ -14,7 +14,7 @@ const ListItem = props => {
     const [edit, setEdit] = useState(false);
     const list_id = !isNaN(listname.split("_")[0])&&listname.split("_")[0];
     const [info, setInfo] = useState(false);
-    const [changes,setChanges] = useState({additions:[], removals:[],list_info:{list_id:list_id}, order_changes:[]})
+    const [changes,setChanges] = useState({additions:[], removals:[],list_info:{list_id:list_id}, order_changes:[], delete:false})
     const lists = {"authors-by-books":<AuthorsByBooksTable lang={lang} type={"num_books"}/>,
                     "authors-no-books":<AuthorsByBooksTable lang={lang} type={"no_books"}/>};
     useEffect(() => {if(list_id){fetchUserList(list_id, setInfo)}},[])
@@ -32,6 +32,7 @@ const ListItem = props => {
         if(changes.additions.length>0||changes.removals.length>0||Object.keys(changes.list_info).length>1||changes.order_changes.length>0){
             updateUserList(changes).then(() => setEdit(!edit)).catch((error) => console.log(error));
             setChanges({additions:[], removals:[],list_info:{list_id:list_id}, order_changes:[]})}}
+    const deleteList = () => {updateUserList({...changes, delete:true}).then(()=>navigate("/lists"))}
     return (
         <div className="list-tab">
             <span><button onClick = {() => navigate("/lists/")} className="return-btn">&#8592; Return to List Overview</button></span>
@@ -39,6 +40,7 @@ const ListItem = props => {
                 {<h2>{!edit?listInfo.list_name:<input type="text" value={listInfo.list_name} name="list_name" onChange={(e)=>changeInfo(e)}/>}
                     {listInfo.user_id&&userData.user_id===listInfo.user_id&&<>
                         <button onClick={()=>setEdit(!edit)} className="edit-btn">&#9998;</button>
+                        <button className="delete-btn" onClick={()=>deleteList()}>Delete List</button>
                         {edit&&<button className="save-btn" onClick={()=>saveChanges()}>Save Changes</button>}</>}
                 </h2>}
                 <div className="list-description">
