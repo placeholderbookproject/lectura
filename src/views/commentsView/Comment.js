@@ -29,8 +29,8 @@ const Comment = (props) => {
             }
             <div className="comment-div">
                 <div className="comment-dates">
-                    <p className={`comment-created-date${comment_edited_at?"-edited":""}`}>{transformDate(comment_created_at)}</p>
-                    {comment_edited_at&&<p><span style = {{"fontWeight": 600,}}>Edited </span>{`${transformDate(comment_edited_at)}`}</p>}
+                    <p className={`comment-created-date${(comment_edited_at!=="NaT")?"-edited":""}`}>{transformDate(comment_created_at)}</p>
+                    {comment_edited_at!=="NaT"&&<p><span style = {{"fontWeight": 600,}}>Edited </span>{`${transformDate(comment_edited_at)}`}</p>}
                 </div>
                 {props.userData.user_id === user_id&&<>
                     <button className="edit-btn" onClick={() => setEdit(!edit)}>edit</button>

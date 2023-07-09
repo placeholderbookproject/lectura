@@ -6,6 +6,7 @@ import ListAddElement from './ListAddElement';
 import ListElement from './ListElement';
 import AddComment from '../commentsView/AddComment';
 import CommentView from '../commentsView/CommentView';
+import ListInteractionButtons from './ListInteractionButtons';
 
 const ListItem = props => {
     const {lang, userData} = props;
@@ -35,7 +36,9 @@ const ListItem = props => {
     const deleteList = () => {updateUserList({...changes, delete:true}).then(()=>navigate("/lists"))}
     return (
         <div className="list-tab">
-            <span><button onClick = {() => navigate("/lists/")} className="return-btn">&#8592; Return to List Overview</button></span>
+            <div className="list-tab-header">
+                <span><button onClick = {() => navigate("/lists/")} className="return-btn">&#8592; Return to List Overview</button></span>
+            </div>
             <div className="list-header">
                 {<h2>{!edit?listInfo.list_name:<input type="text" value={listInfo.list_name} name="list_name" onChange={(e)=>changeInfo(e)}/>}
                     {listInfo.user_id&&userData.user_id===listInfo.user_id&&<>
@@ -43,6 +46,8 @@ const ListItem = props => {
                         <button className="delete-btn" onClick={()=>deleteList()}>Delete List</button>
                         {edit&&<button className="save-btn" onClick={()=>saveChanges()}>Save Changes</button>}</>}
                 </h2>}
+            {userData&&<ListInteractionButtons list_id={list_id} user_id={userData.user_id} userData={userData} navigate={navigate}
+                            original_interactions={info&&{watchlist:info.watchlist, like:info.like, dislike:info.dislike}}/>}
                 <div className="list-description">
                     {listInfo&&listInfo.list_created&&<p className="list-base-description">{`A personal list of ${listInfo.list_type} created by ${listInfo.user_name} on ${new Date(listInfo.list_created).toLocaleDateString(undefined, dateOptions)} 
                         ${listInfo.list_modified!==listInfo.list_created?` (last modified on ${new Date(listInfo.list_modified).toLocaleDateString(undefined, dateOptions)})`:""}`}</p>}

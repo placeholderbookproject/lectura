@@ -24,8 +24,6 @@ export const updateListInteraction = (input) => {return postFetch(input, 'user_l
 export const fetchUserList = (list_id, setData) => {return fetchFunc(`${server}get_user_list?list_id=${list_id}`, setData)}
 export const fetchAllLists = (user_id=null,setData) => {fetchFunc(`${server}get_all_lists${user_id?'?user_id='+user_id:""}`,setData);}
 
-export const fetchListInteractions = (user_id, setListInteractions) => {return fetchFunc(`${server}get_list_interactions?user_id=${user_id}`, setListInteractions)}
-
 export const fetchDataEffect = props => () => {
     const {type, id, setData, by} = props
     const search = type===null||type===undefined?"":"type="+type+"&id="+id+(by!==null?"&by="+by:"")
