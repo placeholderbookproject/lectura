@@ -32,18 +32,17 @@ body {margin:0; margin-left:5px;}
 .list-header h2 {margin-bottom:0;}
 
 .add-comment {margin-top:5px; margin-bottom:5px;}
-.add-comment-btn, .submit-comment-btn, .show-replies-btn {
+.add-comment-btn, .submit-comment-btn, .show-replies-btn, .sort-btn {
   background-color:rgb(251, 249, 249);
   font-style: Arial; 
   min-height:2rem; 
   font-weight:bold; 
   border: 0.5px solid black;
 }
-.add-comment-btn:hover, .submit-comment-btn:hover, .show-replies-btn:hover {cursor:pointer; background-color: #7e7a7a;}
+.add-comment-btn:hover, .submit-comment-btn:hover, .show-replies-btn:hover, .sort-btn:hover {cursor:pointer; background-color: #7e7a7a;}
 .comment-deleted {opacity:0.7;color:red;}
 .comment-created-date-edited {text-decoration: line-through;color:red;}
 
-/*.comment-view-container {max-width}*/
 .comment-container {
   display:flex; 
   flex-direction:row;
@@ -57,6 +56,8 @@ body {margin:0; margin-left:5px;}
 .comment-dates p {margin:0;}
 .comment-div {display:flex;flex-direction:row; max-height:30px;}
 .comment-sum-interactions p {color:grey; font-size: 12px;}
+.comment-view-header {display:flex;flex-direction:row;border-bottom: 0.5px solid black;}
+.comment-view-header button, .comment-view-header select {height:30px; margin:10px;}
 .search-dropdown-popup {
   position: absolute;
   top: 40px; /* adjust this value to position the filter component vertically */
@@ -64,13 +65,10 @@ body {margin:0; margin-left:5px;}
   z-index: 1;
   background-color: white;
   border: 1px solid black;
-  /*padding: 10px;*/
 }
 .sub-comments{margin-left:50px;}
 
-ul,li {
-  list-style: none;
-}
+ul,li {list-style: none;}
 
 .latestAdditionsList ul {border-bottom: 0.5px dotted;}
 .latestAdditionsList {padding-right: 15px;}
@@ -505,4 +503,4 @@ select {
 
 
 .edit-btn, .delete-btn {background-color:white; border:none;}
-.edit-btn:hover, .delete-btn:hover{cursor:pointer; border-bottom:1px solid black;}
+.edit-btn:hover, .delete-btn:hover {cursor:pointer; border-bottom:1px solid black;}
