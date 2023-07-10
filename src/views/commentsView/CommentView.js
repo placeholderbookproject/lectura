@@ -5,8 +5,9 @@ import CommentsSort from "./CommentsSort";
 
 const CommentView = (props) => {
     const {comment_type, comment_type_id, userData} = props
+    const user_id = userData&&userData.user_id
     const [comments, setComments] = useState([]);
-    useEffect(() => {getComments(comment_type, comment_type_id, setComments)},[])
+    useEffect(() => {getComments(comment_type, comment_type_id, user_id, setComments)},[])
     const handleSortChange = (sortedComments) => {setComments(sortedComments);};
     return (
     <div className="comment-view-container">

@@ -15,7 +15,10 @@ export const postFetch = (body, url) => {
 
 export const postComment = (data) => {return postFetch(data, 'upload_comment')}
 export const postUpdateComment = (data) => {return postFetch(data, 'update_comment')}
-export const getComments = (comment_type, comment_type_id, setData)=> {return fetchFunc(`${server}extract_comments?comment_type=${comment_type}&comment_type_id=${comment_type_id}`, setData)}
+export const getComments = (comment_type, comment_type_id, user_id, setData)=> {
+    return fetchFunc(`${server}extract_comments?comment_type=${comment_type}&comment_type_id=${comment_type_id}${user_id?"&user_id="+user_id:""}`, setData)}
+export const postCommentInteraction = (data) => {return postFetch(data,'comment_interaction')}
+//export const fetchComments = props => () => {fetchFunc(server+'extract_comments', props.setComments)}
 
 export const createNewList = (list_info) => {return postFetch(list_info, 'create_list')}
 export const updateUserList = (input) => {return postFetch(input, 'update_user_list')}
@@ -36,10 +39,6 @@ export const fetchList = props => () => {
     fetchFunc(server+query, setData)
 }
 
-export const fetchComments = props => () => {
-    const {setComments} = props;
-    fetchFunc(server+'extract_comments', setComments)
-}
 
 export const fetchSearchResults = props => () => {
     const {setSearchResults, query, type, filters, signal} = props

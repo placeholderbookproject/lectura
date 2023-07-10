@@ -24,6 +24,6 @@ const CommentsList = (props) => {
           </ul>
         );
       };
-    return <div className="comment-container">{renderComments(comments)}</div>;
+    return <div className="comment-list-container">{renderComments(comments)}</div>;
 }
 export default CommentsList;
