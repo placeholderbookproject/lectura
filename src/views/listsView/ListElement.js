@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {options} from '../filters.js';
 import Select from 'react-select';
+import Check from '../Check.js';
 
 const ListElement = (props) => {
-    const {info, setInfo, edit, changes, setChanges} = props
+    const {info, setInfo, edit, changes, setChanges, userData} = props
     const columnOptions = info.list_info&&options[info.list_info.list_type]
     const [filters, setFilters] = useState([])
     const removeElement = (element) => {
@@ -49,7 +50,9 @@ const ListElement = (props) => {
                 <tr>
                     <th>#</th>
                     {filters.map((col) => 
-                    <th key={col.label}>{col.label}<button className="remove-col-btn" onClick={() => removeColumn(col)}>X</button></th>)}<th></th>
+                    <th key={col.label}>{col.label}<button className="remove-col-btn" onClick={() => removeColumn(col)}>X</button></th>)}
+                    {edit&&<th></th>}
+                    {info.list_info.list_type==="texts"&&<th>Check</th>}
                 </tr>
                 {info.list_detail.map((element, elementIndex) =>
                     <tr key={elementIndex} draggable={edit} onDragOver={handleDragOver} onDragStart={(event) => handleDragStart(event, elementIndex)}
@@ -57,6 +60,7 @@ const ListElement = (props) => {
                     <td>{elementIndex+1}</td>
                     {filters.map((col, colIndex) => <td key={colIndex}>{element[col.value]}</td>)}
                     {edit&&<td><button className="list-remove-element" onClick = {() => removeElement(element)}>X</button></td>}
+                    {info.list_info.list_type==="texts"&&<td><Check text_id = {element.element_id} check={element.checked} user_id={userData&&userData.user_id}/></td>}
                     </tr>)}
             </tbody></table>}
         </div>

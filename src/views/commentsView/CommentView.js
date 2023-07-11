@@ -2,6 +2,7 @@ import React,{useState, useEffect} from "react";
 import { getComments } from "../apiEffects";
 import CommentsList from "./CommentsList";
 import CommentsSort from "./CommentsSort";
+import "./comments.css";
 
 const CommentView = (props) => {
     const {comment_type, comment_type_id, userData} = props

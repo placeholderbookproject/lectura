@@ -6,7 +6,7 @@ const ListInteractionButtons = props => {
     const {watchlist, like, dislike} = props.original_interactions
     const list_buttons = [{name:"watchlist",label:"+", function:void(0)},{name:"like", label:"&#128077;", function:void(0)},
                         {name:"dislike", label:"&#128078;", function:void(0)}];
-    const [interactions, setInteractions] = useState({watchlist:watchlist, like:like, dislike:dislike})
+    const [interactions, setInteractions] = useState({watchlist, like, dislike})
     const listInteraction = (btn) => {
         if (list_id&&user_id) {
             const input = {type:btn.name, list_id:list_id, user_id:user_id, delete:interactions&&interactions[btn.name]&&interactions[btn.name]}
@@ -16,8 +16,8 @@ const ListInteractionButtons = props => {
                     updateListInteraction({type:toCheck,list_id:list_id, user_id:user_id, delete:true})
                     setInteractions({...interactions,[toCheck]:!interactions[toCheck],[btn.name]:!interactions[btn.name]})}
                 else {setInteractions({...interactions,[btn.name]:!interactions[btn.name]})}
-        })
-    }}
+        })}
+    }
     return (
     <div className="list-buttons">
         {list_buttons.map((btn) => 

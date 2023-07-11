@@ -18,13 +18,14 @@ export const postUpdateComment = (data) => {return postFetch(data, 'update_comme
 export const getComments = (comment_type, comment_type_id, user_id, setData)=> {
     return fetchFunc(`${server}extract_comments?comment_type=${comment_type}&comment_type_id=${comment_type_id}${user_id?"&user_id="+user_id:""}`, setData)}
 export const postCommentInteraction = (data) => {return postFetch(data,'comment_interaction')}
-//export const fetchComments = props => () => {fetchFunc(server+'extract_comments', props.setComments)}
+
+export const postCheck = data => {return postFetch(data,'check')};
 
 export const createNewList = (list_info) => {return postFetch(list_info, 'create_list')}
 export const updateUserList = (input) => {return postFetch(input, 'update_user_list')}
 export const updateListInteraction = (input) => {return postFetch(input, 'user_list_interaction')}
 
-export const fetchUserList = (list_id, setData) => {return fetchFunc(`${server}get_user_list?list_id=${list_id}`, setData)}
+export const fetchUserList = (list_id, user_id, setData) => {return fetchFunc(`${server}get_user_list?list_id=${list_id}${user_id?"&user_id="+user_id:""}`, setData)}
 export const fetchAllLists = (user_id=null,setData) => {fetchFunc(`${server}get_all_lists${user_id?'?user_id='+user_id:""}`,setData);}
 
 export const fetchDataEffect = props => () => {

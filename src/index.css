@@ -30,34 +30,9 @@ body {margin:0; margin-left:5px;}
 
 .list-base-description {font-weight:bold;margin-top:0;}
 .list-header h2 {margin-bottom:0;}
+.check-btn{border: 0; background-color:white; font-size:25px;}
+.check-btn:hover {cursor:pointer; background-color:rgb(242, 239, 239);}
 
-.add-comment {margin-top:5px; margin-bottom:5px;}
-.add-comment-btn, .submit-comment-btn, .show-replies-btn, .sort-btn {
-  background-color:rgb(251, 249, 249);
-  font-style: Arial; 
-  min-height:2rem; 
-  font-weight:bold; 
-  border: 0.5px solid black;
-}
-.add-comment-btn:hover, .submit-comment-btn:hover, .show-replies-btn:hover, .sort-btn:hover {cursor:pointer; background-color: #7e7a7a;}
-.comment-deleted {opacity:0.7;color:red;}
-.comment-created-date-edited {text-decoration: line-through;color:red;}
-
-.comment-container {
-  display:flex; 
-  flex-direction:row;
-  min-height:200px;
-  border-bottom:1px solid grey;
-  max-width:600px;
-}
-.comment-user{min-width:100px;}
-.comment-content{min-width:400px;}
-.comment-dates {min-width:150px;}
-.comment-dates p {margin:0;}
-.comment-div {display:flex;flex-direction:row; max-height:30px;}
-.comment-sum-interactions p {color:grey; font-size: 12px;}
-.comment-view-header {display:flex;flex-direction:row;border-bottom: 0.5px solid black;}
-.comment-view-header button, .comment-view-header select {height:30px; margin:10px;}
 .search-dropdown-popup {
   position: absolute;
   top: 40px; /* adjust this value to position the filter component vertically */
@@ -66,7 +41,6 @@ body {margin:0; margin-left:5px;}
   background-color: white;
   border: 1px solid black;
 }
-.sub-comments{margin-left:50px;}
 
 ul,li {list-style: none;}
 
