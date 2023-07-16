@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 import Tooltip from '@mui/material/Tooltip';
 import {Link} from 'react-router-dom';
 import { filterArray } from '../formattingFuncs.js';
@@ -6,6 +7,7 @@ import ComponentPopup from '../Popup.js';
 
 const SearchResults = (props) => {
     const removals = ["author_id","text_id","value","type"]
+    const navigate = useNavigate();
     const filters = filterArray(props.filters,removals) 
     const searchResults = props.searchResults, searchType=props.searchType;
     const [searchOrder, setSearchOrder] = useState("asc");
@@ -46,7 +48,7 @@ const SearchResults = (props) => {
                                 if(removals.includes(col)){return null}
                                 else if (col === "Author"||col==="Title") 
                                     {return <td key={col+result[col]+result["author_id"]}>
-                                        <Link to={`${result["author_id"]?"/author/"+result["author_id"]:""}${col!=="Author"?"/text/"+result["text_id"]:""}`}>{result[col]}</Link></td>}
+                                        <p onClick={() => navigate(`${result["author_id"]?"/author/"+result["author_id"]:""}${col!=="Author"?"/text/"+result["text_id"]:""}`)}>{result[col]}</p></td>}
                                 else if (result[col]===null){return <td key={col+result[searchType]}></td>}
                                 else {return <td key={col+result[col]+result[searchType]}>{result[col]}</td>}
                             })}

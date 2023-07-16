@@ -29,8 +29,8 @@ export const fetchUserList = (list_id, user_id, setData) => {return fetchFunc(`$
 export const fetchAllLists = (user_id=null,setData) => {fetchFunc(`${server}get_all_lists${user_id?'?user_id='+user_id:""}`,setData);}
 
 export const fetchDataEffect = props => () => {
-    const {type, id, setData, by} = props
-    const search = type===null||type===undefined?"":"type="+type+"&id="+id+(by!==null?"&by="+by:"")
+    const {type, id, setData, by, user_id} = props
+    const search = type===null||type===undefined?"":"type="+type+"&id="+id+(by!==null?"&by="+by:"")+(user_id?"&user_id="+user_id:"")
     fetchFunc(server+'data?'+search, setData)
 }
 

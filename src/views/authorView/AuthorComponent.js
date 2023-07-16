@@ -7,6 +7,7 @@ import TextComponent from './TextTable';
 import { setTab } from '../commonFuncs.js';
 
 const AuthorComponent = (props) => {
+    console.log(props)
     let { text_id } = useParams();
     const navigate = useNavigate();
     const location = useLocation()
@@ -26,7 +27,7 @@ const AuthorComponent = (props) => {
     }
     const tabs = [{tabName:"Biography",component:<><AuthorTable setQ={setQ} lang={props.lang} setAuthor={setAuthor}/>{q&&<WikiExternalsList q_number={q} language={props.lang.value}/>}</>},
                 {tabName:"Literature",component:author&&<TextsWikiTable author = {author} language={props.lang} handleClick={handleClick}/>},
-                {tabName:"Lit. detailed", component:text_id?<TextComponent lang={props.lang} id={text_id}/>:<p>Please Select a Text</p>},]
+                {tabName:"Lit. detailed", component:text_id?<TextComponent lang={props.lang} id={text_id} userData={props.userData}/>:<p>Please Select a Text</p>},]
     const returnMain = () => {navigate(baseLink);setTabOpen(defaultTabs)}
     return (
         <div className="author-container">

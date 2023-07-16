@@ -7,7 +7,7 @@ const TextComponent = props => {
     const [q, setQ] = useState();
     const defaultTabs = {"Text Info":true};
     const [tabOpen, setTabOpen] = useState({...defaultTabs})
-    const tabs = [{tabName:"Text Info", component:<><TextTable setQ={setQ} lang={props.lang} id = {props.id}/>
+    const tabs = [{tabName:"Text Info", component:<><TextTable setQ={setQ} lang={props.lang} id = {props.id} userData={props.userData}/>
                     {q&&<WikiExternalsList q_number={q} language={props.lang.value}/>}</>}]
     return (
         <div className="dropdowns-container">

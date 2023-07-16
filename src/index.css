@@ -27,9 +27,9 @@ body {margin:0; margin-left:5px;}
 .list-user label{font-weight:700;}
 .list-created {margin:0;}
 .list-buttons {display: flex; gap: 10px;}
-
 .list-base-description {font-weight:bold;margin-top:0;}
 .list-header h2 {margin-bottom:0;}
+.list-statistics-container {display:flex; flex-direction:row; justify-content: flex-end}
 .check-btn{border: 0; background-color:white; font-size:25px;}
 .check-btn:hover {cursor:pointer; background-color:rgb(242, 239, 239);}
 

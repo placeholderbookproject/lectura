@@ -6,10 +6,15 @@ import {transformYear, reformatWikidata, checkData, dateCoalesce} from '../forma
 import {fetchDataEffect, wikidataEffect} from '../apiEffects'
 import ArchiveList from '../ArchiveList.js';
 import { WikiExternalsLabels } from '../wikidata.js';
+import TextInteraction from '../TextInteraction.js';
+import { postTextInteraction } from '../apiEffects';
 
 const TextTable = (props) => {
     const language = props.lang.value
+    const elementInteractions = [{name:"checks", conditional:{true:"&#9745;",false:"&#9744;"}, button_name:{true:"check-btn", false:"check-btn"}, label:"Check"},
+                    {name:"watch", conditional:{true:"+",false:"+"}, button_name:{true:"watchlist-btn-active",false:"watchlist-btn"}, label:"Watchlist"}]
     const [data, setData] = useState({});
+    console.log(data)
     const [wikidata, setWikidata] = useState();
     let { id } = useParams();
     const {setQ} = props;
@@ -30,7 +35,7 @@ const TextTable = (props) => {
     const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
     useEffect(() => {
         setData(id);
-        fetchDataEffect({type:'texts', id, setData})();
+        fetchDataEffect({type:'texts', id, setData, user_id:props.userData&&props.userData_user_id})();
     },[id]);
     const rows = [{label:labels.aka,content:(numTitles>1)&&checkData(akaLabel,title.slice(1,numTitles).join(", "))},
                 {label:"", content:bookdesc},{label:labels.author_name + " ", content:checkData(authorLabel, text_author)},
@@ -44,7 +49,10 @@ const TextTable = (props) => {
     return (
         <div id = "textTableWindow" className="person-info">
             {text_q&&<WikiExternalsLabels q_number={text_q} language={language}/>}
-            <h2 className = "Header">{checkData(bookLabel,title[0])} <a href={data.text_q}>(Wiki)</a></h2>
+            <h2 className = "Header">{checkData(bookLabel,title[0])} <a href={data.text_q}>(Wiki)</a>
+            {elementInteractions.map((e) =><TextInteraction values={
+                                {...e, condition:true, user_id:props.userData.user_id, text_id:id, postFunction:postTextInteraction}}/>)
+                        }</h2>
             {titleLabel!==title[0]&&<TableRow label={labels.original_title}>{titleLabel}</TableRow>}
             {image && !image.split(", ")[0].includes("djvu")&&<img src={image.split(", "[0])} style={{ maxWidth: "400px", maxHeight: "200px", objectFit: "contain" }} alt="img" />}
             {data&&<>

@@ -16,9 +16,9 @@ const RouteList = () => {
     const [lang, setLang] = useState({value:"en", label:"English"});
     const [userData, setUserData] = useState(false);
     const routes = [{path:"/", element: <IntroPage lang = {lang}/>},
-        {path:"/text/:id",element:<TextComponent lang={lang}/>},
+        {path:"/text/:id",element:<TextComponent lang={lang} userData={userData}/>},
         {path:"/author/:id",element:<AuthorComponent lang = {lang}/>},
-        {path:"/author/:id/text/:text_id",element:<AuthorComponent lang = {lang}/>},
+        {path:"/author/:id/text/:text_id",element:<AuthorComponent lang = {lang}  userData={userData}/>},
         {path:"/search", element:<SearchDetailed lang={lang}/>},
         {path:"/lists",element:<ListsTab lang={lang} userData={userData}/>},
         {path:"/lists/create_new", element:<CreateNewList lang={lang} userData={userData}/>},
