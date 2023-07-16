@@ -1,10 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {options} from '../filters.js';
 import Select from 'react-select';
-import Check from '../Check.js';
+import { postTextInteraction } from '../apiEffects.js';
+import TextInteraction from '../TextInteraction.js';
 
 const ListElement = (props) => {
     const {info, setInfo, edit, changes, setChanges, userData} = props
+    const elementInteractions = [{name:"checks", conditional:{true:"&#9745;",false:"&#9744;"}, button_name:{true:"check-btn", false:"check-btn"}, label:"Check"},
+                                {name:"watch", conditional:{true:"+",false:"+"}, button_name:{true:"watchlist-btn-active",false:"watchlist-btn"}, label:"Watchlist"}]
     const columnOptions = info.list_info&&options[info.list_info.list_type]
     const [filters, setFilters] = useState([])
     const removeElement = (element) => {
@@ -52,7 +55,7 @@ const ListElement = (props) => {
                     {filters.map((col) => 
                     <th key={col.label}>{col.label}<button className="remove-col-btn" onClick={() => removeColumn(col)}>X</button></th>)}
                     {edit&&<th></th>}
-                    {info.list_info.list_type==="texts"&&<th>Check</th>}
+                    {info.list_info.list_type==="texts"&&elementInteractions.map(e => <th>{e.label}</th>)}
                 </tr>
                 {info.list_detail.map((element, elementIndex) =>
                     <tr key={elementIndex} draggable={edit} onDragOver={handleDragOver} onDragStart={(event) => handleDragStart(event, elementIndex)}
@@ -60,7 +63,10 @@ const ListElement = (props) => {
                     <td>{elementIndex+1}</td>
                     {filters.map((col, colIndex) => <td key={colIndex}>{element[col.value]}</td>)}
                     {edit&&<td><button className="list-remove-element" onClick = {() => removeElement(element)}>X</button></td>}
-                    {info.list_info.list_type==="texts"&&<td><Check text_id = {element.element_id} check={element.checked} user_id={userData&&userData.user_id}/></td>}
+                    {info.list_info.list_type==="texts"&&
+                        elementInteractions.map((e) =><td><TextInteraction values={
+                                {...e, condition:element[e.name], user_id:userData.user_id, text_id:element.element_id, postFunction:postTextInteraction}}/></td>)
+                        }
                     </tr>)}
             </tbody></table>}
         </div>

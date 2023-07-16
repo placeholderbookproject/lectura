@@ -17,7 +17,7 @@ body {margin:0; margin-left:5px;}
 .list-title{margin:2px; margin-left:2px;}
 .list-title:hover {cursor: pointer; border-bottom:1px solid black;}
 .list-description{margin:5px 0px; margin-left:2px;}
-.list-details {display:flex; justify-content:space-between; flex-direction:column; align-items:end; position:absolute; right:0; top:0; padding:5px; padding-bottom:0;}
+.list-details {display:flex; justify-content:space-between; flex-direction:column; align-items:flex-end; position:absolute; right:0; top:0; padding:5px; padding-bottom:0;}
 .list-dates {
   display: flex;
   flex-direction: row;

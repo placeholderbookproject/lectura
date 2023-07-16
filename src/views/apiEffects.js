@@ -19,7 +19,7 @@ export const getComments = (comment_type, comment_type_id, user_id, setData)=> {
     return fetchFunc(`${server}extract_comments?comment_type=${comment_type}&comment_type_id=${comment_type_id}${user_id?"&user_id="+user_id:""}`, setData)}
 export const postCommentInteraction = (data) => {return postFetch(data,'comment_interaction')}
 
-export const postCheck = data => {return postFetch(data,'check')};
+export const postTextInteraction = data => {return postFetch(data,'text_interaction')};
 
 export const createNewList = (list_info) => {return postFetch(list_info, 'create_list')}
 export const updateUserList = (input) => {return postFetch(input, 'update_user_list')}
