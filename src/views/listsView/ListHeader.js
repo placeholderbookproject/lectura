@@ -5,7 +5,6 @@ import ListStatistics from "./ListStatistics";
 
 const ListHeader = props => {
     const {edit, setEdit, listInfo, userData, changes,setChanges, info, setInfo, list_id, navigate} = props.data
-    const listInteractions = info&&{watchlist:info.list_info.watchlist, like:info.list_info.like, dislike:info.list_info.dislike};
     const dateOptions = { year: "numeric", month: "long", day: "numeric" };
     const changeInfo = (event) => {
         setInfo(prevInfo => {
@@ -30,7 +29,7 @@ const ListHeader = props => {
         </h2>}
         <div className="list-details-statistics">
             {listInfo&&<ListStatistics listInfo={listInfo}/>}
-            {userData&&<ListInteractionButtons list_id={list_id} user_id={userData.user_id} userData={userData} navigate={navigate} original_interactions={listInteractions}/>}
+            {userData&&info&&<ListInteractionButtons data = {{list_id, userData, navigate, info, setInfo}}/>}
         </div>
         <div className="list-description">
             {listInfo&&listInfo.list_created&&<p className="list-base-description">{`A personal list of ${listInfo.list_type} created by ${listInfo.user_name} on ${new Date(listInfo.list_created).toLocaleDateString(undefined, dateOptions)} 
