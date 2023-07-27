@@ -14,7 +14,6 @@ const TextTable = (props) => {
     const elementInteractions = [{name:"checks", conditional:{true:"&#9745;",false:"&#9744;"}, button_name:{true:"check-btn", false:"check-btn"}, label:"Check"},
                     {name:"watch", conditional:{true:"+",false:"+"}, button_name:{true:"watchlist-btn-active",false:"watchlist-btn"}, label:"Watchlist"}]
     const [data, setData] = useState({});
-    console.log(data)
     const [wikidata, setWikidata] = useState();
     let { id } = useParams();
     const {setQ} = props;
@@ -33,10 +32,7 @@ const TextTable = (props) => {
     const {text_author, author_id, text_language, text_original_publication_year, text_original_publication_length,
         text_original_publication_length_type, text_q} = data
     const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
-    useEffect(() => {
-        setData(id);
-        fetchDataEffect({type:'texts', id, setData, user_id:props.userData&&props.userData_user_id})();
-    },[id]);
+    useEffect(() => {fetchDataEffect({type:'texts', id, setData, user_id:props.userData?props.userData.user_id:0})();},[id, props.userData]);
     const rows = [{label:labels.aka,content:(numTitles>1)&&checkData(akaLabel,title.slice(1,numTitles).join(", "))},
                 {label:"", content:bookdesc},{label:labels.author_name + " ", content:checkData(authorLabel, text_author)},
                 {label:labels.written_date, content:checkData(transformYear(checkData(selectedDate,text_original_publication_year, labels.unspecified)))},
@@ -50,8 +46,8 @@ const TextTable = (props) => {
         <div id = "textTableWindow" className="person-info">
             {text_q&&<WikiExternalsLabels q_number={text_q} language={language}/>}
             <h2 className = "Header">{checkData(bookLabel,title[0])} <a href={data.text_q}>(Wiki)</a>
-            {elementInteractions.map((e) =><TextInteraction values={
-                                {...e, condition:true, user_id:props.userData.user_id, text_id:id, postFunction:postTextInteraction}}/>)
+            {Object.keys(data).length>0 && elementInteractions.map((e) =><TextInteraction values={
+                                {...e, condition:data[e.name], user_id:props.userData.user_id, hash:props.userData.hash,text_id:id, postFunction:postTextInteraction}}/>)
                         }</h2>
             {titleLabel!==title[0]&&<TableRow label={labels.original_title}>{titleLabel}</TableRow>}
             {image && !image.split(", ")[0].includes("djvu")&&<img src={image.split(", "[0])} style={{ maxWidth: "400px", maxHeight: "200px", objectFit: "contain" }} alt="img" />}

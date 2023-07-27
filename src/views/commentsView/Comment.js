@@ -24,11 +24,11 @@ const Comment = (props) => {
                 <div className="comment-sum-interactions"><p>{`${interactions.likes+" likes"} - ${interactions.dislikes+" dislikes"}`}</p></div>
                 <div className="comment-interaction-container">
                     <CommentInteractions user_interaction={user_interaction} interactions={interactions} setInteractions={setInteractions} 
-                            user_id={props.userData.user_id} comment_id={comment_id}/>
-                    <AddComment user_id={props.userData.user_id} parent_comment_id={comment_id} type={props.type} type_id={props.type_id} buttonName="Reply"/>
+                            user_id={props.userData.user_id} hash={props.userData.hash} comment_id={comment_id}/>
+                    <AddComment user_id={props.userData.user_id} hash={props.userData.hash} parent_comment_id={comment_id} type={props.type} type_id={props.type_id} buttonName="Reply"/>
                 </div>
             </div>
-            :<EditComment comment_id={comment_id} setEdit={setEdit} comment={comment} setComment={setComment}/>
+            :<EditComment user_id={props.userData.user_id} hash={props.userData.hash} comment_id={comment_id} setEdit={setEdit} comment={comment} setComment={setComment}/>
             }
             <div className="comment-div">
                 <div className="comment-dates">

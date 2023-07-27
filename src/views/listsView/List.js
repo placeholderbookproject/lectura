@@ -18,10 +18,10 @@ const ListItem = props => {
     /*const tabs = {all:{data:info, label:"All"}, checked:{data:info&&info.length>0&&info.list_detail.filter(e => e.checks), label:"Checked"}
                 , unchecked:{data:info&&info.length>0&&info.list_detail.filter(e =>!e.checks), label:"Unchecked"}};*/
     //const [tab, setTab] = useState("all")
-    const [changes,setChanges] = useState({additions:[], removals:[],list_info:{list_id:list_id}, order_changes:[], delete:false})
+    const [changes,setChanges] = useState({additions:[], removals:[],list_info:{list_id:list_id}, order_changes:[], delete:false, userData})
     const lists = {"authors-by-books":<AuthorsByBooksTable lang={lang} type={"num_books"}/>,
                     "authors-no-books":<AuthorsByBooksTable lang={lang} type={"no_books"}/>};
-    useEffect(() => {if(list_id){fetchUserList(list_id, props.userData&&props.userData.user_id,setInfo)}},[])
+    useEffect(() => {if(list_id){fetchUserList(list_id, props.userData&&props.userData.user_id,props.userData&&props.userData.hash,setInfo)}},[])
     const listInfo = info&&info.list_info?info.list_info:info
     return (
         <div className="list-tab">

@@ -16,7 +16,7 @@ const RadioComponent = (props) => {
 
 const CreateNewList = (props) => {
     const navigate = useNavigate();
-    const [input, setInput] = useState({list_name:"",list_description:"",list_type:"", user_id:props.userData.user_id})
+    const [input, setInput] = useState({list_name:"",list_description:"",list_type:"", user_id:props.userData.user_id, hash:props.userData.hash})
     const [error, setError] = useState(!props.userData?"not_logged_in":"");
     const errorMsg = {no_title:"Title cannot be empty", no_description:"Description cannot be empty"}
     const formInputs = [{type:"text",label:"List Title ", id:"list_name"},{type:"textarea",label:"List Description ", id:"list_description"},

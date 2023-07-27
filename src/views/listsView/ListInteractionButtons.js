@@ -13,7 +13,7 @@ const ListInteractionButtons = props => {
             updateListInteraction(input).then(() => {
                 const toCheck = `${btn.name==="like"?"dislike":"like"}`
                 if(["like","dislike"].includes(btn.name)&&interactions[toCheck]){
-                    updateListInteraction({type:toCheck,list_id:list_id, user_id:user_id, delete:true})
+                    updateListInteraction({type:toCheck,list_id:list_id, user_id:user_id, delete:true, hash:userData.hash})
                     setInteractions({...interactions,[toCheck]:!interactions[toCheck],[btn.name]:!interactions[btn.name]})}
                 else {setInteractions({...interactions,[btn.name]:!interactions[btn.name]})}
         })}

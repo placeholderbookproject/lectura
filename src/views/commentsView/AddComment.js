@@ -2,12 +2,12 @@ import React,{useState} from "react";
 import CommentsInput from "./CommentsInput";
 import { postComment } from "../apiEffects";
 const AddComment = props => {
-    const {user_id, parent_comment_id, type, type_id, buttonName} = props
+    const {user_id, hash,parent_comment_id, type, type_id, buttonName} = props
     const baseValue = ""//"Add and format your comment here"
     const [comment, setComment] = useState(baseValue)
     const [addComment, setAddComment] = useState(false);
     const uploadComment = () => {
-        const body = {comment,user_id, parent_comment_id:parent_comment_id?parent_comment_id:null, type, type_id}
+        const body = {comment,user_id, hash,parent_comment_id:parent_comment_id?parent_comment_id:null, type, type_id}
         postComment(body).then(() => {setAddComment(false);setComment(baseValue)})
     }
     return (

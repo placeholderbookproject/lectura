@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Tooltip from '@mui/material/Tooltip';
-import {Link} from 'react-router-dom';
 import { filterArray } from '../formattingFuncs.js';
 import ComponentPopup from '../Popup.js';
 

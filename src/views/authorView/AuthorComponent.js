@@ -7,7 +7,6 @@ import TextComponent from './TextTable';
 import { setTab } from '../commonFuncs.js';
 
 const AuthorComponent = (props) => {
-    console.log(props)
     let { text_id } = useParams();
     const navigate = useNavigate();
     const location = useLocation()

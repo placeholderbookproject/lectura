@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../apiEffects";
+import Cookies from 'js-cookie';
 const bcrypt = require("bcryptjs");
 
 const Signin = (props) => {
     const [input, setInput] = useState({user_name:"", user_password:""});
     const [error, setError] = useState(false);
     const [user,setUser] = useState(false);
+    const [login, setLogin] = useState(false);
     const errors = {no_user:"There is no user with that user name or email", wrong_pw:"The password you entered is wrong"}
     const navigate = useNavigate();
     const formInputs = [{name:"user_name",type:"email", label:"User Name or Email ", autoComplete:"current-email"}
@@ -20,15 +22,19 @@ const Signin = (props) => {
         loginUser({user:input.user_name})
         .then((result) => {
             if(result!==false){
-                setUser({user_id:result.user_id, user_name:result.user_name, user_email:result.user_email})
+                setUser({user_id:result.user_id, user_name:result.user_name, user_email:result.user_email, hash:result.hash})
                 return bcrypt.compare(input.user_password, result.pw)}
             else {return "no_user"}})
         .then ((response) => {
-            if(response===true){navigate(`/`)}
+            if(response===true){setLogin(true);}
             else if (response==="no_user"){setError("no_user")}
             else {setError("wrong_pw")}})
     }
-    useEffect(() => {user!==false&&props.setUserData(user)},[user])
+    useEffect(() => {if(user!==false&&login){
+                        props.setUserData(user);navigate("/");
+                        Cookies.set('user', JSON.stringify(user), { expires: 7 })
+                    }
+                    else if(user!==false&&!login){setUser(false);}},[user, login])
     return (
         <>
         <form className="form-container">

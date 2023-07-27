@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { postCommentInteraction } from "../apiEffects";
 const parse = require('html-react-parser');
 const CommentInteractions = props => {
-    const {user_interaction, interactions, setInteractions, user_id, comment_id} = props
+    const {user_interaction, interactions, setInteractions, user_id, hash, comment_id} = props
     const interactionButtons = [{label:"&#128077; Like", value:"like"},{label:"&#128078; Dislike", value:"dislike"}]
     const [commentInteractions, setCommentInteractions] = useState(user_interaction)
     const interact = (btn) => {
@@ -13,7 +13,7 @@ const CommentInteractions = props => {
             const otherBtn = btn.value==='like'?'dislikes':'likes';
             setInteractions({[btn.value+"s"]:interactions[btn.value+"s"]+change, [otherBtn]:interactions[otherBtn]+changeOther});
             setCommentInteractions(newInteraction);
-            postCommentInteraction({type:newInteraction, user_id:user_id, comment_id:comment_id});
+            postCommentInteraction({type:newInteraction, user_id, hash,comment_id});
         }
     }
     return (<>

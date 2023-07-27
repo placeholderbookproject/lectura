@@ -25,7 +25,7 @@ export const createNewList = (list_info) => {return postFetch(list_info, 'create
 export const updateUserList = (input) => {return postFetch(input, 'update_user_list')}
 export const updateListInteraction = (input) => {return postFetch(input, 'user_list_interaction')}
 
-export const fetchUserList = (list_id, user_id, setData) => {return fetchFunc(`${server}get_user_list?list_id=${list_id}${user_id?"&user_id="+user_id:""}`, setData)}
+export const fetchUserList = (list_id, user_id, hash,setData) => {return fetchFunc(`${server}get_user_list?list_id=${list_id}${user_id?"&user_id="+user_id+"&hash="+hash:""}`, setData)}
 export const fetchAllLists = (user_id=null,setData) => {fetchFunc(`${server}get_all_lists${user_id?'?user_id='+user_id:""}`,setData);}
 
 export const fetchDataEffect = props => () => {
