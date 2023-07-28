@@ -478,3 +478,8 @@ select {
 
 .edit-btn, .delete-btn {background-color:white; border:none;}
 .edit-btn:hover, .delete-btn:hover {cursor:pointer; border-bottom:1px solid black;}
+
+
+.page-btn, .page-btn-active {background-color: white; border: 0.5px solid black;}
+.page-btn:hover, .page-btn-active:hover {cursor:pointer; background-color:grey;}
+.page-btn-active {background-color:grey;}

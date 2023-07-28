@@ -67,7 +67,9 @@ const SearchDetailed = (props) => {
                 isMulti
             />}
         </div>
-        <SearchResults filters={filters} searchResults={searchResults} setSearchResults={setSearchResults} searchType={searchType} lang={props.lang}/>
+        <SearchResults filters={filters} searchResults={searchResults} setSearchResults={setSearchResults} searchType={searchType} lang={props.lang}
+            searchParams={searchParams} setSearchParams={setSearchParams}
+        />
       </div>
     )
   }

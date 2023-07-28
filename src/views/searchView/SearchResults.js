@@ -3,13 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import Tooltip from '@mui/material/Tooltip';
 import { filterArray } from '../formattingFuncs.js';
 import ComponentPopup from '../Popup.js';
+import Paging from '../Paging.js';
 
 const SearchResults = (props) => {
+    const {searchResults, setSearchResults, searchType, lang, searchParams, setSearchParams} = props
     const removals = ["author_id","text_id","value","type"]
     const navigate = useNavigate();
     const filters = filterArray(props.filters,removals) 
-    const searchResults = props.searchResults, searchType=props.searchType;
     const [searchOrder, setSearchOrder] = useState("asc");
+    const [page, setPage] = useState(searchParams.has("page")?searchParams.get("page"):1);
+    const [pageLength, setPageLength] = useState({label:'10', value:10})
     const sortFunction = (event) => {
         if (searchOrder==="asc"){setSearchOrder("desc")}
         else {setSearchOrder("asc")}
@@ -28,10 +31,11 @@ const SearchResults = (props) => {
               return 0;
             }
         sortedData = sortedData.sort(compare)
-        props.setSearchResults(sortedData);
+        setSearchResults(sortedData);
     }
     return (
-        searchType!=="all"
+        <div>
+        {searchType!=="all"
         ?<table id = "detailed-search-results"><tbody>
             <tr>
                 {filters.length>0 && filters.map((filter) => ( //Headers mapping with tooltip
@@ -40,7 +44,7 @@ const SearchResults = (props) => {
                 </Tooltip>))}
             </tr>
             {searchResults.length>0&&
-                ((searchResults.length>100)?searchResults.slice(0,100):searchResults).map //Limitation to first 100 values
+                searchResults.slice(pageLength.value*page-pageLength.value,pageLength.value*page).map //Limitation to first 100 values
                     (result => (
                         <tr key = {searchType === "author"?result.author_id:result.text_id}>
                             {Object.keys(result).map((col) => {
@@ -54,11 +58,13 @@ const SearchResults = (props) => {
                         </tr>))}
         </tbody></table>
         :<div className="search-result-all"> 
-        {searchResults.map((result) => 
+        {searchResults.slice(pageLength.value*page-pageLength.value,pageLength.value*page).map((result) => 
             <div className="search-result-all-elements">
                 <p><a className="text-row" href={result.type==="text"?`${result.author_id&&"/author/"+result.author_id}/text/${result.value}`:`/${result.type}/${result.value}`}>{result["label"]}</a></p>
-                <ComponentPopup key={result["label"]} id={result.value} lang={props.lang} type={result.type}><p style={{fontWeight:600}}> &#x2193;</p></ComponentPopup>        
+                <ComponentPopup key={result["label"]} id={result.value} lang={lang} type={result.type}><p style={{fontWeight:600}}> &#x2193;</p></ComponentPopup>        
             </div>)}
+        </div>}
+        <Paging properties = {{page, setPage, searchResults, pageLength, setPageLength, urlParams:searchParams, setUrlParams:setSearchParams}}/>
         </div>
     )
 }

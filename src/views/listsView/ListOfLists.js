@@ -1,5 +1,5 @@
 import React from 'react';
-import ListsListItem from './ListsOfListItem';
+import ListsListItem from './ListsListItem';
 const ListsOfLists = (props) => {
     const {userData, lists, tab, searchResults, setSearchResults} = props
     const tabFilter = {all:lists,personal:lists.filter(element => element.tab==="personal")
