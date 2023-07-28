@@ -20,12 +20,14 @@ const SearchDetailed = (props) => {
     const [filters, setFilters] = useState([]);
     const [search, setSearch] = useState("");
     const [searchResults,setSearchResults] = useState([]);
-    const searchFunction = (searchVar = search, type=searchType) => {
+    const searchFunction = (searchVar, type=searchType) => {
         const searchFilters = options[type].slice(0,6);
-        setSearchParams({'query':searchVar,'type':type})
+        const existingParams = new URLSearchParams(searchParams.toString());
+        existingParams.set('query', searchVar);existingParams.set('type',type);
+        setSearchParams(existingParams)
         fetchSearchResults({ setSearchResults, query:searchVar, type:type==="all"?null:type, filters:type!=="all"?searchFilters:""})();
     }
-    const onEnter = (e) => {if(e.key==="Enter"){searchFunction()}}
+    const onEnter = (e) => {if(e.key==="Enter"){searchFunction(search)}}
     const clearSearch = () => {setSearch("");setSearchResults([]);}
     useEffect (() => {//Search if a search query parameter exists in the url
         const searchQuery = [...searchParams];

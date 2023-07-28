@@ -17,7 +17,6 @@ const RouteList = () => {
   const userCookie = Cookies.get('user')
   const [lang, setLang] = useState({value:"en", label:"English"});
   const [userData, setUserData] = useState(userCookie?JSON.parse(userCookie):false);
-  console.log(userData)
   const routes = [{path:"/", element: <IntroPage lang = {lang}/>},
       {path:"/text/:id",element:<TextComponent lang={lang} userData={userData}/>},
       {path:"/author/:id",element:<AuthorComponent lang = {lang} userData={userData}/>},

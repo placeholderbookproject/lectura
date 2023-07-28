@@ -2,8 +2,7 @@ import React, {useState, useEffect} from "react"
 import { fetchSearchResults } from '../apiEffects';
 
 const ListAddElement = (props) => {
-    const type = props.type.replace("s","")
-    const {info, setInfo, changes, setChanges} = props
+    const {info, setInfo, changes, setChanges, filters, type} = props.properties
     const [query, setQuery] = useState("")
     const searchSelect = (e) => {setQuery(e.target.value);}
     const [searchResults, setSearchResults] = useState([])
@@ -11,17 +10,18 @@ const ListAddElement = (props) => {
     useEffect (()=> {
         const cleanup = () => {if (controller) {controller.abort();}};
         controller = new AbortController();
-        query&&query.length>3&&fetchSearchResults({setSearchResults,query,/*type,*/signal:controller.signal})();
+        query&&query.length>3&&fetchSearchResults({setSearchResults,query,type:type,filters,signal:controller.signal})();
         return cleanup
     },[query]);
     const search = (event) => {if (event.key==="Escape"){setQuery("");setSearchResults();}}
-    const results = searchResults&&searchResults.length>0?searchResults.filter(item=>item.type===type):[]
+    const results = searchResults&&searchResults.length>0?searchResults:[]
     const addElement = (element) => {
         const oldList = info;
         const newElement = [...oldList.list_detail,...[element]]
+        console.log(newElement)
         setInfo({...oldList,list_detail:newElement})
         const oldChanges = changes
-        setChanges({additions:[...oldChanges.additions,...[element]],removals:oldChanges.removals,
+        setChanges({...oldChanges,additions:[...oldChanges.additions,...[element]],removals:oldChanges.removals,
                     list_info:oldChanges.list_info, order_changes:oldChanges.order_changes})
     }
     return (

@@ -1,15 +1,13 @@
-import React, {useState, useEffect} from 'react';
-import {options} from '../filters.js';
-import Select from 'react-select';
+import React, {useEffect} from 'react';
 import { postTextInteraction } from '../apiEffects.js';
+import {options} from '../filters.js';
 import TextInteraction from '../TextInteraction.js';
+import ListFilters from './ListFilters.js';
 
 const ListElement = (props) => {
-    const {info, setInfo, edit, changes, setChanges, userData} = props
+    const {info, setInfo, edit, changes, setChanges, userData, filters, setFilters} = props.properties
     const elementInteractions = [{name:"checks", conditional:{true:"&#9745;",false:"&#9744;"}, button_name:{true:"check-btn", false:"check-btn"}, label:"Check"},
                                 {name:"watch", conditional:{true:"+",false:"+"}, button_name:{true:"watchlist-btn-active",false:"watchlist-btn"}, label:"Watchlist"}]
-    const columnOptions = info.list_info&&options[info.list_info.list_type]
-    const [filters, setFilters] = useState([])
     const removeElement = (element) => {
         setInfo(prevInfo => {
             const updatedInfo = { ...prevInfo };
@@ -47,7 +45,7 @@ const ListElement = (props) => {
     return (
         info&&info.list_detail&&
         <div>
-            <Select options = {columnOptions} onChange = {(e) => setFilters(e)} value = {filters} placeholder = {"Select visible columns"} isMulti/>
+            <ListFilters properties={{filters, setFilters, type:info.list_info.list_type}}/>
             {filters&&filters.length>0&&
             <table className="drag-table"><tbody>
                 <tr>

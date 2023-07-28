@@ -16,19 +16,21 @@ const ListItem = props => {
     const list_id = !isNaN(listname.split("_")[0])&&listname.split("_")[0];
     const [info, setInfo] = useState(false);
     const [changes,setChanges] = useState({additions:[], removals:[],list_info:{list_id:list_id}, order_changes:[], delete:false, userData})
+    const [filters, setFilters] = useState([])
     const lists = {"authors-by-books":<AuthorsByBooksTable lang={lang} type={"num_books"}/>,"authors-no-books":<AuthorsByBooksTable lang={lang} type={"no_books"}/>};
     useEffect(() => {if(list_id){fetchUserList(list_id, props.userData&&props.userData.user_id,props.userData&&props.userData.hash,setInfo)}},[])
     const listInfo = info&&info.list_info?info.list_info:info
+    info&&console.log(info.list_info.list_url)
     return (
         <div className="list-tab">
             <div className="list-tab-header">
                 <span><button onClick = {() => navigate("/lists/")} className="return-btn">&#8592; Return to List Overview</button></span>
             </div>
-            <ListHeader data={{listInfo, userData, edit, setEdit, changes, setChanges, info, setInfo, list_id, navigate}}/>
+            <ListHeader data={{listInfo, userData, edit, setEdit, changes, setChanges, info, setInfo, list_id, navigate, type:type.replace("s","")}}/>
             {["all","official"].includes(type)&&info&&lists[info.list_info.list_url]}
-            {edit&&<ListAddElement type={listInfo.list_type} info={info} setInfo={setInfo} changes={changes} setChanges={setChanges}/>}
+            {edit&&<ListAddElement properties = {{type:listInfo.list_type, info, setInfo, changes, setChanges, filters}}/>}
             {!(info&&lists[info.list_info.list_url])&&<>
-                <ListElement edit={edit} info={info} setInfo={setInfo} changes={changes} setChanges={setChanges} userData={userData}/></>}
+                <ListElement properties = {{edit, info, setInfo, changes, setChanges, userData, filters, setFilters}}/></>}
             {userData&&<AddComment user_id={userData.user_id} type="list" type_id ={list_id} buttonName="New Comment"/>}
             <CommentView comment_type="list" comment_type_id={list_id} userData={userData}/>
         </div>
