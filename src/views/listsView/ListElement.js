@@ -42,6 +42,7 @@ const ListElement = (props) => {
         })
     }
     useEffect(() => {info.list_info&&setFilters(options[info.list_info.list_type].slice(0,3))},[info.list_info])
+    console.log(filters)
     return (
         info&&info.list_detail&&
         <div>
@@ -59,7 +60,9 @@ const ListElement = (props) => {
                     <tr key={elementIndex} draggable={edit} onDragOver={handleDragOver} onDragStart={(event) => handleDragStart(event, elementIndex)}
                         onDrop={(event) => handleDrop(event, elementIndex)} className={`list-element${edit?"-draggable":""}`}>
                     <td>{elementIndex+1}</td>
-                    {filters.map((col, colIndex) => <td key={colIndex}>{element[col.value]}</td>)}
+                    {filters.map((col, colIndex) => col.value==="label"
+                        ?<td key={colIndex}><a href={`${element["author_id"]?"/author/"+element["author_id"]+"/text/"+element["value"]:"/author/"+element["value"]}`}>{element[col.value]}</a></td>
+                        :<td key={colIndex}>{element[col.value]}</td>)}
                     {edit&&<td><button className="list-remove-element" onClick = {() => removeElement(element)}>X</button></td>}
                     {info.list_info.list_type==="texts"&&
                         elementInteractions.map((e) =><td><TextInteraction values={

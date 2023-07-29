@@ -12,6 +12,7 @@ const ListItem = props => {
     const {lang, userData} = props;
     let {listname, type} = useParams();
     const [info, setInfo] = useState(false);
+    console.log(info)
     const [searchParams,setSearchParams] = useSearchParams();
     const navigate = useNavigate();
     const [edit, setEdit] = useState(searchParams.get('edit')==="true"?true:false);
