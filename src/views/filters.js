@@ -1,6 +1,7 @@
 import labels from './labels.js';
 
 const textFilters = [
+    {value:'label',label:"Label"},
     {value: 'text_title', label: 'Title'},
     {value: 'text_author', label: 'Author'},
     {value: 'author_id', label:'author_id'},
@@ -12,6 +13,7 @@ const textFilters = [
 
 const authorFilters = [
     //{value: '#', label: "#"},
+    {value:'label',label:"Label"},
     {value: 'author_name', label: 'Author'},
     {value: 'author_positions', label: 'Occupations'},
     {value: 'author_birth_city', label:'Birth City'},

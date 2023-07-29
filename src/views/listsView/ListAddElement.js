@@ -18,7 +18,6 @@ const ListAddElement = (props) => {
     const addElement = (element) => {
         const oldList = info;
         const newElement = [...oldList.list_detail,...[element]]
-        console.log(newElement)
         setInfo({...oldList,list_detail:newElement})
         const oldChanges = changes
         setChanges({...oldChanges,additions:[...oldChanges.additions,...[element]],removals:oldChanges.removals,
