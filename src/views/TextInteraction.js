@@ -7,7 +7,7 @@ const TextInteraction = props => {
     const handleClick = () => {
         const newIsTrue = !isTrue;
         setIsTrue(newIsTrue);
-        postFunction({condition: newIsTrue, user_id, text_id, type:name});
+        postFunction({condition: newIsTrue, user_id, text_id, type:name, hash});
     }
     return (<>
         <button className={isTrue?button_name.true:button_name.false} onClick={handleClick}>{parse(conditional[isTrue])}</button>

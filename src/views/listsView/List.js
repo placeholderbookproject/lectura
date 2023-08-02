@@ -3,7 +3,7 @@ import AuthorsByBooksTable from './AuthorsByBooks';
 import { useParams, useNavigate, useSearchParams} from 'react-router-dom';
 import { fetchUserList } from '../apiEffects';
 import ListAddElement from './ListAddElement';
-import ListElement from './ListElement';
+import ListElements from './ListElement';
 import AddComment from '../commentsView/AddComment';
 import CommentView from '../commentsView/CommentView';
 import ListHeader from './ListHeader';
@@ -35,8 +35,7 @@ const ListItem = props => {
             <ListHeader data={{listInfo:info.list_info, userData, edit, setEdit, changes, setChanges, info, setInfo, list_id, navigate, type:type.replace("s",""), setSearchParams, editable}}/>
             {["all","official"].includes(type)&&info&&lists[info.list_info.list_url]}
             {editable&&edit&&<ListAddElement properties = {{type:info.list_info.list_type, info, setInfo, changes, setChanges, filters}}/>}
-            {!(info&&lists[info.list_info.list_url])&&<>
-                <ListElement properties = {{edit, info, setInfo, changes, setChanges, userData, filters, setFilters}}/></>}
+            {!(info&&lists[info.list_info.list_url])&&<><ListElements properties = {{edit, info, setInfo, changes, setChanges, userData, filters, setFilters}}/></>}
             {userData&&<AddComment user_id={userData.user_id} type="list" type_id ={list_id} buttonName="New Comment"/>}
             <CommentView comment_type="list" comment_type_id={list_id} userData={userData}/>
         </div>

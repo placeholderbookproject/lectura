@@ -1,13 +1,15 @@
-import React, {useEffect} from 'react';
+import React, {useState,useEffect} from 'react';
 import { postTextInteraction } from '../apiEffects.js';
 import {options} from '../filters.js';
 import TextInteraction from '../TextInteraction.js';
 import ListFilters from './ListFilters.js';
+import ListStatistics from './ListStatistics.js';
 
-const ListElement = (props) => {
+const ListElements = (props) => {
     const {info, setInfo, edit, changes, setChanges, userData, filters, setFilters} = props.properties
     const elementInteractions = [{name:"checks", conditional:{true:"&#9745;",false:"&#9744;"}, button_name:{true:"check-btn", false:"check-btn"}, label:"Check"},
                                 {name:"watch", conditional:{true:"+",false:"+"}, button_name:{true:"watchlist-btn-active",false:"watchlist-btn"}, label:"Watchlist"}]
+    const [elements, setElements] = useState(info.list_detail)
     const removeElement = (element) => {
         setInfo(prevInfo => {
             const updatedInfo = { ...prevInfo };
@@ -41,12 +43,11 @@ const ListElement = (props) => {
             if(index!== -1){updatedFilters.splice(index,1);} return updatedFilters;
         })
     }
-    useEffect(() => {info.list_info&&setFilters(options[info.list_info.list_type].slice(0,3))},[info.list_info])
-    console.log(filters)
+    useEffect(() => {if(info.list_info){setElements(info.list_detail);setFilters(options[info.list_info.list_type].slice(0,3))}},[info.list_info])
     return (
-        info&&info.list_detail&&
         <div>
             <ListFilters properties={{filters, setFilters, type:info.list_info.list_type}}/>
+            {info.list_info.list_type==="texts"&&<ListStatistics properties={{elements:info.list_detail, setElements}}/>}
             {filters&&filters.length>0&&
             <table className="drag-table"><tbody>
                 <tr>
@@ -56,7 +57,7 @@ const ListElement = (props) => {
                     {edit&&<th></th>}
                     {info.list_info.list_type==="texts"&&elementInteractions.map(e => <th>{e.label}</th>)}
                 </tr>
-                {info.list_detail.map((element, elementIndex) =>
+                {elements.map((element, elementIndex) =>
                     <tr key={elementIndex} draggable={edit} onDragOver={handleDragOver} onDragStart={(event) => handleDragStart(event, elementIndex)}
                         onDrop={(event) => handleDrop(event, elementIndex)} className={`list-element${edit?"-draggable":""}`}>
                     <td>{elementIndex+1}</td>
@@ -66,11 +67,11 @@ const ListElement = (props) => {
                     {edit&&<td><button className="list-remove-element" onClick = {() => removeElement(element)}>X</button></td>}
                     {info.list_info.list_type==="texts"&&
                         elementInteractions.map((e) =><td><TextInteraction values={
-                                {...e, condition:element[e.name], user_id:userData.user_id, text_id:element.element_id, postFunction:postTextInteraction}}/></td>)
+                                {...e, condition:element[e.name], user_id:userData.user_id, text_id:element.element_id, postFunction:postTextInteraction, hash:userData.hash}}/></td>)
                         }
                     </tr>)}
             </tbody></table>}
         </div>
     )
 }
-export default ListElement
+export default ListElements
