@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ListInteractionsStatistics from "./ListInteractionsStatistics";
 
 const ListsListItem = (props) => {
-    const {img, list_name, list_description, list_id, list_created, list_modified, user_name, list_deleted, likes, dislikes, watchlists} = props.list_data
+    const {img, list_name, list_description, list_id, list_created, list_modified, user_name, user_deleted,list_deleted, likes, dislikes, watchlists} = props.list_data
     const [info, setInfo] = useState({list_info:props.list_data})
     const url = `${(list_id+"_"+list_name)}`
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ const ListsListItem = (props) => {
             <div className="list-details">
                 <ListInteractionsStatistics listInfo={{likes, dislikes, watchlists}}/>
                 <ListInteractionButtons data={{list_id, userData:props.userData, navigate, info, setInfo}}/>
-                {user_name&&<div className="list-user"><label>User </label>{user_name}</div>}
+                {user_name&&<div className={`list-user${user_deleted?'-deleted':''}`}><label>User </label>{user_name}</div>}
                 <div className="list-dates">
                     {dates.map(d => d.content&&<><label>{d.label}</label><p className="list-date">{new Date(d.content).toLocaleDateString(undefined, dateOptions)}</p></>)}
                 </div>

@@ -12,7 +12,7 @@ body {margin:0; margin-left:5px;}
   background-color:#fcfcfc;
   display:flex;
   position: relative;
-  height:62px;
+  height:80px;
 }
 .list-title{margin:2px; margin-left:2px;}
 .list-title:hover {cursor: pointer; border-bottom:1px solid black;}
@@ -25,7 +25,8 @@ body {margin:0; margin-left:5px;}
   align-items: flex-end;
 }
 .list-dates label {font-weight:700; margin-left:5px; margin-right:5px;}
-.list-user label{font-weight:700;}
+.list-user label, .list-user-deleted label{font-weight:700;}
+.list-user-deleted {color:darkred; text-decoration: line-through;}
 .list-date {margin:0;}
 .list-buttons {display: flex; gap: 10px;}
 .list-base-description {font-weight:bold;margin-top:0;}
