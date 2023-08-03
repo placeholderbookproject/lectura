@@ -2,7 +2,7 @@ import React,{useState} from "react";
 import { updateListInteraction } from "../apiEffects";
 const parse = require('html-react-parser');
 const ListInteractionButtons = props => {
-    const {list_id, userData, navigate, info, setInfo} = props.data
+    const {list_id, userData, navigate, info} = props.data
     const [interactions, setInteractions] = useState(info.list_info);
     const list_buttons = [{name:"watchlist",label:"+", function:void(0)},{name:"like", label:"&#128077;", function:void(0)},
                         {name:"dislike", label:"&#128078;", function:void(0)}];

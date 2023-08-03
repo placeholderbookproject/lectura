@@ -7,10 +7,8 @@ const fetchFunc = (query, setData, signal) => {
 }
 
 export const postFetch = (body, url) => {
-    return fetch(server+url,{method: 'POST',body: JSON.stringify(body)})
-    .then(response => response.json())
-    .then (data => data)
-    .catch(error => console.log(error))
+    return fetch(server+url,{method: 'POST',body: JSON.stringify(body)}).then(response => response.json()).then(data => data)
+            .catch(error => console.log(error))
 }
 
 export const postComment = (data) => {return postFetch(data, 'upload_comment')}
@@ -51,9 +49,7 @@ export const fetchSearchResults = props => () => {
 export const createNewUser = (input) => {return postFetch(input, 'create_user')}
 export const deleteUser = (input) => {return postFetch(input, 'delete_user')}
 export const loginUser = (input) => {
-    return fetch(server+'login_user?'+'user='+input.user)
-        .then(response => response.json())
-        .catch(error => console.log(error))
+    return fetch(server+'login_user?'+'user='+input.user).then(response => response.json()).catch(error => console.log(error))
 }
 
 export const wikidataEffect = props => () => {
@@ -87,11 +83,8 @@ export const archiveEffect = props => () => {
     const search = `(title:"${title}" OR title:"${originalTitle}") AND (text:"${name}" OR text:"${lastName}")`;
     const params = {q: search, output: 'json', fields: 'identifier,creator,title,language,year',
       sort: ['downloads desc','year asc', 'addeddate asc'],rows: 20};
-    const queryString = Object.keys(params)
-      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`).join('&');
+    const queryString = Object.keys(params).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`).join('&');
     // send the GET request to the search API endpoint
-    fetch(`${searchUrl}?${queryString}`)
-      .then(response => response.json())
-      .then(data => {setArchive(data.response.docs);})
+    fetch(`${searchUrl}?${queryString}`).then(response => response.json()).then(data => {setArchive(data.response.docs);})
       .catch(error => console.error(error));    
 }

@@ -24,13 +24,15 @@ body {margin:0; margin-left:5px;}
   flex-direction: row;
   align-items: flex-end;
 }
-.list-dates label {font-weight:700; margin-right:5px;}
+.list-dates label {font-weight:700; margin-left:5px; margin-right:5px;}
 .list-user label{font-weight:700;}
-.list-created {margin:0;}
+.list-date {margin:0;}
 .list-buttons {display: flex; gap: 10px;}
 .list-base-description {font-weight:bold;margin-top:0;}
 .list-header h2 {margin-bottom:0;}
-.list-statistics-container {display:flex; flex-direction:row; justify-content: flex-end}
+.list-statistics-container {display:flex; flex-direction:row; justify-content: flex-end;}
+.list-statistics-container p {margin:0;}
+.list-statistics-container span {font-weight: 700;}
 .list-statistics, .list-statistics-filter {margin-top: 10px; margin-bottom: 5px; display:flex; flex-direction:row;}
 .list-statistics-btn, .list-statistics-btn-active {background-color: white; border: none; border-bottom: 1px solid black; font-size: 14px;}
 .list-statistics-btn-active {background-color: rgb(198, 197, 197); font-weight: bold;}

@@ -53,8 +53,7 @@ const SearchDetailed = (props) => {
                             <IconButton onClick = {() => searchFunction()} aria-label="Search Button" edge="end"><SearchIcon/></IconButton>
                             <IconButton onClick = {clearSearch} aria-label="Clear Search Button" edge="end"><ClearIcon/></IconButton>
                         </InputAdornment>}
-                    label="Search" value = {search}
-                    onChange={(e) => setSearch(e.target.value)} onKeyDown = {onEnter}/>
+                    label="Search" value = {search} onChange={(e) => setSearch(e.target.value)} onKeyDown = {onEnter}/>
                 <FormHelperText>{(searchResults.length>0)?"Your query returned #" + searchResults.length +" results":""}</FormHelperText>
             </FormControl>
             <fieldset className="search-type">{searchOptions.map((option) => 
@@ -63,11 +62,9 @@ const SearchDetailed = (props) => {
                     <label>{option.charAt(0).toUpperCase()+option.slice(1)}</label>
                 </>)}
             </fieldset>
-            {searchType!=="all"&&<Select options = {(searchType === "authors") ? options["authors"]:options["texts"]}
-                onChange = {(e) => setFilters(e)}
-                value = {filters} placeholder = {"Select search filters"}
-                isMulti
-            />}
+            {searchType!=="all"&&
+                <Select options = {(searchType === "authors") ? options["authors"]:options["texts"]} 
+                    onChange = {(e) => setFilters(e)} value = {filters} placeholder = {"Select search filters"} isMulti/>}
         </div>
         <SearchResults filters={filters} searchResults={searchResults} setSearchResults={setSearchResults} searchType={searchType} lang={props.lang}
             searchParams={searchParams} setSearchParams={setSearchParams}

@@ -12,7 +12,6 @@ const textFilters = [
 ]
 
 const authorFilters = [
-    //{value: '#', label: "#"},
     {value:'label',label:"Label"},
     {value: 'author_name', label: 'Author'},
     {value: 'author_positions', label: 'Occupations'},
@@ -28,7 +27,6 @@ const authorFilters = [
     {value:'author_death_day',label:'Death Day'},
     {value:'author_death_month',label:'Death Month'},
     {value: 'author_floruit', label: 'Floruit'},
-    //{value: 'works', label: 'Works'},
 ]
 const allFilters = [{value:"label", label:"Label"},{value:"type",label:"Type"},{value:"author_id",label:"author_id"},{value:"value",label:"value"}]
 

@@ -43,7 +43,7 @@ const ListElements = (props) => {
             if(index!== -1){updatedFilters.splice(index,1);} return updatedFilters;
         })
     }
-    useEffect(() => {if(info.list_info){setElements(info.list_detail);setFilters(options[info.list_info.list_type].slice(0,3))}},[info.list_info])
+    useEffect(() => {if(info.list_info){setElements(info.list_detail);setFilters(options[info.list_info.list_type].slice(0,3))}},[info])
     return (
         <div>
             <ListFilters properties={{filters, setFilters, type:info.list_info.list_type}}/>

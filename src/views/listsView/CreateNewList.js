@@ -9,7 +9,7 @@ const RadioComponent = (props) => {
         <div className="radio-container">
             {inps.map((inp) => <React.Fragment key={inp.label}><label>{inp.label}</label>
                 <input id={inp.id} name="list_type" type="radio" value={inp.id} key={inp.label+"-input"}
-                onChange={(event) => changeFormInput(props.input,props.setInput, event)}/></React.Fragment>)}
+                onChange={(e)=>changeFormInput(props.input,props.setInput,e)}/></React.Fragment>)}
         </div>
     )
 }
@@ -39,14 +39,14 @@ const CreateNewList = (props) => {
                         ?<React.Fragment key={inp.id+"-label"}>
                             <label>{inp.label}</label>
                                 {inp.type==="text"
-                                ?<input type={inp.type} id={inp.id} name={inp.id} key={inp.id+"-text"} onChange={(event) => changeFormInput (input, setInput, event)}/>
-                                :<textarea id={inp.id} name={inp.id} key={inp.id+"-textarea"} onChange={(event) => changeFormInput (input, setInput, event)}/>}
+                                ?<input type={inp.type} id={inp.id} name={inp.id} key={inp.id+"-text"} onChange={(e)=>changeFormInput (input, setInput, e)}/>
+                                :<textarea id={inp.id} name={inp.id} key={inp.id+"-textarea"} onChange={(e)=>changeFormInput (input, setInput, e)}/>}
                             </React.Fragment>
                         :inp.type==="radio"&&<RadioComponent setInput={setInput} input={input} key={inp.id+"-radio"}/>))}
                     <button type="submit" className="submit-btn" onClick = {handleSubmit}>Create List</button>
             </form>
             {error!==""&&<p className="list-error">{errorMsg[error]}</p>}
-            </>}
+        </>}
             {error==="not_logged_in"&&<p className="sign-in">You need to be logged in to make a list.<button className="return-login-btn" onClick={()=>{navigate("/login")}}>Login here</button></p>}
         </div>
     )

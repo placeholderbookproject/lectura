@@ -28,7 +28,7 @@ const ListHeader = props => {
                 <button className="save-btn" onClick={()=>saveChanges()}>Save Changes</button></>}
         </h2>}
         <div className="list-details-statistics">
-            {listInfo&&<ListInteractionsStatistics listInfo={listInfo}/>}
+            {listInfo&&<ListInteractionsStatistics listInfo={{likes:listInfo.likes, dislikes:listInfo.dislikes, watchlists:listInfo.watchlists}}/>}
             {userData&&<ListInteractionButtons data = {{list_id, userData, navigate, info, setInfo}}/>}
         </div>
         <div className="list-description">

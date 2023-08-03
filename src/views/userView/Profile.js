@@ -15,8 +15,7 @@ const Profile = (props) => {
                 ?<>{profileInfo.map((info) => <TableRow label={info.label} key={info.value}>{info.value}</TableRow>)}
                 <button onClick = {() => logout()}>Log Out</button>
                 <button className="delete-user-btn" onClick={() => setDeleteUser(true)}>Delete User</button></>
-                :<DeleteUser userData={props.userData} setUserData={props.setUserData} setDeleteUser={setDeleteUser}/>
-            }
+                :<DeleteUser userData={props.userData} setUserData={props.setUserData} setDeleteUser={setDeleteUser}/>}
         </div>
     )
 }

@@ -12,7 +12,6 @@ const ListItem = props => {
     const {lang, userData} = props;
     let {listname, type} = useParams();
     const [info, setInfo] = useState(false);
-    console.log(info)
     const [searchParams,setSearchParams] = useSearchParams();
     const navigate = useNavigate();
     const [edit, setEdit] = useState(searchParams.get('edit')==="true"?true:false);
@@ -22,16 +21,11 @@ const ListItem = props => {
     const [filters, setFilters] = useState([])
     const lists = {"authors-by-books":<AuthorsByBooksTable lang={lang} type={"num_books"}/>,"authors-no-books":<AuthorsByBooksTable lang={lang} type={"no_books"}/>};
     useEffect(() => {if(list_id){fetchUserList(list_id, props.userData&&props.userData.user_id,props.userData&&props.userData.hash,setInfo)}},[])
-    useEffect(() => {
-        if(info&&(userData.user_id===info.list_info.user_id)){setEditable(true)} 
-        else{setEditable(false)}}
-    ,[info])
+    useEffect(() => {if(info&&(userData.user_id===info.list_info.user_id)){setEditable(true)} else{setEditable(false)}},[info])
     return (
         info&&
         <div className="list-tab">
-            <div className="list-tab-header">
-                <span><button onClick = {() => navigate("/lists/")} className="return-btn">&#8592; Return to List Overview</button></span>
-            </div>
+            <div className="list-tab-header"><span><button onClick = {() => navigate("/lists/")} className="return-btn">&#8592; Return to List Overview</button></span></div>
             <ListHeader data={{listInfo:info.list_info, userData, edit, setEdit, changes, setChanges, info, setInfo, list_id, navigate, type:type.replace("s",""), setSearchParams, editable}}/>
             {["all","official"].includes(type)&&info&&lists[info.list_info.list_url]}
             {editable&&edit&&<ListAddElement properties = {{type:info.list_info.list_type, info, setInfo, changes, setChanges, filters}}/>}

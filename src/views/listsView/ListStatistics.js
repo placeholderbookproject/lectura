@@ -6,9 +6,9 @@ const ListStatistics = props => {
     const filterTypes = [{value:"checks", label:"checked"}, {value:"watch", label:"watchlisted"}]
     const listLength = elements.length
     const buttons = [{label: `${elements.filter(e => e[filterType.value]).length}/${listLength} ${filterType.label}`, value:elements.filter(e=>e[filterType.value]), name:filterType.label}
-                    , {label: `${elements.filter(e => !e[filterType.value]).length}/${listLength} not ${filterType.label}`, value:elements.filter(e=>!e[filterType.value]), name:`not ${filterType.label}`}
-                    , {label: `All (${listLength}) texts`, value:elements, name:"all"}]
-    const setShowType=(btn) => {
+                    ,{label: `${elements.filter(e => !e[filterType.value]).length}/${listLength} not ${filterType.label}`, value:elements.filter(e=>!e[filterType.value]), name:`not ${filterType.label}`}
+                    ,{label: `All (${listLength}) texts`, value:elements, name:"all"}]
+    const setShowType = (btn) => {
         if(btn.name===type){setElements(buttons.find(e=> e.name==="all").value);setType("all")}
         else {setElements(btn.value);setType(btn.name)}}
     const handleChange = (e) => {setFilterType({ value:e.target.value, label:e.target.options[e.target.selectedIndex].innerText });};    

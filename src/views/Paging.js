@@ -15,11 +15,11 @@ const Paging = props => {
         <select value = {pageLength.value} label={pageLength.label} onChange = {handleChange} className="page-select">
             {pageLengthOptions.map((opt) => (<option key = {opt.value+opt.label} value = {opt.value}>{opt.label}</option>))}
         </select>
-      <div>
+        <div>
         <a>Pages </a>
-          {Array.from({ length: Math.ceil(searchResults.length/pageLength.value) }).map((_, index) => (
-          <button key={index} onClick={() => handleClick(index+1)} className={page===index+1?"page-btn-active":"page-btn"}>{index + 1}</button>))}
-      </div>
+            {Array.from({ length: Math.ceil(searchResults.length/pageLength.value) }).map((_, index) => (
+            <button key={index} onClick={() => handleClick(index+1)} className={page===index+1?"page-btn-active":"page-btn"}>{index + 1}</button>))}
+        </div>
     </div>
     )
 }

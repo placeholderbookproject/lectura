@@ -12,10 +12,7 @@ const DeleteUser = (props) => {
         event.preventDefault();
         loginUser({user:userData.user_name})
         .then((result) => {return bcrypt.compare(password, result.pw)})
-        .then((response) => {
-            if(response===true){deleteUser(userData);setUserData(false);navigate("/")}
-            else {setError(true)}
-        })
+        .then((response) => {if(response===true){deleteUser(userData);setUserData(false);navigate("/")} else{setError(true)}})
     }
     return (
         <div>

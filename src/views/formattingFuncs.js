@@ -40,14 +40,14 @@ export const reformatWikitexts = (wiki) => {
     const results = wiki.results.bindings;
     let grouped = {}
     for (let row of results) {
-      let book = row.book.value;
-      if (!grouped[book]) {grouped[book] = {};}
-      for (let key in row) {
-        if (key !== "book") {
-          let val = row[key].value;
-          if (grouped[book][key]) {
-            if (!grouped[book][key].includes(val)) {grouped[book][key].push(val);}
-          } else {grouped[book][key] = [val];}
+        let book = row.book.value;
+        if (!grouped[book]) {grouped[book] = {};}
+        for (let key in row) {
+            if (key !== "book") {
+                let val = row[key].value;
+                if (grouped[book][key]) {
+                if (!grouped[book][key].includes(val)) {grouped[book][key].push(val);}
+                } else {grouped[book][key] = [val];}
         }}
     }    
     let output = [];

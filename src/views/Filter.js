@@ -11,9 +11,8 @@ const Filters = (props) => {
             if(option.options.length===0){continue}
             newTexts = newTexts.filter((element) => {
                 const propertyValues = element[option.property]?element[option.property].split(" | "):[];
-                return propertyValues.some((value) => option.options.includes(value));
-              });
-        } setTexts(newTexts);
+                return propertyValues.some((value) => option.options.includes(value));});
+        }; setTexts(newTexts);
     },[selectedFilters])
     const handleFilterClick = (property, option) => {
         let updatedFilters;
@@ -48,8 +47,8 @@ const Filters = (props) => {
                                     onChange={() =>handleFilterClick(filterOption.property, value)}
                                     checked={selectedFilters.some((filter)=>filter.property === filterOption.property && filter.options.includes(value))}/>
                                 </div>))}
-                        </div>
-                    ))}
+                        </div>))
+                    }
                     </div>
                 </div>
             )}

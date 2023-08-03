@@ -12,9 +12,7 @@ const ComponentPopup = (props) => {
                 {popupData&&id&&
                     <div className = "popup">
                         <p><a href={type==="author"?"/author/"+id:"/text/"+id}>Go to the Page</a><button onClick = {() =>setPopupData(null)}> X</button></p>
-                        {type==="author"
-                            ?<AuthorTable className="popup" id = {popupData} lang={lang}/>
-                            :<TextTable className="popup" id={popupData} lang={lang}/>}
+                        {type==="author"?<AuthorTable className="popup" id={popupData} lang={lang}/>:<TextTable className="popup" id={popupData} lang={lang}/>}
                     </div>}
         </div>
     )

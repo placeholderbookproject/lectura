@@ -30,13 +30,11 @@ const Signin = (props) => {
             else if (response==="no_user"){setError("no_user")}
             else {setError("wrong_pw")}})
     }
-    useEffect(() => {if(user!==false&&login){
-                        props.setUserData(user);navigate("/");
-                        Cookies.set('user', JSON.stringify(user), { expires: 7 })
-                    }
-                    else if(user!==false&&!login){setUser(false);}},[user, login])
-    return (
-        <>
+    useEffect(() => {
+        if(user!==false&&login){props.setUserData(user);navigate("/");Cookies.set('user', JSON.stringify(user), { expires: 7 })}
+        else if(user!==false&&!login){setUser(false);}}
+    ,[user, login])
+    return (<>
         <form className="form-container">
             {formInputs.map((inp) => (
                 <><label className="form-label" key={inp.label}>{inp.label}</label>
@@ -47,8 +45,7 @@ const Signin = (props) => {
             <button type="submit" className="submit-btn" onClick = {handleSubmit}>Log In</button>
         </form>
         <p>Do not have an account? <button className="return-register-btn" onClick={()=>{navigate("/register")}}>Create User</button></p>
-        </>
-    )
+    </>)
 }
 
 export default Signin;

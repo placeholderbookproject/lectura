@@ -33,9 +33,8 @@ const SearchResults = (props) => {
         sortedData = sortedData.sort(compare)
         setSearchResults(sortedData);
     }
-    return (
-        <div>
-        {searchType!=="all"
+    return (<div>
+    {searchType!=="all"
         ?<table id = "detailed-search-results"><tbody>
             <tr>
                 {filters.length>0 && filters.map((filter) => ( //Headers mapping with tooltip
@@ -53,8 +52,7 @@ const SearchResults = (props) => {
                                     {return <td key={col+result[col]+result["author_id"]}>
                                         <p onClick={() => navigate(`${result["author_id"]?"/author/"+result["author_id"]:""}${col!=="Author"?"/text/"+result["text_id"]:""}`)}>{result[col]}</p></td>}
                                 else if (result[col]===null){return <td key={col+result[searchType]}></td>}
-                                else {return <td key={col+result[col]+result[searchType]}>{result[col]}</td>}
-                            })}
+                                else {return <td key={col+result[col]+result[searchType]}>{result[col]}</td>}})}
                         </tr>))}
         </tbody></table>
         :<div className="search-result-all"> 
@@ -65,8 +63,7 @@ const SearchResults = (props) => {
             </div>)}
         </div>}
         <Paging properties = {{page, setPage, searchResults, pageLength, setPageLength, urlParams:searchParams, setUrlParams:setSearchParams}}/>
-        </div>
-    )
+    </div>)
 }
 
 export default SearchResults;
