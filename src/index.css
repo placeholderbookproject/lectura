@@ -41,6 +41,8 @@ body {margin:0; margin-left:5px;}
 
 .check-btn{border: 0; background-color:white; font-size:25px;}
 .check-btn:hover {cursor:pointer; background-color:rgb(242, 239, 239);}
+.check-btn::before{content: "\2610";}
+.check-btn:hover::before{content: "\2611";}
 
 .search-dropdown-popup {
   position: absolute;
@@ -101,7 +103,7 @@ ul,li {list-style: none;}
   margin: 5px;
 }
 /*Author View */
-.author-container-header {display: flex; flex-direction:row; position:relative; align-items: center}
+.author-container-header {display: flex; flex-direction:row; position:relative; justify-content: center; border-bottom: 1px solid black}
 .author-container {border: 0.5px solid black; position:relative;}
 .author-container h2 {
   text-align: center;
@@ -109,13 +111,13 @@ ul,li {list-style: none;}
   margin: 0;
   font-size: 24px;
 }
-.author-header {color: #000000;text-decoration: none;cursor:pointer}
+.author-header {color: #000000;text-decoration: none;}
 
 .tab-button, .lists-tab, .lists-tab-open {
   background-color: #fff;
   color: #000;
   border: none;
-  border-bottom: 1px solid #a8a7a7;
+  border-bottom: 0.5px solid #a8a7a7;
   cursor: pointer;
   margin:10px;
   font-size: 16px;
@@ -124,6 +126,7 @@ ul,li {list-style: none;}
   font-weight:600;
 }
 
+.tab-container{display: flex;justify-content: center;}
 .lists-tab-open {background-color:rgb(95, 94, 93); color:white;}
 
 .tab-content {display: none;}
@@ -137,7 +140,7 @@ ul,li {list-style: none;}
   margin:10px;
   font-size: 16px;
   outline: none;
-  width:100px;  
+  width:100px;
 }
 
 .person-info, .person-texts {margin: 10px; width: 400px; max-height: 600px;}
@@ -337,10 +340,8 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
 }
 #detailed-search-results tr, #importPreview tr, #listTable tr {background-color: #ffffff;}
 #detailed-search-results tr:hover, #importPreview tr:hover, #listTable tr:hover {background-color: #ddd;}
-#detailedSearchHead .container {
-  position: sticky;
-  top: 0px;
-}
+#detailedSearchHead .container {position: sticky;top: 0px;}
+
 .popup-row:hover {cursor:pointer;}
 
 .header-btn {
@@ -414,12 +415,7 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
   overflow-y:auto;
 }
 
-.dropdown {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /*position:relative;*/
-}
+.dropdown {display: flex; flex-direction: column;align-items: center;}
 
 .absolute {position:absolute;}
 
@@ -489,11 +485,11 @@ select {
 .submit-btn[type=submit]:hover, .save-btn:hover {background-color:#ccc;}
 .radio-container {margin:5px;padding:none;}
 
-
 .edit-btn, .delete-btn {background-color:white; border:none;}
 .edit-btn:hover, .delete-btn:hover {cursor:pointer; border-bottom:1px solid black;}
-
 
 .page-btn, .page-btn-active {background-color: white; border: 0.5px solid black;}
 .page-btn:hover, .page-btn-active:hover {cursor:pointer; background-color:grey;}
 .page-btn-active {background-color:grey;}
+
+.source-result {max-width:200px; margin: 0; margin-bottom:5px; border-bottom:1px dotted black}

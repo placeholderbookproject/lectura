@@ -45,10 +45,9 @@ export const reformatWikitexts = (wiki) => {
         for (let key in row) {
             if (key !== "book") {
                 let val = row[key].value;
-                if (grouped[book][key]) {
-                if (!grouped[book][key].includes(val)) {grouped[book][key].push(val);}
-                } else {grouped[book][key] = [val];}
-        }}
+                if (grouped[book][key]) 
+                    {if (!grouped[book][key].includes(val)) {grouped[book][key].push(val);}} 
+                    else {grouped[book][key] = [val];}}}
     }    
     let output = [];
     for (let book in grouped) {

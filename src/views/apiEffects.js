@@ -34,10 +34,9 @@ export const fetchDataEffect = props => () => {
 
 export const fetchList = props => () => {
     const {setData, filters, type} = props
-    const query = `lists?language=${filters.language}&country=${filters.country}&query_type=${type}`
+    const query = `official_lists?language=${filters.language}&country=${filters.country}&query_type=${type}`
     fetchFunc(server+query, setData)
 }
-
 
 export const fetchSearchResults = props => () => {
     const {setSearchResults, query, type, filters, signal} = props
@@ -81,10 +80,9 @@ export const archiveEffect = props => () => {
     const searchUrl = 'https://archive.org/advancedsearch.php';
     const lastName = name.split(/[, ]+/).pop();
     const search = `(title:"${title}" OR title:"${originalTitle}") AND (text:"${name}" OR text:"${lastName}")`;
-    const params = {q: search, output: 'json', fields: 'identifier,creator,title,language,year',
-      sort: ['downloads desc','year asc', 'addeddate asc'],rows: 20};
+    const params = {q: search, output: 'json', fields: 'identifier,creator,title,language,year'
+                    ,sort: ['downloads desc','year asc', 'addeddate asc'],rows: 20};
     const queryString = Object.keys(params).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`).join('&');
-    // send the GET request to the search API endpoint
     fetch(`${searchUrl}?${queryString}`).then(response => response.json()).then(data => {setArchive(data.response.docs);})
-      .catch(error => console.error(error));    
+      .catch(error => console.error(error));
 }

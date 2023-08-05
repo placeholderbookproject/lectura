@@ -1,5 +1,5 @@
-export const setTab = (event,tabOpen,setTabOpen) => {
-    const oldTab = tabOpen,tab = event.target.textContent
+export const setTab = (value,tabOpen,setTabOpen) => {
+    const oldTab = tabOpen,tab = value
     setTabOpen({...oldTab, [tab]:!tabOpen[tab]})
 }
 

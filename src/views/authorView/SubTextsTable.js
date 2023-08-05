@@ -1,7 +1,7 @@
 import { useState } from "react"
 import TableRow from '../ViewRow.js';
 import labels from '../labels.js';
-import ArchiveList from '../ArchiveList.js';
+import ArchiveList from './ArchiveList.js';
 import {transformYear, dateCoalesce} from '../formattingFuncs.js';
 
 const SubTextsTable = (props) => {
@@ -29,8 +29,8 @@ const SubTextsTable = (props) => {
             </div>           
                 {detailed&&<div className="text-row-detailed">
                     {rows.map((row) => (row.content&&<TableRow label={row.label} key={row.content+row.label}>{row.content}</TableRow>))}
-                    <ArchiveList title={bookLabelReform} name={author_name} originalTitle={titleLabel}/>
-                </div>}
+                    <ArchiveList info={{bookLabel:bookLabelReform, authorLabel:author_name, titleLabel}}/>
+                    </div>}
         </div>)
 }
 
