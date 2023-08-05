@@ -5,6 +5,7 @@ import TextsWikiTable from './AuthorTexts';
 import { useParams, useNavigate, useLocation} from 'react-router-dom';
 import TextComponent from './TextComponent';
 import { setTab } from '../commonFuncs.js';
+import DeleteData from './DeleteData';
 
 const AuthorComponent = (props) => {
     let { text_id } = useParams();
@@ -34,7 +35,9 @@ const AuthorComponent = (props) => {
     <div className="author-container">
         {author&&<div className="author-container-header">
                     <h2><a onClick={()=>{returnMain()}} className="author-header">{author.author_name} </a>
-                    <a href={author.author_q?author.author_q:""}>{`(Wiki)`}</a></h2>
+                    <a href={author.author_q?author.author_q:""}>{`(Wiki)`}</a>
+                    {userData&&<DeleteData properties={{type:"author", data:author, setData:setAuthor, userData}}/>}
+                    </h2>
                 </div>}
         <div className="dropdowns-container">
             {reversedTabs.map((tab) => (

@@ -1,21 +1,16 @@
 import { useState } from "react"
 import TableRow from '../ViewRow.js';
-import labels from '../labels.js';
 import ArchiveList from './ArchiveList.js';
 import {transformYear, dateCoalesce} from '../formattingFuncs.js';
+import { subTextRows } from "./dataRows.js";
 
 const SubTextsTable = (props) => {
-    const {bookLabel, text_id,bookdesc, titleLabel, typeLabel, genreLabel, formLabel, publYear,languageLabel
-        ,dopYear, inceptionYear, metreLabel, book, publisherLabel, lengthLabel, image} = props.data
+    const {bookLabel, text_id,bookdesc, titleLabel, publYear,dopYear, inceptionYear, image} = props.data
     const {author_name} = props.author
     const bookLabelReform = bookLabel.split(" | ").length>1?bookLabel.split(" | ").pop():bookLabel
     const [detailed, setDetailed] = useState(false);
     const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
-    const rows = [{label:labels.original_title,content:titleLabel},{label:labels.written_date,content:transformYear(selectedDate)}
-                ,{label:labels.language,content:languageLabel},{label:labels.genre,content:genreLabel},{label:labels.type, content:typeLabel}
-                ,{label:labels.form, content:formLabel},{label:labels.metre,content:metreLabel}
-            ,{label:labels.length, content:lengthLabel&&lengthLabel+ " pages"},{label:labels.publishers,content:publisherLabel}
-            ,{label:labels.wiki, content:<a href={book}>{book&&book.replace("http://www.wikidata.org/entity/","")}</a>}]
+    const rows = subTextRows(props.data)
     return (
         <div className="text-info">
             <div className="textBox">

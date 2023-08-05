@@ -1,12 +1,16 @@
 body {margin:0; margin-left:5px;}
+p, h2, h3, div, input {font-family: Arial;}
+.listHeader, .profile-info, .list-user label, .list-user-deleted label, .list-dates label, .list-statistics-container span 
+    {font-weight:700;}
+
 .watchlist-btn, .like-btn, .dislike-btn, .watchlist-btn-active, .like-btn-active, .dislike-btn-active 
-  {background-color:white; border: none; opacity:0.5;}
+  {background-color:white; border: none; opacity:0.5; font-size:16px;}
 .watchlist-btn:hover, .like-btn:hover, .dislike-btn:hover, .watchlist-btn-active:hover, .like-btn-active:hover, .dislike-btn-active:hover 
   {border-bottom: 1px solid black; cursor: pointer;}
 .watchlist-btn-active, .like-btn-active, .dislike-btn-active {opacity:1;}
+.watchlist-btn:hover {opacity:1;background-color: rgb(242, 239, 239)}
 .latestAdditionsHeader {font-weight:700; font-size: 1.2em;}
 .list-buttons {display: flex; justify-content: flex-end;}
-.listHeader, .profile-info {font-weight:700;}
 .list-item {
   border: 0.5px solid black;
   background-color:#fcfcfc;
@@ -24,8 +28,7 @@ body {margin:0; margin-left:5px;}
   flex-direction: row;
   align-items: flex-end;
 }
-.list-dates label {font-weight:700; margin-left:5px; margin-right:5px;}
-.list-user label, .list-user-deleted label{font-weight:700;}
+.list-dates label {margin-left:5px; margin-right:5px;}
 .list-user-deleted {color:darkred; text-decoration: line-through;}
 .list-date {margin:0;}
 .list-buttons {display: flex; gap: 10px;}
@@ -33,7 +36,6 @@ body {margin:0; margin-left:5px;}
 .list-header h2 {margin-bottom:0;}
 .list-statistics-container {display:flex; flex-direction:row; justify-content: flex-end;}
 .list-statistics-container p {margin:0;}
-.list-statistics-container span {font-weight: 700;}
 .list-statistics, .list-statistics-filter {margin-top: 10px; margin-bottom: 5px; display:flex; flex-direction:row;}
 .list-statistics-btn, .list-statistics-btn-active {background-color: white; border: none; border-bottom: 1px solid black; font-size: 14px;}
 .list-statistics-btn-active {background-color: rgb(198, 197, 197); font-weight: bold;}
@@ -58,7 +60,6 @@ ul,li {list-style: none;}
 .latestAdditionsList ul {border-bottom: 0.5px dotted;}
 .latestAdditionsList {padding-right: 15px;}
 .latestAdditions {
-  font-family: Arial;
   list-style-type: none;
   border: 1px solid;
   text-align: center;
@@ -75,15 +76,13 @@ ul,li {list-style: none;}
 
 .reorderBtn, .clearDropdown, .expandBtn, .dropdown-toggle {
   background-color: #ffffff;
-  border: none;
+  border: none; border-bottom: 0.5px solid #a8a7a7;
   color: #000000;
-  font-size: 14px;
+  font-size: 14px; font-weight:600;
   padding: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   text-align:left;
-  border-bottom: 0.5px solid #a8a7a7;
-  font-weight:600;
   margin:5px;
 }
 
@@ -103,7 +102,7 @@ ul,li {list-style: none;}
   margin: 5px;
 }
 /*Author View */
-.author-container-header {display: flex; flex-direction:row; position:relative; justify-content: center; border-bottom: 1px solid black}
+.author-container-header {display: flex; flex-direction:row; position:relative; justify-content: center; border-bottom: 1px solid black; margin-top: 10px;}
 .author-container {border: 0.5px solid black; position:relative;}
 .author-container h2 {
   text-align: center;
@@ -111,22 +110,20 @@ ul,li {list-style: none;}
   margin: 0;
   font-size: 24px;
 }
-.author-header {color: #000000;text-decoration: none;}
+.author-header {color: #000000; text-decoration: none;}
 
 .tab-button, .lists-tab, .lists-tab-open {
   background-color: #fff;
   color: #000;
-  border: none;
-  border-bottom: 0.5px solid #a8a7a7;
+  border: none; border-bottom: 0.5px solid #a8a7a7;
   cursor: pointer;
   margin:10px;
-  font-size: 16px;
+  font-size: 16px; font-weight:600;
   outline: none;
   width:400px;
-  font-weight:600;
 }
 
-.tab-container{display: flex;justify-content: center;}
+.tab-container{display: flex; justify-content: center;}
 .lists-tab-open {background-color:rgb(95, 94, 93); color:white;}
 
 .tab-content {display: none;}
@@ -134,11 +131,9 @@ ul,li {list-style: none;}
 .tab-button-inactive {
   background-color: #7e7a7a;
   color: #ffffff;
-  border: none;
-  border-bottom: 1px solid #a8a7a7;
+  border: none; border-bottom: 1px solid #a8a7a7;
   cursor: pointer;
-  margin:10px;
-  font-size: 16px;
+  margin:10px; font-size: 16px;
   outline: none;
   width:100px;
 }
@@ -147,29 +142,25 @@ ul,li {list-style: none;}
 .person-info h2 {margin: 0; font-size: 24px;}
 .person-info p, .person-texts p, .dropdown-menu-option {margin: 5px;}
 .person-info p {margin-left:0;}
+
 .author-img {max-width:400px;max-height:200px;object-fit: contain;}
+.textImg {width:50px; height:75px; object-fit:contain;}
 
 .person-texts {position:relative;}
 
 .wikiExternals {margin: 10px;}
 
-.textImg {width:50px; height:75px; object-fit:contain;}
 
 .text-row, .archiveRow {
   color: #000000;
   text-decoration: none;
-  margin:2px;
-  margin-left: 5px;
+  margin:2px; margin-left: 5px;
 }
 .text-row-sub {
-  font-style:italic;
-  font-size: 12px;
+  font-style:italic; font-size: 12px;
   margin-left: 5px;
 }
-.text-row-detailed {
-  border-bottom: 0.5px dotted black;
-  border-top: 0.5px dotted black;
-}
+.text-row-detailed {border-bottom: 0.5px dotted black; border-top: 0.5px dotted black;}
 .text-row:hover, .archiveRow:hover, .person-texts h3:hover, .author-header:hover {border-bottom:1px solid black; cursor:pointer;}
 
 .textInfo {display: flex; flex-direction: column;}
@@ -190,24 +181,20 @@ ul,li {list-style: none;}
   font-size: 0.7em;
   margin-bottom: 0px;
   text-align: center;
-  font-family: Arial;
   font-style: italic;
   text-decoration: rgb(95, 94, 93);
 }
 
 .input-field {
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 1px solid #ccc; border-radius: 4px;
   text-align: center;
 }
 
 .popup-container {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0; 
+  width: 100%;height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 9999;
   display: flex;
@@ -230,8 +217,6 @@ ul,li {list-style: none;}
 }
 
 .collapsibleBtn {cursor:s-resize;} 
-
-.occupationList td:hover {background-color: rgb(230, 230, 230);}
 
 .navbar {
   background-color: #dedbdb;
@@ -320,7 +305,6 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
   padding: 8px;
 }
 #detailed-search-results, #importPreview, #listTable, .search-result-all {
-  font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 100%;
   border: 1px solid;
@@ -361,7 +345,6 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
   color: black;
   cursor: pointer;
   display: inline-block;
-  font-family: -apple-system,system-ui,"Segoe UI","Liberation Sans",sans-serif;
   font-size: 15px;
   font-weight: 500;
   line-height: 1.15385;
@@ -380,17 +363,9 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
 
 .header-btn:hover button, .changeSearchVersionBtn:hover,.resetEditBtn:hover, .addNewBtn:hover, .listsBtn:hover, .collapsible:hover
 ,.dropdown-toggle:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover, .tab-button:hover, .tab-button-inactive:hover
-, .lists-tab:hover, .lists-tab-open:hover
-,.reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover {
-  background-color: #012443;
-  color:white;
-}
-
+,.lists-tab:hover, .lists-tab-open:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover
 .header-btn:active button, .editBtn:active, .submitEditBtn:active, .changeSearchVersionBtn:active, .addNewBtn:active, .listsBtn:active {
-  background-color: #012443;
-  color: white;
-  box-shadow: none;
-}
+  background-color: rgb(242, 239, 239);}
 
 .collapsible {
   background-color: #fff;
@@ -426,6 +401,7 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
 }
 
 .table-row-content {position: relative;}
+.table-row:hover tr {background-color:lightgrey}
 
 .popup {
   position: absolute;
@@ -444,52 +420,46 @@ select {
   padding: 0px 12px;
   display: flex;
   align-items: center;
-  width:auto;
-  max-height:30px;
+  width:auto; max-height:30px;
   margin-top:10px;
 }
-
-.table-row:hover tr {background-color:lightgrey}
 
 .login-container, .register-container {
   background-color:white; 
   border: 1px solid black;
   position: fixed;
-  top: 50%;
-  left: 50%;
+  top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: left;
 }
 
-.login-btn, .create-user, .create-user-terms, .form-label {max-width:400px;object-fit: contain; margin: 5px 5px;}
-.form-container{
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-}
+.login-btn, .create-user, .create-user-terms, .form-label {max-width:400px; object-fit: contain; margin: 5px 5px;}
+
+.form-container{display: flex; flex-direction: column; align-items: left;}
 
 .pw-error, .email-error, .list-error {color:red;}
 .create-account-header, .create-list-header {margin:5px 5px; border-bottom: 0.5px solid black;}
-.return-login-btn, .return-register-btn {background-color:white; border:none; }
-.return-login-btn:hover, .return-register-btn:hover {border-bottom:1px solid black; cursor:pointer}
+.return-login-btn, .return-register-btn, .edit-btn, .delete-btn {background-color:white; border:none;}
+.return-login-btn:hover, .return-register-btn:hover, .login-container button:hover, .create-user:hover, .submit-btn[type=submit]:hover, .save-btn:hover 
+    {border-bottom:1px solid black; cursor:pointer}
 .login-container p, .login-container button, .form-container p, .form-container button, .form-container label, .form-container input
-,.sign-in, .sign-in button
-{font-size: 16px; font-family: Arial; margin:5px 5px;}
+,.sign-in, .sign-in button {font-size: 16px; margin:5px 5px;}
 .login-container input {border-radius: 25px; border: 0.5px solid black; padding:5px;}
 .login-container button, .create-user, .submit-btn[type=submit], .return-login-btn, .save-btn
- {border:none;background-color:white;font-weight: 700; margin:5px 5px;}
-.login-container button:hover, .create-user:hover, .submit-btn[type=submit]:hover, .save-btn:hover {cursor:pointer; border-bottom:1px solid black;}
+  {border:none;background-color:white;font-weight: 700; margin:5px 5px;}
 .submit-btn[type=submit], .save-btn {border: 1px solid black; border-radius:25px;margin-top:5px;}
 .submit-btn[type=submit]:hover, .save-btn:hover {background-color:#ccc;}
 .radio-container {margin:5px;padding:none;}
 
-.edit-btn, .delete-btn {background-color:white; border:none;}
-.edit-btn:hover, .delete-btn:hover {cursor:pointer; border-bottom:1px solid black;}
+.edit-btn:hover, .delete-btn:hover, .delete-data-btn:hover, .delete-data-btn-active:hover {cursor:pointer; border-bottom:1px solid black;}
+.delete-data-btn, .delete-data-btn-active {background-color: white; border:none; color: darkred; font-weight: bold;}
+.delete-data-btn-active {text-decoration: line-through;}
 
 .page-btn, .page-btn-active {background-color: white; border: 0.5px solid black;}
 .page-btn:hover, .page-btn-active:hover {cursor:pointer; background-color:grey;}
 .page-btn-active {background-color:grey;}
 
 .source-result {max-width:200px; margin: 0; margin-bottom:5px; border-bottom:1px dotted black}
+.comment-header {display:flex; justify-content:center;}

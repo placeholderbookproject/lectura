@@ -15,7 +15,7 @@ const ArchiveList = (props) => {
     return (bookLabel&&
     <div>
         {archive&&archive.length>0&&<p onClick={()=>setShowArchive(!showArchive)}><span style={{fontWeight:600}}>Archive.org</span></p>}
-        {showArchive&&archive.map((result)=><ArchiveResult data={result}/>)}
+        {showArchive&&archive.slice(0,5).map((result)=><ArchiveResult data={result}/>)}
     </div>
 )}
 

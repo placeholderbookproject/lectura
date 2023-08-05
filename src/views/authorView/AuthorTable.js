@@ -15,8 +15,7 @@ export const AuthorTable = (props) => {
         ,deathplaceLabel,deathplacecountryLabel, floruit, occupationsLabel, languagesLabel, nativenameLabel, imageLabel,citizenshipLabel} 
         = authorReform;
     const {author_q, author_name, author_nationality, author_birth_year, author_birth_city, author_birth_country,
-        author_death_year, author_death_city, author_death_country, author_floruit, author_positions, author_name_language
-    } = data
+        author_death_year, author_death_city, author_death_country, author_floruit, author_positions, author_name_language} = data
     let { id } = useParams();
     props.id?id=props.id:void(0);
     const name = data && author_name ? author_name.split(",") : "";

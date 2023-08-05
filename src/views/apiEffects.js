@@ -11,6 +11,8 @@ export const postFetch = (body, url) => {
             .catch(error => console.log(error))
 }
 
+export const postDeleteData = (data) => {return postFetch(data, 'delete_data')}
+
 export const postComment = (data) => {return postFetch(data, 'upload_comment')}
 export const postUpdateComment = (data) => {return postFetch(data, 'update_comment')}
 export const getComments = (comment_type, comment_type_id, user_id, setData)=> {

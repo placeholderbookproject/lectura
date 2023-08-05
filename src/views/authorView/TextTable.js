@@ -8,6 +8,7 @@ import { WikiExternalsLabels } from '../wikidata.js';
 import TextInteraction from '../TextInteraction.js';
 import { postTextInteraction } from '../apiEffects';
 import { textRows } from './dataRows.js';
+import DeleteData from './DeleteData.js';
 
 const TextTable = (props) => {
     const language = props.properties.lang.value
@@ -29,8 +30,9 @@ const TextTable = (props) => {
             setTextName(
                 <h2 className = "Header">{checkData(bookLabel,title[0])} <a href={data.text_q}>(Wiki)</a>
                 {Object.keys(data).length>0 && elementInteractions.map((e) =>
-                        <TextInteraction values={{...e, condition:data[e.name], user_id:userData.user_id, hash:userData.hash,text_id:id, postFunction:postTextInteraction}}/>)
-                    }</h2> )
+                        <TextInteraction values={{...e, condition:data[e.name], user_id:userData.user_id, hash:userData.hash,text_id:id, postFunction:postTextInteraction}}/>)}
+                {userData&&<DeleteData properties={{type:"text", data, setData, userData}}/>}
+                </h2>)
         }},[data, language])
     useEffect(()=>{wikidata&&setInfo(reformatWikidata(wikidata))},[wikidata])
     return (

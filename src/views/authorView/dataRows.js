@@ -21,5 +21,14 @@ export const textRows = (info, data) => {
             (text_original_publication_length_type !== "" && " " + text_original_publication_length_type + "")},
         {label:"Awards ", content:awardsLabel},{label:"Copyright Status ", content:copyrightLabel}]
         )
+}
 
+export const subTextRows = (data) => {
+    const {titleLabel, typeLabel, genreLabel, formLabel, publYear,languageLabel,dopYear, inceptionYear, metreLabel, book, publisherLabel, lengthLabel} = data
+    const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
+    return [{label:labels.original_title,content:titleLabel},{label:labels.written_date,content:transformYear(selectedDate)}
+        ,{label:labels.language,content:languageLabel},{label:labels.genre,content:genreLabel},{label:labels.type, content:typeLabel}
+        ,{label:labels.form, content:formLabel},{label:labels.metre,content:metreLabel}
+        ,{label:labels.length, content:lengthLabel&&lengthLabel+ " pages"},{label:labels.publishers,content:publisherLabel}
+    ,   {label:labels.wiki, content:<a href={book}>{book&&book.replace("http://www.wikidata.org/entity/","")}</a>}]
 }
