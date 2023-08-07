@@ -42,8 +42,8 @@ const AuthorComponent = (props) => {
         <div className="dropdowns-container">
             {reversedTabs.map((tab) => (
                 <div key={tab.tabName}>
-                    <div className="tab-container"><button className={`tab-button${tabOpen[tab.value]?'':"-inactive"}`} 
-                        onClick = {()=>{setTab(tab.value, tabOpen, setTabOpen);tab.value==="det"&&setTextName(false)}}>{tab.tabName}</button></div>
+                    <div className="tab-container"><div className={`tab-button${tabOpen[tab.value]?'':"-inactive"}`} 
+                        onClick = {()=>{setTab(tab.value, tabOpen, setTabOpen);tab.value==="det"&&setTextName(false)}}>{tab.tabName}</div></div>
                     {tabOpen[tab.value]&&tab.component}
                 </div>))}
         </div>

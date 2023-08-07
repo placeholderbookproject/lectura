@@ -2,7 +2,7 @@ import {useState} from 'react';
 import TextTable from './TextTable.js';
 import { WikiExternalsList } from '../wikidata.js';
 import { setTab } from '../commonFuncs.js';
-import ArchiveList from './ArchiveList.js';
+import TextSources from './TextSources.js';
 import CommentView from '../commentsView/CommentView.js';
 import AddComment from '../commentsView/AddComment.js';
 
@@ -12,10 +12,8 @@ const TextComponent = props => {
     const defaultTabs = {"Text Info":true, "Sources": true};
     const [tabOpen, setTabOpen] = useState({...defaultTabs})
     const [info, setInfo] = useState({})
-    const sources = [{name:"Archive.org", component:<ArchiveList info={info}/>}]
     const tabs = [{tabName:"Text Info", component:<><TextTable properties={{setQ, lang, id:text_id, userData, info, setInfo, setTextName}}/>{q&&<WikiExternalsList q_number={q} language={lang.value}/>}</>}
-                ,{tabName:"Sources", component:Object.keys(info).length>0
-                            &&<div className="source-container">{sources.map((source => source.component))}</div>}]
+                ,{tabName:"Sources", component:Object.keys(info).length>0&&info.bookLabel&&<TextSources info={info}/>}]
     return (
     <div className="text-container">
         <div className="dropdowns-container">

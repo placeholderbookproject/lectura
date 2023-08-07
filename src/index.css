@@ -111,7 +111,7 @@ ul,li {list-style: none;}
   font-size: 24px;
 }
 .author-header {color: #000000; text-decoration: none;}
-
+.tab-button {display:flex; justify-content: center;}
 .tab-button, .lists-tab, .lists-tab-open {
   background-color: #fff;
   color: #000;
@@ -462,4 +462,8 @@ select {
 .page-btn-active {background-color:grey;}
 
 .source-result {max-width:200px; margin: 0; margin-bottom:5px; border-bottom:1px dotted black}
+.source-container {display:flex; flex-direction:row;}
+.source {margin-right: 5px;}
+.source-header {border-bottom: 1px solid black;display:flex; justify-content:center;}
+.source-header:hover {cursor:pointer;background-color:rgb(242, 239, 239);}
 .comment-header {display:flex; justify-content:center;}

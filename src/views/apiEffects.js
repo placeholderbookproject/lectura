@@ -1,5 +1,6 @@
 import { authorQuery, authorTextQuery, textQuery, externalsQuery } from "./wikidata";
 const server = 'http://127.0.0.1:8000/'
+const googleAPIKey = 'AIzaSyBpljudDJKdDAMHnvh50xCTx8YdSWe3_BM'
 
 const fetchFunc = (query, setData, signal) => {
     return fetch(query, {signal}).then(response => {if(response.ok) {return response.json()}throw response}).then(results => {setData(results)})
@@ -78,13 +79,34 @@ export const wikidataEffect = props => () => {
 }
 
 export const archiveEffect = props => () => {
-    const {title, name, setArchive, originalTitle} = props
+    const {bookLabel, authorLabel, titleLabel} = props.data, {setData} = props;
+    const title = bookLabel.split(", "[0])
     const searchUrl = 'https://archive.org/advancedsearch.php';
-    const lastName = name.split(/[, ]+/).pop();
-    const search = `(title:"${title}" OR title:"${originalTitle}") AND (text:"${name}" OR text:"${lastName}")`;
+    const lastName = authorLabel.split(/[, ]+/).pop();
+    const search = `(title:"${title}" OR title:"${titleLabel}") AND (text:"${authorLabel}" OR text:"${lastName}")`;
     const params = {q: search, output: 'json', fields: 'identifier,creator,title,language,year'
                     ,sort: ['downloads desc','year asc', 'addeddate asc'],rows: 20};
     const queryString = Object.keys(params).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`).join('&');
-    fetch(`${searchUrl}?${queryString}`).then(response => response.json()).then(data => {setArchive(data.response.docs);})
+    fetch(`${searchUrl}?${queryString}`).then(response => response.json()).then(data => {setData(data.response.docs);})
       .catch(error => console.error(error));
+}
+
+export const googleEffect = props => () => {
+    const {bookLabel, authorLabel, titleLabel} = props.data, {setData} = props;
+    const title = bookLabel.split(", "[0])
+    const lastName = authorLabel.split(/[, ]+/).pop();
+    const query = `https://www.googleapis.com/books/v1/volumes?q=inauthor:${authorLabel}+intitle:${title}+intitle:${titleLabel}+inauthor:${lastName}&key=${googleAPIKey}`
+    fetch(query).then(response => response.json()).then(data => {setData(data.items);})
+        .catch(error => console.error(error));
+}
+
+export const BNFEffect = props => () => {
+    const {bookLabel, authorLabel, titleLabel} = props.data, {setData} = props;
+    const title = bookLabel.split(", "[0])
+    //const lastName = authorLabel.split(/[, ]+/).pop();
+    const query = `http://gallica.bnf.fr/api/SRU?version=1.2&operation=searchRetrieve&query=(bib.author all "${authorLabel}") and (bib.title all  "${title}")
+    &startRecord=1&maximumRecords=20`
+    fetch(query,{method: 'GET', mode: 'no-cors',}) // Set the mode to 'no-cors'
+      .then(response => response.json()).then(data => {console.log(data);setData(data.results);})
+        .catch(error => console.error(error));
 }

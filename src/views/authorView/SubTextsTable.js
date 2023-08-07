@@ -1,6 +1,6 @@
 import { useState } from "react"
 import TableRow from '../ViewRow.js';
-import ArchiveList from './ArchiveList.js';
+import ArchiveList from './TextSources.js';
 import {transformYear, dateCoalesce} from '../formattingFuncs.js';
 import { subTextRows } from "./dataRows.js";
 
