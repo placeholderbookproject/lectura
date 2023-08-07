@@ -13,9 +13,6 @@ const GoogleResult = props => {
     const link = {value:canonicalVolumeLink, label:`${title} by ${authors.join()} (${publishedDate}) (${language}) (${pageCount} pages)`}
     return (<p key={canonicalVolumeLink} className="source-result"><a href={link.value} className="archiveRow">{link.label}</a></p>)
 }
-const BNFResult = props => {
-    return (<p>Result</p>)
-}
 
 const SourceList = props => {
     const {func, source, info, Component} = props
@@ -31,8 +28,7 @@ const SourceList = props => {
 
 const TextSources = props => {
     const sources = [{name:"Archive.org", func:archiveEffect, component: ArchiveResult }
-                    ,{name:"Google Books", func:googleEffect, component:GoogleResult}
-                    /*,{name:"BNF Gallica", func:BNFEffect, component:BNFResult}*/]
+                    ,{name:"Google Books", func:googleEffect, component:GoogleResult}]
     return (<div className="source-container">
         {sources.map(source => <SourceList info={props.info} func={source.func} source={source.name} Component={source.component}/>)}
     </div>)

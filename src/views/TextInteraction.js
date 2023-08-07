@@ -3,7 +3,7 @@ const parse = require('html-react-parser');
 
 const TextInteraction = props => {
     const {user_id, hash,text_id, condition, conditional, button_name, postFunction, name} = props.values
-    const [isTrue, setIsTrue] = useState(condition)
+    const [isTrue, setIsTrue] = useState(condition==="undefined"?false:true)
     const handleClick = () => {
         const newIsTrue = !isTrue;
         setIsTrue(newIsTrue);

@@ -7,7 +7,7 @@ import ListStatistics from './ListStatistics.js';
 
 const ListElements = (props) => {
     const {info, setInfo, edit, changes, setChanges, userData, filters, setFilters} = props.properties
-    const elementInteractions = [{name:"checks", conditional:{true:"&#9745;",false:"&#9744;"}, button_name:{true:"check-btn", false:"check-btn"}, label:"Check"},
+    const elementInteractions = [{name:"checks", conditional:{true:"",false:""}, button_name:{true:"check-btn", false:"check-btn"}, label:"Check"},
                                 {name:"watch", conditional:{true:"+",false:"+"}, button_name:{true:"watchlist-btn-active",false:"watchlist-btn"}, label:"Watchlist"}]
     const [elements, setElements] = useState(info.list_detail)
     const removeElement = (element) => {
@@ -52,10 +52,9 @@ const ListElements = (props) => {
             <table className="drag-table"><tbody>
                 <tr>
                     <th>#</th>
-                    {filters.map((col) => 
-                    <th key={col.label}>{col.label}<button className="remove-col-btn" onClick={() => removeColumn(col)}>X</button></th>)}
-                    {edit&&<th></th>}
+                    {filters.map((col) =>  <th key={col.label}>{col.label}<button className="remove-col-btn" onClick={() => removeColumn(col)}>X</button></th>)}
                     {info.list_info.list_type==="texts"&&elementInteractions.map(e => <th>{e.label}</th>)}
+                    {edit&&<th></th>}
                 </tr>
                 {elements.map((element, elementIndex) =>
                     <tr key={elementIndex} draggable={edit} onDragOver={handleDragOver} onDragStart={(event) => handleDragStart(event, elementIndex)}
@@ -64,11 +63,11 @@ const ListElements = (props) => {
                     {filters.map((col, colIndex) => col.value==="label"
                         ?<td key={colIndex}><a href={`${element["author_id"]?"/author/"+element["author_id"]+"/text/"+element["value"]:"/author/"+element["value"]}`}>{element[col.value]}</a></td>
                         :<td key={colIndex}>{element[col.value]}</td>)}
-                    {edit&&<td><button className="list-remove-element" onClick = {() => removeElement(element)}>X</button></td>}
                     {info.list_info.list_type==="texts"&&
-                        elementInteractions.map((e) =><td><TextInteraction values={
-                                {...e, condition:element[e.name], user_id:userData.user_id, text_id:element.element_id, postFunction:postTextInteraction, hash:userData.hash}}/></td>)
-                        }
+                    elementInteractions.map((e) =><td><TextInteraction values={
+                            {...e, condition:element[e.name], user_id:userData.user_id, text_id:element.element_id, postFunction:postTextInteraction, hash:userData.hash}}/></td>)
+                    }
+                    {edit&&<td><button className="list-remove-element" onClick = {() => removeElement(element)}>X</button></td>}
                     </tr>)}
             </tbody></table>}
         </div>

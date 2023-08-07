@@ -28,6 +28,8 @@ export const updateListInteraction = (input) => {return postFetch(input, 'user_l
 
 export const fetchUserList = (list_id, user_id, hash,setData) => {return fetchFunc(`${server}get_user_list?list_id=${list_id}${user_id?"&user_id="+user_id+"&hash="+hash:""}`, setData)}
 export const fetchAllLists = (user_id=null,setData) => {fetchFunc(`${server}get_all_lists${user_id?'?user_id='+user_id:""}`,setData);}
+export const fetchListReferences = (type, id, setData) => {fetchFunc(`${server}user_list_references?type=${type}&id=${id}`, setData)}
+
 
 export const fetchDataEffect = props => () => {
     const {type, id, setData, by, user_id} = props
@@ -97,16 +99,5 @@ export const googleEffect = props => () => {
     const lastName = authorLabel.split(/[, ]+/).pop();
     const query = `https://www.googleapis.com/books/v1/volumes?q=inauthor:${authorLabel}+intitle:${title}+intitle:${titleLabel}+inauthor:${lastName}&key=${googleAPIKey}`
     fetch(query).then(response => response.json()).then(data => {setData(data.items);})
-        .catch(error => console.error(error));
-}
-
-export const BNFEffect = props => () => {
-    const {bookLabel, authorLabel, titleLabel} = props.data, {setData} = props;
-    const title = bookLabel.split(", "[0])
-    //const lastName = authorLabel.split(/[, ]+/).pop();
-    const query = `http://gallica.bnf.fr/api/SRU?version=1.2&operation=searchRetrieve&query=(bib.author all "${authorLabel}") and (bib.title all  "${title}")
-    &startRecord=1&maximumRecords=20`
-    fetch(query,{method: 'GET', mode: 'no-cors',}) // Set the mode to 'no-cors'
-      .then(response => response.json()).then(data => {console.log(data);setData(data.results);})
         .catch(error => console.error(error));
 }

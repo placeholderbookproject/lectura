@@ -33,7 +33,7 @@ const TextTable = (props) => {
                         <TextInteraction values={{...e, condition:data[e.name], user_id:userData.user_id, hash:userData.hash,text_id:id, postFunction:postTextInteraction}}/>)}
                 {userData&&<DeleteData properties={{type:"text", data, setData, userData}}/>}
                 </h2>)
-        }},[data, language])
+        }},[data, language, data.text_q])
     useEffect(()=>{wikidata&&setInfo(reformatWikidata(wikidata))},[wikidata])
     return (
         <div id = "textTableWindow" className="person-info">
