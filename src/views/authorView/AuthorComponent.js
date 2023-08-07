@@ -19,12 +19,11 @@ const AuthorComponent = (props) => {
     const baseLink = author&&`/author/${author.author_id}`
     const handleClick = (id = null) => {
         const url = `${baseLink}/text/${id}`
-        text_id = id;
-        if (url!==location.pathname && id) {
-            const detailed = tabOpen["det"]
-            setTabOpen({...tabOpen, det:!detailed})
+        if (url!==location.pathname && id!==null) {
+            const detailed = (tabOpen.det&&text_id !== id)?true:(tabOpen.det&&text_id===id?false:true)
+            setTabOpen({...tabOpen, det:detailed})
             url !== location && navigate(url)
-        } else {setTabOpen(defaultTabs);navigate(baseLink)}
+        } else {setTabOpen(defaultTabs);navigate(baseLink);setTextName(false);}
     }
     const tabs = [{value:"bio",tabName:"Biography",component:<><AuthorTable setQ={setQ} lang={lang} setAuthor={setAuthor}/>{q&&<WikiExternalsList q_number={q} language={props.lang.value}/>}</>},
                 {value:"lit",tabName:"Literature",component:author&&<TextsWikiTable author = {author} language={lang} handleClick={handleClick}/>},

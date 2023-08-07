@@ -12,16 +12,15 @@ import DeleteData from './DeleteData.js';
 
 const TextTable = (props) => {
     const language = props.properties.lang.value
-    const {setQ, userData, info, setInfo, setTextName} = props.properties;
+    const {setQ, userData, info, setInfo, setTextName,id} = props.properties;
     const elementInteractions = [{name:"checks", conditional:{true:"",false:""}, button_name:{true:"check-btn", false:"check-btn"}, label:"Check"},
                     {name:"watch", conditional:{true:"+",false:"+"}, button_name:{true:"watchlist-btn-active",false:"watchlist-btn"}, label:"Watchlist"}]
     const [data, setData] = useState({});
     const [wikidata, setWikidata] = useState();
     const {bookLabel, image, titleLabel} = info, rows = textRows(info, data)
-    let { id } = useParams();
     const title = data&&data.text_title?data.text_title.split(","):"";
-    props.properties.id?id=props.properties.id:void(0);
     useEffect(() => {fetchDataEffect({type:'texts', id, setData, user_id:userData?userData.user_id:0})();},[id, userData]);
+    useEffect(()=>{wikidata&&setInfo(reformatWikidata(wikidata))},[wikidata])
     useEffect(()=> {
         if(data && data.text_q){
             setQ&&setQ(data.text_q);
@@ -32,9 +31,8 @@ const TextTable = (props) => {
                 {Object.keys(data).length>0 && elementInteractions.map((e) =>
                         <TextInteraction values={{...e, condition:data[e.name], user_id:userData.user_id, hash:userData.hash,text_id:id, postFunction:postTextInteraction}}/>)}
                 {userData&&<DeleteData properties={{type:"text", data, setData, userData}}/>}
-                </h2>)
-        }},[data, language, data.text_q])
-    useEffect(()=>{wikidata&&setInfo(reformatWikidata(wikidata))},[wikidata])
+                </h2>)} 
+    },[language, data.text_q, id])
     return (
         <div id = "textTableWindow" className="person-info">
             {data.text_q&&<WikiExternalsLabels q_number={data.text_q} language={language}/>}
