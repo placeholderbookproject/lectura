@@ -6,7 +6,7 @@ import DeleteData from './DeleteData';
 import AuthorGeneral from './AuthorGeneral';
 
 const AuthorComponent = (props) => {
-    let {author_id, text_id } = useParams();
+    let {text_id } = useParams();
     const {lang, userData} = props
     const navigate = useNavigate();
     const defaultTabs = { gen:true, det: false}
