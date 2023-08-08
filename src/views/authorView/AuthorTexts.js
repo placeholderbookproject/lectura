@@ -12,6 +12,7 @@ const TextsWikiTable = (props) => {
     const [expandTexts, setExpandTexts] = useState(false)
     const [sortKey, setSortKey] = useState({ keys: ['publYear', 'dopYear', 'inceptionYear'] });
     const [texts, setTexts] = useState();
+    const [originTexts, setOriginTexts] = useState()
     const [search, setSearch] = useState("");
     const sortList = (list,keys, descending) => {
         return list.map((element) => {
@@ -32,10 +33,9 @@ const TextsWikiTable = (props) => {
         }
     },[search])
     const handleSortChange = () => {setSortKey({ ...sortKey, descending: !sortKey.descending });};  
-    const filterOptions = texts && [
-        {label: 'Form', property: 'formLabel', values: getUniquePropertyValues(texts, 'formLabel') },
-        {label: 'Language', property: 'languageLabel', values: getUniquePropertyValues(texts, 'languageLabel') },
-        {label: 'Genre', property: 'genreLabel', values: getUniquePropertyValues(texts, 'genreLabel') },];
+    const filterOptions = texts && [{label: 'Form', property: 'formLabel', values: getUniquePropertyValues(texts, 'formLabel') },
+                                {label: 'Language', property: 'languageLabel', values: getUniquePropertyValues(texts, 'languageLabel') },
+                                {label: 'Genre', property: 'genreLabel', values: getUniquePropertyValues(texts, 'genreLabel') },];
     useEffect (() => {if(author&&author_q) {
                         fetchDataEffect({setData:setStoredtexts, id:author_id, type:'texts', by: "author"})();
                         wikidataEffect({q_number:author_q.replace('http://www.wikidata.org/entity/','')
@@ -43,9 +43,11 @@ const TextsWikiTable = (props) => {
                     }}
     ,[author, language])
     const textsReform = wikiTextdata&&reformatWikitexts(wikiTextdata);
-    useEffect(() => {storedtexts&&author
-            &&setTexts(removeWorksOutOfBounds(removeDuplicateList(storedtexts,textsReform, "text_q"),author_birth_year, author_death_year))}
-        ,[storedtexts, wikiTextdata])
+    useEffect(() => {if(storedtexts&&author) {
+        const combinedData = removeWorksOutOfBounds(removeDuplicateList(storedtexts,textsReform, "text_q"),author_birth_year, author_death_year)
+        setTexts(combinedData)
+        setOriginTexts(combinedData);};
+        },[storedtexts, wikiTextdata])
     return (
         texts&&storedtexts.length>0&&
         <div className="person-texts">
@@ -55,7 +57,7 @@ const TextsWikiTable = (props) => {
                     {`Sort by Publ. (${sortKey.descending?"Desc":"Asc"})`}
                 </button>
                 {storedtexts.length>5&&<input type="text" placeholder="Search" value={search} onChange={(e) => setSearch(e.target.value)}></input>}
-                <Filters texts={texts} setTexts={setTexts} filterOptions = {filterOptions}/>
+                <Filters texts={texts} setTexts={setTexts} filterOptions = {filterOptions} originTexts = {originTexts}/>
             </div>
             {texts&&texts.length>0&&sortList(texts,sortKey.keys, sortKey.descending).slice(0,(!expandTexts?5:texts.length)).map(
                 (text) => <SubTextsTable data={text} key={text.book} author = {author} handleClick={handleClick}/>)}

@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
 
 const Filters = (props) => {
-    const {texts, setTexts, filterOptions} = props
+    const { setTexts, filterOptions, originTexts} = props
     const [selectedFilters, setSelectedFilters] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     useEffect(() => {
-        let newTexts = texts
+        let newTexts = originTexts
         for (let i=0;i<selectedFilters.length;i++) {
             const option = selectedFilters[i]
             if(option.options.length===0){continue}
@@ -26,21 +26,21 @@ const Filters = (props) => {
           else {updatedFilters[index] = { property, options: updatedOptions };}
         } else {updatedFilters = [...selectedFilters, { property, options: [option] }];}
         setSelectedFilters(updatedFilters);
-      };
+    };
     return (
         <div className="dropdown">
             <div className="filters">
                 <div className="dropdown-toggle" onClick={() => setIsOpen(!isOpen)}>Filters <span className="dropdown-arrow">&#9660;</span></div>
-                <button className="clearDropdown" onClick={() => setSelectedFilters([])}>Clear Search</button>
+                <button className="clearDropdown" onClick={() => {setTexts(originTexts);setSelectedFilters([])}}>Clear Search</button>
             </div>
             {isOpen && (
                 <div className="dropdown-popup">
                     <div className="dropdown-menu">
                     {filterOptions.map((filterOption) => (
                         <div key={filterOption.property}>
-                        {filterOption.values.length>1&&
+                        {filterOption.values.length>0&&
                             <div className="dropdown-menu-label">{filterOption.label}</div>}
-                            {filterOption.values.length>1&&filterOption.values.map((value) => (
+                            {filterOption.values.length>0&&filterOption.values.map((value) => (
                             <div key={value} className={`dropdown-menu-option`}>
                                 {value}
                                 <input type = "checkbox" onClick={() => handleFilterClick(filterOption.property, value)} 

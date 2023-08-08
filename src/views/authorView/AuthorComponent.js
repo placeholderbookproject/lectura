@@ -1,33 +1,21 @@
 import React, {useState} from 'react';
-import AuthorTable from './AuthorTable';
-import WikiExternalsList from '../wikidata';
-import TextsWikiTable from './AuthorTexts';
-import { useParams, useNavigate, useLocation} from 'react-router-dom';
+import { useParams, useNavigate} from 'react-router-dom';
 import TextComponent from './TextComponent';
 import { setTab } from '../commonFuncs.js';
 import DeleteData from './DeleteData';
+import AuthorGeneral from './AuthorGeneral';
 
 const AuthorComponent = (props) => {
     let { text_id } = useParams();
     const {lang, userData} = props
-    const navigate = useNavigate(), location = useLocation();
-    const defaultTabs = {bio:true, lit:true, det: false}
+    const navigate = useNavigate();
+    const defaultTabs = { gen:true, det: false}
     const [tabOpen, setTabOpen] = useState(text_id===undefined?defaultTabs:{...defaultTabs, det:true})
-    const [q, setQ] = useState();
     const [author, setAuthor] = useState();
     const [textName, setTextName] = useState(false);
     const baseLink = author&&`/author/${author.author_id}`
-    const handleClick = (id = null) => {
-        const url = `${baseLink}/text/${id}`
-        if (url!==location.pathname && id!==null) {
-            const detailed = (tabOpen.det&&text_id !== id)?true:(tabOpen.det&&text_id===id?false:true)
-            setTabOpen({...tabOpen, det:detailed})
-            url !== location && navigate(url)
-        } else {setTabOpen(defaultTabs);navigate(baseLink);setTextName(false);}
-    }
-    const tabs = [{value:"bio",tabName:"Biography",component:<><AuthorTable setQ={setQ} lang={lang} setAuthor={setAuthor}/>{q&&<WikiExternalsList q_number={q} language={props.lang.value}/>}</>},
-                {value:"lit",tabName:"Literature",component:author&&<TextsWikiTable author = {author} language={lang} handleClick={handleClick}/>},
-                {value:"det",tabName:textName, component:(text_id)?<TextComponent properties = {{lang, text_id, userData, setTextName}} />:<></>},]
+    const tabs = [{value:"gen",tabName:"General",component:<AuthorGeneral properties={{lang, userData, author, setAuthor, navigate, setTextName}}/>},
+                {value:"det",tabName:textName, component:(text_id)?<TextComponent properties = {{lang, text_id, userData, setTextName}}/>:<></>},]
     const reversedTabs = (tabOpen.det===true)?tabs.reverse():tabs
     const returnMain = () => {navigate(baseLink);setTabOpen(defaultTabs)}
     return (
