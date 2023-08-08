@@ -1,7 +1,7 @@
 import React,{useState} from "react";
 import { useParams, useLocation } from "react-router-dom";
 import AuthorTable from "./AuthorTable";
-import TextsWikiTable from "./AuthorTexts";
+import AuthorTexts from "./AuthorTexts";
 import WikiExternalsList from "../wikidata";
 import ListReferences from "./ListReferences";
 import TabComponent from "./TabComponent";
@@ -23,8 +23,8 @@ const AuthorGeneral = props => {
         } else {setTabOpen(defaultTabs);navigate(baseLink);setTextName(false);}
     }
     const tabs = [{value:"bio",tabName:"Biography",component:<><AuthorTable setQ={setQ} lang={lang} setAuthor={setAuthor}/>{q&&<WikiExternalsList q_number={q} language={lang.value}/>}</>},
-                {value:"lit",tabName:"Literature",component:author&&<TextsWikiTable author = {author} language={lang} handleClick={handleClick}/>},
+                {value:"lit",tabName:"Literature",component:author&&<AuthorTexts author = {author} language={lang} handleClick={handleClick}/>},
                 ,{tabName:"Lists", component:author&&<ListReferences type="author" id={author.author_id}/>}]
-    return (<TabComponent properties={{userData, tabs, tabOpen, setTabOpen, data:author, type:"author"}} />)
+    return (<TabComponent properties={{userData, tabs, tabOpen, setTabOpen, data:author, type:"author", id:author.author_id}} />)
 }
 export default AuthorGeneral;

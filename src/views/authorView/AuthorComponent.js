@@ -6,7 +6,7 @@ import DeleteData from './DeleteData';
 import AuthorGeneral from './AuthorGeneral';
 
 const AuthorComponent = (props) => {
-    let { text_id } = useParams();
+    let {author_id, text_id } = useParams();
     const {lang, userData} = props
     const navigate = useNavigate();
     const defaultTabs = { gen:true, det: false}
@@ -14,8 +14,8 @@ const AuthorComponent = (props) => {
     const [author, setAuthor] = useState();
     const [textName, setTextName] = useState(false);
     const baseLink = author&&`/author/${author.author_id}`
-    const tabs = [{value:"gen",tabName:"General",component:<AuthorGeneral properties={{lang, userData, author, setAuthor, navigate, setTextName}}/>},
-                {value:"det",tabName:textName, component:(text_id)?<TextComponent properties = {{lang, text_id, userData, setTextName}}/>:<></>},]
+    const tabs = [{value:"gen",tabName:"General",component:<AuthorGeneral properties={{lang, userData, author, setAuthor, navigate, setTextName}}/>}
+                ,{value:"det",tabName:textName, component:(text_id)?<TextComponent properties = {{lang, text_id, userData, setTextName}}/>:<></>},]
     const reversedTabs = (tabOpen.det===true)?tabs.reverse():tabs
     const returnMain = () => {navigate(baseLink);setTabOpen(defaultTabs)}
     return (

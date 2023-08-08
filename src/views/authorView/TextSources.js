@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import { archiveEffect, googleEffect, BNFEffect } from '../apiEffects';
+import { archiveEffect, googleEffect } from '../apiEffects';
+import { WikiExternalsLabels } from '../wikidata';
 
 const ArchiveResult = props => {
     const {identifier, title, creator, year, downloads, language, mediatype} = props.data
@@ -29,9 +30,11 @@ const SourceList = props => {
 const TextSources = props => {
     const sources = [{name:"Archive.org", func:archiveEffect, component: ArchiveResult }
                     ,{name:"Google Books", func:googleEffect, component:GoogleResult}]
-    return (<div className="source-container">
+    return (<>
+    {props.info.text_q&&<WikiExternalsLabels q_number={props.info.text_q} language={props.lang.value}/>}
+    <div className="source-container">
         {sources.map(source => <SourceList info={props.info} func={source.func} source={source.name} Component={source.component}/>)}
-    </div>)
+    </div></>)
 }
 
 export default TextSources

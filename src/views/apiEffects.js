@@ -1,4 +1,5 @@
 import { authorQuery, authorTextQuery, textQuery, externalsQuery } from "./wikidata";
+import { reformatWikidata, reformatWikitexts } from "./formattingFuncs";
 const server = 'http://127.0.0.1:8000/'
 const googleAPIKey = 'AIzaSyBpljudDJKdDAMHnvh50xCTx8YdSWe3_BM'
 
@@ -77,7 +78,9 @@ export const wikidataEffect = props => () => {
     const url = `https://query.wikidata.org/sparql?query=${encodeURIComponent(query)}`;
     fetch(url, {headers})
     .then(response => {if (response.ok) {return response.json()} throw response;})
-    .then (data => {setWikidata(data)})       
+    .then (data => {if(type==="author_texts"){setWikidata(reformatWikitexts(data))}
+                    else if (type==="externals") {setWikidata(data)}
+                    else{setWikidata(reformatWikidata(data))}})
 }
 
 export const archiveEffect = props => () => {

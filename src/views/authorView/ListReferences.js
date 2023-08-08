@@ -19,7 +19,7 @@ const ListReference = props => {
 }
 const ListReferences = props => {
     const [lists, setLists] = useState([])
-    useEffect(() => {fetchListReferences(props.type, props.id, setLists)},[props.id, props.type])
+    useEffect(() => {fetchListReferences(props.type, props.id, setLists)},[props])
     return (<>{lists.length>0&&lists.map((list,index) => <ListReference data={list} index={index}/>)}</>)
 }
 export default ListReferences;

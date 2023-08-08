@@ -1,10 +1,8 @@
-import {useParams} from 'react-router-dom';
 import TableRow from '../ViewRow.js'
 import labels from '../labels.js'
 import {useState, useEffect} from 'react';
-import {reformatWikidata, checkData} from '../formattingFuncs';
+import {checkData} from '../formattingFuncs';
 import {fetchDataEffect, wikidataEffect} from '../apiEffects'
-import { WikiExternalsLabels } from '../wikidata.js';
 import TextInteraction from '../TextInteraction.js';
 import { postTextInteraction } from '../apiEffects';
 import { textRows } from './dataRows.js';
@@ -20,7 +18,7 @@ const TextTable = (props) => {
     const {bookLabel, image, titleLabel} = info, rows = textRows(info, data)
     const title = data&&data.text_title?data.text_title.split(","):"";
     useEffect(() => {fetchDataEffect({type:'texts', id, setData, user_id:userData?userData.user_id:0})();},[id, userData]);
-    useEffect(()=>{wikidata&&setInfo(reformatWikidata(wikidata))},[wikidata])
+    useEffect(()=>{wikidata&&setInfo((wikidata))},[wikidata])
     useEffect(()=> {
         if(data && data.text_q){
             setQ&&setQ(data.text_q);
@@ -35,9 +33,8 @@ const TextTable = (props) => {
     },[language, data.text_q, id])
     return (
         <div id = "textTableWindow" className="person-info">
-            {data.text_q&&<WikiExternalsLabels q_number={data.text_q} language={language}/>}
             {titleLabel!==title[0]&&<TableRow label={labels.original_title}>{titleLabel}</TableRow>}
-            {image && !image.split(", ")[0].includes("djvu")&&<img src={image.split(", "[0])} style={{ maxWidth: "400px", maxHeight: "200px", objectFit: "contain" }} alt="img" />}
+            {image && !image.split(", ")[0].includes("djvu")&&<img src={image.split(", "[0])} className="text-img" alt="img"/>}
             {data&&<>{rows.map((row) => row.content&&<TableRow label={row.label} key={row.content+row.label}>{row.content}</TableRow>)}
             </>}
         </div>

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 
 const Filters = (props) => {
-    const { setTexts, filterOptions, originTexts} = props
+    const {setTexts, filterOptions, originTexts} = props
     const [selectedFilters, setSelectedFilters] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     useEffect(() => {

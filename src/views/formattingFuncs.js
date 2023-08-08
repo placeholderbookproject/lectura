@@ -27,7 +27,7 @@ export const reformatWikidata = (wiki) => {
             if(Object.keys(row)===null){continue}
             if (Object.keys(row).includes(col)){
                 const val = row[col].value;
-                if(val===undefined) {continue}
+                if(val===undefined||dataPoint===null) {continue}
                 else if (j ===0){dataPoint = dataPoint+val}
                 else if (!dataPoint.includes(val)&&j!==resultLength) {dataPoint = dataPoint + ", " + val }
                 else if (!dataPoint.includes(val)&&j===resultLength){dataPoint = dataPoint + ", " + val}

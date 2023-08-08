@@ -150,7 +150,7 @@ ul,li {list-style: none;}
 
 .wikiExternals {margin: 10px;}
 
-
+.text-container {border: 0.5px solid black; margin-right: 10px;}
 .text-row, .archiveRow {
   color: #000000;
   text-decoration: none;
@@ -163,8 +163,8 @@ ul,li {list-style: none;}
 .text-row-detailed {border-bottom: 0.5px dotted black; border-top: 0.5px dotted black;}
 .text-row:hover, .archiveRow:hover, .person-texts h3:hover, .author-header:hover 
       {border-bottom:1px solid black; cursor:pointer; background-color: rgb(242, 239, 239)}
-
 .textInfo {display: flex; flex-direction: column;}
+.text-img {max-width: 400px; max-height:200px;object-fit:contain;}
 
 .textBox, .filters {
   display: flex;
@@ -468,6 +468,7 @@ select {
 .source-result {max-width:200px; margin: 0; margin-bottom:5px; border-bottom:1px dotted black}
 .source-container {display:flex; flex-direction:row;}
 .source {margin-right: 5px;}
-.source-header {border-bottom: 1px solid black;display:flex; justify-content:center;}
+.source-header {border-bottom: 1px solid black;display:flex; justify-content:center; margin-left:10px;}
 .source-header:hover {cursor:pointer;background-color:rgb(242, 239, 239);}
 .comment-header {display:flex; justify-content:center;}
+.comment-section {border-top: 0.5px solid black;}
