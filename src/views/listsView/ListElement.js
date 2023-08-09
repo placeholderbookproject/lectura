@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import { postTextInteraction } from '../apiEffects.js';
 import {options} from '../filters.js';
-import TextInteraction from '../TextInteraction.js';
+import ElementInteraction from '../ElementInteraction.js';
 import ListFilters from './ListFilters.js';
 import ListStatistics from './ListStatistics.js';
 
@@ -65,8 +65,8 @@ const ListElements = (props) => {
                             ?<td key={colIndex}><a href={`${(element["author_id"]&&list_type!=="authors")?"/author/"+element["author_id"]+"/text/"+element["value"]:"/author/"+element["value"]}`}>{element[col.value]}</a></td>
                             :<td key={colIndex}>{element[col.value]}</td>)}
                         {list_type==="texts"&&
-                        elementInteractions.map((e) =><td><TextInteraction values={
-                                {...e, condition:element[e.name], user_id:userData.user_id, text_id:element.element_id, postFunction:postTextInteraction, hash:userData.hash}}/></td>)
+                        elementInteractions.map((e) =><td><ElementInteraction values={
+                                {...e, condition:element[e.name], user_id:userData.user_id, id:element.element_id, postFunction:postTextInteraction, hash:userData.hash}}/></td>)
                         }
                         {edit&&<td><button className="list-remove-element" onClick = {() => removeElement(element)}>X</button></td>}
                     </tr>)}

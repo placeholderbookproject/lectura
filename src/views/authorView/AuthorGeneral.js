@@ -22,7 +22,7 @@ const AuthorGeneral = props => {
             url !== location && navigate(url)
         } else {setTabOpen(defaultTabs);navigate(baseLink);setTextName(false);}
     }
-    const tabs = [{value:"bio",tabName:"Biography",component:<><AuthorTable setQ={setQ} lang={lang} setAuthor={setAuthor}/>{q&&<WikiExternalsList q_number={q} language={lang.value}/>}</>},
+    const tabs = [{value:"bio",tabName:"Biography",component:<><AuthorTable setQ={setQ} lang={lang} setAuthor={setAuthor} userData={userData}/>{q&&<WikiExternalsList q_number={q} language={lang.value}/>}</>},
                 {value:"lit",tabName:"Literature",component:author&&<AuthorTexts author = {author} language={lang} handleClick={handleClick}/>},
                 ,{tabName:"Lists", component:author&&<ListReferences type="author" id={author.author_id}/>}]
     return (<TabComponent properties={{userData, tabs, tabOpen, setTabOpen, data:author, type:"author"}} />)

@@ -4,6 +4,8 @@ import TextComponent from './TextComponent';
 import { setTab } from '../commonFuncs.js';
 import DeleteData from './DeleteData';
 import AuthorGeneral from './AuthorGeneral';
+import ElementInteraction from '../ElementInteraction';
+import { postTextInteraction } from '../apiEffects';
 
 const AuthorComponent = (props) => {
     let {text_id } = useParams();
@@ -24,6 +26,9 @@ const AuthorComponent = (props) => {
         {author&&<div className="author-container-header">
                     <h2><a onClick={()=>{returnMain()}} className="author-header">{author.author_name} </a>
                     <a href={author.author_q?author.author_q:""}>{`(Wiki)`}</a>
+                    {userData&&<ElementInteraction values={{user_id:userData.user_id, hash: userData.hash, id:author.author_id
+                                ,condition:author["author_watch"], conditional:{true:"+",false:"+"}
+                                ,button_name:{true:"watchlist-btn-active",false:"watchlist-btn"}, name:"author_watch", postFunction:postTextInteraction }}/>}
                     {userData&&<DeleteData properties={{type:"author", data:author, setData:setAuthor, userData}}/>}
                     </h2>
                 </div>}

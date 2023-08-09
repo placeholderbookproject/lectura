@@ -11,10 +11,7 @@ const AuthorsByBooksTable = (props) => {
     const [data, setData] = useState();
     const country = filters.country==="All"?"":" from " + filters.country
     const language = filters.language==="All"?"":" using " + filters.language
-    useEffect(() => {
-        if(filters.country!=="All"||filters.language!=="All") {fetchList({setData, filters, type})()}
-        else{setData(null)}
-    },[filters])
+    useEffect(() => {if(filters.country!=="All"||filters.language!=="All") {fetchList({setData, filters, type})()} else{setData(null)}},[filters])
     return (
         <><div className="dropdowns-container">
             <DropdownMenu options = {countries} name = {"country"} setFilters={setFilters} filters = {filters}/>

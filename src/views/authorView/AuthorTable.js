@@ -26,7 +26,7 @@ export const AuthorTable = (props) => {
             const q_number = author_q.replace("http://www.wikidata.org/entity/","")
             wikidataEffect({q_number, setWikidata, type:"author", language})();}
     },[data, language])
-    useEffect(() => {fetchDataEffect({type:'authors', id, setData})();setData(id);}, [id]);
+    useEffect(() => {fetchDataEffect({type:'authors', id, setData,user_id:props.userData.user_id})();setData(id);}, [id]);
     useEffect(() => {props.setAuthor&&props.setAuthor(data)},[data])
     return (
         name&&
