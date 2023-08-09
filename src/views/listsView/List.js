@@ -4,9 +4,8 @@ import { useParams, useNavigate, useSearchParams} from 'react-router-dom';
 import { fetchUserList } from '../apiEffects';
 import ListAddElement from './ListAddElement';
 import ListElements from './ListElement';
-import AddComment from '../commentsView/AddComment';
-import CommentView from '../commentsView/CommentView';
 import ListHeader from './ListHeader';
+import CommentSection from '../commentsView/CommentSection';
 
 const ListItem = props => {
     const {lang, userData} = props;
@@ -30,8 +29,7 @@ const ListItem = props => {
             {["all","official"].includes(type)&&info&&lists[info.list_info.list_url]}
             {editable&&edit&&<ListAddElement properties = {{type:info.list_info.list_type, info, setInfo, changes, setChanges, filters}}/>}
             {!(info&&lists[info.list_info.list_url])&&<><ListElements properties = {{edit, info, setInfo, changes, setChanges, userData, filters, setFilters}}/></>}
-            {userData&&<AddComment user_id={userData.user_id} type="list" type_id ={list_id} buttonName="New Comment"/>}
-            <CommentView comment_type="list" comment_type_id={list_id} userData={userData}/>
+            <CommentSection properties={{userData, type:"list", type_id:list_id, buttonName:"New Comment"}}/>
         </div>
     )
 }

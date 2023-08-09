@@ -18,7 +18,7 @@ const TextTable = (props) => {
     const {bookLabel, image, titleLabel} = info, rows = textRows(info, data)
     const title = data&&data.text_title?data.text_title.split(","):"";
     useEffect(() => {fetchDataEffect({type:'texts', id, setData, user_id:userData?userData.user_id:0})();},[id, userData]);
-    useEffect(()=>{wikidata&&setInfo((wikidata))},[wikidata])
+    useEffect(()=>{wikidata&&setInfo(({...data,...wikidata}))},[wikidata])
     useEffect(()=> {
         if(data && data.text_q){
             setQ&&setQ(data.text_q);

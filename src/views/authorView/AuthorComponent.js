@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useParams, useNavigate} from 'react-router-dom';
 import TextComponent from './TextComponent';
 import { setTab } from '../commonFuncs.js';
@@ -18,6 +18,7 @@ const AuthorComponent = (props) => {
                 ,{value:"det",tabName:textName, component:(text_id)?<TextComponent properties = {{lang, text_id, userData, setTextName}}/>:<></>},]
     const reversedTabs = (tabOpen.det===true)?tabs.reverse():tabs
     const returnMain = () => {navigate(baseLink);setTabOpen(defaultTabs)}
+    useEffect(() => {if(text_id){setTabOpen({...tabOpen, det:true})}else{setTabOpen({...tabOpen, det:false})}},[text_id])
     return (
     <div className="author-container">
         {author&&<div className="author-container-header">

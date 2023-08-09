@@ -2,7 +2,7 @@ import React,{useState} from "react";
 import CommentsInput from "./CommentsInput";
 import { postComment } from "../apiEffects";
 const AddComment = props => {
-    const {user_id, hash,parent_comment_id, type, type_id, buttonName} = props
+    const {user_id, hash,parent_comment_id, type, type_id, buttonName, numComments, setNumComments} = props.properties
     const baseValue = ""//"Add and format your comment here"
     const [comment, setComment] = useState(baseValue)
     const [addComment, setAddComment] = useState(false);
@@ -12,7 +12,7 @@ const AddComment = props => {
     }
     return (
     <div className="add-comment">
-        <button className="add-comment-btn" onClick={() => {setAddComment(!addComment)}}>
+        <button className="add-comment-btn" onClick={() => {setAddComment(!addComment);setNumComments(numComments+1)}}>
             &#128172; {buttonName}
         </button>
         {addComment&&<CommentsInput value={comment} setValue={setComment}/>}

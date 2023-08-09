@@ -14,7 +14,7 @@ const TextComponent = props => {
     const tabs = [{tabName:"Text Info", component:<><TextTable properties={{setQ, lang, id:text_id, userData, info, setInfo, setTextName}}/>{q&&<WikiExternalsList q_number={q} language={lang.value}/>}</>}
                 ,{tabName:"Sources", component:Object.keys(info).length>0&&info.bookLabel&&<TextSources info={info} lang={lang}/>}
                 ,{tabName:"Lists", component:<ListReferences type="text" id={text_id}/>}]
-    return (<TabComponent properties={{userData, tabs, tabOpen, setTabOpen, data:info, type:"text", id:text_id}} />)
+    return (<TabComponent properties={{userData, tabs, tabOpen, setTabOpen, data:info, type:"text"}} />)
 }
 
 export default TextComponent;
