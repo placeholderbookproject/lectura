@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { archiveEffect, googleEffect } from '../apiEffects';
+import { archiveEffect, googleEffect, fetchSourceData } from '../apiEffects';
 import { WikiExternalsLabels } from '../wikidata';
 
 const ArchiveResult = props => {
@@ -13,6 +13,13 @@ const GoogleResult = props => {
     const {authors, title, language, publishedDate, canonicalVolumeLink, pageCount} = volumeInfo
     const link = {value:canonicalVolumeLink, label:`${title} by ${authors.join()} (${publishedDate}) (${language}) (${pageCount} pages)`}
     return (<p key={canonicalVolumeLink} className="source-result"><a href={link.value} className="archiveRow">{link.label}</a></p>)
+}
+
+const TestBNF = props => {
+    const {creator, date, /*description, type, subject,*/ language, publisher, source, title, identifier} = props.data
+    const label = `${title} by ${creator} (${date}) (${language}) (${publisher}) (${source})`
+    const link = identifier.split("|")[0]
+    return (<p key={link} className="source-result"><a href={link} className="archiveRow">{label}</a></p>)
 }
 
 const SourceList = props => {
@@ -29,7 +36,8 @@ const SourceList = props => {
 
 const TextSources = props => {
     const sources = [{name:"Archive.org", func:archiveEffect, component: ArchiveResult }
-                    ,{name:"Google Books", func:googleEffect, component:GoogleResult}]
+                    ,{name:"Google Books", func:googleEffect, component:GoogleResult}
+                    ,{name:"BNF", func:fetchSourceData, component:TestBNF}]
     return (<>
     {props.info.text_q&&<WikiExternalsLabels q_number={props.info.text_q} language={props.lang.value}/>}
     <div className="source-container">
