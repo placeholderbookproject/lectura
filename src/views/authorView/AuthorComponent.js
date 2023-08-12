@@ -6,6 +6,7 @@ import DeleteData from './DeleteData';
 import AuthorGeneral from './AuthorGeneral';
 import ElementInteraction from '../ElementInteraction';
 import { postTextInteraction } from '../apiEffects';
+import TextHeader from './TextHeader';
 
 const AuthorComponent = (props) => {
     let {text_id } = useParams();
@@ -14,13 +15,15 @@ const AuthorComponent = (props) => {
     const defaultTabs = { gen:true, det: false}
     const [tabOpen, setTabOpen] = useState(text_id===undefined?defaultTabs:{...defaultTabs, det:true})
     const [author, setAuthor] = useState();
-    const [textName, setTextName] = useState(false);
+    const [text, setText] = useState({})
     const baseLink = author&&`/author/${author.author_id}`
-    const tabs = [{value:"gen",tabName:"General",component:<AuthorGeneral properties={{lang, userData, author, setAuthor, navigate, setTextName}}/>}
-                ,{value:"det",tabName:textName, component:(text_id)?<TextComponent properties = {{lang, text_id, userData, setTextName}}/>:<></>},]
-    const reversedTabs = (tabOpen.det===true)?tabs.reverse():tabs
+    const tabs = [{value:"gen",tabName:"General",component:<AuthorGeneral properties={{lang, userData, author, setAuthor, navigate}}/>}
+                ,{value:"det",tabName:<TextHeader properties={{text, userData}}/>, component:(text_id)?<TextComponent properties = {{lang, text_id, userData, text, setText}}/>:<></>}]
+    const [tabsContent, setTabsContent] = useState(tabs)
     const returnMain = () => {navigate(baseLink);setTabOpen(defaultTabs)}
     useEffect(() => {if(text_id){setTabOpen({...tabOpen, det:true})}else{setTabOpen({...tabOpen, det:false})}},[text_id])
+    useEffect(() => {setTabsContent(tabs)},[author, text])
+    const getTabs = () => {return tabOpen.det === true ? [...tabsContent].reverse() : tabsContent;};
     return (
     <div className="author-container">
         {author&&<div className="author-container-header">
@@ -33,10 +36,10 @@ const AuthorComponent = (props) => {
                     </h2>
                 </div>}
         <div className="dropdowns-container">
-            {reversedTabs.map((tab) => (
+            {getTabs().map((tab) => (
                 <div key={tab.tabName}>
                     <div className="tab-container"><div className={`tab-button${tabOpen[tab.value]?'':"-inactive"}`} 
-                        onClick = {()=>{setTab(tab.value, tabOpen, setTabOpen);tab.value==="det"&&setTextName(false)}}>{tab.tabName}</div></div>
+                        onClick = {()=>{setTab(tab.value, tabOpen, setTabOpen)}}>{tab.tabName}</div></div>
                     {tabOpen[tab.value]&&tab.component}
                 </div>))}
         </div>

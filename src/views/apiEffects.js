@@ -31,8 +31,6 @@ export const fetchUserList = (list_id, user_id, hash,setData) => {return fetchFu
 export const fetchAllLists = (user_id=null,setData) => {fetchFunc(`${server}get_all_lists${user_id?'?user_id='+user_id:""}`,setData);}
 export const fetchListReferences = (type, id, setData) => {fetchFunc(`${server}user_list_references?type=${type}&id=${id}`, setData)}
 
-export const fetchSourceData = (props) => {fetchFunc(`${server}source_data?author=${props.data.authorLabel}&title=${props.data.titleLabel}`,props.setData)}
-
 export const fetchDataEffect = props => () => {
     const {type, id, setData, by, user_id} = props
     const search = type===null||type===undefined?"":"type="+type+"&id="+id+(by!==null?"&by="+by:"")+(user_id?"&user_id="+user_id:"")
@@ -105,3 +103,5 @@ export const googleEffect = props => () => {
     fetch(query).then(response => response.json()).then(data => {setData(data.items);})
         .catch(error => console.error(error));
 }
+
+export const fetchSourceData = (props) => {fetchFunc(`${server}source_data?author=${props.data.authorLabel}&title=${props.data.titleLabel}&label=${props.data.bookLabel.split(", "[0])}&type=${props.type}`,props.setData)} //BNF or Gutenberg
