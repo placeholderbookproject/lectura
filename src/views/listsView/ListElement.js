@@ -11,6 +11,7 @@ const ListElements = (props) => {
     const elementInteractions = [{name:"checks", conditional:{true:"",false:""}, button_name:{true:"check-btn", false:"check-btn"}, label:"Check"},
                                 {name:"watch", conditional:{true:"+",false:"+"}, button_name:{true:"watchlist-btn-active",false:"watchlist-btn"}, label:"Watchlist"}]
     const [elements, setElements] = useState(info.list_detail)
+    const [query, setQuery] = useState("")
     const removeElement = (element) => {
         setInfo(prevInfo => {
             const updatedInfo = { ...prevInfo };
@@ -45,8 +46,11 @@ const ListElements = (props) => {
         })
     }
     useEffect(() => {if(info.list_info){setElements(info.list_detail);setFilters(options[list_type].slice(0,3))}},[info])
+    useEffect(()=>{if(query.length>3){const results = info.list_detail.filter(e => e.label.includes(query));setElements(results)}
+        else if (query.length===0){setElements(info.list_detail)}},[query])
     return (
         <div>
+            <input type="text" placeholder="Search for an element" value={query} onChange={(e)=>setQuery(e.target.value)} className="search-input"/>
             <ListFilters properties={{filters, setFilters, type:list_type}}/>
             {list_type==="texts"&&<ListStatistics properties={{elements:info.list_detail, setElements}}/>}
             {filters&&filters.length>0&&

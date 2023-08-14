@@ -7,7 +7,7 @@ const CommentSection = props => {
     const {userData, type, type_id, buttonName} = props.properties;
     const {user_id, hash} = userData;
     const [comments, setComments] = useState([]);
-    useEffect(() => {getComments(type, type_id, user_id, setComments)},[])
+    useEffect(() => {getComments(type, type_id, user_id, setComments)},[type_id])
     return (
     <div className="comment-section">
         {userData&&<AddComment properties={{user_id, type, type_id, hash, buttonName}} />}

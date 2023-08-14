@@ -26,7 +26,7 @@ const SourceList = props => {
     const {func, source, info, Component, type} = props
     const [data, setData] = useState();
     const [showData, setShowData] = useState(false)
-    useEffect(()=> func({data:info, setData, type}),[])
+    useEffect(()=> func({data:info, setData, type}),[info])
     return (<div className="source">
         {data&&data.length>0&&<p onClick={()=>setShowData(!showData)} className="source-header"><span style={{fontWeight:600}}>{source}</span></p>}
         {showData&&data.slice(0,5).map((result)=>Component&&<Component data={result}/>)}
@@ -38,11 +38,13 @@ const TextSources = props => {
     const sources = [{name:"Archive.org", func:archiveEffect, component: ArchiveResult }
                     ,{name:"Google Books", func:googleEffect, component:GoogleResult}
                     ,{name:"BNF", func:fetchSourceData, component:BNF, type:"bnf"}]
+    const [data, setData] = useState({})
+    useEffect(()=>props.text!==undefined&&setData(props.text),[props.text])    
     return (<>
-    {props.text.text_q&&<WikiExternalsLabels q_number={props.text.text_q} language={props.lang.value}/>}
-    <div className="source-container">
-        {sources.map(source => <SourceList info={props.text} func={source.func} source={source.name} Component={source.component} type={source.type}/>)}
-    </div></>)
+    {data.text_q&&<WikiExternalsLabels q_number={data.text_q} language={props.lang.value}/>}
+    {Object.keys(data).length>0&&<div className="source-container">
+        {sources.map(source => <SourceList info={data} func={source.func} source={source.name} Component={source.component} type={source.type}/>)}
+    </div>}</>)
 }
 
 export default TextSources

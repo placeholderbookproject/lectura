@@ -18,11 +18,11 @@ const AuthorComponent = (props) => {
     const [text, setText] = useState({})
     const baseLink = author&&`/author/${author.author_id}`
     const tabs = [{value:"gen",tabName:"General",component:<AuthorGeneral properties={{lang, userData, author, setAuthor, navigate}}/>}
-                ,{value:"det",tabName:<TextHeader properties={{text, userData}}/>, component:(text_id)?<TextComponent properties = {{lang, text_id, userData, text, setText}}/>:<></>}]
+                ,{value:"det",tabName:<TextHeader properties={{text, userData, text_id}}/>, component:(text_id)?<TextComponent properties = {{lang, text_id, userData, text, setText}}/>:<></>}]
     const [tabsContent, setTabsContent] = useState(tabs)
     const returnMain = () => {navigate(baseLink);setTabOpen(defaultTabs)}
     useEffect(() => {if(text_id){setTabOpen({...tabOpen, det:true})}else{setTabOpen({...tabOpen, det:false})}},[text_id])
-    useEffect(() => {setTabsContent(tabs)},[author, text])
+    useEffect(() => {setTabsContent(tabs)},[author, text, text_id])
     const getTabs = () => {return tabOpen.det === true ? [...tabsContent].reverse() : tabsContent;};
     return (
     <div className="author-container">
