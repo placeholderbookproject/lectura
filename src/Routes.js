@@ -10,6 +10,7 @@ import ListItem from './views/listsView/List';
 import LoginView from './views/loginView/LoginForm';
 import CreateUserForm from './views/loginView/CreateUserForm';
 import Profile from './views/userView/Profile';
+import ProfileView from './views/userView/ProfileView';
 import CreateNewList from './views/listsView/CreateNewList';
 import Cookies from 'js-cookie';
 
@@ -27,7 +28,7 @@ const RouteList = () => {
       {path:"/lists/:type/:listname", element:<ListItem lang={lang} userData={userData}/>},
       {path:"/login", element:<LoginView setUserData={setUserData}/>},
       {path:"/register",element:<CreateUserForm setUserData={setUserData}/>},
-      {path:"/user/show/:user_site", element:<Profile setUserData={setUserData} userData={userData}/>}
+      {path:"/user/show/:user_site", element:<ProfileView setUserData={setUserData} userData={userData}/>}
   ]
   return (
     <BrowserRouter>

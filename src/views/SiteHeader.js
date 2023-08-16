@@ -4,19 +4,17 @@ import { Navbar, Container } from "react-bootstrap";
 import labels from './labels.js'
 import { langCodes } from '../div/langcodes.js';
 import MainSearch from './searchView/MainSearch.js';
+import ProfileDropdown from './userView/ProfileDropdown.js';
 
 const SiteHeader = (props) => {
   const handleChange = e => {props.setLang({value:e.target.value, label:e.target.label});}
-  const {userData} = props;
   return (
     <Container className = "flexbox-container">
       <Navbar style = {{paddingBottom: 5,}}>
           <Link className="header-btn" to="/"><button>{labels.homeBtn}</button></Link>
           <MainSearch/>
           <Link className="header-btn" to ="/lists"><button>Lists</button></Link>
-          {(userData!==false)
-            ?<Link className="header-btn" to={`/user/show/${userData.user_id+"_"+userData.user_name}`}><button>{userData.user_name.slice(0,1).toUpperCase()}</button></Link>
-            :<Link className="header-btn" to="/login"><button>Login</button></Link>}
+          <ProfileDropdown userData={props.userData}/>
           <select value = {props.lang.value} label={props.lang.value} onChange = {handleChange} className="language-select">
               {langCodes.map((option) => (<option key = {option.value+option.label} value = {option.value}>{option.label}</option>) )}
           </select>

@@ -37,6 +37,8 @@ export const fetchDataEffect = props => () => {
     fetchFunc(server+'data?'+search, setData)
 }
 
+export const fetchUserData = (user_id, setData) => {fetchFunc(`${server}user_data?user_id=${user_id}`,setData)}
+
 export const fetchList = props => () => {
     const {setData, filters, type} = props
     const query = `official_lists?language=${filters.language}&country=${filters.country}&query_type=${type}`
@@ -52,9 +54,7 @@ export const fetchSearchResults = props => () => {
 
 export const createNewUser = (input) => {return postFetch(input, 'create_user')}
 export const deleteUser = (input) => {return postFetch(input, 'delete_user')}
-export const loginUser = (input) => {
-    return fetch(server+'login_user?'+'user='+input.user).then(response => response.json()).catch(error => console.log(error))
-}
+export const loginUser = (input) => {return fetch(server+'login_user?'+'user='+input.user).then(response => response.json()).catch(error => console.log(error))}
 
 export const wikidataEffect = props => () => {
     const {type, q_number, setWikidata, language} = props

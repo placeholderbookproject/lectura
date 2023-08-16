@@ -341,7 +341,7 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
   text-decoration: none;
 }
 
-.header-btn button, .changeSearchVersionBtn, .resetEditBtn, .addNewBtn,.listsBtn {
+.header-btn button, .changeSearchVersionBtn, .resetEditBtn, .addNewBtn,.listsBtn, .dropdown-trigger {
   border-radius: 30px;
   top:0;
   background-color: #dedbdb;
@@ -368,7 +368,9 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
 .header-btn:hover button, .changeSearchVersionBtn:hover,.resetEditBtn:hover, .addNewBtn:hover, .listsBtn:hover, .collapsible:hover
 ,.dropdown-toggle:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover, .tab-button:hover, .tab-button-inactive:hover
 ,.lists-tab:hover, .lists-tab-open:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover
-.header-btn:active button, .editBtn:active, .submitEditBtn:active, .changeSearchVersionBtn:active, .addNewBtn:active, .listsBtn:active {
+.header-btn:active button, .editBtn:active, .submitEditBtn:active, .changeSearchVersionBtn:active, .addNewBtn:active, .listsBtn:active
+,.profile-header-btn:hover, .profile-header-btn-active:hover
+{
   background-color: rgb(242, 239, 239);}
 
 .collapsible {
@@ -472,3 +474,32 @@ select {
 .source-header:hover {cursor:pointer;background-color:rgb(242, 239, 239);}
 .comment-header {display:flex; justify-content:center;}
 .comment-section {border-top: 0.5px solid black;}
+
+
+.dropdown-container {position: relative;display: inline-block;}
+.dropdown-trigger {cursor: pointer;}
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+.dropdown-item {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  transition: background-color 0.2s;
+}
+.dropdown-item:last-child {border-bottom: none;}
+.dropdown-item:hover {background-color: #f0f0f0;}
+.profile-link-btn {background-color:#fff; border:none; font-size:14px;}
+.profile-link-btn:hover{cursor:pointer;background-color:#f0f0f0;}
+
+.watchlist-element-container {display:flex; flex-direction:row;}
+.watchlist-element-container p {margin:5px;}
+.profile-header-btn, .profile-header-btn-active {border:none;background-color:white;}
+.profile-header-btn:hover, .profile-header-btn-active:hover,.profile-header-btn-active {border-bottom:0.5px solid black;cursor:pointer;background-color: rgb(242, 239, 239);}
