@@ -7,7 +7,7 @@ const TextHeader = props => {
     const {text, userData} = props.properties
     const [data, setData] = useState({})
     useEffect(()=>{setData(text)},[text])
-    const elementInteractions = [{name:"checks", conditional:{true:"",false:""}, button_name:{true:"check-btn", false:"check-btn"}, label:"Check"},
+    const elementInteractions = [{name:"checks", conditional:{true:"",false:""}, button_name:{true:"check-btn-active", false:"check-btn"}, label:"Check"},
                 {name:"watch", conditional:{true:"+",false:"+"}, button_name:{true:"watchlist-btn-active",false:"watchlist-btn"}, label:"Watchlist"}]
     return (text&&
     <h2 className = "Header">{checkData(text.bookLabel,(text.text_title?text.text_title.split(","):"")[0])} <a href={text.text_q}>(Wiki)</a>

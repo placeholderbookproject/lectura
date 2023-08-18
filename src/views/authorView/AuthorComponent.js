@@ -7,6 +7,7 @@ import AuthorGeneral from './AuthorGeneral';
 import ElementInteraction from '../ElementInteraction';
 import { postTextInteraction } from '../apiEffects';
 import TextHeader from './TextHeader';
+const parse = require('html-react-parser');
 
 const AuthorComponent = (props) => {
     let {text_id } = useParams();
@@ -38,8 +39,10 @@ const AuthorComponent = (props) => {
         <div className="dropdowns-container">
             {getTabs().map((tab) => (
                 <div key={tab.tabName}>
-                    <div className="tab-container"><div className={`tab-button${tabOpen[tab.value]?'':"-inactive"}`} 
-                        onClick = {()=>{setTab(tab.value, tabOpen, setTabOpen)}}>{tab.tabName}</div></div>
+                    <div className={`tab-container${tabOpen[tab.value]?'':"-inactive"}`}>
+                        {tab.tabName}
+                        <button className="tab-button" onClick={()=>setTab(tab.value,tabOpen,setTabOpen)}>{tabOpen[tab.value]?parse("&#8593;"):parse("&#8595;")}</button>
+                    </div>
                     {tabOpen[tab.value]&&tab.component}
                 </div>))}
         </div>

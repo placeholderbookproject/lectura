@@ -1,33 +1,34 @@
 import React, {useState, useEffect} from "react";
 import {postTextInteraction } from "../apiEffects";
 
+export const WatchListTextElement = props => {
+    const {label, text_language, text_q, author_id, text_id} = props.element
+    const language = text_language ? ` (${text_language})`:''
+    return (<p>{`#${props.index+1} `}<a href={`/author/${author_id}/text/${text_id}`}>{label}</a>{language} <a href={text_q}>(Wiki)</a></p>)    
+}
 const WatchListElements = props => {
-    const [data, setData] = useState(props.data);
+    const [data, setData] = useState(props.data), {userData, type} = props;
+    const removeElement = (id) => {
+        const id_type = type==="author_watch"?"author_id":"text_id"
+        const updatedData = data[type].filter(item => item[id_type] !== id);
+        setData({...data, [type]:updatedData});
+        postTextInteraction({condition: false, user_id: userData.user_id, id, type, hash:userData.hash});}   
     const WatchListAuthorElement = props => {
-        const {label, author_birth_country, author_q, author_id} = props.element, {userData, data, setData, type} = props
+        const {label, author_birth_country, author_q, author_id} = props.element
         const country = author_birth_country ? ` (${author_birth_country})`:''
-        const removeElement = () => {
-            const updatedData = data[type].filter(item => item.author_id !== author_id);
-            setData({...data, [type]:updatedData});
-            postTextInteraction({condition: false, user_id: userData.user_id, id:author_id, type, hash:userData.hash});}   
-            return (<div className="watchlist-element-container">
-                        <p>{`#${props.index+1} `}<a href={`/author/${author_id}`}>{label}</a>{country} <a href={author_q}>(Wiki)</a>
-                        <button className="watchlist-btn-active" onClick={()=>removeElement()}>x</button>
-                    </p></div>)
-    }
-    const WatchListTextElement = props => {
-        const {label, text_author, text_language, text_q, author_id, text_id} = props.element
-        const language = text_language ? ` (${text_language})`:''
-        return (<div className="watchlist-element-container">
-                    <p>{`#${props.index+1} `}<a href={`/author/${author_id}/text/${text_id}`}>{label}</a>{text_language} <a href={text_q}>(Wiki)</a>
-                    {/*<button className="watchlist-btn-active" onClick={()=>removeElement()}>x</button>*/}
-                    </p></div>)    
+        return (<p>{`#${props.index+1} `}<a href={`/author/${author_id}`}>{label}</a>{country} <a href={author_q}>(Wiki)</a></p>)
     }
     const element = (e, index) => {
-        const translation = {author_watch: <WatchListAuthorElement element={e} data={data} setData={setData} userData={props.userData} index={index} type={props.type}/>,
-                        watch: <WatchListTextElement element={e} data={data} setData={setData} userData={props.userData} index={index} type={props.type}/>}
-        return translation[props.type]}
-        return (<div>{data[props.type].map((e,index) => element(e,index))}</div>)
+            const translation = {author_watch: <WatchListAuthorElement element={e} data={data} setData={setData} userData={props.userData} index={index}/>,
+                        watch: <WatchListTextElement element={e} data={data} setData={setData} userData={props.userData} index={index}/>}
+            return translation[props.type]
+    }
+    return (<div>{data[props.type].map((e,index) => 
+                <div className="watchlist-element-container">
+                    {element(e,index)}
+                    <button className="watchlist-btn-active" onClick={()=>removeElement(props.type==="author_watch"?e.author_id:e.text_id)}>x</button>
+                </div>)}
+            </div>)
 }
 
 const WatchList = props => {

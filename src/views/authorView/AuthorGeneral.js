@@ -9,7 +9,7 @@ import TabComponent from "./TabComponent";
 
 const AuthorGeneral = props => {
     const {lang, author, setAuthor, navigate, userData, text_id} = props.properties
-    let { id } = useParams();    
+    let { id } = useParams();
     const location = useLocation();
     const defaultTabs = {"Biography":true, "Literature": true, "Lists":false};
     const [tabOpen, setTabOpen] = useState(defaultTabs)

@@ -7,7 +7,7 @@ import AuthorTextSearch from './AuthorTextSearch.js';
 import AuthorTextSort,{sortList} from './AuthorTextSort.js';
 
 const AuthorTexts = (props) => {
-    const {author, language, handleClick, text_id} = props
+    const {author, language, handleClick} = props
     const {author_birth_year, author_death_year, author_name, author_q, author_id} = author
     const [wikiTextdata, setWikiTextdata] = useState();
     const [storedtexts,setStoredtexts] = useState();
@@ -22,7 +22,7 @@ const AuthorTexts = (props) => {
                         fetchDataEffect({setData:setStoredtexts, id:author_id, type:'texts', by: "author"})();
                         wikidataEffect({q_number:author_q.replace('http://www.wikidata.org/entity/',''),setWikidata:setWikiTextdata,type:"author_texts", language:language.value})();
                     }}
-    ,[author, language, text_id])
+    ,[author_q, language])
     useEffect(() => {if(wikiTextdata&&storedtexts&&author) {
         const combinedData = removeWorksOutOfBounds(removeDuplicateList(storedtexts,wikiTextdata, "text_q"),author_birth_year, author_death_year)
         setTexts(combinedData)

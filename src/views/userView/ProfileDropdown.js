@@ -7,8 +7,8 @@ const ProfileDropdown = props => {
     const handleDropdownToggle = () => {setIsDropdownOpen(!isDropdownOpen);};
     const userLabel = `/user/show/${userData.user_id+"_"+userData.user_name}`
     const profileLinks = [{label:"Profile", component:userLabel}
-                        ,{label:"Watchlist", component:`${userLabel}/watchlist`}
-                        ,{label:"Checks", component:`${userLabel}/checks`}
+                        ,{label:"Watchlist", component:`${userLabel}?watchlist=true`}
+                        ,{label:"Checks", component:`${userLabel}?checkedlist=true`}
                     ,{label:"Lists"},{label:"Comments"},{label:"Favorites"}]
     return (
     <div className="dropdown-container">
@@ -19,7 +19,7 @@ const ProfileDropdown = props => {
         </div>
         {isDropdownOpen && userData!==false &&(
         <div className="dropdown-content">
-            {profileLinks.map((link)=><div className="dropdown-item">{link.label}</div>)}
+            {profileLinks.map((link)=><div className="dropdown-item"><Link to={link.component}>{link.label}</Link></div>)}
         </div>
         )}
   </div>)
