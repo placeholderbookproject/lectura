@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import Profile from "./Profile";
 import WatchList from "./WatchList";
 import CheckList from "./CheckList";
+import YourComments from "./YourComments";
 import { setTab } from '../commonFuncs.js';
 import { fetchUserData } from "../apiEffects";
 const ProfileView = props => {
@@ -11,10 +12,11 @@ const ProfileView = props => {
     const [tabOpen, setTabOpen] = useState(defaultTabs)
     const [data, setData] = useState({});
     const tabs = [{value:"info", tabName:"Profile Info",component:<Profile userData={props.userData}/>}
-                ,{value:"watchlist", tabName:"Watchlist", component:<WatchList userData={props.userData} data={data}/>}
+                ,{value:"watchlist", tabName:"Watchlists", component:<WatchList userData={props.userData} data={data}/>}
                 ,{value:"checkedlist", tabName:"Checks", component:<CheckList userData={props.userData} data={data}/>}
-                ,{value:"commentlist",tabName:"Comments"}
-                ,{value:"likeslist",tabName:"Favorites"}]
+                //,{value:"lists", tabName:"Lists"}
+                ,{value:"comments",tabName:"Comments", component: <YourComments userData={props.userData} data={data}/>}
+                /*,{value:"likeslist",tabName:"Favorites"}*/]
     const setNewSearchParams = (tab) => {
         const existingParams = new URLSearchParams(searchParams.toString());
         if (existingParams.get(tab)){existingParams.delete(tab)}
