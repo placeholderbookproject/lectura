@@ -11,7 +11,7 @@ const WatchListAuthorElement = props => {
     const country = author_birth_country ? ` (${author_birth_country})`:''
     return (<p>{`#${props.index+1} `}<a href={`/author/${author_id}`}>{label}</a>{country} <a href={author_q}>(Wiki)</a></p>)
 }
-const WatchListListElement = props => {
+export const WatchListListElement = props => {
     const {list_name, user_name, list_type, list_created, list_id} = props.element
     return (<p>{`#${props.index+1} `}<a href={`/lists/all/${list_id}_${list_name}`}>{list_name}</a>{` by ${user_name} (${list_type}) (${list_created})`}</p>)
 }
@@ -31,7 +31,7 @@ const WatchListElements = props => {
             return translation[props.type]
     }
     return (<div>{data[props.type].map((e,index) => 
-                <div className="watchlist-element-container">
+                <div className="watchlist-element-container" key={e[id_type_list[type]]}>
                     {element(e,index)}
                     <button className="watchlist-btn-active" onClick={()=>removeElement(e[id_type_list[type]])}>x</button>
                 </div>)}
@@ -45,7 +45,7 @@ const WatchList = props => {
     const lists = [{label:"Authors",value:"author_watch"},{label:"Texts", value:"watch"},{label:"Lists", value:"user_lists_watchlists"}]
     useEffect(()=>{props.data&&setData(props.data)},[props.data])
     return (<div>
-        <div className="header-container">{lists.map((l) => <button className={`profile-header-btn${l.label===tabOpen.label?"-active":""}`} onClick={()=>setTabOpen(l)}>{l.label}</button>)}</div>
+        <div className="header-container">{lists.map((l) => <button key={l.label} className={`profile-header-btn${l.label===tabOpen.label?"-active":""}`} onClick={()=>setTabOpen(l)}>{l.label}</button>)}</div>
         <WatchListElements data={data} userData={userData} type={tabOpen.value}/>
     </div>)
 }

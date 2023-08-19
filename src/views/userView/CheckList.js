@@ -8,7 +8,7 @@ const CheckList = props => {
         setData({...updatedData});
         postTextInteraction({condition: false, user_id: props.userData.user_id, id:text_id, type:"checks", hash:props.userData.hash});}   
     return (data.map((e, index) => 
-        <div className="watchlist-element-container">
+        <div className="watchlist-element-container" key={e.text_id}>
             <WatchListTextElement element={e} data={data} setData={setData} userData={props.userData} index={index}/>
             <button className="check-btn-active" onClick={()=>removeElement(e.text_id)}></button>
         </div>))

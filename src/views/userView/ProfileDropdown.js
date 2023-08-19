@@ -9,7 +9,7 @@ const ProfileDropdown = props => {
     const profileLinks = [{label:"Profile", component:userLabel}
                         ,{label:"Watchlist", component:`${userLabel}?watchlist=true`}
                         ,{label:"Checks", component:`${userLabel}?checkedlist=true`}
-                    ,{label:"Lists"},{label:"Comments"},{label:"Favorites"}]
+                    ,{label:"Lists", component:`${userLabel}?lists=true`},{label:"Comments", component:`${userLabel}?comments=true`},{label:"Favorites"}]
     return (
     <div className="dropdown-container">
         <div className="dropdown-trigger" onMouseEnter={handleDropdownToggle} >
@@ -19,7 +19,7 @@ const ProfileDropdown = props => {
         </div>
         {isDropdownOpen && userData!==false &&(
         <div className="dropdown-content">
-            {profileLinks.map((link)=><div className="dropdown-item"><Link to={link.component}>{link.label}</Link></div>)}
+            {profileLinks.map((link)=><div className="dropdown-item" key={link.label}><Link to={link.component}>{link.label}</Link></div>)}
         </div>
         )}
   </div>)

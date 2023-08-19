@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import Profile from "./Profile";
 import WatchList from "./WatchList";
 import CheckList from "./CheckList";
+import YourLists from "./YourLists";
 import YourComments from "./YourComments";
 import { setTab } from '../commonFuncs.js';
 import { fetchUserData } from "../apiEffects";
@@ -14,8 +15,8 @@ const ProfileView = props => {
     const tabs = [{value:"info", tabName:"Profile Info",component:<Profile userData={props.userData}/>}
                 ,{value:"watchlist", tabName:"Watchlists", component:<WatchList userData={props.userData} data={data}/>}
                 ,{value:"checkedlist", tabName:"Checks", component:<CheckList userData={props.userData} data={data}/>}
-                //,{value:"lists", tabName:"Lists"}
-                ,{value:"comments",tabName:"Comments", component: <YourComments userData={props.userData} data={data}/>}
+                ,{value:"lists", tabName:"Lists", component:<YourLists userData={props.userData} data={data.lists}/>}
+                ,{value:"comments",tabName:"Comments", component: <YourComments userData={props.userData} data={data.comments}/>}
                 /*,{value:"likeslist",tabName:"Favorites"}*/]
     const setNewSearchParams = (tab) => {
         const existingParams = new URLSearchParams(searchParams.toString());

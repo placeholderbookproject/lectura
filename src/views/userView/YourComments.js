@@ -6,9 +6,7 @@ const CommentsElement = props => {
     return (<div className="watchlist-element-container"><p><a href={url[comment_type]}>{`#${props.index+1} `}</a></p>{parse(comment_content)} <p>{`(${comment_created_at})`}</p></div>)
 }
 const YourComments = props => {
-    const [data, setData] = useState(props.data.comments)
-    return (<div className="header-container">
-            {data.map((e,index) => <CommentsElement element={e} index={index}/>)}
-        </div>)
+    const [data, setData] = useState(props.data)
+    return (<div className="header-container">{data.map((e,index) => <CommentsElement element={e} index={index}/>)}</div>)
 }
 export default YourComments;
