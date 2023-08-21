@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ListInteractionsStatistics from "./ListInteractionsStatistics";
 
 const ListsListItem = (props) => {
-    const {img, list_name, list_description, list_id, list_created, list_modified, user_name, user_deleted,list_deleted, likes, dislikes, watchlists} = props.list_data
+    const {img, list_name, list_description, list_id, list_created, list_modified, user_name, user_deleted,list_deleted, likes, dislikes, watchlists, tab} = props.list_data
     const [info, setInfo] = useState({list_info:props.list_data})
     const url = `${(list_id+"_"+list_name)}`
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ const ListsListItem = (props) => {
         <div className="list-item">
             <div className="list-image">{img&&<img src={img} alt = {list_description}/>}</div>
             <div className="list-header">
-                <h3 className="list-title"><a onClick={()=>navigate(`/lists/${props.tab}/${url}`)}>{list_name}</a></h3>
+                <h3 className={`list-title${tab==="official"?"-official":""}`}><a onClick={()=>navigate(`/lists/${tab}/${url}`)}>{`${tab==="official"?"Official: ":""}${list_name}`}</a></h3>
                 <p className="list-description">{list_description}</p>
             </div>
             <div className="list-details">
