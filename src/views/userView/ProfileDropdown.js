@@ -6,10 +6,9 @@ const ProfileDropdown = props => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const handleDropdownToggle = () => {setIsDropdownOpen(!isDropdownOpen);};
     const userLabel = `/user/show/${userData.user_id+"_"+userData.user_name}`
-    const profileLinks = [{label:"Profile", component:userLabel}
-                        ,{label:"Watchlist", component:`${userLabel}?watchlist=true`}
-                        ,{label:"Checks", component:`${userLabel}?checkedlist=true`}
-                    ,{label:"Lists", component:`${userLabel}?lists=true`},{label:"Comments", component:`${userLabel}?comments=true`},{label:"Favorites"}]
+    const profileLinks = [{label:"Profile", component:userLabel},{label:"Watchlist", component:`${userLabel}?watchlist=true`}
+                        ,{label:"Checks", component:`${userLabel}?checkedlist=true`},{label:"Favorites & Dislikes", component:`${userLabel}?text_interactions=true`}
+                        ,{label:"Lists", component:`${userLabel}?lists=true`},{label:"Comments", component:`${userLabel}?comments=true`}]
     return (
     <div className="dropdown-container">
         <div className="dropdown-trigger" onMouseEnter={handleDropdownToggle} >

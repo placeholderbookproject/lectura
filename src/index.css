@@ -3,11 +3,12 @@ p, h2, h3, div, input {font-family: Arial;}
 .listHeader, .profile-info, .list-user label, .list-user-deleted label, .list-dates label, .list-statistics-container span 
     {font-weight:700;}
 
-.watchlist-btn, .like-btn, .dislike-btn, .watchlist-btn-active, .like-btn-active, .dislike-btn-active 
+.watchlist-btn, .like-btn, .favorites-btn, .dislike-btn, .watchlist-btn-active, .like-btn-active, .dislike-btn-active, .favorites-btn-active, .dislikes-btn-active, .dislikes-btn
   {background-color:white; border: none; opacity:0.5; font-size:16px;}
-.watchlist-btn:hover, .like-btn:hover, .dislike-btn:hover, .watchlist-btn-active:hover, .like-btn-active:hover, .dislike-btn-active:hover 
+.watchlist-btn:hover, .like-btn:hover, .dislike-btn:hover, .watchlist-btn-active:hover, .like-btn-active:hover, .dislike-btn-active:hover, .favorites-btn:hover, .favorites-btn-active:hover
+,.dislikes-btn:hover, .dislikes-btn-active:hover
   {border-bottom: 1px solid black; cursor: pointer;}
-.watchlist-btn-active, .like-btn-active, .dislike-btn-active {opacity:1;}
+.watchlist-btn-active, .like-btn-active, .dislike-btn-active, .favorites-btn-active, .dislikes-btn-active {opacity:1;}
 .watchlist-btn:hover {opacity:1;background-color: rgb(242, 239, 239)}
 .latestAdditionsHeader {font-weight:700; font-size: 1.2em;}
 .list-buttons {display: flex; justify-content: flex-end;}
