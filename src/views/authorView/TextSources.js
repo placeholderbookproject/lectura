@@ -39,7 +39,7 @@ const TextSources = props => {
                     ,{name:"Google Books", func:googleEffect, component:GoogleResult}
                     ,{name:"BNF", func:fetchSourceData, component:BNF, type:"bnf"}]
     const [data, setData] = useState({})
-    useEffect(()=>props.text!==undefined&&setData(props.text),[props.text])    
+    useEffect(()=>{if(props.text!==undefined){setData(props.text)}},[props.text])    
     return (<>
     {data.text_q&&<WikiExternalsLabels q_number={data.text_q} language={props.lang.value}/>}
     {Object.keys(data).length>0&&<div className="source-container">

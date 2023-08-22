@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import { WatchListTextElement } from "./WatchList";
+import { WatchListTextElement } from "./UserElementInteractionsList";
 import { postTextInteraction } from "../apiEffects";
 const CheckList = props => {
     const [data, setData] = useState(props.data.checks)
