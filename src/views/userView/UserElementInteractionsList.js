@@ -51,7 +51,9 @@ const UserElementInteractionsList = props => {
     const [tabOpen, setTabOpen] = useState(lists[0]);
     useEffect(()=>{props.data&&setData(props.data)},[props.data])
     return (<div>
-        <div className="header-container">{lists.map((l) => <button key={l.label} className={`profile-header-btn${l.label===tabOpen.label?"-active":""}`} onClick={()=>setTabOpen(l)}>{l.label}</button>)}</div>
+        <div className="header-container">{lists.map((l) => 
+            <button key={l.label} className={`profile-header-btn${l.label===tabOpen.label?"-active":""}`} onClick={()=>setTabOpen(l)}>
+                {`${l.label} (${props.data[l.value].length})`}</button>)}</div>
         <UserElementInteractions data={data} userData={userData} type={tabOpen.value} id_type_list={id_type_list}/>
     </div>)
 }

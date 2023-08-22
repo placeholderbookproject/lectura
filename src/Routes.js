@@ -9,7 +9,6 @@ import {IntroPage} from './views/IntroPage.js';
 import ListItem from './views/listsView/List';
 import LoginView from './views/loginView/LoginForm';
 import CreateUserForm from './views/loginView/CreateUserForm';
-import Profile from './views/userView/Profile';
 import ProfileView from './views/userView/ProfileView';
 import CreateNewList from './views/listsView/CreateNewList';
 import Cookies from 'js-cookie';
@@ -34,7 +33,7 @@ const RouteList = () => {
     <BrowserRouter>
     <Routes>
       {routes.map((route, index) => (
-        <Route key={index} path={route.path} element={<><SiteHeader setLang={setLang} lang={lang} userData={userData}/>{route.element}</>}/>
+        <Route key={index} path={route.path} element={<><SiteHeader setLang={setLang} lang={lang} userData={userData} setUserData={setUserData}/>{route.element}</>}/>
       ))}
       </Routes>
     </BrowserRouter>

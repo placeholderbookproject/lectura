@@ -2,7 +2,7 @@ import React,{useState} from "react";
 import { WatchListTextElement } from "./UserElementInteractionsList";
 import { postTextInteraction } from "../apiEffects";
 const CheckList = props => {
-    const [data, setData] = useState(props.data.checks)
+    const [data, setData] = useState(props.data)
     const removeElement = (text_id) => {
         const updatedData = data.filter(item => item["text_id"] !== text_id);
         setData({...updatedData});
