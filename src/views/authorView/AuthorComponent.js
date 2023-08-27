@@ -29,7 +29,7 @@ const AuthorComponent = (props) => {
     <div className="author-container">
         {author&&<div className="author-container-header">
                     <h2><a onClick={()=>{returnMain()}} className="author-header">{author.author_name} </a>
-                    <a href={author.author_q?author.author_q:""}>{`(Wiki)`}</a>
+                    <a href={author.article?author.article:author.author_q?author.author_q:""}>{`(Wiki)`}</a>
                     {userData&&<ElementInteraction values={{user_id:userData.user_id, hash: userData.hash, id:author.author_id
                                 ,condition:author["author_watch"], conditional:{true:"+",false:"+"}
                                 ,button_name:{true:"watchlist-btn-active",false:"watchlist-btn"}, name:"author_watch", postFunction:postTextInteraction }}/>}

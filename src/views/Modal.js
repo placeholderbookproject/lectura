@@ -17,7 +17,7 @@ const Modal = ({label,children}) => {
     const closeModal = () => {setIsModalOpen(false);};
     return (
       <div>
-        <button className="header-btn" onClick={openModal}>{label}</button>
+        <button className="modal-entry-btn" onClick={openModal}>{label}</button>
         <ModalContainer isOpen={isModalOpen} onClose={closeModal}>{children}</ModalContainer>
       </div>
     );

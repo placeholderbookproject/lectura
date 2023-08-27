@@ -13,7 +13,7 @@ const TextHeader = props => {
                 ,{name:"dislikes", conditional:{true:"&#128078;", false: "&#128078;"}, button_name:{true:"dislikes-btn-active", false:"dislikes-btn"}}
             ]
     return (text&&
-    <h2 className = "Header">{checkData(text.bookLabel,(text.text_title?text.text_title.split(","):"")[0])} <a href={text.text_q}>(Wiki)</a>
+    <h2 className = "Header">{checkData(text.bookLabel,(text.text_title?text.text_title.split(","):"")[0])} <a href={`${text.article?text.article:text.text_q}`}>(Wiki)</a>
         {Object.keys(text).length>0 && elementInteractions.map((e) =>
                 <ElementInteraction values={{...e, condition:data[e.name], user_id:userData.user_id, hash:userData.hash,id:text.text_id, postFunction:postTextInteraction}}/>)}
         {userData&&<DeleteData properties={{type:"text", data, setData, userData}}/>}    

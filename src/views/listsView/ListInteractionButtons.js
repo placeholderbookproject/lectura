@@ -8,7 +8,7 @@ const ListInteractionButtons = props => {
                         {name:"dislike", label:"&#128078;", function:void(0)}];
     const listInteraction = (btn) => {
         if (list_id&&userData.user_id) {
-            const input = {type:btn.name, list_id:list_id, user_id:userData.user_id,hash:userData.hash,delete:interactions[btn.name]&&interactions[btn.name]}
+            const input = {type:btn.name, list_id:list_id, user_id:userData.user_id,hash:userData.hash,delete:interactions[btn.name]?interactions[btn.name]:false}
             const oldInteractions = interactions
             const newInteractions = {...oldInteractions, [btn.name]:!oldInteractions[btn.name]}
             updateListInteraction(input).then(() => {

@@ -11,7 +11,8 @@ const ProfileDropdown = props => {
     const userLabel = `/user/show/${userData.user_id+"_"+userData.user_name}`
     const profileLinks = [{label:"Profile", component:userLabel},{label:"Watchlist", component:`${userLabel}?watchlist=true`}
                         ,{label:"Checks", component:`${userLabel}?checkedlist=true`},{label:"Favorites & Dislikes", component:`${userLabel}?text_interactions=true`}
-                        ,{label:"Lists", component:`${userLabel}?lists=true`},{label:"Comments", component:`${userLabel}?comments=true`}]
+                        ,{label:"Lists", component:`${userLabel}?lists=true`},{label:"List Favorites & Dislikes", component:`${userLabel}?list_interactions=true`}
+                        ,{label:"Comments", component:`${userLabel}?comments=true`}]
     const logout = () => {setUserData(false);Cookies.remove('user');}
     return (
     <div className="dropdown-container">

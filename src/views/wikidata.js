@@ -89,6 +89,7 @@ export const authorQuery = `
     ?imageLabel
     ?nativenameLabel
     ?citizenshipLabel
+    ?article
     #?descriptionsourceLabel
     WHERE
     {
@@ -115,6 +116,11 @@ export const authorQuery = `
       OPTIONAL {?author wdt:P27 ?citizenship.}
       #OPTIONAL {?author wdt:P1343 ?descriptionsource.}
       OPTIONAL {?author rdfs:label ?authorLabel. FILTER(LANG(?authorLabel)="en").}
+      OPTIONAL {
+        ?article schema:about ?author .
+        ?article schema:inLanguage "en" .
+        FILTER (SUBSTR(str(?article), 1, 25) = "https://en.wikipedia.org/")
+      }  
       [nativeHeader]
       SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
     }`
@@ -213,6 +219,7 @@ SELECT distinct (?book as ?text_q)
 ?awardsLabel
 ?publishedInLabel
 ?copyrightLabel
+?article
 WHERE
 {
   VALUES ?book { wd:q_number}.
@@ -240,6 +247,11 @@ WHERE
   OPTIONAL {?book wdt:P1433 ?publishedIn.}
   OPTIONAL {?book wdt:P6216 ?copyright.}
   OPTIONAL {?book rdfs:label ?bookLabel. FILTER(LANG(?bookLabel)="en").}
+  OPTIONAL {
+    ?article schema:about ?book .
+    ?article schema:inLanguage "en" .
+    FILTER (SUBSTR(str(?article), 1, 25) = "https://en.wikipedia.org/")
+  }
 [nativeHeader]
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
   #BIND(COALESCE(YEAR(?publication), YEAR(?dop), YEAR(?inception), 9999) as ?orderDate)

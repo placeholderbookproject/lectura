@@ -3,15 +3,11 @@ import {postTextInteraction, updateListInteraction } from "../apiEffects";
 import UserElementSearch from "./UserElementSearch";
 
 const element = (e, index, data, setData, type) => {
-    const translation = {
-                author_watch: <WatchListAuthorElement element={e} data={data} setData={setData} index={index}/>
-                ,watch: <WatchListTextElement element={e} data={data} setData={setData}  index={index}/>
-                ,user_lists_watchlists:<WatchListListElement element={e} data={data} setData={setData} index={index}/>
-                ,favorites: <WatchListTextElement element={e} data={data} setData={setData}  index={index}/>
-                ,dislikes: <WatchListTextElement element={e} data={data} setData={setData}  index={index}/>
-            }
-    return translation[type]
-}
+    switch (type) {case 'author_watch':return <WatchListAuthorElement element={e} data={data} setData={setData} index={index} />;
+                case 'watch': case 'favorites': case 'dislikes': return <WatchListTextElement element={e} data={data} setData={setData} index={index} />;
+            case 'user_lists_watchlists': case 'list_favorites': case 'list_dislikes': return <WatchListListElement element={e} data={data} setData={setData} index={index} />;
+        default: return null; // Handle unsupported types or provide a default component
+    }};  
 
 export const WatchListTextElement = props => {
     const {label, text_language, text_q, author_id, text_id} = props.element
@@ -31,13 +27,15 @@ const UserElementInteractions = props => {
     const {userData, type, id_type_list} = props;
     const [data, setData] = useState(props.data[type])
     const removeElement = (id,id_type) => {
-        const updatedData = data[type].filter(item => item[id_type] !== id);
-        setData({...data, [type]:updatedData});
+        const updatedData = data.filter(item => item[id_type] !== id);
+        setData({...updatedData});
         if (type==="user_lists_watchlists") {updateListInteraction({type:"watchlist", list_id:id, user_id:userData.user_id,hash:userData.hash,delete:true})}
+        else if (type==="list_favorites") {updateListInteraction({type:"like", list_id:id, user_id:userData.user_id, hash:userData.hash, delete:true})}
+        else if (type==="list_dislikes") {updateListInteraction({type:"dislike", list_id:id, user_id:userData.user_id, hash:userData.hash, delete:true})}
         else {postTextInteraction({condition: false, user_id: userData.user_id, id, type, hash:userData.hash});}}   
     useEffect(()=>setData(props.data[type]),[type])
-    return (<div>
-            {props.data[type].length>3&&<UserElementSearch originData={props.data[type]} setData={setData} searchColumn={"label"}/>}
+    return (data&&data.length>0&&<div>
+            {data.length>3&&<UserElementSearch originData={props.data[type]} setData={setData} searchColumn={"label"}/>}
             {data.map((e,index) => <div className="watchlist-element-container" key={e[id_type_list[type]]}>
                     {element(e,index, data, setData, type)}
                     <button className="watchlist-btn-active" onClick={()=>removeElement(e[id_type_list[type]],id_type_list[type])}>x</button>

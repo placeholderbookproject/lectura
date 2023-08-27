@@ -10,7 +10,7 @@ import { fetchUserData } from "../apiEffects";
 const ProfileView = props => {
     const {userData, setUserData} = props
     const [searchParams,setSearchParams] = useSearchParams();
-    const id_type_list = {author_watch:"author_id", watch:"text_id", user_lists_watchlists:"list_id", favorites:"text_id",dislikes:"text_id"}
+    const id_type_list = {author_watch:"author_id", watch:"text_id", user_lists_watchlists:"list_id", favorites:"text_id",dislikes:"text_id", list_favorites:"list_id", list_dislikes:"list_id"}
     const defaultTabs = {info:true, watchlist:false, checkedlist:false, commentlist:false, likeslist:false}
     const [tabOpen, setTabOpen] = useState(defaultTabs)
     const [data, setData] = useState({});
@@ -22,6 +22,8 @@ const ProfileView = props => {
                 ,{value:"text_interactions", tabName:"Favorites & Dislikes",component:<UserElementInteractionsList userData={userData} data={data} id_type_list={id_type_list}
                         lists={[{label:"Favorites",value:"favorites"},{label:"Dislikes", value:"dislikes"}]} />}
                 ,{value:"lists", tabName:`Lists (${data.lists.length})`, component:<YourLists userData={userData} data={data.lists}/>}
+                ,{value:"list_interactions", tabName:'List Favorites & Dislikes', component: <UserElementInteractionsList userData={userData} data={data} id_type_list={id_type_list} 
+                    lists={[{label:"Favorites",value:"list_favorites"},{label:"Dislikes", value:"list_dislikes"}]} />}
                 ,{value:"comments",tabName:`Comments (${data.comments.length})`, component: <YourComments userData={userData} data={data.comments}/>}
                 /*,{value:"likeslist",tabName:"Favorites"}*/]
     const setNewSearchParams = (tab) => {
@@ -35,7 +37,7 @@ const ProfileView = props => {
         if (searchParams){
             const searchParamsDictionary = {};
             searchParams.forEach((value, key) => {searchParamsDictionary[key] = value;});
-            setTabOpen({...tabOpen, ...searchParamsDictionary})
+            setTabOpen({...defaultTabs, ...searchParamsDictionary})
         }}, [searchParams])
     return (Object.keys(data).length>0&&<div className="dropdowns-container">
     {tabs.map((tab) => (

@@ -79,4 +79,4 @@ const labels = {
     text_author_q : 'Author Q Number',
     }
     
-    export default labels;
+export default labels;

@@ -8,7 +8,7 @@ import { WikiExternalsLabels } from '../wikidata.js';
 export const AuthorTable = (props) => {
     const {author, wikidata, lang} = props.properties
     const [data, setData] = useState({})
-    useEffect(()=>{if(wikidata&&author){setData({...author, ...wikidata})}},[props.properties])
+    useEffect(()=>{if(wikidata&&author){setData({...author, ...wikidata});}},[props.properties])
     const language = lang.value
     const {authordesc, akaLabel,genderLabel, birthyear, birthplaceLabel, birthplacecountryLabel,deathyear
         ,deathplaceLabel,deathplacecountryLabel, floruit, occupationsLabel, languagesLabel, nativenameLabel, imageLabel,citizenshipLabel
