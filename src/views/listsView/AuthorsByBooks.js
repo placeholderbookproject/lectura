@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { countries } from '../../div/countries';
 import { languages } from '../../div/languages';
 import { fetchList } from '../apiEffects';
-import ComponentPopup from '../Popup';
+import ComponentPopup from '../../old/Popup';
 import DropdownMenu from './DropdownMenu';
 
 const AuthorsByBooksTable = (props) => {

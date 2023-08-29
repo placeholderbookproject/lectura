@@ -3,7 +3,9 @@ p, h2, h3, div, input {font-family: Arial;}
 .listHeader, .profile-info, .list-user label, .list-user-deleted label, .list-dates label, .list-statistics-container span 
     {font-weight:700;}
 .language-select {margin-right:1rem;border-radius: 25px;}
-
+.latest-additions-link {text-decoration: none;color:black;}
+.latest-additions-link:hover {border-bottom:1px solid;}
+.search-result-label p:hover{cursor:pointer;}
 .watchlist-btn, .like-btn, .favorites-btn, .dislike-btn, .watchlist-btn-active, .like-btn-active, .dislike-btn-active, .favorites-btn-active, .dislikes-btn-active, .dislikes-btn
   {background-color:white; border: none; opacity:0.5; font-size:16px;}
 .watchlist-btn:hover, .like-btn:hover, .dislike-btn:hover, .watchlist-btn-active:hover, .like-btn-active:hover, .dislike-btn-active:hover, .favorites-btn:hover, .favorites-btn-active:hover
@@ -51,8 +53,8 @@ p, h2, h3, div, input {font-family: Arial;}
 
 .search-dropdown-popup {
   position: absolute;
-  top: 40px; /* adjust this value to position the filter component vertically */
-  left: 100px;
+  top: 50px; /* adjust this value to position the filter component vertically */
+  left: 250px;
   z-index: 1;
   background-color: white;
   border: 1px solid black;

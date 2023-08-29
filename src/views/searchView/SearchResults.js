@@ -2,13 +2,12 @@ import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Tooltip from '@mui/material/Tooltip';
 import { filterArray } from '../formattingFuncs.js';
-import ComponentPopup from '../Popup.js';
+import ComponentPopup from '../../old/Popup.js';
 import Paging from '../Paging.js';
 
 const SearchResults = (props) => {
     const {searchResults, setSearchResults, searchType, lang, searchParams, setSearchParams} = props
     const removals = ["author_id","text_id","value","type"]
-    const navigate = useNavigate();
     const filters = filterArray(props.filters,removals) 
     const [searchOrder, setSearchOrder] = useState("asc");
     const [page, setPage] = useState(searchParams.has("page")?searchParams.get("page"):1);
@@ -45,12 +44,12 @@ const SearchResults = (props) => {
             {searchResults.length>0&&
                 searchResults.slice(pageLength.value*page-pageLength.value,pageLength.value*page).map //Limitation to first 100 values
                     (result => (
-                        <tr key = {searchType === "author"?result.author_id:result.text_id}>
+                        <tr key = {searchType === "authors"?result.author_id:result.text_id}>
                             {Object.keys(result).map((col) => {
                                 if(removals.includes(col)){return null}
-                                else if (col === "Author"||col==="Title") 
-                                    {return <td key={col+result[col]+result["author_id"]}>
-                                        <p onClick={() => navigate(`${result["author_id"]?"/author/"+result["author_id"]:""}${col!=="Author"?"/text/"+result["text_id"]:""}`)}>{result[col]}</p></td>}
+                                else if (col === "label") 
+                                    {return <td key={col+result[col]+result["author_id"]} className="search-result-label">
+                                        <p><a href={`${result["author_id"]?"/author/"+result["author_id"]:""}${searchType!=="authors"?"/text/"+result["text_id"]:""}`}>{result[col]}</a></p></td>}
                                 else if (result[col]===null){return <td key={col+result[searchType]}></td>}
                                 else {return <td key={col+result[col]+result[searchType]}>{result[col]}</td>}})}
                         </tr>))}
