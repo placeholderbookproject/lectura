@@ -20,7 +20,7 @@ const ListsListItem = (props) => {
             </div>
             <div className="list-details">
                 <ListInteractionsStatistics listInfo={{likes, dislikes, watchlists}}/>
-                <ListInteractionButtons data={{list_id, userData:props.userData, navigate, info, setInfo}}/>
+                <ListInteractionButtons data={{list_id, userData:props.userData, setUserData:props.setUserData, info, setInfo}}/>
                 {user_name&&<div className={`list-user${user_deleted?'-deleted':''}`}><label>User </label>{user_name}</div>}
                 <div className="list-dates">
                     {dates.map(d => d.content&&<><label>{d.label}</label><p className="list-date">{new Date(d.content).toLocaleDateString(undefined, dateOptions)}</p></>)}

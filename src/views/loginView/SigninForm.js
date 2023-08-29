@@ -31,7 +31,7 @@ const Signin = (props) => {
             else {setError("wrong_pw")}})
     }
     useEffect(() => {
-        if(user!==false&&login){props.setUserData(user);navigate("/");Cookies.set('user', JSON.stringify(user), { expires: 7 })}
+        if(user!==false&&login){props.setUserData(user);Cookies.set('user', JSON.stringify(user), { expires: 7 })}
         else if(user!==false&&!login){setUser(false);}}
     ,[user, login])
     return (<>

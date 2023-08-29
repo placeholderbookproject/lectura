@@ -1,8 +1,10 @@
 import React,{useState} from "react";
 import { updateListInteraction } from "../apiEffects";
+import Modal from "../Modal";
+import LoginView from "../loginView/LoginForm";
 const parse = require('html-react-parser');
 const ListInteractionButtons = props => {
-    const {list_id, userData, navigate, info} = props.data
+    const {list_id, userData, setUserData, info} = props.data
     const [interactions, setInteractions] = useState(info.list_info);
     const list_buttons = [{name:"watchlist",label:"+", function:void(0)},{name:"like", label:"&#128077;", function:void(0)},
                         {name:"dislike", label:"&#128078;", function:void(0)}];
@@ -21,10 +23,12 @@ const ListInteractionButtons = props => {
     }
     return (
     <div className="list-buttons">
-        {list_buttons.map((btn) => 
-            <button className={`${btn.name}-btn${interactions[btn.name]?"-active":""}`} key={btn.name} onClick={userData?() => listInteraction(btn):() => navigate("/login")}>
+        {list_buttons.map((btn) => userData?
+            <button className={`${btn.name}-btn${interactions[btn.name]?"-active":""}`} key={btn.name} onClick={() => listInteraction(btn)}>
                 {parse(btn.label)}
-            </button>)}
+            </button>
+            :<Modal triggerButton={<button className={`${btn.name}-btn`} key={btn.name}>{parse(btn.label)}</button>}><LoginView userData={userData} setUserData={setUserData}/></Modal>
+            )}
     </div>
     )
 }

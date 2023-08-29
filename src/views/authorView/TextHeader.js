@@ -4,7 +4,7 @@ import DeleteData from "./DeleteData";
 import { checkData } from "../formattingFuncs";
 import { postTextInteraction } from "../apiEffects";
 const TextHeader = props => {
-    const {text, userData} = props.properties
+    const {text, userData, setUserData} = props.properties
     const [data, setData] = useState({})
     useEffect(()=>{setData(text)},[text])
     const elementInteractions = [{name:"checks", conditional:{true:"",false:""}, button_name:{true:"check-btn-active", false:"check-btn"}, label:"Check"},
@@ -15,7 +15,7 @@ const TextHeader = props => {
     return (data&&Object.keys(data).length>0&&
     <h2 className = "Header">{checkData((data.text_title?data.text_title.split(","):"")[0], data.bookLabel)} <a href={`${data.article?data.article:data.text_q}`}>(Wiki)</a>
         {elementInteractions.map((e) =>
-                <ElementInteraction values={{...e, condition:data[e.name], user_id:userData.user_id, hash:userData.hash,id:data.text_id, postFunction:postTextInteraction}}/>)}
+                <ElementInteraction values={{...e, condition:data[e.name], user_id:userData.user_id, hash:userData.hash,id:data.text_id,userData,setUserData, postFunction:postTextInteraction}}/>)}
         {userData&&<DeleteData properties={{type:"text", data, setData, userData}}/>}    
     </h2>)
 }

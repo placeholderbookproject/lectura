@@ -11,13 +11,14 @@ const ModalContainer = ({ isOpen, onClose, children }) => {
     );
 };
 
-const Modal = ({label,children}) => {
+const Modal = ({triggerButton,children}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const openModal = () => {setIsModalOpen(true);};
     const closeModal = () => {setIsModalOpen(false);};
     return (
       <div>
-        <button className="modal-entry-btn" onClick={openModal}>{label}</button>
+        {React.cloneElement(triggerButton, { onClick: openModal })}
+        {/*<button className="modal-entry-btn" onClick={openModal}>{label}</button>*/}
         <ModalContainer isOpen={isModalOpen} onClose={closeModal}>{children}</ModalContainer>
       </div>
     );

@@ -11,7 +11,7 @@ const parse = require('html-react-parser');
 
 const AuthorComponent = (props) => {
     let {text_id } = useParams();
-    const {lang, userData} = props
+    const {lang, userData, setUserData} = props
     const navigate = useNavigate();
     const defaultTabs = { gen:true, det: false}
     const [tabOpen, setTabOpen] = useState(text_id===undefined?defaultTabs:{...defaultTabs, det:true})
@@ -19,7 +19,7 @@ const AuthorComponent = (props) => {
     const [text, setText] = useState({})
     const baseLink = author&&`/author/${author.author_id}`
     const tabs = [{value:"gen",tabName:"General",component:<AuthorGeneral properties={{lang, userData, author, setAuthor, navigate}}/>}
-                ,{value:"det",tabName:<TextHeader properties={{text, userData, text_id}}/>, component:(text_id)?<TextComponent properties = {{lang, text_id, userData, text, setText}}/>:<></>}]
+                ,{value:"det",tabName:<TextHeader properties={{text, userData, text_id, setUserData}}/>, component:(text_id)?<TextComponent properties = {{lang, text_id, userData, text, setText}}/>:<></>}]
     const [tabsContent, setTabsContent] = useState(tabs)
     const returnMain = () => {navigate(baseLink);setTabOpen(defaultTabs)}
     useEffect(() => {if(text_id){setTabOpen({...tabOpen, det:true})}else{setTabOpen({...tabOpen, det:false})}},[text_id])
@@ -30,7 +30,7 @@ const AuthorComponent = (props) => {
         {author&&<div className="author-container-header">
                     <h2><a onClick={()=>{returnMain()}} className="author-header">{author.author_name} </a>
                     <a href={author.author_wikipedia?author.author_wikipedia:author.author_q?author.author_q:""}>{`(Wiki)`}</a>
-                    {userData&&<ElementInteraction values={{user_id:userData.user_id, hash: userData.hash, id:author.author_id
+                    {<ElementInteraction values={{user_id:userData.user_id, hash: userData.hash, id:author.author_id, userData, setUserData
                                 ,condition:author["author_watch"], conditional:{true:"+",false:"+"}
                                 ,button_name:{true:"watchlist-btn-active",false:"watchlist-btn"}, name:"author_watch", postFunction:postTextInteraction }}/>}
                     {userData&&<DeleteData properties={{type:"author", data:author, setData:setAuthor, userData}}/>}

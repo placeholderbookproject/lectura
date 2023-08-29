@@ -19,7 +19,7 @@ const ProfileDropdown = props => {
         <div className="dropdown-trigger" onMouseEnter={handleDropdownToggle} >
         {(userData!==false)
             ?<Link className="header-btn" to={userLabel}><button>{userData.user_name.slice(0,1).toUpperCase()}</button></Link>
-            :<Modal label="Login"><LoginView userData={userData} setUserData={setUserData}/></Modal>}
+            :<Modal triggerButton={<button className="modal-entry-btn">Login</button>}><LoginView userData={userData} setUserData={setUserData}/></Modal>}
         </div>
         {isDropdownOpen && userData!==false &&(
         <div className="dropdown-content">

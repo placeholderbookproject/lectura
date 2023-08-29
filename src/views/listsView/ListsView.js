@@ -28,7 +28,7 @@ const ListsTab = (props) => {
                         onClick = {() => setTab(tabBtn)}>{tabBtn.charAt(0).toUpperCase() + tabBtn.slice(1)}</button>)}
                 <button className="lists-tab" onClick={()=>navigate("/lists/create_new")}>Create a new list</button>
             </div>
-            <ListsOfLists lists={searchResults} tab={tab} userData={props.userData} searchResults={searchResults} setSearchResults={setSearchResults}/>
+            <ListsOfLists lists={searchResults} tab={tab} userData={props.userData} setUserData={props.setUserData} searchResults={searchResults} setSearchResults={setSearchResults}/>
         </div>
     )
 }
