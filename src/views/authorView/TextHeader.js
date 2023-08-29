@@ -16,7 +16,7 @@ const TextHeader = props => {
     <h2 className = "Header">{checkData((data.text_title?data.text_title.split(","):"")[0], data.bookLabel)} <a href={`${data.article?data.article:data.text_q}`}>(Wiki)</a>
         {elementInteractions.map((e) =>
                 <ElementInteraction values={{...e, condition:data[e.name], user_id:userData.user_id, hash:userData.hash,id:data.text_id,userData,setUserData, postFunction:postTextInteraction}}/>)}
-        {userData&&<DeleteData properties={{type:"text", data, setData, userData}}/>}    
+        {userData&&userData.user_role==='administrator'&&<DeleteData properties={{type:"text", data, setData, userData}}/>}    
     </h2>)
 }
 export default TextHeader

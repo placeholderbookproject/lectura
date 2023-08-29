@@ -6,6 +6,7 @@ p, h2, h3, div, input {font-family: Arial;}
 .latest-additions-link {text-decoration: none;color:black;}
 .latest-additions-link:hover {border-bottom:1px solid;}
 .search-result-label p:hover{cursor:pointer;}
+
 .watchlist-btn, .like-btn, .favorites-btn, .dislike-btn, .watchlist-btn-active, .like-btn-active, .dislike-btn-active, .favorites-btn-active, .dislikes-btn-active, .dislikes-btn
   {background-color:white; border: none; opacity:0.5; font-size:16px;}
 .watchlist-btn:hover, .like-btn:hover, .dislike-btn:hover, .watchlist-btn-active:hover, .like-btn-active:hover, .dislike-btn-active:hover, .favorites-btn:hover, .favorites-btn-active:hover
@@ -14,14 +15,13 @@ p, h2, h3, div, input {font-family: Arial;}
 .watchlist-btn-active, .like-btn-active, .dislike-btn-active, .favorites-btn-active, .dislikes-btn-active {opacity:1;}
 .watchlist-btn:hover {opacity:1;background-color: rgb(242, 239, 239)}
 .latestAdditionsHeader {font-weight:700; font-size: 1.2em;}
-.list-buttons {display: flex; justify-content: flex-end;}
 .list-item {
   border: 0.5px solid black;
   display:flex;
   position: relative;
-  height:80px;
+  height:85px;
 }
-.list-title, .list-title-official {margin:2px; margin-left:2px;}
+.list-title, .list-title-official {margin:2px;}
 .list-title:hover, .list-title-official:hover {cursor: pointer; border-bottom:1px solid black;}
 .list-title-official {color:darkred;}
 .list-description{margin:5px 0px; margin-left:2px;}
@@ -35,7 +35,7 @@ p, h2, h3, div, input {font-family: Arial;}
 .list-dates label {margin-left:5px; margin-right:5px;}
 .list-user-deleted {color:darkred; text-decoration: line-through;}
 .list-date {margin:0;}
-.list-buttons {display: flex; gap: 10px;}
+.list-buttons {display: flex; gap: 10px;justify-content: flex-end;}
 .list-base-description {font-weight:bold;margin-top:0;}
 .list-header h2 {margin-bottom:0;}
 .list-statistics-container {display:flex; flex-direction:row; justify-content: flex-end;}
@@ -251,7 +251,6 @@ ul,li {list-style: none;}
 
 .search-input {
   width: 500px;
-  justify-content: center;
   padding: 8px;
   border: none;
   outline: none;
@@ -290,10 +289,9 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
   background-color:white;
   flex-direction:row;
   display: flex;
-  max-width:500px;
 }
+.list-search-bar {max-width:500px;}
 .clear-search {padding-right:5px;}
-.list-search-bar {border:none}
 .list-add-element-container{
   max-height: 300px; /* set the maximum height */
   overflow-y: auto;
@@ -315,12 +313,10 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
 }
 #detailed-search-results, #importPreview, #listTable, .search-result-all {
   border-collapse: collapse;
-  width: 100%;
   border: 1px solid;
 }
 .search-result-all,.search-type, .radio-container, .list-search-type {width:fit-content;}
 .list-search-type {border: 1px solid black; border-top: 0; margin:0;}
-.list-search-bar {border: 1px solid black;}
 .search-result-all-elements {flex-direction:row; display: flex}
 #detailed-search-results th, #listTable th {
   padding-top: 12px;
@@ -337,16 +333,7 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
 
 .popup-row:hover {cursor:pointer;}
 
-.header-btn {
-  padding-left:1rem; 
-  padding-right:1rem; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-}
-
-.header-btn button, .changeSearchVersionBtn, .resetEditBtn, .addNewBtn,.listsBtn, .dropdown-trigger, .modal-entry-btn {
+.header-btn button, .changeSearchVersionBtn, .resetEditBtn, .addNewBtn,.listsBtn, .dropdown-trigger, .modal-entry-btn, .header-btn {
   border-radius: 30px;
   top:0;
   background-color: #dedbdb;
@@ -361,20 +348,16 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
   outline: none;
   padding: 8px .8em;
   position: relative;
-  user-select: none;
-  -webkit-user-select: none;
   touch-action: manipulation;
   vertical-align: baseline;
   white-space: nowrap;
 }
-
 .header-btn button {background: none;}
-.header-btn:hover button, .changeSearchVersionBtn:hover,.resetEditBtn:hover, .addNewBtn:hover, .listsBtn:hover, .collapsible:hover
+.header-btn:hover, .changeSearchVersionBtn:hover,.resetEditBtn:hover, .addNewBtn:hover, .listsBtn:hover, .collapsible:hover
 ,.dropdown-toggle:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover, .tab-container:hover, .tab-container-inactive:hover
 ,.lists-tab:hover, .lists-tab-open:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover
 .header-btn:active button, .editBtn:active, .submitEditBtn:active, .changeSearchVersionBtn:active, .addNewBtn:active, .listsBtn:active
-,.profile-header-btn:hover, .profile-header-btn-active:hover, .modal-entry-btn:hover
-{
+,.profile-header-btn:hover, .profile-header-btn-active:hover, .modal-entry-btn:hover {
   background-color: rgb(242, 239, 239);}
 
 .collapsible {
@@ -396,6 +379,13 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
 .dropdowns-container, .dropdown-menu, .filterTexts, .lists-header {
   display: flex;
   flex-direction: row;
+  justify-content: left;
+  overflow-y:auto;
+}
+
+.author-component-container {
+  display: flex;
+  flex-direction: column;
   justify-content: left;
   overflow-y:auto;
 }

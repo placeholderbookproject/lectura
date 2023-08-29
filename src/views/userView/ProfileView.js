@@ -24,7 +24,8 @@ const ProfileView = props => {
                 ,{value:"lists", tabName:`Lists (${data.lists.length})`, component:<YourLists userData={userData} data={data.lists}/>}
                 ,{value:"list_interactions", tabName:'List Favorites & Dislikes', component: <UserElementInteractionsList userData={userData} data={data} id_type_list={id_type_list} 
                     lists={[{label:"Favorites",value:"list_favorites"},{label:"Dislikes", value:"list_dislikes"}]} />}
-                ,{value:"comments",tabName:`Comments (${data.comments.length})`, component: <YourComments userData={userData} data={data.comments}/>}]
+                ,{value:"comments",tabName:`Comments (${data.comments.length})`, component: <YourComments userData={userData} data={data.comments}/>}
+            ,userData.user_role==='administrator'&&{value:"admin",tabName:'Admin'}]
     const setNewSearchParams = (tab) => {
         const existingParams = new URLSearchParams(searchParams.toString());
         if (existingParams.get(tab)){existingParams.delete(tab)}
@@ -39,7 +40,7 @@ const ProfileView = props => {
             setTabOpen({...defaultTabs, ...searchParamsDictionary})
         }}, [searchParams])
     return (Object.keys(data).length>0&&<div className="dropdowns-container">
-    {tabs.map((tab) => (
+    {tabs.map((tab) => tab.value&&(
         <div key={tab.tabName}>
             <div className="tab-container" onClick = {()=>{setNewSearchParams(tab.value);setTab(tab.value, tabOpen, setTabOpen)}}>{tab.tabName}</div>
             {tabOpen[tab.value]&&tab.component}

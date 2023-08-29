@@ -19,7 +19,7 @@ const ListItem = props => {
     const [changes,setChanges] = useState({additions:[], removals:[],list_info:{list_id:list_id}, order_changes:[], delete:false, userData})
     const [filters, setFilters] = useState([])
     useEffect(() => {if(list_id){fetchUserList(list_id, props.userData&&props.userData.user_id,props.userData&&props.userData.hash,setInfo)}},[])
-    useEffect(() => {if(info&&(userData.user_id===info.list_info.user_id)){setEditable(true)} else{setEditable(false)}},[info])
+    useEffect(() => {if(info&&(userData.user_id===info.list_info.user_id||userData.user_role==='administrator')){setEditable(true)} else{setEditable(false)}},[info])
     return (
         info&&
         <div className="list-tab">

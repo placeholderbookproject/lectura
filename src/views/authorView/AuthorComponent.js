@@ -33,10 +33,10 @@ const AuthorComponent = (props) => {
                     {<ElementInteraction values={{user_id:userData.user_id, hash: userData.hash, id:author.author_id, userData, setUserData
                                 ,condition:author["author_watch"], conditional:{true:"+",false:"+"}
                                 ,button_name:{true:"watchlist-btn-active",false:"watchlist-btn"}, name:"author_watch", postFunction:postTextInteraction }}/>}
-                    {userData&&<DeleteData properties={{type:"author", data:author, setData:setAuthor, userData}}/>}
+                    {userData&&userData.user_role==='administrator'&&<DeleteData properties={{type:"author", data:author, setData:setAuthor, userData}}/>}
                     </h2>
                 </div>}
-        <div className="dropdowns-container">
+        <div className="author-component-container">
             {getTabs().map((tab) => (
                 <div key={tab.tabName}>
                     <div className={`tab-container${tabOpen[tab.value]?'':"-inactive"}`}>

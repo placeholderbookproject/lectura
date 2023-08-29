@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React from "react";
 const parse = require('html-react-parser');
 const CommentsElement = props => {
     const {comment_content, comment_type, comment_type_id, comment_created_at, author_id, list_name} = props.element
@@ -6,7 +6,6 @@ const CommentsElement = props => {
     return (<div className="watchlist-element-container"><p><a href={url[comment_type]}>{`#${props.index+1} `}</a></p>{parse(comment_content)} <p>{`(${comment_created_at})`}</p></div>)
 }
 const YourComments = props => {
-    const [data, setData] = useState(props.data)
-    return (<div className="header-container">{data.map((e,index) => <CommentsElement element={e} index={index}/>)}</div>)
+    return (props.data&&<div className="header-container">{props.data.map((e,index) => <CommentsElement element={e} index={index}/>)}</div>)
 }
 export default YourComments;

@@ -22,7 +22,7 @@ const Signin = (props) => {
         loginUser({user:input.user_name})
         .then((result) => {
             if(result!==false){
-                setUser({user_id:result.user_id, user_name:result.user_name, user_email:result.user_email, hash:result.hash})
+                setUser({user_id:result.user_id, user_name:result.user_name, user_email:result.user_email, hash:result.hash, user_role:result.user_role})
                 return bcrypt.compare(input.user_password, result.pw)}
             else {return "no_user"}})
         .then ((response) => {
