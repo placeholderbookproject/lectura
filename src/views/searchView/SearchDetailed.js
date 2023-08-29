@@ -37,6 +37,7 @@ const SearchDetailed = (props) => {
         }
     },[]) // eslint-disable-line react-hooks/exhaustive-deps
     const clickRadio = (option) => {
+        setSearchResults([])
         setSearchParams({'query':search,'type':option})
         setFilters(options[option].slice(0,6));
         setSearchType(option);
@@ -48,11 +49,10 @@ const SearchDetailed = (props) => {
             <FormControl sx={{ m: 1, width: "50ch" }} variant="outlined">
                 <InputLabel>Search</InputLabel>
                 <OutlinedInput type="text" inputProps={{style: {fontSize: 20, height: 10}}}
-                    endAdornment={
-                        <InputAdornment position="end">
-                            <IconButton onClick = {() => searchFunction()} aria-label="Search Button" edge="end"><SearchIcon/></IconButton>
-                            <IconButton onClick = {clearSearch} aria-label="Clear Search Button" edge="end"><ClearIcon/></IconButton>
-                        </InputAdornment>}
+                    endAdornment={<InputAdornment position="end">
+                                    <IconButton onClick = {() => searchFunction()} aria-label="Search Button" edge="end"><SearchIcon/></IconButton>
+                                    <IconButton onClick = {clearSearch} aria-label="Clear Search Button" edge="end"><ClearIcon/></IconButton>
+                                </InputAdornment>}
                     label="Search" value = {search} onChange={(e) => setSearch(e.target.value)} onKeyDown = {onEnter}/>
                 <FormHelperText>{(searchResults.length>0)?"Your query returned #" + searchResults.length +" results":""}</FormHelperText>
             </FormControl>
@@ -62,13 +62,10 @@ const SearchDetailed = (props) => {
                     <label>{option.charAt(0).toUpperCase()+option.slice(1)}</label>
                 </>)}
             </fieldset>
-            {searchType!=="all"&&
-                <Select options = {(searchType === "authors") ? options["authors"]:options["texts"]} 
-                    onChange = {(e) => setFilters(e)} value = {filters} placeholder = {"Select search filters"} isMulti/>}
+            {searchType!=="all"&& <Select options = {(searchType === "authors")?options["authors"]:options["texts"]} 
+                                    onChange = {(e) => setFilters(e)} value = {filters} placeholder = {"Select search filters"} isMulti/>}
         </div>
-        <SearchResults filters={filters} searchResults={searchResults} setSearchResults={setSearchResults} searchType={searchType} lang={props.lang}
-            searchParams={searchParams} setSearchParams={setSearchParams}
-        />
+        <SearchResults values = {{filters, searchResults, searchType, lang:props.lang, searchParams, setSearchParams}}/>
       </div>
     )
   }

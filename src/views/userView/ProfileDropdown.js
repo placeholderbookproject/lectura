@@ -12,15 +12,15 @@ const ProfileDropdown = props => {
     const userLabel = `/user/show/${userData.user_id+"_"+userData.user_name}`
     const profileLinks = [{label:"Profile", component:userLabel},{label:"Watchlist", component:`${userLabel}?watchlist=true`}
                         ,{label:"Checks", component:`${userLabel}?checkedlist=true`},{label:"Favorites & Dislikes", component:`${userLabel}?text_interactions=true`}
-                        ,{label:"Lists", component:`${userLabel}?lists=true`},{label:"List Favorites & Dislikes", component:`${userLabel}?list_interactions=true`}
+                        ,{label:"Your Lists", component:`${userLabel}?lists=true`},{label:"List Favorites & Dislikes", component:`${userLabel}?list_interactions=true`}
                         ,{label:"Comments", component:`${userLabel}?comments=true`}
                         ,userData.user_role==='administrator'&&{label:"Admin", component:`${userLabel}?admin=true`}]
     const logout = () => {setUserData(false);Cookies.remove('user');navigate("/")}
     return (
     <div className="dropdown-container">
-        <div className="dropdown-trigger" onClick={handleDropdownToggle} >
+        <div className="dropdown-trigger" onClick={handleDropdownToggle}>
         {(userData!==false)
-            ?<button className="header-btn">{userData.user_name.slice(0,1).toUpperCase()}</button>
+            ?<button className="header-btn">{userData.user_name}</button>
             :<Modal triggerButton={<button className="modal-entry-btn">Login</button>}><LoginView userData={userData} setUserData={setUserData}/></Modal>}
         </div>
         {isDropdownOpen && userData!==false &&(

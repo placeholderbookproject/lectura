@@ -36,7 +36,7 @@ const Comment = (props) => {
                     <p className={`comment-created-date${(comment_edited_at!=="NaT"&&comment_edited_at!==null)?"-edited":""}`}>{transformDate(comment_created_at)}</p>
                     {(comment_edited_at!=="NaT"&&comment_edited_at!==null)&&<p><span style = {{"fontWeight": 600,}}>Edited </span>{`${transformDate(comment_edited_at)}`}</p>}
                 </div>
-                {props.userData.user_id === user_id&&<>
+                {(props.userData.user_id === user_id||props.userData.user_role==='administrator')&&<>
                     <button className="edit-btn" onClick={() => setEdit(!edit)}>edit</button>
                     <button className="delete-btn" onClick={() => deleteComment()}>X</button>
                     </>}

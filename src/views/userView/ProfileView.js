@@ -28,8 +28,7 @@ const ProfileView = props => {
             ,userData.user_role==='administrator'&&{value:"admin",tabName:'Admin'}]
     const setNewSearchParams = (tab) => {
         const existingParams = new URLSearchParams(searchParams.toString());
-        if (existingParams.get(tab)){existingParams.delete(tab)}
-        else (existingParams.set(tab, true))
+        if (existingParams.get(tab)){existingParams.delete(tab)} else (existingParams.set(tab, true))
         setSearchParams(existingParams)
     }
     useEffect(()=>fetchUserData(userData.user_id, setData),[])
