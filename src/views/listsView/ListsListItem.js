@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import ListInteractionButtons from "./ListInteractionButtons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import ListInteractionsStatistics from "./ListInteractionsStatistics";
 
 const ListsListItem = (props) => {
@@ -20,7 +20,11 @@ const ListsListItem = (props) => {
             </div>
             <div className="list-details">
                 <ListInteractionsStatistics listInfo={{likes, dislikes, watchlists}}/>
-                <ListInteractionButtons data={{list_id, userData:props.userData, setUserData:props.setUserData, info, setInfo}}/>
+                <div className="list-interactions-container">
+                    {(props.userData.userName===user_name||props.userData.user_role==='administrator')&&
+                        <Link to={`/lists/${tab}/${list_id}_${list_name}?edit=true`}><button className="edit-btn">&#9998;</button></Link>}
+                    <ListInteractionButtons data={{list_id, userData:props.userData, setUserData:props.setUserData, info, setInfo}}/>
+                </div>
                 {user_name&&<div className={`list-user${user_deleted?'-deleted':''}`}><label>User </label>{user_name}</div>}
                 <div className="list-dates">
                     {dates.map(d => d.content&&<><label>{d.label}</label><p className="list-date">{new Date(d.content).toLocaleDateString(undefined, dateOptions)}</p></>)}
