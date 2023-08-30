@@ -531,3 +531,4 @@ select {
 
 .commented-element, .commented-comment p {font-style: italic; color: rgb(97, 96, 96);}
 .commented-comment p {margin:0px;}
+.user-container {display: flex;flex-direction: row;}

@@ -56,6 +56,9 @@ export const createNewUser = (input) => {return postFetch(input, 'create_user')}
 export const deleteUser = (input) => {return postFetch(input, 'delete_user')}
 export const loginUser = (input) => {return fetch(server+'login_user?'+'user='+input.user).then(response => response.json()).catch(error => console.log(error))}
 
+export const getAdminData = (user_id,hash,type, setData) => {return fetchFunc(`${server}admin_data?user_id=${user_id}&hash=${hash}&data_type=${type}`, setData)}
+export const postRoleChange = (input) => {return postFetch(input, 'update_user_role')}
+
 export const wikidataEffect = props => () => {
     const {type, q_number, setWikidata, language} = props
     const headers = { Accept: "application/sparql-results+json" };

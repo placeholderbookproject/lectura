@@ -7,6 +7,7 @@ import YourLists from "./YourLists";
 import YourComments from "./YourComments";
 import { setTab } from '../commonFuncs.js';
 import { fetchUserData } from "../apiEffects";
+import AdminView from "./AdminView";
 const ProfileView = props => {
     const {userData, setUserData} = props
     const [searchParams,setSearchParams] = useSearchParams();
@@ -16,6 +17,7 @@ const ProfileView = props => {
     const [data, setData] = useState({});
     const tabs = Object.keys(data).length>0&&
                 [{value:"info", tabName:"Profile Info",component:<Profile userData={userData} setUserData={setUserData}/>}
+                ,userData.user_role==='administrator'&&{value:"admin",tabName:'Admin', component:<AdminView userData={userData}/>}
                 ,{value:"watchlist", tabName:"Watchlists",component:<UserElementInteractionsList userData={userData} data={data} id_type_list={id_type_list}
                         lists={[{label:"Authors",value:"author_watch"},{label:"Texts", value:"watch"},{label:"Lists", value:"user_lists_watchlists"}]}  />}
                 ,{value:"checkedlist", tabName:`Checks (${data.checks.length})`, component:<CheckList userData={userData} data={data.checks}/>}
@@ -24,8 +26,7 @@ const ProfileView = props => {
                 ,{value:"lists", tabName:`Lists (${data.lists.length})`, component:<YourLists userData={userData} data={data.lists}/>}
                 ,{value:"list_interactions", tabName:'List Favorites & Dislikes', component: <UserElementInteractionsList userData={userData} data={data} id_type_list={id_type_list} 
                     lists={[{label:"Favorites",value:"list_favorites"},{label:"Dislikes", value:"list_dislikes"}]} />}
-                ,{value:"comments",tabName:`Comments (${data.comments.length})`, component: <YourComments userData={userData} data={data.comments}/>}
-            ,userData.user_role==='administrator'&&{value:"admin",tabName:'Admin'}]
+                ,{value:"comments",tabName:`Comments (${data.comments.length})`, component: <YourComments userData={userData} data={data.comments}/>}]
     const setNewSearchParams = (tab) => {
         const existingParams = new URLSearchParams(searchParams.toString());
         if (existingParams.get(tab)){existingParams.delete(tab)} else (existingParams.set(tab, true))
