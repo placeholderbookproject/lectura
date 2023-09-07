@@ -5,26 +5,29 @@ import { setTab } from '../commonFuncs.js';
 import DeleteData from './DeleteData';
 import AuthorGeneral from './AuthorGeneral';
 import ElementInteraction from '../ElementInteraction';
-import { postTextInteraction } from '../apiEffects';
+import { postTextInteraction, fetchDataEffect } from '../apiEffects';
 import TextHeader from './TextHeader';
 const parse = require('html-react-parser');
 
 const AuthorComponent = (props) => {
-    let {text_id } = useParams();
+    const {id, text_id} = useParams();
     const {lang, userData, setUserData} = props
     const navigate = useNavigate();
-    const defaultTabs = { gen:true, det: false}
-    const [tabOpen, setTabOpen] = useState(text_id===undefined?defaultTabs:{...defaultTabs, det:true})
+    const [tabOpen, setTabOpen] = useState(text_id!==undefined?{gen:true, det:true}:{gen:true, det: false})
     const [author, setAuthor] = useState();
     const [text, setText] = useState({})
-    const baseLink = author&&`/author/${author.author_id}`
     const tabs = [{value:"gen",tabName:"General",component:<AuthorGeneral properties={{lang, userData, author, setAuthor, navigate}}/>}
-                ,{value:"det",tabName:<TextHeader properties={{text, userData, text_id, setUserData}}/>, component:(text_id)?<TextComponent properties = {{lang, text_id, userData, text, setText}}/>:<></>}]
-    const [tabsContent, setTabsContent] = useState(tabs)
-    const returnMain = () => {navigate(baseLink);setTabOpen(defaultTabs)}
-    useEffect(() => {if(text_id){setTabOpen({...tabOpen, det:true})}else{setTabOpen({...tabOpen, det:false})}},[text_id])
-    useEffect(() => {setTabsContent(tabs)},[author, text, text_id])
-    const getTabs = () => {return tabOpen.det === true ? [...tabsContent].reverse() : tabsContent;};
+                ,{value:"det",tabName:<TextHeader properties={{text, userData, text_id, setUserData}}/>, component:(text&&text.text_q)?<TextComponent properties = {{lang, text_id, userData, text}}/>:<></>}]
+    const returnMain = () => {navigate(`/author/${author.author_id}`);setTabOpen({gen:true, det: false})}
+    useEffect(() => {console.log(id)
+            if(id) {
+                fetchDataEffect({type:'authors', id, setData:setAuthor,user_id:userData.user_id})()
+                if(text_id) {
+                    fetchDataEffect({type:'texts', id:text_id, setData:setText, user_id:userData?userData.user_id:0})();
+                    setTabOpen({...tabOpen, det:true});}
+                else {setTabOpen({...tabOpen, det:false})}
+            }},[id, text_id, userData])
+    const getTabs = () => {return tabOpen.det === true ? [...tabs].reverse() : tabs;};
     return (
     <div className="author-container">
         {author&&<div className="author-container-header">

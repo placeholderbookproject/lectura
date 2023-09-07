@@ -16,11 +16,11 @@ import Cookies from 'js-cookie';
 const RouteList = () => {
   const userCookie = Cookies.get('user')
   const [lang, setLang] = useState({value:"en", label:"English"});
-  const [userData, setUserData] = useState(userCookie?JSON.parse(userCookie):false);
+  const [userData, setUserData] = useState(userCookie&&JSON.parse(userCookie));
   const routes = [{path:"/", element: <IntroPage lang = {lang}/>},
       {path:"/text/:id",element:<TextComponent lang={lang} userData={userData}/>},
       {path:"/author/:id",element:<AuthorComponent lang = {lang} userData={userData} setUserData={setUserData}/>},
-      {path:"/author/:id/text/:text_id",element:<AuthorComponent lang = {lang}  userData={userData}/>},
+      {path:"/author/:id/text/:text_id",element:<AuthorComponent lang = {lang}  userData={userData} setUserData={setUserData}/>},
       {path:"/search", element:<SearchDetailed lang={lang} userData={userData}/>},
       {path:"/lists",element:<ListsTab lang={lang} userData={userData} setUserData={setUserData}/>},
       {path:"/lists/create_new", element:<CreateNewList lang={lang} userData={userData}/>},

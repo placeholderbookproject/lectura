@@ -78,11 +78,11 @@ export const wikidataEffect = props => () => {
     else if (type==="externals"){query = externalsQuery.replaceAll('"en"',lang)};
     query = query.replace("wd:q_number","wd:"+q_number).replace("[q2]",q_number).replace("en_fixed", "en");
     const url = `https://query.wikidata.org/sparql?query=${encodeURIComponent(query)}`;
-    fetch(url, {headers})
+    return fetch(url, {headers})
     .then(response => {if (response.ok) {return response.json()} throw response;})
     .then (data => {if(type==="author_texts"){setWikidata(reformatWikitexts(data))}
                     else if (type==="externals") {setWikidata(data)}
-                    else{setWikidata(reformatWikidata(data))}})
+                    else{setWikidata(reformatWikidata(data));return reformatWikidata(data)}})
 }
 
 export const archiveEffect = props => () => {

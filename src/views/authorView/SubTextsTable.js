@@ -7,7 +7,7 @@ import { subTextRows } from "./dataRows.js";
 const SubTextsTable = (props) => {
     const {bookLabel, text_id,bookdesc, titleLabel, publYear,dopYear, inceptionYear, image} = props.data
     const {author_name} = props.author
-    const bookLabelReform = bookLabel.split(" | ").length>1?bookLabel.split(" | ").pop():bookLabel
+    const bookLabelReform = bookLabel && bookLabel.split(" | ").length>1?bookLabel.split(" | ").pop():bookLabel
     const [detailed, setDetailed] = useState(false);
     const selectedDate = dateCoalesce(publYear, dopYear, inceptionYear);
     const rows = subTextRows(props.data)
