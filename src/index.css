@@ -486,9 +486,9 @@ select {
 .dropdown-item {padding: 10px;border-bottom: 1px solid #ccc;transition: background-color 0.2s;}
 .dropdown-item:hover {background-color: #f0f0f0;}
 .dropdown-item a{color:black; text-decoration:none;}
-.dropdown-item button, .logout-btn, .delete-user-btn 
+.dropdown-item button, .logout-btn, .delete-user-btn, .edit-profile-btn
   {border:none; border-bottom:1px solid darkred;background-color:white; font-size:16px; padding:0; color:darkred;}
-.dropdown-item a:hover, .dropdown-item button:hover, .logout-btn:hover, .delete-user-btn:hover 
+.dropdown-item a:hover, .dropdown-item button:hover, .logout-btn:hover, .delete-user-btn:hover, .edit-profile-btn:hover
     {border-bottom:1px solid black; background-color:#f0f0f0; cursor:pointer;}
 .profile-link-btn {background-color:#fff; border:none; font-size:14px;}
 .profile-link-btn:hover{cursor:pointer;background-color:#f0f0f0;}
@@ -497,7 +497,6 @@ select {
 .watchlist-element-container p {margin:5px;}
 .profile-header-btn, .profile-header-btn-active {border:none;background-color:white;}
 .profile-header-btn:hover, .profile-header-btn-active:hover,.profile-header-btn-active {border-bottom:0.5px solid black;cursor:pointer;background-color: rgb(242, 239, 239);}
-
 /* CSS for modal */
 .modal-overlay {
   position: fixed;
@@ -534,3 +533,5 @@ select {
 .user-container {display: flex;flex-direction: row;}
 .author-text-row-btn {background-color:white;border:none;}
 .author-text-row-btn:hover {cursor:pointer;background-color: #f0f0f0;border-bottom:1px solid black;}
+.profile-row-container {display:flex;flex-direction:row;}
+.user-name {margin-left:5px;}

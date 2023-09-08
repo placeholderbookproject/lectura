@@ -13,21 +13,21 @@ export const postFetch = (body, url) => {
             .catch(error => console.log(error))
 }
 
-export const postDeleteData = (data) => {return postFetch(data, 'delete_data')}
+export const postDeleteData = (data) => postFetch(data, 'delete_data')
 
-export const postComment = (data) => {return postFetch(data, 'upload_comment')}
-export const postUpdateComment = (data) => {return postFetch(data, 'update_comment')}
-export const getComments = (comment_type, comment_type_id, user_id, setData)=> {
-    return fetchFunc(`${server}extract_comments?comment_type=${comment_type}&comment_type_id=${comment_type_id}${user_id?"&user_id="+user_id:""}`, setData)}
-export const postCommentInteraction = (data) => {return postFetch(data,'comment_interaction')}
+export const postComment = (data) => postFetch(data, 'upload_comment')
+export const postUpdateComment = (data) => postFetch(data, 'update_comment')
+export const getComments = (comment_type, comment_type_id, user_id, setData) =>
+    fetchFunc(`${server}extract_comments?comment_type=${comment_type}&comment_type_id=${comment_type_id}${user_id?"&user_id="+user_id:""}`, setData)
+export const postCommentInteraction = (data) => postFetch(data,'comment_interaction')
 
 export const postTextInteraction = data => postFetch(data,'element_interaction');
 
-export const createNewList = (list_info) => {return postFetch(list_info, 'create_list')}
-export const updateUserList = (input) => {return postFetch(input, 'update_user_list')}
-export const updateListInteraction = (input) => {return postFetch(input, 'user_list_interaction')}
+export const createNewList = (list_info) => postFetch(list_info, 'create_list')
+export const updateUserList = (input) => postFetch(input, 'update_user_list')
+export const updateListInteraction = (input) => postFetch(input, 'user_list_interaction')
 
-export const fetchUserList = (list_id, user_id, hash,setData) => {return fetchFunc(`${server}get_user_list?list_id=${list_id}${user_id?"&user_id="+user_id+"&hash="+hash:""}`, setData)}
+export const fetchUserList = (list_id, user_id, hash,setData) => fetchFunc(`${server}get_user_list?list_id=${list_id}${user_id?"&user_id="+user_id+"&hash="+hash:""}`, setData)
 export const fetchAllLists = (user_id=null,setData) => {fetchFunc(`${server}get_all_lists${user_id?'?user_id='+user_id:""}`,setData);}
 export const fetchListReferences = (type, id, setData) => {fetchFunc(`${server}user_list_references?type=${type}&id=${id}`, setData)}
 
@@ -38,6 +38,7 @@ export const fetchDataEffect = props => () => {
 }
 
 export const fetchUserData = (user_id, setData) => {fetchFunc(`${server}user_data?user_id=${user_id}`,setData)}
+export const updateUserData = data => postFetch(data, 'update_user_data');
 
 export const fetchList = props => () => {
     const {setData, filters, type} = props
@@ -52,12 +53,12 @@ export const fetchSearchResults = props => () => {
         fetchFunc(server+'search?query='+query+searchType+"&filters="+JSON.stringify(filters), setSearchResults, signal)}
 }
 
-export const createNewUser = (input) => {return postFetch(input, 'create_user')}
-export const deleteUser = (input) => {return postFetch(input, 'delete_user')}
-export const loginUser = (input) => {return fetch(server+'login_user?'+'user='+input.user).then(response => response.json()).catch(error => console.log(error))}
+export const createNewUser = (input) => postFetch(input, 'create_user')
+export const deleteUser = (input) => postFetch(input, 'delete_user')
+export const loginUser = (input) => fetch(server+'login_user?'+'user='+input.user).then(response => response.json()).catch(error => console.log(error))
 
-export const getAdminData = (user_id,hash,type, setData) => {return fetchFunc(`${server}admin_data?user_id=${user_id}&hash=${hash}&data_type=${type}`, setData)}
-export const postRoleChange = (input) => {return postFetch(input, 'update_user_role')}
+export const getAdminData = (user_id,hash,type, setData) => fetchFunc(`${server}admin_data?user_id=${user_id}&hash=${hash}&data_type=${type}`, setData)
+export const postRoleChange = (input) => postFetch(input, 'update_user_role')
 
 export const wikidataEffect = props => () => {
     const {type, q_number, setWikidata, language} = props
