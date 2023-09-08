@@ -16,17 +16,17 @@ const AuthorComponent = (props) => {
     const [tabOpen, setTabOpen] = useState(text_id!==undefined?{gen:true, det:true}:{gen:true, det: false})
     const [author, setAuthor] = useState();
     const [text, setText] = useState({})
-    const tabs = [{value:"gen",tabName:"General",component:<AuthorGeneral properties={{lang, userData, author, setAuthor, navigate}}/>}
-                ,{value:"det",tabName:<TextHeader properties={{text, userData, text_id, setUserData}}/>, component:(text&&text.text_q)?<TextComponent properties = {{lang, text_id, userData, text}}/>:<></>}]
-    const returnMain = () => {navigate(`/author/${author.author_id}`);setTabOpen({gen:true, det: false})}
-    useEffect(() => {console.log(id)
-            if(id) {
-                fetchDataEffect({type:'authors', id, setData:setAuthor,user_id:userData.user_id})()
-                if(text_id) {
-                    fetchDataEffect({type:'texts', id:text_id, setData:setText, user_id:userData?userData.user_id:0})();
-                    setTabOpen({...tabOpen, det:true});}
-                else {setTabOpen({...tabOpen, det:false})}
-            }},[id, text_id, userData])
+    const tabs = [{value:"gen",tabName:"General",component:<AuthorGeneral properties={{lang, userData, author, setAuthor, navigate, setUserData}}/>}
+                ,Object.keys(text).length>0&&{value:"det",tabName:<TextHeader properties={{text, userData, text_id, setUserData}}/>, component:<TextComponent properties = {{lang, text_id, userData, text}}/>}]
+    const returnMain = () => {navigate(`/author/${author.author_id}`);setTabOpen({gen:true, det: false});setText({})}
+    useEffect(() => {
+        if(id) {
+            fetchDataEffect({type:'authors', id, setData:setAuthor,user_id:userData.user_id})()
+            if(text_id) {
+                fetchDataEffect({type:'texts', id:text_id, setData:setText, user_id:userData?userData.user_id:0})();
+                setTabOpen({...tabOpen, det:true});}
+            else {setTabOpen({...tabOpen, det:false})}
+        }},[id, text_id, userData])
     const getTabs = () => {return tabOpen.det === true ? [...tabs].reverse() : tabs;};
     return (
     <div className="author-container">
@@ -40,7 +40,7 @@ const AuthorComponent = (props) => {
                     </h2>
                 </div>}
         <div className="author-component-container">
-            {getTabs().map((tab) => (
+            {getTabs().map((tab) => tab.value&&(
                 <div key={tab.tabName}>
                     <div className={`tab-container${tabOpen[tab.value]?'':"-inactive"}`}>
                         {tab.tabName}

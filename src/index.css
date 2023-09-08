@@ -168,7 +168,7 @@ ul,li {list-style: none;}
   margin-left: 5px;
 }
 .text-row-detailed {border-bottom: 0.5px dotted black; border-top: 0.5px dotted black;}
-.text-row:hover, .archiveRow:hover, .person-texts h3:hover, .author-header:hover 
+.archiveRow:hover, .person-texts h3:hover, .author-header:hover 
       {border-bottom:1px solid black; cursor:pointer; background-color: rgb(242, 239, 239)}
 .textInfo {display: flex; flex-direction: column;}
 .text-img {max-width: 400px; max-height:200px;object-fit:contain;}
@@ -282,7 +282,7 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
 .remove-col-btn:hover {background-color:white; cursor:pointer; color: black;}
 
 .search-result {cursor:pointer; margin:8px; padding-left:0px;}
-.search-result:hover, .text-row:hover {background-color:#bebebe}
+.search-result:hover {background-color:#bebebe}
 .search-bar, .list-search-bar {
   border: 1px solid black;
   border-radius: 4px;
@@ -532,3 +532,5 @@ select {
 .commented-element, .commented-comment p {font-style: italic; color: rgb(97, 96, 96);}
 .commented-comment p {margin:0px;}
 .user-container {display: flex;flex-direction: row;}
+.author-text-row-btn {background-color:white;border:none;}
+.author-text-row-btn:hover {cursor:pointer;background-color: #f0f0f0;border-bottom:1px solid black;}
