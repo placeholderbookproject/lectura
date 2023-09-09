@@ -16,7 +16,7 @@ const Paging = props => {
             {pageLengthOptions.map((opt) => (<option key = {opt.value+opt.label} value = {opt.value}>{opt.label}</option>))}
         </select>
         <div>
-        <a>Pages </a>
+        <label>Pages </label>
             {Array.from({ length: Math.ceil(results.length/pageLength.value) }).map((_, index) => (
             <button key={index} onClick={() => handleClick(index+1)} className={page===index+1?"page-btn-active":"page-btn"}>{index + 1}</button>))}
         </div>

@@ -24,7 +24,7 @@ const AuthorGeneral = props => {
         } else {setTabOpen(defaultTabs);navigate(baseLink);}
     }
     const tabs = [{value:"bio",tabName:"Biography",component:<><AuthorTable properties = {{setQ, lang, author, userData, wikidata}}/>{q&&<WikiExternalsList q_number={q} language={lang.value}/>}</>},
-                {value:"lit",tabName:"Literature",component:author&&<AuthorTexts author = {author} language={lang} handleClick={handleClick} text_id={text_id} userData={userData} setUserData={setUserData}/>},
+                {value:"lit",tabName:"Literature",component:author&&<AuthorTexts author = {author} language={lang} handleClick={handleClick} text_id={text_id} userData={userData} setUserData={setUserData}/>}
                 ,{tabName:"Lists", component:author&&<ListReferences type="author" id={author.author_id}/>}]
     useEffect(() => {
         if(author && author.author_q){

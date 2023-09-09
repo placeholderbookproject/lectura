@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import { useParams} from 'react-router-dom';
 import TableRow from '../ViewRow.js';
 import labels from '../labels.js';
 import {checkStr, transformYear, checkData} from '../formattingFuncs.js';
@@ -15,14 +14,12 @@ export const AuthorTable = (props) => {
         ,author_q, author_name, author_nationality, author_birth_year, author_birth_city, author_birth_country,
         author_death_year, author_death_city, author_death_country, author_floruit, author_positions, author_name_language
     } = data;
-    let { id } = useParams();
-    props.id?id=props.id:void(0);
     const name = author && author_name ? author_name.split(",") : "";
     const numNames = name.length;
     const akaWiki = akaLabel&&(akaLabel.split(", ").length>5?akaLabel.split(", ").slice(0,4).join(", "):akaLabel)
     return (
         name&&
-        <div id = "authorTableWindow" className="person-info" style={{backgroundColor:"white"}}>
+        <div id="authorTableWindow" className="person-info" style={{backgroundColor:"white"}}>
                 {author_q&&<WikiExternalsLabels q_number={author_q} language={language}/>}
                 <TableRow label = {labels.aka + " "}>{checkData(akaWiki,numNames>1?name.slice(1,numNames).join(", "):null)}</TableRow>
                 {nativenameLabel&&<TableRow label = {labels.nativeName + " "}>{nativenameLabel}{genderLabel&&` (${genderLabel})`}</TableRow>}

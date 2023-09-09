@@ -55,7 +55,7 @@ export const fetchSearchResults = props => () => {
 
 export const createNewUser = (input) => postFetch(input, 'create_user')
 export const deleteUser = (input) => postFetch(input, 'delete_user')
-export const loginUser = (input) => fetch(server+'login_user?'+'user='+input.user).then(response => response.json()).catch(error => console.log(error))
+export const loginUser = (input) => fetch(server+'login_user?user='+input.user).then(response => response.json()).catch(error => console.log(error))
 
 export const getAdminData = (user_id,hash,type, setData) => fetchFunc(`${server}admin_data?user_id=${user_id}&hash=${hash}&data_type=${type}`, setData)
 export const postRoleChange = (input) => postFetch(input, 'update_user_role')

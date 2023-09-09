@@ -24,7 +24,7 @@ const MainSearch = () => {
     return (
         <div className = "search-bar">
           <input type="text" placeholder="Search for an author or text" value = {query} 
-            onChange = {(e) => setQuery(e.target.value)} onKeyDown={(e) => search(controller=controller, setQuery, setSearchResults,() => navigate(`/search?query=${query}&type=authors`), e)} className="search-input"/>
+            onChange = {(e) => setQuery(e.target.value)} onKeyDown={(e) => search(controller, setQuery, setSearchResults,() => navigate(`/search?query=${query}&type=authors`), e)} className="search-input"/>
         {searchResults&&searchResults.length>0&&query&&
           <div className="search-dropdown-popup">{searchResults.slice(0,10).map((result) => 
             <p className="search-result" key={result.label} onClick = {() => enterLink(result)}>{result.label}</p>)}
