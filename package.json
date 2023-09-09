@@ -2,7 +2,7 @@
   "name": "lectura2",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://placeholderbookproject.github.io/lectura/",
+  "homepage": "https://placeholderbookproject.github.io/lectura",
   "dependencies": {
     "@emotion/styled": "^11.11.0",
     "@material-ui/icons": "^4.11.3",

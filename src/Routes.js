@@ -30,7 +30,7 @@ const RouteList = () => {
       {path:"/user/show/:user_site", element:<ProfileView setUserData={setUserData} userData={userData}/>}
   ]
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/lectura">
     <Routes>
       {routes.map((route, index) => (
         <Route key={index} path={route.path} element={<><SiteHeader setLang={setLang} lang={lang} userData={userData} setUserData={setUserData}/>{route.element}</>}/>
