@@ -27,7 +27,7 @@ const ListItem = props => {
             <ListHeader data={{listInfo:info.list_info, userData, edit, setEdit, changes, setChanges, info, setInfo, list_id, navigate, type:type.replace("s",""), setSearchParams, editable}}/>
             {(["all","official"].includes(type)&&info)&&<OfficialLists url={info.list_info.list_url} lang={lang} userData={userData}/>}
             {editable&&edit&&<ListAddElement properties = {{type:info.list_info.list_type, info, setInfo, changes, setChanges, filters}}/>}
-            {!info&&type!=="official"&&<ListElements properties = {{edit, info, setInfo, changes, setChanges, userData, filters, setFilters}}/>}
+            {type!=="official"&&<ListElements properties = {{edit, info, setInfo, changes, setChanges, userData, filters, setFilters}}/>}
             <CommentSection properties={{userData, type:"list", type_id:list_id, buttonName:"New Comment"}}/>
         </div>
     )

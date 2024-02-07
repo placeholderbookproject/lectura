@@ -25,7 +25,7 @@ const SearchDetailed = (props) => {
         const existingParams = new URLSearchParams(searchParams.toString());
         existingParams.set('query', searchVar);existingParams.set('type',type);
         setSearchParams(existingParams)
-        fetchSearchResults({ setSearchResults, query:searchVar, type:type==="all"?null:type, filters:type!=="all"?searchFilters:""})();
+        fetchSearchResults({setSearchResults, query:searchVar, type:type==="all"?null:type, filters:type!=="all"?searchFilters:""})();
     }
     const onEnter = (e) => {if(e.key==="Enter"){searchFunction(search)}}
     const clearSearch = () => {setSearch("");setSearchResults([]);}
@@ -34,8 +34,7 @@ const SearchDetailed = (props) => {
         if(searchQuery.length>0 && searchQuery[0][0]==="query" && searchQuery[0][1] !== "") {
             searchFunction(searchQuery[0][1]);
             setSearch(searchQuery[0][1]);
-        }
-    },[]) // eslint-disable-line react-hooks/exhaustive-deps
+        }},[]) // eslint-disable-line react-hooks/exhaustive-deps
     const clickRadio = (option) => {
         setSearchResults([])
         setSearchParams({'query':search,'type':option})
@@ -57,8 +56,8 @@ const SearchDetailed = (props) => {
                 <FormHelperText>{(searchResults.length>0)?"Your query returned #" + searchResults.length +" results":""}</FormHelperText>
             </FormControl>
             <fieldset className="search-type">{searchOptions.map((option) => 
-                <><input type = "radio" id={option} name="search-type" key={option} onClick={()=>clickRadio(option)} checked={option===searchType}
-                    onChange={() => clickRadio(option)}/>
+                <><input type = "radio" id={option} name="search-type" key={option} onClick={()=>clickRadio(option)} 
+                        checked={option===searchType} onChange={() => clickRadio(option)}/>
                     <label>{option.charAt(0).toUpperCase()+option.slice(1)}</label>
                 </>)}
             </fieldset>

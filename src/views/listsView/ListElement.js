@@ -24,7 +24,7 @@ const ListElements = (props) => {
             oldChanges.additions.splice(index,1);
             setChanges({...oldChanges});
             return;
-        }; setChanges({removals:[...oldChanges.removals,...[element]],additions:oldChanges.additions});
+        }; setChanges({...oldChanges,removals:[...oldChanges.removals,...[element]],additions:oldChanges.additions});
     }
     const handleDragOver = (event) => {event.preventDefault();};
     const handleDragStart = (event, rowIndex) => {event.dataTransfer.setData('text/plain', rowIndex);};
@@ -50,7 +50,7 @@ const ListElements = (props) => {
         else if (query.length===0){setElements(info.list_detail)}},[query])
     return (
         <div>
-            <input type="text" placeholder="Search for an element" value={query} onChange={(e)=>setQuery(e.target.value)} className="search-input"/>
+            <input type="text" placeholder="Search for an element" value={query} onChange={(e)=>setQuery(e.target.value)} className="list-search-input"/>
             <ListFilters properties={{filters, setFilters, type:list_type}}/>
             {list_type==="texts"&&<ListStatistics properties={{elements:info.list_detail, setElements}}/>}
             {filters&&filters.length>0&&
@@ -70,7 +70,7 @@ const ListElements = (props) => {
                             :<td key={colIndex}>{element[col.value]}</td>)}
                         {list_type==="texts"&&
                         elementInteractions.map((e) =><td><ElementInteraction values={
-                                {...e, condition:element[e.name], user_id:userData.user_id, id:element.element_id, postFunction:postTextInteraction, hash:userData.hash}}/></td>)
+                                {...e, condition:element[e.name], userData,id:element.element_id, postFunction:postTextInteraction}}/></td>)
                         }
                         {edit&&<td><button className="list-remove-element" onClick = {() => removeElement(element)}>X</button></td>}
                     </tr>)}

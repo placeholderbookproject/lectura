@@ -16,20 +16,22 @@ const ListHeader = props => {
     }
     const saveChanges = () => {
         if(changes.additions.length>0||changes.removals.length>0||Object.keys(changes.list_info).length>1||changes.order_changes.length>0){
-            updateUserList(changes).then(() => {setEdit(!edit);setSearchParams({edit:!edit})}).catch((error) => console.log(error));
+            updateUserList({...changes}).then(() => {setEdit(!edit);setSearchParams({edit:!edit})}).catch((error) => console.log(error));
             setChanges({additions:[], removals:[],list_info:{list_id:list_id}, order_changes:[]})}}
     const deleteList = () => {updateUserList({...changes, delete:true}).then(()=>navigate("/lists"))}
     return (
-    <div className="list-header">
-        {<h2>{!(editable&&edit)?listInfo.list_name:<input type="text" value={listInfo.list_name} name="list_name" onChange={(e)=>changeInfo(e)}/>}
-            {editable&&<>
-                <button onClick={()=>{setEdit(!edit);setSearchParams({edit:!edit})}} className="edit-btn">&#9998;</button>
-                <button className="delete-btn" onClick={()=>deleteList()}>Delete List</button>
-                <button className="save-btn" onClick={()=>saveChanges()}>Save Changes</button></>}
-        </h2>}
-        <div className="list-details-statistics">
-            {listInfo&&<ListInteractionsStatistics listInfo={{likes:listInfo.likes, dislikes:listInfo.dislikes, watchlists:listInfo.watchlists}}/>}
-            {userData&&<ListInteractionButtons data = {{list_id, userData, navigate, info, setInfo}}/>}
+    <div>
+        <div className="list-header">
+            {<h2 className="list-header-title">{!(editable&&edit)?listInfo.list_name:<input type="text" value={listInfo.list_name} name="list_name" onChange={(e)=>changeInfo(e)}/>}
+                {editable&&<>
+                    <button onClick={()=>{setEdit(!edit);setSearchParams({edit:!edit})}} className="edit-btn">&#9998;</button>
+                    <button className="delete-btn" onClick={()=>deleteList()}>Delete List</button>
+                    <button className="save-btn" onClick={()=>saveChanges()}>Save Changes</button></>}
+            </h2>}
+            <div className="list-details-statistics">
+                {listInfo&&<ListInteractionsStatistics listInfo={{likes:listInfo.likes, dislikes:listInfo.dislikes, watchlists:listInfo.watchlists}}/>}
+                {userData&&<ListInteractionButtons data = {{list_id, userData, navigate, info, setInfo}}/>}
+            </div>
         </div>
         <div className="list-description">
             {listInfo&&listInfo.list_created&&<p className="list-base-description">{`A personal list of ${listInfo.list_type} created by ${listInfo.user_name} on ${new Date(listInfo.list_created).toLocaleDateString(undefined, dateOptions)} 

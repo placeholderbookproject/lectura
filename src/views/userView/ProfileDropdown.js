@@ -19,16 +19,17 @@ const ProfileDropdown = props => {
     return (
     <div className="dropdown-container">
         <div className="dropdown-trigger" onClick={handleDropdownToggle}>
-        {(userData!==false)
-            ?<button className="header-btn">{userData.user_name}</button>
-            :<Modal triggerButton={<button className="modal-entry-btn">Login</button>}><LoginView userData={userData} setUserData={setUserData}/></Modal>}
+            {(userData!==false)
+                ?<button className="header-btn">{userData.user_name}</button>//User name shown if logged in
+                :<Modal triggerButton={<button className="modal-entry-btn">Login</button>}><LoginView userData={userData} setUserData={setUserData}/></Modal>}
         </div>
-        {isDropdownOpen && userData!==false &&(
-        <div className="dropdown-content">
-            {profileLinks.map((link)=>link.label&&<div className="dropdown-item" key={link.label}><Link to={link.component}>{link.label}</Link></div>)}
-            <div className="dropdown-item"><button className="logout-btn" onClick = {() => logout()}>Log Out</button></div>
-        </div>
-        )}
+        {isDropdownOpen && userData!==false && (
+            <div className="dropdown-content">
+                {profileLinks.map((link)=>link.label&&
+                    <div className="dropdown-item" key={link.label} onClick={() => {setIsDropdownOpen(false)}}><Link to={link.component}>{link.label}</Link></div>)}
+                <div className="dropdown-item"><button className="logout-btn" onClick = {() => logout()}>Log Out</button></div>
+            </div>)
+        }
   </div>)
 }
 export default ProfileDropdown;

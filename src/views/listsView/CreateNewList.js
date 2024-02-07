@@ -9,7 +9,7 @@ const RadioComponent = (props) => {
         <div className="radio-container">
             {inps.map((inp) => <React.Fragment key={inp.label}><label>{inp.label}</label>
                 <input id={inp.id} name="list_type" type="radio" value={inp.id} key={inp.label+"-input"}
-                onChange={(e)=>changeFormInput(props.input,props.setInput,e)}/></React.Fragment>)}
+                    onChange={(e)=>changeFormInput(props.input,props.setInput,e)}/></React.Fragment>)}
         </div>
     )
 }

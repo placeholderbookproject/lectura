@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import { countries } from '../../div/countries';
 import { languages } from '../../div/languages';
 import { fetchList } from '../apiEffects';
-import ComponentPopup from '../../old/Popup';
 import DropdownMenu from './DropdownMenu';
 
 const AuthorsByBooksTable = (props) => {
@@ -24,9 +23,7 @@ const AuthorsByBooksTable = (props) => {
                 <tr><th>Author</th><th>Occupations</th><th>Nationality</th><th>Language</th>{type!=="no_books"&&<th>#Texts</th>}</tr>
                 {data.sort((a,b)=>b.texts-a.texts).slice(0,1000).map(result => (
                     <tr key={result.author_id} className="table-row">
-                        <td className="popup-row">
-                            <ComponentPopup id={result.author_id} key={result.author_id} lang={props.lang} type="author">{result.label}</ComponentPopup>
-                        </td>
+                        <td className="popup-row"><a href={`/author/${result.author_id}`}>{result.label}</a></td>
                         <td>{result.author_positions}</td><td>{result.nationality}</td><td>{result.language}</td>{result.texts&&<td>{result.texts}</td>}
                     </tr>
                 ))}

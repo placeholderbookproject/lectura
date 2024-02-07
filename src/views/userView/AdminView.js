@@ -5,7 +5,7 @@ const UserRow = props => {
     const [data, setData] = useState(props.element)
     useEffect(() => setData(props.element), [props.element])
     const handleChange = e => {setData({...data, user_role:e.target.value});}
-    const options = ["basic","premium","administrator"]
+    const options = ["basic","premium"]
     const updateRole = () => {postRoleChange({user_id:props.userData.user_id, hash:props.userData.hash, change_user:data.user_id, new_role:data.user_role})}
     return (<div className="user-container">
         <p>{`User Id #${data.user_id}: ${data.user_name} (${data.user_created}): `}</p>

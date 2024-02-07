@@ -35,8 +35,8 @@ const UserElementInteractions = props => {
         else {postTextInteraction({condition: false, user_id: userData.user_id, id, type, hash:userData.hash});}}   
     useEffect(()=>setData(props.data[type]),[type,props.data])
     return (data&&data.length>0&&<div>
-            {data.length>3&&<UserElementSearch originData={props.data[type]} setData={setData} searchColumn={"label"}/>}
-            {data.map((e,index) => <div className="watchlist-element-container" key={e[id_type_list[type]]}>
+                {data.length>3&&<UserElementSearch originData={props.data[type]} setData={setData} searchColumn={"label"}/>}
+                {data.map((e,index) => <div className="watchlist-element-container" key={e[id_type_list[type]]}>
                     {element(e,index, data, setData, type)}
                     <button className="watchlist-btn-active" onClick={()=>removeElement(e[id_type_list[type]],id_type_list[type])}>x</button>
                 </div>)}

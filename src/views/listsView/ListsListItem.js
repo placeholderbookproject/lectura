@@ -15,7 +15,9 @@ const ListsListItem = (props) => {
         <div className="list-item">
             <div className="list-image">{img&&<img src={img} alt = {list_description}/>}</div>
             <div className="list-header">
-                <h3 className={`list-title${tab==="official"?"-official":""}`}><a onClick={()=>navigate(`/lists/${tab}/${url}`)}>{`${tab==="official"?"Official: ":""}${list_name}`}</a></h3>
+                <h3 className={`list-title${tab==="official"?"-official":""}`}>
+                    <a onClick={()=>navigate(`/lists/${tab}/${url}`)} href={`/lists/${tab}/${url}`}>{`${tab==="official"?"Official: ":""}${list_name}`}</a>
+                </h3>
                 <p className="list-description">{list_description}</p>
             </div>
             <div className="list-details">

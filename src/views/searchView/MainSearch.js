@@ -12,7 +12,7 @@ const MainSearch = () => {
     const [query, setQuery] = useState("");
     const [searchResults,setSearchResults] = useState();
     useEffect (()=> {
-        const cleanup = () => {if (controller) {controller.abort();}};
+        const cleanup = () => {if (controller){controller.abort();}};
         controller = new AbortController();
         query&&query.length>5&&fetchSearchResults({ setSearchResults, query, signal:controller.signal})();
         return cleanup
@@ -31,7 +31,7 @@ const MainSearch = () => {
           </div>}
           <IconButton onClick = {() => {setQuery("");navigate(`/search?query=${query}&type=authors`)}} aria-label="Search Button" edge="end"><SearchIcon/></IconButton>
           <IconButton onClick = {() => {setQuery("");setSearchResults()}} aria-label="Clear Search Button" edge="end"><ClearIcon style={{paddingRight:5}}/></IconButton>
-      </div>
+        </div>
     )
 }
 

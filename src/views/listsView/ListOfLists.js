@@ -8,5 +8,5 @@ const ListsOfLists = (props) => {
                         ,watchlist:lists.filter(e=>e.watchlist)}
     return (lists&&lists.length>0&&tabFilter[tab].map((item) => 
             <ListsListItem list_data = {item} key={item.list_name} tab={tab} userData={userData&&userData} setUserData={setUserData}
-                        searchResults={searchResults} setSearchResults={setSearchResults}/>))}
+                searchResults={searchResults} setSearchResults={setSearchResults}/>))}
 export default ListsOfLists;

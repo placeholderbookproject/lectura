@@ -17,9 +17,9 @@ const CreateUserForm = (props) => {
         bcrypt.hash(input.user_password,10)
         .then(result => createNewUser({user_name:input.user_name, user_email:input.user_email, user_password:result}))
         .then((response) => {
-                if(response.message !== "Duplicate") {props.setUserData(response);navigate("/")}
-                else if(response.message==="Duplicate"){setUserExists(true)}})
-    }
+            if(response.message !== "Duplicate") {props.setUserData(response);navigate("/")}
+            else if(response.message==="Duplicate"){setUserExists(true)}})
+        }
     return (
         <div className="register-container">
             <h2 className="create-account-header">Create an Account</h2>
