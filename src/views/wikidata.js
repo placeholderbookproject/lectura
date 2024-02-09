@@ -74,7 +74,7 @@ SELECT ?propertyLabel ?value WHERE {
     OPTIONAL {?property wdt:P1630 ?formatterURL .}  
     wd:q_number ?propertyclaim ?_value .   
     BIND(IF(BOUND(?formatterURL), IRI(REPLACE(?formatterURL, "\\\\$1", ?_value)) , ?_value) AS ?value) 
-    SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } 
+    SERVICE wikibase:label { bd:serviceParam wikibase:language "[en]". } 
     }`
 
 export const authorQuery = `
@@ -95,8 +95,8 @@ export const authorQuery = `
     {
       VALUES ?author {wd:q_number}
       OPTIONAL{?author schema:description ?authordesc.
-      FILTER(LANG(?authordesc) = "en").}
-      OPTIONAL {?author skos:altLabel ?akaLabel. FILTER (lang(?akaLabel) = "en").}
+      FILTER(LANG(?authordesc) = "[en]").}
+      OPTIONAL {?author skos:altLabel ?akaLabel. FILTER (lang(?akaLabel) = "[en]").}
       OPTIONAL {?author wdt:P569 ?birthdate.}
       OPTIONAL {?author wdt:P19 ?birthplace.
                OPTIONAL {?birthplace wdt:P17 ?birthplacecountry.}
@@ -115,14 +115,14 @@ export const authorQuery = `
       OPTIONAL {?author wdt:P1559 ?nativename.}
       OPTIONAL {?author wdt:P27 ?citizenship.}
       #OPTIONAL {?author wdt:P1343 ?descriptionsource.}
-      OPTIONAL {?author rdfs:label ?authorLabel. FILTER(LANG(?authorLabel)="en").}
+      OPTIONAL {?author rdfs:label ?authorLabel. FILTER(LANG(?authorLabel)="[en]").}
       OPTIONAL {
         ?article schema:about ?author .
-        ?article schema:inLanguage "en" .
-        FILTER (SUBSTR(str(?article), 1, 25) = "https://en.wikipedia.org/")
+        ?article schema:inLanguage "[en]" .
+        FILTER (SUBSTR(str(?article), 1, 25) = "https://[en].wikipedia.org/")
       }  
       [nativeHeader]
-      SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[en]". }
     }`
 
 export const authorTextQuery = `
@@ -184,11 +184,11 @@ OPTIONAL {?book wdt:P495 ?origincountry.}
         ?language wdt:P424 ?languagecode
     }
   }}
-  OPTIONAL {?book rdfs:label ?bookLabel. FILTER (lang(?bookLabel) = "en").}
-  OPTIONAL  {?language wdt:P424 ?lang. ?book rdfs:label ?bookLabel. FILTER (lang(?bookLabel) != "en" && lang(?bookLabel) = ?lang).}
-  OPTIONAL {?language wdt:P424 ?lang. BIND(SUBSTR(?lang,2) AS ?langsim). ?book rdfs:label ?bookLabel. FILTER (lang(?bookLabel) != "en" && lang(?bookLabel) = ?langsim). }
+  OPTIONAL {?book rdfs:label ?bookLabel. FILTER (lang(?bookLabel) = "[en]").}
+  OPTIONAL  {?language wdt:P424 ?lang. ?book rdfs:label ?bookLabel. FILTER (lang(?bookLabel) != "[en]" && lang(?bookLabel) = ?lang).}
+  OPTIONAL {?language wdt:P424 ?lang. BIND(SUBSTR(?lang,2) AS ?langsim). ?book rdfs:label ?bookLabel. FILTER (lang(?bookLabel) != "[en]" && lang(?bookLabel) = ?langsim). }
   OPTIONAL {?book rdfs:label ?bookLabel. FILTER(lang(?bookLabel)="en_fixed").}
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } 
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[en]". } 
   BIND(COALESCE(YEAR(?publication), YEAR(?dop), YEAR(?inception), 9999) as ?orderDate)
 }
 ORDER BY ASC(?orderDate)`
@@ -225,8 +225,8 @@ WHERE
   VALUES ?book { wd:q_number}.
   ?book wdt:P50 ?author.
   OPTIONAL {?book wdt:P18 ?image.}
-  OPTIONAL{?book schema:description ?bookdesc. FILTER(LANG(?bookdesc)= "en").}
-  OPTIONAL {?book skos:altLabel ?akaLabel. FILTER (lang(?akaLabel) = "en").}
+  OPTIONAL{?book schema:description ?bookdesc. FILTER(LANG(?bookdesc)= "[en]").}
+  OPTIONAL {?book skos:altLabel ?akaLabel. FILTER (lang(?akaLabel) = "[en]").}
   OPTIONAL {?book wdt:P31 ?type.}
   OPTIONAL {?book wdt:P7937 ?form.}
   OPTIONAL {?book wdt:P136 ?genre}
@@ -246,14 +246,14 @@ WHERE
   #OPTIONAL {?book wdt:P674 ?characters.}
   OPTIONAL {?book wdt:P1433 ?publishedIn.}
   OPTIONAL {?book wdt:P6216 ?copyright.}
-  OPTIONAL {?book rdfs:label ?bookLabel. FILTER(LANG(?bookLabel)="en").}
+  OPTIONAL {?book rdfs:label ?bookLabel. FILTER(LANG(?bookLabel)="[en]").}
   OPTIONAL {
     ?article schema:about ?book .
-    ?article schema:inLanguage "en" .
-    FILTER (SUBSTR(str(?article), 1, 25) = "https://en.wikipedia.org/")
+    ?article schema:inLanguage "[en]" .
+    FILTER (SUBSTR(str(?article), 1, 25) = "https://[en].wikipedia.org/")
   }
 [nativeHeader]
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[en]". }
   #BIND(COALESCE(YEAR(?publication), YEAR(?dop), YEAR(?inception), 9999) as ?orderDate)
 }
 #ORDER BY ASC(?orderDate)`

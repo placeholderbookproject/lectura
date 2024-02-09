@@ -5,9 +5,9 @@ import {checkStr, transformYear, checkData} from '../formattingFuncs.js';
 import { WikiExternalsLabels } from '../wikidata.js';
 
 export const AuthorTable = (props) => {
-    const {author, wikidata, lang} = props.properties
-    const [data, setData] = useState({...author, ...wikidata})
-    useEffect(()=>{if(wikidata&&author){setData({...author, ...wikidata});}},[author, wikidata])
+    const {author, lang} = props.properties
+    const [data, setData] = useState({...author})
+    useEffect(()=>{if(author){setData({...author});}},[author])
     const language = lang.value
     const {authordesc, akaLabel,genderLabel, birthyear, birthplaceLabel, birthplacecountryLabel,deathyear
         ,deathplaceLabel,deathplacecountryLabel, floruit, occupationsLabel, languagesLabel, nativenameLabel, imageLabel,citizenshipLabel

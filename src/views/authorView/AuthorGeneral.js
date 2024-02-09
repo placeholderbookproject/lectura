@@ -1,6 +1,5 @@
-import React,{useState, useEffect} from "react";
+import React,{useState} from "react";
 import {useLocation} from "react-router-dom";
-import { wikidataEffect } from "../apiEffects";
 import AuthorTable from "./AuthorTable";
 import AuthorTexts from "./AuthorTexts";
 import WikiExternalsList from "../wikidata";
@@ -12,7 +11,6 @@ const AuthorGeneral = props => {
     const location = useLocation();
     const defaultTabs = {"Biography":true, "Literature": true, "Lists":false};
     const [tabOpen, setTabOpen] = useState(defaultTabs)
-    const [wikidata, setWikidata] = useState();
     const [q, setQ] = useState()
     const baseLink = author&&`/author/${author.author_id}`
     const handleClick = (id = null) => {
@@ -23,15 +21,9 @@ const AuthorGeneral = props => {
             url !== location && navigate(url)
         } else {setTabOpen(defaultTabs);navigate(baseLink);}
     }
-    const tabs = [{value:"bio",tabName:"Biography",component:<><AuthorTable properties = {{setQ, lang, author, userData, wikidata}}/>{q&&<WikiExternalsList q_number={q} language={lang.value}/>}</>},
+    const tabs = [{value:"bio",tabName:"Biography",component:<><AuthorTable properties = {{setQ, lang, author, userData}}/>{q&&<WikiExternalsList q_number={q} language={lang.value}/>}</>},
                 {value:"lit",tabName:"Literature",component:author&&<AuthorTexts author = {author} language={lang} handleClick={handleClick} text_id={text_id} userData={userData} setUserData={setUserData}/>}
                 ,{tabName:"Lists", component:author&&<ListReferences type="author" id={author.author_id}/>}]
-    useEffect(() => {
-        if(author && author.author_q){
-            setQ(author.author_q);
-            const q_number = author.author_q.replace("http://www.wikidata.org/entity/","")
-            wikidataEffect({q_number, setWikidata, type:"author", language:lang.value})();}
-    },[author, lang])
     return (<TabComponent properties={{userData, tabs, tabOpen, setTabOpen, data:author, type:"author"}} />)
 }
 export default AuthorGeneral;
