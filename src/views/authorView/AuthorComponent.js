@@ -5,14 +5,9 @@ import { setTab } from '../commonFuncs.js';
 import DeleteData from './DeleteData';
 import AuthorGeneral from './AuthorGeneral';
 import ElementInteraction from '../ElementInteraction';
-import { postTextInteraction, fetchDataEffect, wikidataEffect } from '../apiEffects';
+import { postTextInteraction, fetchDataEffect, extractWiki} from '../apiEffects';
 import TextHeader from './TextHeader';
 const parse = require('html-react-parser');
-
-const extractWiki = (results,q, type, language) => {
-    const q_number = q.replace("http://www.wikidata.org/entity/","")
-    return wikidataEffect({q_number, type, setWikidata:null,language})().then(wiki => {return {...wiki, ...results}})
-}
 
 const AuthorComponent = (props) => {
     const {id, text_id} = useParams();
@@ -22,15 +17,15 @@ const AuthorComponent = (props) => {
     const [author, setAuthor] = useState();
     const [text, setText] = useState({});
     const tabs = [{value:"gen",tabName:"General",component:<AuthorGeneral properties={{lang, userData, author, navigate, setUserData}}/>}
-                ,Object.keys(text).length>0&&{value:"det",tabName:<TextHeader properties={{text, userData, text_id, setUserData}}/>, component:<TextComponent properties = {{lang, text_id, userData, text, setText}}/>}]
+                ,Object.keys(text).length>0&&{value:"det",tabName:<TextHeader properties={{text, userData, text_id, setUserData}}/>, component:<TextComponent properties = {{lang, text_id, userData, text}}/>}]
     const returnMain = () => {navigate(`/author/${author.author_id}`);setTabOpen({gen:true, det: false});setText({})}
     useEffect(() => {
         if(id) {
             fetchDataEffect({type:'authors', id, setData:setAuthor,user_id:userData.user_id})()
-            .then(results => extractWiki(results,results.author_q, "author",lang.value))
-            .then(wiki => setAuthor(wiki))
+            .then(results => extractWiki(results,results.author_q, "author",lang.value)).then(wiki => setAuthor(wiki));
             if(text_id) {
-                fetchDataEffect({type:'texts', id:text_id, setData:setText, user_id:userData?userData.user_id:0})();
+                fetchDataEffect({type:'texts', id:text_id, setData:setText, user_id:userData?userData.user_id:0})()
+                .then(results => extractWiki(results,results.text_q, "texts", lang.value)).then(wiki => setText(wiki));
                 setTabOpen({...tabOpen, det:true});}
             else {setTabOpen({...tabOpen, det:false})}
         }},[id, text_id, userData])
@@ -38,7 +33,7 @@ const AuthorComponent = (props) => {
     return (
     <div className="author-container">
         {author&&<div className="author-container-header">
-                    <h2><a onClick={()=>{returnMain()}} className="author-header">{author.author_name} </a>
+                    <h2><a onClick={()=>{returnMain()}} className="author-header">{author.author_name}</a>
                     <a href={author.article?author.article:author.author_q?author.author_q:""}>{`(Wiki)`}</a>
                     {<ElementInteraction values={{user_id:userData.user_id, hash: userData.hash, id:author.author_id, userData, setUserData
                                 ,condition:author["author_watch"], conditional:{true:"+",false:"+"}

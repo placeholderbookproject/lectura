@@ -1,22 +1,13 @@
 import TableRow from '../ViewRow.js'
 import labels from '../labels.js'
 import {useState, useEffect} from 'react';
-import {wikidataEffect} from '../apiEffects'
 import { textRows } from './dataRows.js';
 
 const TextTable = (props) => {
-    const language = props.properties.lang.value
-    const {setQ} = props.properties;
     const [text, setText] = useState(props.properties.text)
+    useEffect(()=>setText(props.properties.text),[props.properties.text])
     const {image, titleLabel} = text
     const title = text&&text.text_title?text.text_title.split(","):"";
-    useEffect(()=> {
-        if(props.properties.text && props.properties.text.text_q){
-            setQ&&setQ(props.properties.text.text_q);
-            const q_number = props.properties.text.text_q.replace("http://www.wikidata.org/entity/","")
-            wikidataEffect({q_number, setWikidata:setText, type:"texts", language})().then(data => {setText(({...props.properties.text,...data}))});
-        } 
-    },[language, props.properties.text])
     return (
         <div id = "textTableWindow" className="person-info">
             {titleLabel!==title[0]&&<TableRow label={labels.original_title}>{titleLabel}</TableRow>}

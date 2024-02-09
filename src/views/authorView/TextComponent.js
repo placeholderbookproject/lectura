@@ -11,7 +11,7 @@ const TextComponent = props => {
     const [q, setQ] = useState();
     const defaultTabs = {"Text Info":true, "Sources": true, "Lists":false};
     const [tabOpen, setTabOpen] = useState({...defaultTabs})
-    const tabs = [{tabName:"Text Info", component:<><TextTable properties={{setQ, lang, id:text_id, userData, text, setText}}/>{q&&<WikiExternalsList q_number={q} language={lang.value}/>}</>}
+    const tabs = [{tabName:"Text Info", component:<><TextTable properties={{setQ, lang, id:text_id, userData, text}}/>{q&&<WikiExternalsList q_number={q} language={lang.value}/>}</>}
                 ,{tabName:"Sources", component:Object.keys(text).length>0&&text.bookLabel&&<TextSources text={text} lang={lang}/>}
                 ,{tabName:"Lists", component:<ListReferences type="text" id={text_id}/>}]
     useEffect(()=>setText(props.properties.text),[props.properties.text])

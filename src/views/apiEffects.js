@@ -83,9 +83,12 @@ export const wikidataEffect = props => () => {
     .then(response => {if (response.ok) {return response.json()} throw response;})
     .then (data => {if(type==="author_texts"){setWikidata(reformatWikitexts(data))}
                     else if (type==="externals") {setWikidata(data)}
-                    else if (type==="texts"){setWikidata(reformatWikidata(data));return reformatWikidata(data)}
                     else {return reformatWikidata(data)}
                 })
+}
+export const extractWiki = (results,q, type, language) => {
+    const q_number = q.replace("http://www.wikidata.org/entity/","")
+    return wikidataEffect({q_number, type, setWikidata:null,language})().then(wiki => {return {...wiki, ...results}})
 }
 
 export const archiveEffect = props => () => {
