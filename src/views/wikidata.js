@@ -78,7 +78,7 @@ SELECT ?propertyLabel ?value WHERE {
     }`
 
 export const authorQuery = `
-    SELECT DISTINCT ?author ?authordesc ?authorLabel ?akaLabel ?genderLabel
+    SELECT DISTINCT (?author as ?author_q) ?authordesc ?authorLabel ?akaLabel ?genderLabel
     ?birthdate (YEAR(?birthdate) AS ?birthyear) (MONTH(?birthdate) AS ?birthmonth) (DAY(?birthdate) AS ?birthday) ?birthplace ?birthplaceLabel ?birthplacecountryLabel
     ?deathdate (YEAR(?deathdate) as ?deathyear) (MONTH(?deathdate) as ?deathmonth) (day(?deathdate) as ?deathday) 
     ?deathplace ?deathplaceLabel ?deathplacecountry ?deathplacecountryLabel
@@ -154,12 +154,13 @@ WHERE
                              wd:Q482 wd:Q856713 wd:Q1318295 wd:Q59126 wd:Q25372 wd:Q37484 wd:Q58854 
                              wd:Q241996 wd:Q8242 wd:Q40831 wd:Q182659 wd:Q24723 wd:Q80930 wd:Q182357 
                              wd:Q44342 wd:Q128758 wd:Q114375 wd:Q208628 wd:Q1640824 wd:Q179461 wd:Q17518870
+                             wd:Q116476516
 }.
   ?book wdt:P50 wd:q_number.
   ?book wdt:P31 ?instance.
   OPTIONAL{?book schema:description ?bookdesc.
-  FILTER(LANG(?bookdesc)= "en").}
-  OPTIONAL {?book skos:altLabel ?akaLabel. FILTER (lang(?akaLabel) = "en").}
+  FILTER(LANG(?bookdesc)= "[en]").}
+  OPTIONAL {?book skos:altLabel ?akaLabel. FILTER (lang(?akaLabel) = "[en]").}
   OPTIONAL {?book wdt:P31 ?type.}
   OPTIONAL {?book wdt:P7937 ?form.}
   OPTIONAL {?book wdt:P136 ?genre}
@@ -220,6 +221,7 @@ SELECT distinct (?book as ?text_q)
 ?publishedInLabel
 ?copyrightLabel
 ?article
+?source
 WHERE
 {
   VALUES ?book { wd:q_number}.
@@ -252,6 +254,11 @@ WHERE
     ?article schema:inLanguage "[en]" .
     FILTER (SUBSTR(str(?article), 1, 25) = "https://[en].wikipedia.org/")
   }
+  OPTIONAL {
+    ?source schema:about ?author .
+    ?source schema:inLanguage "[en]" .
+    FILTER (SUBSTR(str(?article), 1, 25) = "https://[en].wikisource.org/")
+  } 
 [nativeHeader]
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[en]". }
   #BIND(COALESCE(YEAR(?publication), YEAR(?dop), YEAR(?inception), 9999) as ?orderDate)

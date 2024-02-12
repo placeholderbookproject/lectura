@@ -83,13 +83,21 @@ export const removeWorksOutOfBounds = (works, birth, death) => {
 export const getUniquePropertyValues = (objects, property) =>  {
     return [...new Set(objects.flatMap(object => (object[property] || '').split(' | ')))].filter(Boolean);}
 
-export const removeDuplicateList = (listA,listB, key) => {
-    if(!listB){return listA}
-    const result = [...listB];
-    listA.forEach((a) => {
-        const existingB = result.find((b) => b[key] === a[key]);
-        if (!existingB) {result.push(a);}
-        else {Object.entries(a).forEach(([k, v]) => {if (!(k in existingB)) {existingB[k] = v;}});}
-    }); return result;}
+export const combineLists = (listA, listB, key) => {
+    const listAArray = Array.isArray(listA) ? listA : [listA];
+    const listBArray = Array.isArray(listB) ? listB : [listB];
+    const results = listAArray.map((itemA) => {
+        const correspondingItemB = listBArray.find((itemB) => itemB[key] === itemA[key]);
+        return correspondingItemB ? { ...correspondingItemB,...itemA} : itemA;
+    });
+    return results.length === 1 ? results[0] : results;
+};
+
+export const removeDuplicatesList = (obj, key) => {
+    const list = Object.values(obj)
+    const uniqueElements = new Map();
+    list.forEach((element) => {uniqueElements.set(element[key], element);});
+    return Array.from(uniqueElements.values());
+};
 
 export const filterArray = (array, removals) => {return array.filter(item => !removals.includes(item.value));}

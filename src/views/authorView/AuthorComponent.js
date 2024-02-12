@@ -22,13 +22,13 @@ const AuthorComponent = (props) => {
     useEffect(() => {
         if(id) {
             fetchDataEffect({type:'authors', id, setData:setAuthor,user_id:userData.user_id})()
-            .then(results => extractWiki(results,results.author_q, "author",lang.value)).then(wiki => setAuthor(wiki));
+            .then(results => extractWiki(results,results.author_q, "author",lang.value,"author_q")).then(wiki => setAuthor(wiki));
             if(text_id) {
                 fetchDataEffect({type:'texts', id:text_id, setData:setText, user_id:userData?userData.user_id:0})()
-                .then(results => extractWiki(results,results.text_q, "texts", lang.value)).then(wiki => setText(wiki));
+                .then(results => extractWiki(results,results.text_q, "texts", lang.value,"text_q")).then(wiki => setText(wiki));
                 setTabOpen({...tabOpen, det:true});}
             else {setTabOpen({...tabOpen, det:false})}
-        }},[id, text_id, userData])
+        }},[id, text_id, userData, lang])
     const getTabs = () => {return tabOpen.det === true ? [...tabs].reverse() : tabs;};
     return (
     <div className="author-container">

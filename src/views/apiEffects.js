@@ -1,5 +1,5 @@
 import { authorQuery, authorTextQuery, textQuery, externalsQuery } from "./wikidata";
-import { reformatWikidata, reformatWikitexts } from "./formattingFuncs";
+import { reformatWikidata, reformatWikitexts, combineLists } from "./formattingFuncs";
 const server = 'http://127.0.0.1:8000/'
 const googleAPIKey = 'AIzaSyBpljudDJKdDAMHnvh50xCTx8YdSWe3_BM'
 
@@ -81,14 +81,14 @@ export const wikidataEffect = props => () => {
     const url = `https://query.wikidata.org/sparql?query=${encodeURIComponent(query)}`;
     return fetch(url, {headers})
     .then(response => {if (response.ok) {return response.json()} throw response;})
-    .then (data => {if(type==="author_texts"){setWikidata(reformatWikitexts(data))}
+    .then (data => {if(type==="author_texts"){if(setWikidata) {setWikidata(reformatWikitexts(data))}; return reformatWikitexts(data)}
                     else if (type==="externals") {setWikidata(data)}
                     else {return reformatWikidata(data)}
                 })
 }
-export const extractWiki = (results,q, type, language) => {
+export const extractWiki = (results,q, type, language,key) => {
     const q_number = q.replace("http://www.wikidata.org/entity/","")
-    return wikidataEffect({q_number, type, setWikidata:null,language})().then(wiki => {return {...wiki, ...results}})
+    return wikidataEffect({q_number, type, setWikidata:null,language})().then(wiki => combineLists(wiki, results,key))
 }
 
 export const archiveEffect = props => () => {
