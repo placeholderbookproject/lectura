@@ -7,7 +7,7 @@ import ListReferences from "./ListReferences";
 import TabComponent from "./TabComponent";
 
 const AuthorGeneral = props => {
-    const {lang, author, navigate, userData, setUserData, text_id} = props.properties
+    const {lang, author,texts, navigate, userData, setUserData, text_id} = props.properties
     const location = useLocation();
     const defaultTabs = {"Biography":true, "Literature": true, "Lists":false};
     const [tabOpen, setTabOpen] = useState(defaultTabs)
@@ -21,8 +21,8 @@ const AuthorGeneral = props => {
             url !== location && navigate(url)
         } else {setTabOpen(defaultTabs);navigate(baseLink);}
     }
-    const tabs = [{value:"bio",tabName:"Biography",component:<><AuthorTable properties = {{setQ, lang, author, userData}}/>{q&&<WikiExternalsList q_number={q} language={lang.value}/>}</>},
-                {value:"lit",tabName:"Literature",component:author&&<AuthorTexts properties = {{author, language: lang, handleClick, text_id, userData, setUserData}} />}
+    const tabs = [{value:"bio",tabName:"Biography",component:<><AuthorTable properties = {{setQ, lang, author, userData}}/>{q&&<WikiExternalsList q_number={q} language={lang.value}/>}</>}
+    ,texts.length>0&&{value:"lit",tabName:"Literature",component:author&&<AuthorTexts properties = {{author,texts, language: lang, handleClick, userData, setUserData}} />}
                 ,{tabName:"Lists", component:author&&<ListReferences type="author" id={author.author_id}/>}]
     return (<TabComponent properties={{userData, tabs, tabOpen, setTabOpen, data:author, type:"author"}} />)
 }

@@ -10,7 +10,7 @@ const TabComponent = props => {
     return (    
     <div className="text-container">
         <div className="dropdowns-container">
-            {tabs.map((tab) => (<div key={tab.tabName}>
+            {tabs.map((tab) => tab.tabName&&(<div key={tab.tabName}>
                     <p className={`tab-container${tabOpen[tab.tabName]?'':"-inactive"}`}>
                         {tab.tabName}
                         <button className={`tab-button${tabOpen[tab.tabName]?'':"-inactive"}`} onClick={()=>setTab(tab.tabName,tabOpen,setTabOpen)}>

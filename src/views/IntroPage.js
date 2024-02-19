@@ -5,7 +5,7 @@ import {fetchDataEffect} from './apiEffects.js'
 export const IntroPage = (props) => {return (<LatestChanges lang = {props.lang}/>)}
 export const LatestChanges = () => {
     const [data, setData] = useState();
-    useEffect(fetchDataEffect({setData}),[])
+    useEffect(() => fetchDataEffect({setData}),[])
     const types = ["authors", "texts"]
     return (
         <div className = "latestAdditions">

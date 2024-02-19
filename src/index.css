@@ -139,23 +139,24 @@ ul,li {list-style: none;}
 .create-new-list-tab {background-color:#19b019; color:white;}
 .create-new-list-tab:hover {border-bottom: 1px solid black; background-color:#087208;}
 .tab-button, .tab-button-inactive {border:none;background-color:white;font-size:16px;}
-.tab-button:hover, .tab-button-inactive:hover {cursor:pointer; background-color:rgb(95, 94, 93);}
-
+.tab-button:hover, .tab-button-inactive:hover {cursor:pointer; background-color:rgb(95, 94, 93); color:white;}
+.tab-button-inactive{background-color: #7b0505; color: white;}
 .lists-tab-open {background-color:rgb(95, 94, 93); color:white;}
+.tab-container:hover, .tab-container-inactive:hover {cursor:default;}
 
 .tab-content {display: none;}
 .tab-content.active {display: block;}
 .tab-container-inactive {
-  background-color: #7e7a7a;
+  background-color: #7b0505;
   color: #ffffff;
   border: none; border-bottom: 1px solid #a8a7a7;
   cursor: pointer;
   margin:10px; font-size: 16px;
   outline: none;
-  width:100px;
+  max-width:100px;
 }
 
-.person-info, .person-texts {margin: 10px; width: 400px; max-height: 600px;}
+.person-info, .person-texts {margin: 10px; min-width: 400px; max-height: 600px;}
 .person-info h2 {margin: 0; font-size: 24px;}
 .person-info p, .person-texts p, .dropdown-menu-option {margin: 5px;}
 .person-info p {margin-left:0;}
@@ -366,7 +367,7 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
 }
 .header-btn button {background: none;}
 .header-btn:hover, .changeSearchVersionBtn:hover,.resetEditBtn:hover, .addNewBtn:hover, .listsBtn:hover, .collapsible:hover
-,.dropdown-toggle:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover, .tab-container:hover, .tab-container-inactive:hover
+,.dropdown-toggle:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover
 ,.lists-tab:hover, .lists-tab-open:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover
 .header-btn:active button, .editBtn:active, .submitEditBtn:active, .changeSearchVersionBtn:active, .addNewBtn:active, .listsBtn:active
 ,.profile-header-btn:hover, .profile-header-btn-active:hover, .modal-entry-btn:hover {

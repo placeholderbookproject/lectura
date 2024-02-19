@@ -129,6 +129,7 @@ export const authorTextQuery = `
 SELECT distinct (?book as ?text_q)
 ?book
 ?bookLabel
+?author
 ?akaLabel
 ?bookdesc
 ?titleLabel
@@ -156,7 +157,8 @@ WHERE
                              wd:Q44342 wd:Q128758 wd:Q114375 wd:Q208628 wd:Q1640824 wd:Q179461 wd:Q17518870
                              wd:Q116476516
 }.
-  ?book wdt:P50 wd:q_number.
+  ?book wdt:P50 ?author.
+  VALUES ?author {wd:q_number}
   ?book wdt:P31 ?instance.
   OPTIONAL{?book schema:description ?bookdesc.
   FILTER(LANG(?bookdesc)= "[en]").}

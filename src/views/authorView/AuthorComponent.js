@@ -6,6 +6,7 @@ import DeleteData from './DeleteData';
 import AuthorGeneral from './AuthorGeneral';
 import ElementInteraction from '../ElementInteraction';
 import { postTextInteraction, fetchDataEffect, extractWiki} from '../apiEffects';
+import {removeDuplicatesList} from '../formattingFuncs.js';
 import TextHeader from './TextHeader';
 const parse = require('html-react-parser');
 
@@ -16,13 +17,18 @@ const AuthorComponent = (props) => {
     const [tabOpen, setTabOpen] = useState(text_id!==undefined?{gen:true, det:true}:{gen:true, det: false})
     const [author, setAuthor] = useState();
     const [text, setText] = useState({});
-    const tabs = [{value:"gen",tabName:"General",component:<AuthorGeneral properties={{lang, userData, author, navigate, setUserData}}/>}
+    const [texts, setTexts] = useState({});
+    const tabs = [{value:"gen",tabName:"General",component:<AuthorGeneral properties={{lang, userData, author,texts, navigate, setUserData}}/>}
                 ,Object.keys(text).length>0&&{value:"det",tabName:<TextHeader properties={{text, userData, text_id, setUserData}}/>, component:<TextComponent properties = {{lang, text_id, userData, text}}/>}]
     const returnMain = () => {navigate(`/author/${author.author_id}`);setTabOpen({gen:true, det: false});setText({})}
     useEffect(() => {
         if(id) {
             fetchDataEffect({type:'authors', id, setData:setAuthor,user_id:userData.user_id})()
-            .then(results => extractWiki(results,results.author_q, "author",lang.value,"author_q")).then(wiki => setAuthor(wiki));
+            .then(results => extractWiki(results,results.author_q, "author",lang.value,"author_q")).then(wiki => {setAuthor(wiki); return wiki})
+            .then(authors => fetchDataEffect({setData:setTexts, id:authors.author_id, type:'texts', by: "author", user_id:userData.user_id})())
+            .then(results => {if(results.length>0){return extractWiki(results,results[0].author_q, "author_texts",lang.value, "text_q")} else {return false}})
+            .then(wiki => {if(wiki===false){return wiki} return removeDuplicatesList(wiki,"text_q")})
+            .then(final => {setTexts(final)});
             if(text_id) {
                 fetchDataEffect({type:'texts', id:text_id, setData:setText, user_id:userData?userData.user_id:0})()
                 .then(results => extractWiki(results,results.text_q, "texts", lang.value,"text_q")).then(wiki => setText(wiki));

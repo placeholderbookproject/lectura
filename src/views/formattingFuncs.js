@@ -94,7 +94,7 @@ export const combineLists = (listA, listB, key) => {
 };
 
 export const removeDuplicatesList = (obj, key) => {
-    const list = Object.values(obj)
+    const list = Array.isArray(obj)?Object.values(obj):[obj]
     const uniqueElements = new Map();
     list.forEach((element) => {uniqueElements.set(element[key], element);});
     return Array.from(uniqueElements.values());
