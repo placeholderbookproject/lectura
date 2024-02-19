@@ -14,7 +14,7 @@ const ListsListItem = (props) => {
     !list_deleted&&
         <div className="list-item">
             <div className="list-image">{img&&<img src={img} alt = {list_description}/>}</div>
-            <div className="list-header">
+            <div className="list-of-list-header">
                 <h3 className={`list-title${tab==="official"?"-official":""}`}>
                     <a onClick={()=>navigate(`/lists/${tab}/${url}`)} href={`/lists/${tab}/${url}`}>{`${tab==="official"?"Official: ":""}${list_name}`}</a>
                 </h3>

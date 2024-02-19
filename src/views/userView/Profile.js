@@ -19,8 +19,8 @@ const Profile = (props) => {
                     <div className="profile-row-container"><TableRow label={info.label} key={info.value}>{info.value}</TableRow>
                         {info.label==="User Name "&&<button className="return-btn" onClick={()=>{setEdit(!edit);setEditType("user_name")}}>&#x270E;</button>}</div>)}
                 <button className="logout-btn" onClick = {() => logout()}>Log Out</button>
-                <button className="delete-user-btn" onClick={() => setDeleteUser(true)}>Delete User</button>
                 <button className="edit-profile-btn" onClick={() => {setEdit(!edit);setEditType("user_password")}}>Change Password</button>
+                <button className="delete-user-btn" onClick={() => setDeleteUser(true)}>Delete User</button>
                 </>
             :!edit&&<DeleteUser userData={props.userData} setUserData={props.setUserData} setDeleteUser={setDeleteUser}/>}
             {edit&&<EditProfile properties={{userData:props.userData, edit, setEdit, editType}}/>}

@@ -18,7 +18,7 @@ const AuthorComponent = (props) => {
     const [author, setAuthor] = useState();
     const [text, setText] = useState({});
     const [texts, setTexts] = useState({});
-    const tabs = [{value:"gen",tabName:"General",component:<AuthorGeneral properties={{lang, userData, author,texts, navigate, setUserData}}/>}
+    const tabs = [{value:"gen",tabName:"Author Overview",component:<AuthorGeneral properties={{lang, userData, author,texts, navigate, setUserData}}/>}
                 ,Object.keys(text).length>0&&{value:"det",tabName:<TextHeader properties={{text, userData, text_id, setUserData}}/>, component:<TextComponent properties = {{lang, text_id, userData, text}}/>}]
     const returnMain = () => {navigate(`/author/${author.author_id}`);setTabOpen({gen:true, det: false});setText({})}
     useEffect(() => {

@@ -14,9 +14,8 @@ a:hover {text-decoration:underline;}
 .watchlist-btn:hover, .like-btn:hover, .dislike-btn:hover, .watchlist-btn-active:hover, .like-btn-active:hover, .dislike-btn-active:hover, .favorites-btn:hover, .favorites-btn-active:hover
 ,.dislikes-btn:hover, .dislikes-btn-active:hover
   {border-bottom: 1px solid black; cursor: pointer;}
-.watchlist-btn-active, .like-btn-active, .dislike-btn-active, .favorites-btn-active, .dislikes-btn-active {opacity:1;}
-.watchlist-btn-active {border: 0.5px solid black; margin-top: 5px;}
-.watchlist-btn-active:hover {background-color:#8a8a8a; color:white; margin-top: 5px;}
+.watchlist-btn-active, .like-btn-active, .dislike-btn-active, .favorites-btn-active, .dislikes-btn-active {opacity:1;background-color:#19b019; border-radius:10px;}
+.watchlist-btn-active:hover {background-color:#8a8a8a; color:white;}
 .watchlist-btn:hover {opacity:1;background-color: rgb(242, 239, 239)}
 .latestAdditionsHeader {font-weight:700; font-size: 1.2em;}
 .list-item {
@@ -26,7 +25,7 @@ a:hover {text-decoration:underline;}
   height:85px;
 }
 .list-title, .list-title-official {margin:2px;}
-.list-title:hover, .list-title-official:hover {cursor: pointer; border-bottom:1px solid black;}
+.list-title:hover a, .list-title-official:hover a {cursor: pointer;}
 .list-title-official {color:darkred;}
 .list-description {margin:5px 0px; margin-left:2px;}
 .list-detailed-description{border-bottom:0.5px dotted black;}
@@ -126,7 +125,7 @@ ul,li {list-style: none;}
   flex-direction: row;
 }
 .author-header {color: #000000; text-decoration: none;}
-.tab-container {display:flex; flex-direction:row;justify-content: center; align-items:center;}
+.tab-container {display:flex; flex-direction:row;justify-content: center; align-items:center;cursor:pointer}
 .tab-container, .lists-tab,.create-new-list-tab, .lists-tab-open {
   background-color: #fff;
   color: #000;
@@ -142,7 +141,6 @@ ul,li {list-style: none;}
 .tab-button:hover, .tab-button-inactive:hover {cursor:pointer; background-color:rgb(95, 94, 93); color:white;}
 .tab-button-inactive{background-color: #7b0505; color: white;}
 .lists-tab-open {background-color:rgb(95, 94, 93); color:white;}
-.tab-container:hover, .tab-container-inactive:hover {cursor:default;}
 
 .tab-content {display: none;}
 .tab-content.active {display: block;}
@@ -499,7 +497,8 @@ select {
 .dropdown-item:hover {background-color: #f0f0f0;}
 .dropdown-item a{color:black; text-decoration:none;}
 .dropdown-item button, .logout-btn, .delete-user-btn, .edit-profile-btn
-  {border:none; border-bottom:1px solid darkred;background-color:white; font-size:16px; padding:0; color:darkred;}
+  {border:none; border-bottom:1px solid darkred;background-color:white; font-size:16px; padding:0;}
+.delete-user-btn{color:darkred;}
 .dropdown-item a:hover, .dropdown-item button:hover, .logout-btn:hover, .delete-user-btn:hover, .edit-profile-btn:hover
     {border-bottom:1px solid black; background-color:#f0f0f0; cursor:pointer;}
 .profile-link-btn {background-color:#fff; border:none; font-size:14px;}
