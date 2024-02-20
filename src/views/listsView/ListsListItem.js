@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import ListInteractionsStatistics from "./ListInteractionsStatistics";
 
 const ListsListItem = (props) => {
-    const {img, list_name, list_description, list_id, list_created, list_modified, user_name, user_deleted,list_deleted, likes, dislikes, watchlists, tab} = props.list_data
+    const {img, list_name, list_description, list_id, list_created, list_modified, user_name, user_deleted,list_deleted, tab} = props.list_data
     const [info, setInfo] = useState({list_info:props.list_data})
     const url = `${(list_id+"_"+list_name)}`
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ const ListsListItem = (props) => {
                 <p className="list-description">{list_description}</p>
             </div>
             <div className="list-details">
-                <ListInteractionsStatistics listInfo={{likes, dislikes, watchlists}}/>
+                <ListInteractionsStatistics listInfo={info.list_info}/>
                 <div className="list-interactions-container">
                     {(props.userData.userName===user_name||props.userData.user_role==='administrator')&&
                         <Link to={`/lists/${tab}/${list_id}_${list_name}?edit=true`}><button className="edit-btn">&#9998;</button></Link>}
