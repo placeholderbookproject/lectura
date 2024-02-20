@@ -178,7 +178,7 @@ ul,li {list-style: none;}
   margin-left: 5px;
 }
 .text-row-detailed {border-bottom: 0.5px dotted black; border-top: 0.5px dotted black;}
-.archiveRow:hover, .person-texts h3:hover, .author-header:hover 
+.archiveRow:hover, .person-texts h3:hover, .author-header:hover, .source h4:hover 
       {border-bottom:1px solid black; cursor:pointer; background-color: rgb(242, 239, 239)}
 .textInfo {display: flex; flex-direction: column;}
 .text-img {max-width: 400px; max-height:200px;object-fit:contain;}

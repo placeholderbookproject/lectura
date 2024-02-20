@@ -15,7 +15,11 @@ const AuthorTexts = (props) => {
     const filterOptions = texts && [{label: 'Form', property: 'formLabel', values: getUniquePropertyValues(texts, 'formLabel') },
                                     {label: 'Language', property: 'languageLabel', values: getUniquePropertyValues(texts, 'languageLabel') },
                                     {label: 'Genre', property: 'genreLabel', values: getUniquePropertyValues(texts, 'genreLabel') },];
-    useEffect(() => {setOriginTexts(removeWorksOutOfBounds(props.properties.texts,author_birth_year,author_death_year))},[props.properties.texts])
+    useEffect(() => {
+        const worksFiltered = removeWorksOutOfBounds(props.properties.texts,author_birth_year,author_death_year)
+        setOriginTexts(worksFiltered)
+        setTexts(worksFiltered)
+    },[props.properties.texts])
     return (
         originTexts&&originTexts.length>0&&
         <div className="person-texts">

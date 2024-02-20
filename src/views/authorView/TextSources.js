@@ -25,15 +25,17 @@ const BNF = props => {
 const SourceList = props => {
     const {func, source, info, Component, type} = props
     const [data, setData] = useState();
+    const [showAll, setShowAll] = useState(false)
     const [showData, setShowData] = useState(false)
     useEffect(()=> func({data:info, setData, type}),[info])
     return (<div className="source">
         {data&&data.length>0&&<p onClick={()=>setShowData(!showData)} className="source-header"><span style={{fontWeight:600}}>{source}</span></p>}
-        {showData&&data.slice(0,5).map((result)=>Component&&<Component data={result}/>)}
+        {showData&&
+            <>{data.slice(0,showAll?data.length:5).map((result)=>Component&&<Component data={result}/>)}
+                <h4 onClick={() => setShowAll(!showAll)}>{`${showAll?'Show top 5':'Show remaining results'}`}</h4></>}
     </div>
     )
 }
-
 const TextSources = props => {
     const sources = [{name:"Archive.org", func:archiveEffect, component: ArchiveResult }
                     ,{name:"Google Books", func:googleEffect, component:GoogleResult}
