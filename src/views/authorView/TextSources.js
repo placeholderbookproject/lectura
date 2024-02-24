@@ -16,7 +16,7 @@ const GoogleResult = props => {
 }
 
 const BNF = props => {
-    const {creator, date, /*description, type, subject,*/ language, publisher, source, title, identifier} = props.data
+    const {creator, date, language, publisher, source, title, identifier} = props.data
     const label = `${title} by ${creator} (${date}) (${language}) (${publisher}) (${source})`
     const link = identifier.split("|")[0]
     return (<p key={link} className="source-result"><a href={link} className="archiveRow">{label}</a></p>)
@@ -32,7 +32,7 @@ const SourceList = props => {
         {data&&data.length>0&&<p onClick={()=>setShowData(!showData)} className="source-header"><span style={{fontWeight:600}}>{source}</span></p>}
         {showData&&
             <>{data.slice(0,showAll?data.length:5).map((result)=>Component&&<Component data={result}/>)}
-                <h4 onClick={() => setShowAll(!showAll)}>{`${showAll?'Show top 5':'Show remaining results'}`}</h4></>}
+                {data.length>5&&<h4 onClick={() => setShowAll(!showAll)}>{`${showAll?'Show top 5':'Show remaining results'}`}</h4>}</>}
     </div>
     )
 }

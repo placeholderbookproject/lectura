@@ -1,5 +1,5 @@
 import { authorQuery, authorTextQuery, textQuery, externalsQuery } from "./wikidata";
-import { reformatWikidata, reformatWikitexts, combineLists } from "./formattingFuncs";
+import { reformatWikidata, reformatWikitexts, combineLists, combineWiki } from "./formattingFuncs";
 const server = 'http://127.0.0.1:8000/'
 const googleAPIKey = 'AIzaSyBpljudDJKdDAMHnvh50xCTx8YdSWe3_BM'
 
@@ -37,7 +37,7 @@ export const fetchDataEffect = props => () => {
     return fetchFunc(server+'data?'+search, setData)
 }
 
-export const fetchUserData = (user_id, setData) => {fetchFunc(`${server}user_data?user_id=${user_id}`,setData)}
+export const fetchUserData = (user_id, setData) => fetchFunc(`${server}user_data?user_id=${user_id}`,setData)
 export const updateUserData = data => postFetch(data, 'update_user_data');
 
 export const fetchList = props => () => {
@@ -60,6 +60,33 @@ export const loginUser = (input) => fetch(server+'login_user?user='+input.user).
 export const getAdminData = (user_id,hash,type, setData) => fetchFunc(`${server}admin_data?user_id=${user_id}&hash=${hash}&data_type=${type}`, setData)
 export const postRoleChange = (input) => postFetch(input, 'update_user_role')
 
+const wikiFetch = (query, type) => {
+    const headers = { Accept: "application/sparql-results+json" };
+    const url = `https://query.wikidata.org/sparql?query=${encodeURIComponent(query)}`;
+    return fetch(url, {headers})
+            .then(response => {if (response.ok) {return response.json()} throw response;})
+            .then (data => combineWiki(data,type)) 
+}
+
+export const wikidataEffectProfile = props => () => {
+    const {results, language} = props;
+    let author_results
+    const lang = language?`${language}`:'[en]'
+    let authors = authorQuery.replaceAll('[en]', lang)
+    if (language==="en"){authors = authors.replace("[nativeHeader]","")}
+    else{authors=authors.replace("[nativeHeader]",'OPTIONAL {?author rdfs:label ?authorLabel. FILTER(LANG(?authorLabel)!="en"&&LANG(?authorLabel) = "en_fixed").}')};
+    const formattedString = results.author_q.map(qNumber => `wd:${qNumber}`).join(' ');
+    authors = authors.replace("wd:q_number",formattedString).replace("en_fixed", "en");
+    let texts = textQuery.replaceAll('[en]',lang)
+    const textQs = results.text_q.map(qNumber => `wd:${qNumber}`).join(' ');
+    if (language==="en"){texts = texts.replace("[nativeHeader]","")}
+    else{texts=texts.replace("[nativeHeader]",`OPTIONAL {?book rdfs:label ?bookLabel. FILTER(LANG(?bookLabel)!="${lang}"&&LANG(?bookLabel) = "en_fixed").}`)}
+    texts = texts.replace("wd:q_number",textQs).replace("en_fixed", "en");
+    return wikiFetch(authors,"author_q")
+        .then(authors => {author_results = authors;return wikiFetch(texts,"text_q")})
+        .then(final => {return {authors:author_results, texts:final}})
+}
+
 export const wikidataEffect = props => () => {
     const {type, q_number, setWikidata, language} = props
     const headers = { Accept: "application/sparql-results+json" };
@@ -68,15 +95,14 @@ export const wikidataEffect = props => () => {
     if (type==="author") {
             query = authorQuery.replaceAll('[en]', lang)
             if (language==="en"){query = query.replace("[nativeHeader]","")}
-            else{query=query.replace("[nativeHeader]",'OPTIONAL {?author rdfs:label ?authorLabel. FILTER(LANG(?authorLabel)!="en"&&LANG(?authorLabel) = "en_fixed").}')}
-        }
+            else{query=query.replace("[nativeHeader]",'OPTIONAL {?author rdfs:label ?authorLabel. FILTER(LANG(?authorLabel)!="en"&&LANG(?authorLabel) = "en_fixed").}')}}
     else if (type==="author_texts") {query = authorTextQuery.replaceAll('[en]',lang)}
     else if (type==="texts") {
         query = textQuery.replaceAll('[en]',lang)
         if (language==="en"){query = query.replace("[nativeHeader]","")}
         else{query=query.replace("[nativeHeader]",`OPTIONAL {?book rdfs:label ?bookLabel. FILTER(LANG(?bookLabel)!="${lang}"&&LANG(?bookLabel) = "en_fixed").}`)}
     }
-    else if (type==="externals"){query = externalsQuery.replaceAll('[en]',lang)};
+    else if (type==="externals"){query = externalsQuery.replaceAll('[en]',lang)}
     query = query.replace("wd:q_number","wd:"+q_number).replace("[q2]",q_number).replace("en_fixed", "en");
     const url = `https://query.wikidata.org/sparql?query=${encodeURIComponent(query)}`;
     return fetch(url, {headers})
@@ -88,7 +114,7 @@ export const wikidataEffect = props => () => {
 }
 export const extractWiki = (results,q, type, language,key) => {
     const q_number = q.replace("http://www.wikidata.org/entity/","")
-    return wikidataEffect({q_number, type, setWikidata:null,language})().then(wiki => combineLists(wiki, results,key))
+    return wikidataEffect({results,q_number, type, setWikidata:null,language})().then(wiki => combineLists(wiki, results,key))
 }
 
 export const archiveEffect = props => () => {

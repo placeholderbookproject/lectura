@@ -10,6 +10,12 @@ export const transformYear = (year, label) => {
     else if (year>0) {return year + " AD"}
     else {return label}
 }
+export const transformPeriodRange = (year1, year2) => {
+    if(year2&&year1){return Math.abs(year1)+'-'+transformYear(year2,'')}
+    else if (!year2 && year1){return transformYear(year1,'')}
+    else if (!year1&&year2){return 'NA - ' + transformYear(year2,'')}
+    else {return ''}
+}
 
 export const checkData = (data1,data2) => {
     if(data1===null||data1===undefined||data1===""){return data2}
@@ -53,6 +59,30 @@ export const reformatWikitexts = (wiki) => {
     for (let book in grouped) {
         let group = grouped[book];
         let row = { book: book };
+        for (let key in group) {
+            let values = group[key];
+            row[key] = values.join(" | ");
+        }; output.push(row);
+    }; return output
+}
+
+export const combineWiki = (wiki, type) => {
+    const results = wiki.results.bindings;
+    let grouped = {}
+    for (let row of results){
+        let element = row[type].value;
+        if(!grouped[element]) {grouped[element] = {};}
+        for (let key in row) {
+            if (key !== type) {
+                let val = row[key].value;
+                if (grouped[element][key]) 
+                    {if (!grouped[element][key].includes(val)) {grouped[element][key].push(val);}} 
+                    else {grouped[element][key] = [val];}}}
+    }
+    let output = [];
+    for (let element in grouped) {
+        let group = grouped[element];
+        let row = { [type]: element.replace('http://www.wikidata.org/entity/','') };
         for (let key in group) {
             let values = group[key];
             row[key] = values.join(" | ");

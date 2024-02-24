@@ -26,8 +26,8 @@ const RouteList = () => {
       {path:"/lists/create_new", element:<CreateNewList lang={lang} userData={userData}/>},
       {path:"/lists/:type/:listname", element:<ListItem lang={lang} userData={userData}/>},
       {path:"/login", element:<LoginView setUserData={setUserData}/>},
-      {path:"/register",element:<CreateUserForm setUserData={setUserData}/>},
-      {path:"/user/show/:user_site", element:<ProfileView setUserData={setUserData} userData={userData}/>}
+      !userData&&{path:"/register",element:<CreateUserForm setUserData={setUserData}/>},
+      {path:"/user/show/:user_site", element:<ProfileView setUserData={setUserData} userData={userData} lang = {lang}/>}
   ]
   return (
     <BrowserRouter>
