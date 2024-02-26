@@ -12,30 +12,34 @@ import AdminView from "./AdminView";
 const extract_q = (list_of_dicts) => {
     const authorQs = [];
     const textQs = [];
-    Object.keys(list_of_dicts).forEach(key => {
-      list_of_dicts[key].forEach(element => {
-        if (element.author_q) {authorQs.push(element.author_q);}
-        if (element.text_q) {textQs.push(element.text_q);}
-      });});
-    return {author_q:authorQs, text_q:textQs}
-}
+    Object.values(list_of_dicts).forEach(list => {
+        list.forEach(element => {
+            if (element.author_q) authorQs.push(element.author_q);
+            if (element.text_q) textQs.push(element.text_q);
+        });
+    });
+    return { author_q: authorQs, text_q: textQs };
+};
 
-const processLists = (data,wiki) => {
-    const processedLists = {}; 
+
+const processLists = (data, wiki) => {
+    const processedLists = {};
+    const textMap = new Map(wiki.texts.map(text => [text.text_q, text]));
+    const authorMap = new Map(wiki.authors.map(author => [author.author_q, author]));
     Object.keys(data).forEach(key => {
         processedLists[key] = data[key].map(element => {
-        if (element.text_q) {
-            const text = wiki.texts.find(text => text.text_q===element.text_q);
-            return { ...element, ...text };
-        }
-        else if (element.author_q) {
-            const author = wiki.authors.find(author => author.author_q===element.author_q);
-            return { ...element, ...author };
-        }
-        return element;
+            if (element.text_q) {
+                const text = textMap.get(element.text_q);
+                return text ? { ...element, ...text } : element;
+            } else if (element.author_q) {
+                const author = authorMap.get(element.author_q);
+                return author ? { ...element, ...author } : element;
+            }
+            return element;
         });
     }); return processedLists;
 };
+
 
 const ProfileView = props => {
     const {userData, setUserData, lang} = props
@@ -45,7 +49,6 @@ const ProfileView = props => {
     const [tabOpen, setTabOpen] = useState(defaultTabs)
     const [data, setData] = useState({});
     const [wiki, setWiki] = useState({});
-    console.log(wiki)
     const tabs = Object.keys(wiki).length>0&&
                 [{value:"info", tabName:"Profile Info",component:<Profile userData={userData} setUserData={setUserData}/>}
                 ,userData.user_role==='administrator'&&{value:"admin",tabName:'Admin', component:<AdminView userData={userData}/>}

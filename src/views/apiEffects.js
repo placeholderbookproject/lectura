@@ -65,26 +65,35 @@ const wikiFetch = (query, type) => {
     const url = `https://query.wikidata.org/sparql?query=${encodeURIComponent(query)}`;
     return fetch(url, {headers})
             .then(response => {if (response.ok) {return response.json()} throw response;})
-            .then (data => combineWiki(data,type)) 
+            .then (data => combineWiki(data,type))
 }
 
-export const wikidataEffectProfile = props => () => {
-    const {results, language} = props;
-    let author_results
-    const lang = language?`${language}`:'[en]'
-    let authors = authorQuery.replaceAll('[en]', lang)
-    if (language==="en"){authors = authors.replace("[nativeHeader]","")}
-    else{authors=authors.replace("[nativeHeader]",'OPTIONAL {?author rdfs:label ?authorLabel. FILTER(LANG(?authorLabel)!="en"&&LANG(?authorLabel) = "en_fixed").}')};
-    const formattedString = results.author_q.map(qNumber => `wd:${qNumber}`).join(' ');
-    authors = authors.replace("wd:q_number",formattedString).replace("en_fixed", "en");
-    let texts = textQuery.replaceAll('[en]',lang)
-    const textQs = results.text_q.map(qNumber => `wd:${qNumber}`).join(' ');
-    if (language==="en"){texts = texts.replace("[nativeHeader]","")}
-    else{texts=texts.replace("[nativeHeader]",`OPTIONAL {?book rdfs:label ?bookLabel. FILTER(LANG(?bookLabel)!="${lang}"&&LANG(?bookLabel) = "en_fixed").}`)}
-    texts = texts.replace("wd:q_number",textQs).replace("en_fixed", "en");
-    return wikiFetch(authors,"author_q")
-        .then(authors => {author_results = authors;return wikiFetch(texts,"text_q")})
-        .then(final => {return {authors:author_results, texts:final}})
+const fetchWikiData = (qNumbers, type, language) => {
+    const langTag = language === 'en' ? 'en_fixed' : language;
+    const sparqlQuery = buildSparqlQuery(qNumbers, type, langTag);
+    return wikiFetch(sparqlQuery, type);
+}
+
+const buildSparqlQuery = (qNumbers, type, language) => {
+    let queryTemplate = type === 'author_q' ? authorQuery : textQuery;
+    const qString = qNumbers.map(qNumber => `wd:${qNumber}`).join(' ');
+    const resultType = type === 'author_q' ? 'author' : 'book'
+    const nativeHeader = language === 'en' ? '' : `OPTIONAL {?${resultType} rdfs:label ?${resultType}Label. FILTER(LANG(?${resultType}Label)="${language}"&&LANG(?bookLabel) = "en_fixed").}`;
+    const encodedQString = qString;
+    const sparqlQuery = queryTemplate
+        .replaceAll('[en]', language)
+        .replace('[nativeHeader]', nativeHeader)
+        .replace('wd:q_number', encodedQString)
+        .replace('en_fixed', 'en');
+    return sparqlQuery;
+}
+
+export const wikidataEffectProfile = ({ results, language }) => () => {
+    const lang = language || 'en';
+    const authorResults = fetchWikiData(results.author_q, 'author_q', lang);
+    const textResults = fetchWikiData(results.text_q, 'text_q', lang);
+    return Promise.all([authorResults, textResults])
+        .then(([authors, texts]) => ({ authors, texts }));
 }
 
 export const wikidataEffect = props => () => {
