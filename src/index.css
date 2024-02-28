@@ -54,10 +54,10 @@ a:hover {text-decoration:underline;}
 .list-statistics-btn-active {background-color: rgb(198, 197, 197); font-weight: bold;}
 .list-statistics-btn:hover, .list-statistics-btn-active:hover {background-color:grey; cursor:pointer;}
 
-.check-btn,.check-btn-active{border: 0; background-color:white; font-size:25px;}
-.check-btn:hover,.check-btn-active:hover {cursor:pointer; background-color:rgb(242, 239, 239);}
-.check-btn::before, .check-btn-active:hover::before{content: "\2610";}
-.check-btn:hover::before, .check-btn-active::before{content: "\2611";}
+.check-btn,.check-btn-active, .list-btn{border: 0; background-color:white; font-size:25px;}
+.check-btn:hover,.check-btn-active:hover, .list-btn:hover {cursor:pointer; background-color:rgb(242, 239, 239);}
+.check-btn::before, .check-btn-active:hover::before, .list-btn:hover::before{content: "\2610";}
+.check-btn:hover::before, .check-btn-active::before, .list-btn::before {content: "\2611";}
 
 .search-dropdown-popup {
   position: absolute;
@@ -345,7 +345,7 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
 
 .popup-row:hover {cursor:pointer;}
 
-.header-btn button, .changeSearchVersionBtn, .resetEditBtn, .addNewBtn,.listsBtn, .dropdown-trigger, .modal-entry-btn, .header-btn {
+.header-btn button, .changeSearchVersionBtn, .resetEditBtn, .addNewBtn,.listsBtn, .dropdown-trigger,.list-dropdown-trigger .modal-entry-btn, .header-btn {
   border-radius: 30px;
   top:0;
   background-color: #dedbdb;
@@ -364,6 +364,7 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
   vertical-align: baseline;
   white-space: nowrap;
 }
+.list-dropdown-trigger {border-radius:0px;margin-left:5px;}
 .header-btn button {background: none;}
 .header-btn:hover, .changeSearchVersionBtn:hover,.resetEditBtn:hover, .addNewBtn:hover, .listsBtn:hover, .collapsible:hover
 ,.dropdown-toggle:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover
@@ -505,7 +506,9 @@ select {
 .profile-link-btn {background-color:#fff; border:none; font-size:14px;}
 .profile-link-btn:hover{cursor:pointer;background-color:#f0f0f0;}
 
-.watchlist-element-container {display:flex; flex-direction:row; border-bottom: 0.5px dotted black;}
+.watchlist-element-container,.element-list-element {display:flex; flex-direction:row; border-bottom: 0.5px dotted black;}
+.element-list-element {font-size:10px; min-width: 150px; min-height: 20px; justify-content: space-between}
+.list-name {margin-left:5px;}
 .watchlist-element-container p {margin:5px;}
 .profile-header-btn, .profile-header-btn-active {border:none;background-color:white;}
 .profile-header-btn:hover, .profile-header-btn-active:hover,.profile-header-btn-active {border-bottom:0.5px solid black;cursor:pointer;background-color: rgb(242, 239, 239);}

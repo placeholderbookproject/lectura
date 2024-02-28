@@ -4,21 +4,21 @@ import TextComponent from './TextComponent';
 import { setTab } from '../commonFuncs.js';
 import DeleteData from './DeleteData';
 import AuthorGeneral from './AuthorGeneral';
-import ElementInteraction from '../ElementInteraction';
-import { postTextInteraction, fetchDataEffect, extractWiki} from '../apiEffects';
+import { fetchDataEffect, extractWiki} from '../apiEffects';
 import {removeDuplicatesList} from '../formattingFuncs.js';
 import TextHeader from './TextHeader';
+import ListAdd from './ListAdd.js';
 const parse = require('html-react-parser');
 
 const AuthorComponent = (props) => {
     const {id, text_id} = useParams();
-    const {lang, userData, setUserData} = props
+    const {lang, userData, setUserData,labels} = props
     const navigate = useNavigate();
     const [tabOpen, setTabOpen] = useState(text_id!==undefined?{gen:true, det:true}:{gen:true, det: false})
     const [author, setAuthor] = useState();
     const [text, setText] = useState({});
     const [texts, setTexts] = useState({});
-    const tabs = [{value:"gen",tabName:"Author Overview",component:<AuthorGeneral properties={{lang, userData, author,texts, navigate, setUserData}}/>}
+    const tabs = [{value:"gen",tabName:"Author Overview",component:<AuthorGeneral properties={{lang, userData, author,texts, navigate, setUserData, labels}}/>}
                 ,Object.keys(text).length>0&&{value:"det",tabName:<TextHeader properties={{text, userData, text_id, setUserData}}/>, component:<TextComponent properties = {{lang, text_id, userData, text}}/>}]
     const returnMain = () => {navigate(`/author/${author.author_id}`);setTabOpen({gen:true, det: false});setText({})}
     useEffect(() => {
@@ -41,9 +41,7 @@ const AuthorComponent = (props) => {
         {author&&<div className="author-container-header">
                     <h2><a onClick={()=>{returnMain()}} className="author-header">{author.author_name}</a>
                     <a href={author.article?author.article:author.author_q?author.author_q:""}>{`(Wiki)`}</a>
-                    {<ElementInteraction values={{user_id:userData.user_id, hash: userData.hash, id:author.author_id, userData, setUserData
-                                ,condition:author["author_watch"], conditional:{true:"+",false:"+"}
-                                ,button_name:{true:"watchlist-btn-active",false:"watchlist-btn"}, name:"author_watch", postFunction:postTextInteraction }}/>}
+                    {userData&&author&&<ListAdd list_type="authors" type_id={author.author_id} userData={userData} setUserData={setUserData} watch={author.author_watch}/>}
                     {userData&&userData.user_role==='administrator'&&<DeleteData properties={{type:"author", data:author, setData:setAuthor, userData}}/>}
                     </h2>
                 </div>}

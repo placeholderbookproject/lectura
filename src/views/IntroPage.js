@@ -7,9 +7,9 @@ export const LatestChanges = () => {
     const [data, setData] = useState();
     useEffect(() => fetchDataEffect({setData}),[])
     const types = ["authors", "texts"]
-    return (
+    return (data&&
         <div className = "latestAdditions">
-            {data&&<header className="latestAdditionsHeader">{labels.latestAdditions}</header>}
+            {<header className="latestAdditionsHeader">{labels.latestAdditions}</header>}
             {data&&types.map((type) => 
                 <div className="latestAdditionsList" key = {type}>
                     <ul className="listHeader">{type.charAt(0).toUpperCase()+type.slice(1,type.length)}</ul>

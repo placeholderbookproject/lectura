@@ -1,11 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import TableRow from '../ViewRow.js';
-import labels from '../labels.js';
 import {checkStr, transformYear, checkData} from '../formattingFuncs.js';
 import { WikiExternalsLabels } from '../wikidata.js';
 
 export const AuthorTable = (props) => {
-    const {author, lang} = props.properties
+    const {author, lang, labels} = props.properties
     const [data, setData] = useState({...author})
     useEffect(()=>{if(author){setData({...author});}},[author])
     const language = lang.value
@@ -38,8 +37,8 @@ export const AuthorTable = (props) => {
                     </TableRow>
                         {(author_birth_year === null|author_death_year === null) && author_floruit !==null
                             ?<TableRow label = {labels.floruit + " "}>{checkData(floruit,author_floruit)}</TableRow>:<></>}
-                    <TableRow label = {labels.occupation + " "}>{checkData(occupationsLabel,author_positions)}</TableRow>
-                    <TableRow label={labels.languages + " "}>{checkData(languagesLabel, author_name_language)}</TableRow>
+                    <TableRow label = {labels.occupationsLabel + " "}>{checkData(occupationsLabel,author_positions)}</TableRow>
+                    <TableRow label={labels.language + " "}>{checkData(languagesLabel, author_name_language)}</TableRow>
                 </>}
         </div>
     );

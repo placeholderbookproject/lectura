@@ -1,7 +1,7 @@
 import React from 'react';
 import ListsListItem from './ListsListItem';
 const ListsOfLists = (props) => {
-    const {userData,setUserData, lists, tab, searchResults, setSearchResults} = props
+    const {userData,setUserData, lists, tab, searchResults, setSearchResults} = props.properties
     const tabFilter = {all:lists,personal:lists.filter(element => element.tab==="personal")
                         ,official:lists.filter(element=>element.tab==="official")
                         ,"added by Me":userData&&lists.filter(element=>element.user_id===userData.user_id)

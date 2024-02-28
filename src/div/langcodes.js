@@ -1,8 +1,10 @@
 export const langCodes = [
     {label:'Afrikaans', value:'af'}
+    ,{label:'Albanian', value:'sq'}
     ,{label:'Arabic', value:'ar'}
     ,{label:'Azerbaijani', value:'az'}
     ,{label:'Balinese', value:'ban'}
+    ,{label:'Basque', value:'eu'}
     ,{label:'Bavarian', value:'bar'}
     ,{label:'Belarusian', value:'be'}
     ,{label:'Bulgarian', value:'bg'}
@@ -10,6 +12,7 @@ export const langCodes = [
     ,{label:'Tibetan', value:'bo'}
     ,{label:'Catalan', value:'ca'}
     ,{label:'Chechen', value:'ce'}
+    ,{label:'Chinese', value:'zh'}
     ,{label:'Czech', value:'cs'}
     ,{label:'Welsh', value:'cy'}
     ,{label:'Danish', value:'da'}
@@ -17,14 +20,10 @@ export const langCodes = [
     ,{label:'German', value:'de'}
     ,{label:'Greek', value:'el'}
     ,{label:'English', value:'en'}
-    ,{label:'Spanish', value:'es'}
     ,{label:'Estonian', value:'et'}
-    ,{label:'Basque', value:'eu'}
-    ,{label:'Persian', value:'fa'}
     ,{label:'Finnish', value:'fi'}
     ,{label:'French', value:'fr'}
     ,{label:'Irish', value:'ga'}
-    ,{label:'Scottish Gaelic', value:'gd'}
     ,{label:'Galician', value:'gl'}
     ,{label:'Hebrew', value:'he'}
     ,{label:'Hungarian', value:'hu'}
@@ -36,28 +35,26 @@ export const langCodes = [
     ,{label:'Javanese', value:'jv'}
     ,{label:'Georgian', value:'ka'}
     ,{label:'Kashmiri', value:'ks'}
-    ,{label:'Macedonian', value:'mk'}
     ,{label:'Malayalam', value:'ml'}
     ,{label:'Mongolian', value:'mn'}
     ,{label:'Moldovan', value:'mo'}
-    ,{label:'Maltese', value:'mt'}
     ,{label:'Burmese', value:'my'}
     ,{label:'Nepali', value:'ne'}
     ,{label:'Dutch', value:'nl'}
     ,{label:'Nynorsk', value:'nn'}
     ,{label:'Norwegian', value:'nb'}
     ,{label:'Occitan', value:'oc'}
+    ,{label:'Persian', value:'fa'}
     ,{label:'Polish', value:'pl'}
     ,{label:'Portuguese', value:'pt'}
     ,{label:'Romanian', value:'ro'}
     ,{label:'Russian', value:'ru'}
     ,{label:'Slovak', value:'sk'}
     ,{label:'Slovene', value:'sl'}
+    ,{label:'Spanish', value:'es'}
     ,{label:'Somali', value:'so'}
-    ,{label:'Albanian', value:'sq'}
     ,{label:'Swedish', value:'sv'}
     ,{label:'Swahili', value:'sw'}
     ,{label:'Uzbek', value:'uz'}
     ,{label:'Vietnamese', value:'vi'}
-    ,{label:'Chinese', value:'zh'}
     ]

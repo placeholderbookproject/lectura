@@ -6,7 +6,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import ClearIcon from '@material-ui/icons/Clear';
 import { search } from '../commonFuncs.js';
 
-const MainSearch = () => {
+const MainSearch = (props) => {
     let controller = new AbortController();
     const navigate = useNavigate();
     const [query, setQuery] = useState("");
@@ -23,7 +23,7 @@ const MainSearch = () => {
     }
     return (
         <div className = "search-bar">
-          <input type="text" placeholder="Search for an author or text" value = {query} 
+          <input type="text" placeholder={props.labels.searchBase} value = {query} 
             onChange = {(e) => setQuery(e.target.value)} onKeyDown={(e) => search(controller, setQuery, setSearchResults,() => navigate(`/search?query=${query}&type=authors`), e)} className="search-input"/>
         {searchResults&&searchResults.length>0&&query&&
           <div className="search-dropdown-popup">{searchResults.slice(0,10).map((result) => 
