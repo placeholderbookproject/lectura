@@ -29,7 +29,7 @@ const ListsListItem = (props) => {
                 </div>
                 {user_name&&<div className={`list-user${user_deleted?'-deleted':''}`}><label>User </label>{user_name}</div>}
                 <div className="list-dates">
-                    {dates.map(d => d.content&&<><label>{d.label}</label><p className="list-date">{new Date(d.content).toLocaleDateString(undefined, dateOptions)}</p></>)}
+                    {dates.map(d => d.content&&<><label key={d.label}>{d.label}</label><p className="list-date">{new Date(d.content).toLocaleDateString(undefined, dateOptions)}</p></>)}
                 </div>
             </div>
         </div>

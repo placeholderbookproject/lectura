@@ -27,7 +27,7 @@ const ListAdd = props => {
             </div>
             {isDropdownOpen &&
             <div className="dropdown-content">
-                {data.map(list => <div className="element-list-element"><p className="list-name" onClick={handleClick}>{list.list_name}</p>
+                {data.map(list => <div className="element-list-element" key={list.list_id}><p className="list-name" onClick={handleClick}>{list.list_name}</p>
                                     {list.in_list?<button className="list-btn" onClick={()=>adjustList(list.list_id,"removal")}/>
                                                 :<button className="watchlist-btn" onClick={()=>adjustList(list.list_id,"add")}>+</button>}
                                 </div>)}
