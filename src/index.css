@@ -28,7 +28,7 @@ a:hover {text-decoration:underline;}
 .list-title, .list-title-official {margin:2px;}
 .list-title:hover a, .list-title-official:hover a {cursor: pointer;}
 .list-title-official {color:darkred;}
-.list-description {margin:5px 0px; margin-left:2px;}
+textarea {margin:5px 5px; margin-left:2px;}
 .list-detailed-description{border-bottom:0.5px dotted black;}
 .list-interactions-container {display:flex;flex-direction:row;}
 .list-header {display:flex;}
@@ -45,8 +45,7 @@ a:hover {text-decoration:underline;}
 .list-buttons {display: flex; gap: 10px;justify-content: flex-end;}
 .list-base-description {font-weight:bold;margin-top:0;}
 .list-header {margin-top:5px; justify-content: space-between;}
-.list-header-title {margin-bottom:0px; text-decoration:underline; margin-top:0px; justify-content: flex-start; display:flex;}
-.list-header-title button {text-decoration: none;}
+.list-header-title {margin-bottom:0px; margin-top:0px; justify-content: flex-start; display:flex;}
 .list-statistics-container {display:flex; flex-direction:row; justify-content: flex-end;}
 .list-statistics-container p {margin:0;}
 .list-statistics, .list-statistics-filter {margin-top: 10px; margin-bottom: 5px; display:flex; flex-direction:row;}

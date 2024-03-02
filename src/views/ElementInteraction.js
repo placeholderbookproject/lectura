@@ -11,7 +11,7 @@ const ElementInteraction = props => {
         setIsTrue(newIsTrue);
         postFunction({condition: newIsTrue, user_id, id, type:name, hash});
     }
-    useEffect(() => {if(condition===undefined){setIsTrue(false)}else{setIsTrue(condition)}},[condition])
+    useEffect(() => {if(condition===undefined){setIsTrue(false)}else{setIsTrue(props.values.condition)}},[props.values.condition])
     return (<>{user_id
                 ?<button className={isTrue?button_name.true:button_name.false} onClick={handleClick}>{parse(conditional[isTrue])}</button>
                 :<Modal triggerButton={<button className={button_name.false}>{parse(conditional[isTrue])}</button>}><LoginView userData={userData} setUserData={setUserData}/></Modal>}</>)

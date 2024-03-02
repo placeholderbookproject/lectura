@@ -1,7 +1,25 @@
 import React,{useState, useEffect} from "react";
 import ElementInteraction from "../ElementInteraction";
-import { updateUserList, fetchElementLists, postTextInteraction } from "../apiEffects";
+import { updateUserList, fetchElementLists, postTextInteraction, createNewList } from "../apiEffects";
 import { elementInteractions } from "./dataRows";
+
+const AddToListComponent = props => {
+    const {data, setData, userData, list_type, type_id} = props.properties
+    const [newList, setNewList] = useState("");
+    const createList = () => {
+        const listData = {list_info:{user_id:userData.user_id,hash:userData.hash, list_name:newList,list_description:"",list_type},
+                    additions:[{value:type_id}], removals:[], order_changes:[],delete:false}
+        createNewList(listData).then(result => setData([...data,{list_name:newList, in_list:true, list_type, value:type_id, list_id:result.list_id} ]))
+    }
+    const changeName = (e) => {setNewList(e.target.value)}
+    return (
+    <div className="element-list-element">
+        <input type="text" name="new_list_name" value={newList} onChange={changeName} placeholder="List Name"/>
+        <button onClick={()=>createList()} className="list-statistics-btn">Create</button>
+    </div>
+
+    )
+}
 
 const ListAdd = props => {
     const {list_type, type_id, userData, setUserData, watch} = props
@@ -16,8 +34,7 @@ const ListAdd = props => {
         const updatedList = data.map(item => {
             if (item.list_id === list_id) {return { ...item, in_list: !item.in_list };} 
             else {return item;}
-          });
-        setData(updatedList)
+          }); setData(updatedList)
     }
     return (
         <div className="dropdown-container">
@@ -31,7 +48,7 @@ const ListAdd = props => {
                                     {list.in_list?<button className="list-btn" onClick={()=>adjustList(list.list_id,"removal")}/>
                                                 :<button className="watchlist-btn" onClick={()=>adjustList(list.list_id,"add")}>+</button>}
                                 </div>)}
-                <button>Make a List</button>
+                <AddToListComponent properties = {{data, setData, userData, list_type, type_id}}/>
             </div>}
         </div>
     )
