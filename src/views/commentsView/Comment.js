@@ -5,6 +5,13 @@ import { postUpdateComment } from "../apiEffects";
 import CommentInteractions from "./CommentInteractions";
 const parse = require('html-react-parser');
 
+const createUrl = (comment_data) => {
+    const {author_id, comment_type, comment_type_id, comment_id} = comment_data
+    return comment_type==="text"?`/author/${author_id}/text/${comment_type_id}/?comment_id=${comment_id}`
+                                :comment_type==="list"?`/lists/personal/${comment_type_id}/?comment_id=${comment_id}`
+                                                        :`/author/${author_id}/?comment_id=${comment_id}`
+}
+
 const Comment = (props) => {
     const {comment_id, comment_content,comment_created_at, comment_edited_at, user_name, user_id
             , likes, dislikes, comment_deleted, user_interaction} = props.data;
@@ -16,6 +23,7 @@ const Comment = (props) => {
     const dateOptions = { year: "numeric", month: "long", day: "numeric" };
     const transformDate = (date) => new Date(date).toLocaleDateString(undefined, dateOptions)
     const deleteComment = () => {postUpdateComment({comment, comment_id,user_id:userData.user_id,hash:userData.user_id, delete:true}).then(() => {setEdit(false);setDeleted(true)})}
+    const url = createUrl(props.data)
     return (
         <div className="comment-container">
             <div className="comment-user"><p>{user_name}</p></div>
@@ -33,7 +41,8 @@ const Comment = (props) => {
             }
             <div className="comment-div">
                 <div className="comment-dates">
-                    <p className={`comment-created-date${(comment_edited_at!=="NaT"&&comment_edited_at!==null)?"-edited":""}`}>{transformDate(comment_created_at)}</p>
+                    <p className={`comment-created-date${(comment_edited_at!=="NaT"&&comment_edited_at!==null)?"-edited":""}`}>
+                        <a href={url}>{transformDate(comment_created_at)}</a></p>
                     {(comment_edited_at!=="NaT"&&comment_edited_at!==null)&&<p><span style = {{"fontWeight": 600,}}>Edited </span>{`${transformDate(comment_edited_at)}`}</p>}
                 </div>
                 {(props.userData.user_id === user_id||props.userData.user_role==='administrator')&&<>

@@ -41,7 +41,7 @@ const AuthorComponent = (props) => {
         {author&&<div className="author-container-header">
                     <h2><a onClick={()=>{returnMain()}} className="author-header">{author.author_name}</a>
                     <a href={author.article?author.article:author.author_q?author.author_q:""}>{`(Wiki)`}</a>
-                    {userData&&author&&<ListAdd list_type="authors" type_id={author.author_id} userData={userData} setUserData={setUserData} watch={author.author_watch}/>}
+                    {author&&<ListAdd list_type="authors" type_id={author.author_id} userData={userData} setUserData={setUserData} watch={author.author_watch}/>}
                     {userData&&userData.user_role==='administrator'&&<DeleteData properties={{type:"author", data:author, setData:setAuthor, userData}}/>}
                     </h2>
                 </div>}

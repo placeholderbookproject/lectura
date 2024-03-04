@@ -36,5 +36,6 @@ export const elementInteractions = [
     {name:"checks", conditional:{true:"",false:""}, button_name:{true:"check-btn-active", false:"check-btn"}, label:"Check"},
     {name:"watch", conditional:{true:"+",false:"+"}, button_name:{true:"watchlist-btn-active",false:"watchlist-btn"}, label:"Watchlist"},
     {name:"favorites", conditional:{true:"&#128077;", false:"&#128077;"},button_name:{true:"favorites-btn-active",false:'favorites-btn'}},
-    {name:"dislikes", conditional:{true:"&#128078;", false: "&#128078;"}, button_name:{true:"dislikes-btn-active", false:"dislikes-btn"}}
+    {name:"dislikes", conditional:{true:"&#128078;", false: "&#128078;"}, button_name:{true:"dislikes-btn-active", false:"dislikes-btn"}},
+    {name:"author_watch",conditional:{true:"+",false:"+"}, button_name:{true:"watchlist-btn-active",false:"watchlist-btn"}}
   ];

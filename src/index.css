@@ -9,6 +9,12 @@ a:hover {text-decoration:underline;}
 .latest-additions-link:hover {border-bottom:1px solid;}
 .search-result-label p:hover{cursor:pointer;}
 
+/*Background Color*/
+.navbar,.flexbox-container, .header-btn button, .changeSearchVersionBtn, .resetEditBtn, .addNewBtn,.listsBtn, .dropdown-trigger, .modal-entry-btn, .header-btn 
+,select
+{ background-color: #dedbdb;
+  color: black;}
+
 .watchlist-btn, .like-btn, .favorites-btn, .dislike-btn, .watchlist-btn-active, .like-btn-active, .dislike-btn-active, .favorites-btn-active, .dislikes-btn-active, .dislikes-btn
   {background-color:white; border: none; opacity:0.5; font-size:16px;}
 .watchlist-btn:hover, .like-btn:hover, .dislike-btn:hover, .watchlist-btn-active:hover, .like-btn-active:hover, .dislike-btn-active:hover, .favorites-btn:hover, .favorites-btn-active:hover
@@ -25,7 +31,7 @@ a:hover {text-decoration:underline;}
   position: relative;
   height:85px;
 }
-.list-title, .list-title-official {margin:2px;}
+.list-title, .list-title-official, .list-description {margin:2px;}
 .list-title:hover a, .list-title-official:hover a {cursor: pointer;}
 .list-title-official {color:darkred;}
 textarea {margin:5px 5px; margin-left:2px;}
@@ -41,13 +47,12 @@ textarea {margin:5px 5px; margin-left:2px;}
 }
 .list-dates label {margin-left:5px; margin-right:5px;}
 .list-user-deleted {color:darkred; text-decoration: line-through;}
-.list-date {margin:0;}
+.list-date, .list-statistics-container p {margin:0;}
 .list-buttons {display: flex; gap: 10px;justify-content: flex-end;}
 .list-base-description {font-weight:bold;margin-top:0;}
 .list-header {margin-top:5px; justify-content: space-between;}
 .list-header-title {margin-bottom:0px; margin-top:0px; justify-content: flex-start; display:flex;}
 .list-statistics-container {display:flex; flex-direction:row; justify-content: flex-end;}
-.list-statistics-container p {margin:0;}
 .list-statistics, .list-statistics-filter {margin-top: 10px; margin-bottom: 5px; display:flex; flex-direction:row;}
 .list-statistics-btn, .list-statistics-btn-active {background-color: white; border: none; border-bottom: 1px solid black; font-size: 14px;}
 .list-statistics-btn-active {background-color: rgb(198, 197, 197); font-weight: bold;}
@@ -236,7 +241,6 @@ ul,li {list-style: none;}
 .collapsibleBtn {cursor:s-resize;} 
 
 .navbar {
-  background-color: #dedbdb;
   position: relative;
   display: inline-flex;
 }
@@ -251,10 +255,6 @@ ul,li {list-style: none;}
 
 .flexbox-container {
   display: flex;/*this causes the stickyness of select window (right below search as desired)*/
-  flex-direction: row;
-  z-index:1;
-  background-color: #dedbdb;
-  position: sticky;
   border-bottom: 1.5px solid #8a8a8a; 
   top: 0;
 }
@@ -344,12 +344,10 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
 
 .popup-row:hover {cursor:pointer;}
 
-.header-btn button, .changeSearchVersionBtn, .resetEditBtn, .addNewBtn,.listsBtn, .dropdown-trigger,.list-dropdown-trigger .modal-entry-btn, .header-btn {
+.header-btn button, .changeSearchVersionBtn, .resetEditBtn, .addNewBtn,.listsBtn, .dropdown-trigger, .modal-entry-btn, .header-btn {
   border-radius: 30px;
   top:0;
-  background-color: #dedbdb;
   border: none;
-  color: black;
   cursor: pointer;
   display: inline-block;
   font-size: 15px;
@@ -426,15 +424,15 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
 .popupArea { cursor:pointer;}
 
 select {
-  background-color: #fff;
-  color: #333;
   font-size: 15px;
   padding: 0px 12px;
   display: flex;
   align-items: center;
   width:auto; max-height:30px;
   margin-top:10px;
+  border:none;
 }
+select:hover {cursor:pointer; border:1px solid black;}
 
 .login-container, .register-container {
   background-color:white; 
@@ -509,7 +507,7 @@ select {
 .element-list-element {font-size:10px; min-width: 150px; min-height: 20px; justify-content: space-between}
 .list-name {margin-left:5px;}
 .watchlist-element-container p {margin:5px;}
-.profile-header-btn, .profile-header-btn-active {border:none;background-color:white;}
+.profile-header-btn, .profile-header-btn-active,.author-text-row-btn  {border:none;background-color:white;}
 .profile-header-btn:hover, .profile-header-btn-active:hover,.profile-header-btn-active {border-bottom:0.5px solid black;cursor:pointer;background-color: rgb(242, 239, 239);}
 /* CSS for modal */
 .modal-overlay {
@@ -544,8 +542,6 @@ select {
 
 .commented-element, .commented-comment p {font-style: italic; color: rgb(97, 96, 96);}
 .commented-comment p {margin:0px;}
-.user-container {display: flex;flex-direction: row;}
-.author-text-row-btn {background-color:white;border:none;}
+.user-container, .profile-row-container {display: flex;flex-direction: row;}
 .author-text-row-btn:hover {cursor:pointer;background-color: #f0f0f0;border-bottom:1px solid black;}
-.profile-row-container {display:flex;flex-direction:row;}
 .user-name {margin-left:5px;}

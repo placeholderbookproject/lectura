@@ -23,10 +23,11 @@ const AddToListComponent = props => {
 
 const ListAdd = props => {
     const {list_type, type_id, userData, setUserData, watch} = props
+    const interaction = list_type==="authors"?"author_watch":"watch"
     const [data, setData] = useState(props.data);
     const [isDropdownOpen,setIsDropdownOpen] = useState(false);
     const handleClick = () => {setIsDropdownOpen(!isDropdownOpen)}
-    useEffect(() => {fetchElementLists(list_type,type_id,userData.user_id, userData.hash,setData)},[props])
+    useEffect(() => {userData&&fetchElementLists(list_type,type_id,userData.user_id, userData.hash,setData)},[userData, list_type])
     const adjustList = (list_id, type) => {
         const additions = type==="add"?[{value:type_id}]:[]
         const removals = additions.length=0?[{value:type_id}]:[]
@@ -40,9 +41,9 @@ const ListAdd = props => {
         <div className="dropdown-container">
             <div className="list-dropdown-trigger" onMouseEnter={() => setIsDropdownOpen(true)} onClick = {handleClick}>
             {elementInteractions.map((e) =>
-                e.name==="watch"&&<ElementInteraction values={{...e, condition:watch, user_id:userData.user_id, hash:userData.hash,id:type_id,userData,setUserData, postFunction:postTextInteraction}}/>)}
+                e.name===interaction&&<ElementInteraction values={{...e, condition:watch, user_id:userData.user_id, hash:userData.hash,id:type_id,userData,setUserData, postFunction:postTextInteraction}}/>)}
             </div>
-            {isDropdownOpen &&
+            {isDropdownOpen && userData &&
             <div className="dropdown-content">
                 {data.map(list => <div className="element-list-element" key={list.list_id}><p className="list-name" onClick={handleClick}>{list.list_name}</p>
                                     {list.in_list?<button className="list-btn" onClick={()=>adjustList(list.list_id,"removal")}/>
