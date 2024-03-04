@@ -1,15 +1,17 @@
 import React from "react";
+import { createCommentUrl, transformDate } from "../commonFuncs";
 const parse = require('html-react-parser');
 const CommentsElement = props => {
-    const {comment_content, comment_type, comment_type_id, comment_created_at,comment_label, commented_comment, author_id, list_name} = props.element
-    const url = {text:`/author/${author_id}/text/${comment_type_id}`, author: `/author/${comment_type_id}`, list:`/lists/all/${comment_type_id}_${list_name}`}
+    const {comment_content, comment_type, comment_created_at,comment_label, commented_comment} = props.element
+    const url = createCommentUrl(props.element)
     return (<div className="watchlist-element-container">
-            <p><a href={url[comment_type]}>{`#${props.index+1} `}</a></p>
-                <div className="comment-content"><p className="commented-element">{`${comment_type.slice(0,1).toUpperCase()+comment_type.slice(1,comment_type.length)}: ${comment_label}`}</p>
-                    {commented_comment&&<p className="commented-comment">{parse(commented_comment)}</p>}
-                    {parse(comment_content)}
+                <p>{`#${props.index+1} `}</p>
+                <div className="comment-content">
+                <p className="commented-element"><a href={url}>{`${comment_type.slice(0,1).toUpperCase()+comment_type.slice(1,comment_type.length)}: ${comment_label}`}</a></p>
+                {commented_comment&&<p className="commented-comment">{parse(commented_comment)}</p>}
+                {parse(comment_content)}
                 </div>
-            <p className="comment-created-date">{ `(${comment_created_at})`}</p>
+            <p className="comment-created-date">{transformDate(comment_created_at)}</p>
         </div>)
 }
 const YourComments = props => {

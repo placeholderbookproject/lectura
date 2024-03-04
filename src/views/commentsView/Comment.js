@@ -3,14 +3,8 @@ import AddComment from "./AddComment";
 import EditComment from "./EditComment";
 import { postUpdateComment } from "../apiEffects";
 import CommentInteractions from "./CommentInteractions";
+import { createCommentUrl, transformDate } from "../commonFuncs";
 const parse = require('html-react-parser');
-
-const createUrl = (comment_data) => {
-    const {author_id, comment_type, comment_type_id, comment_id} = comment_data
-    return comment_type==="text"?`/author/${author_id}/text/${comment_type_id}/?comment_id=${comment_id}`
-                                :comment_type==="list"?`/lists/personal/${comment_type_id}/?comment_id=${comment_id}`
-                                                        :`/author/${author_id}/?comment_id=${comment_id}`
-}
 
 const Comment = (props) => {
     const {comment_id, comment_content,comment_created_at, comment_edited_at, user_name, user_id
@@ -20,10 +14,8 @@ const Comment = (props) => {
     const [edit, setEdit] = useState(false);
     const [deleted, setDeleted] = useState(comment_deleted);
     const [interactions, setInteractions] = useState({likes, dislikes})
-    const dateOptions = { year: "numeric", month: "long", day: "numeric" };
-    const transformDate = (date) => new Date(date).toLocaleDateString(undefined, dateOptions)
     const deleteComment = () => {postUpdateComment({comment, comment_id,user_id:userData.user_id,hash:userData.user_id, delete:true}).then(() => {setEdit(false);setDeleted(true)})}
-    const url = createUrl(props.data)
+    const url = createCommentUrl(props.data)
     return (
         <div className="comment-container">
             <div className="comment-user"><p>{user_name}</p></div>
