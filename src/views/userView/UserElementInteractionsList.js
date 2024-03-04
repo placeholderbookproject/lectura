@@ -36,7 +36,7 @@ const UserElementInteractions = props => {
         else if (type==="list_favorites") {updateListInteraction({type:"like", list_id:id, user_id:userData.user_id, hash:userData.hash, delete:true})}
         else if (type==="list_dislikes") {updateListInteraction({type:"dislike", list_id:id, user_id:userData.user_id, hash:userData.hash, delete:true})}
     else {postTextInteraction({condition: false, user_id: userData.user_id, id, type, hash:userData.hash});}}   
-    useEffect(()=>setData(props.data),[type])
+    useEffect(()=>setData(props.data),[props.data])
     return (<div>
                 <UserElementSearch originData={props.data} setData={setData}/>
                 {data.map((e,index) => <div className="watchlist-element-container" key={String(index)+e[id_type_list]}>

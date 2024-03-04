@@ -124,8 +124,8 @@ export const wikidataEffect = props => () => {
                 })
 }
 export const extractWiki = (results,q, type, language,key) => {
-    const q_number = q.replace("http://www.wikidata.org/entity/","")
-    return wikidataEffect({results,q_number, type, setWikidata:null,language})().then(wiki => combineLists(wiki, results,key))
+    const q_number = q?q.replace("http://www.wikidata.org/entity/",""):q
+    return q?wikidataEffect({results,q_number, type, setWikidata:null,language})().then(wiki => combineLists(wiki, results,key)):results
 }
 
 export const archiveEffect = props => () => {

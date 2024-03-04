@@ -30,6 +30,7 @@ const AuthorComponent = (props) => {
             .then(wiki => {if(wiki===false){return wiki} return removeDuplicatesList(wiki,"text_q")})
             .then(final => {setTexts(final)});
             if(text_id) {
+                console.log(text_id)
                 fetchDataEffect({type:'texts', id:text_id, setData:setText, user_id:userData?userData.user_id:0})()
                 .then(results => extractWiki(results,results.text_q, "texts", lang.value,"text_q")).then(wiki => setText(wiki));
                 setTabOpen({...tabOpen, det:true});}

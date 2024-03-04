@@ -24,14 +24,12 @@ const externalsStaples = [
   ,{logo:"https://isni.oclc.org:2443/isni/psi_images/img_psi/3.0/logos/logo_xml_isni.png", label:"ISNI", alt:"isni"}
 ]
 
-export const WikiExternalsLabels = (props) => {
+export const WikiExternalsLabels = ({q_number, language}) => {
   const [externals,setExternals] = useState()
-  let {q_number, language} = props;
   useEffect(() => {
     if(q_number){
-        q_number = q_number.replace("http://www.wikidata.org/entity/","");
-        wikidataEffect({q_number, setWikidata:setExternals, type:"externals", language})();}
-  },[props.q_number])
+        wikidataEffect({q_number:q_number.replace("http://www.wikidata.org/entity/",""), setWikidata:setExternals, type:"externals", language})();}
+  },[q_number, language])
   return (
     externals&&externals.results&&
       externalsStaples.map((external) => (
@@ -43,16 +41,14 @@ export const WikiExternalsLabels = (props) => {
     )))
 }
 
-export const WikiExternalsList = (props) => {
+export const WikiExternalsList = ({q_number, language}) => {
   const [externals,setExternals] = useState()
   const defaultExternal = externals&&externals.results.bindings.length===1&&externals.results.bindings[0].value.value;
   const [selectedExternal, setSelectedExternal] = useState(defaultExternal);
-  let {q_number, language} = props;
   useEffect(() => {
       if(q_number){
-          q_number = q_number.replace("http://www.wikidata.org/entity/","")
-          wikidataEffect({q_number, setWikidata:setExternals, type:"externals", language})();}
-  },[props.q_number])
+        wikidataEffect({q_number:q_number.replace("http://www.wikidata.org/entity/",""), setWikidata:setExternals, type:"externals", language:language})();}
+  },[q_number, language])
   return (
       externals&&externals.results.bindings.length>0&&
         <div className="wikiExternals">

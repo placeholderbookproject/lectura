@@ -30,7 +30,7 @@ const ListAdd = props => {
     useEffect(() => {userData&&fetchElementLists(list_type,type_id,userData.user_id, userData.hash,setData)},[userData, list_type])
     const adjustList = (list_id, type) => {
         const additions = type==="add"?[{value:type_id}]:[]
-        const removals = additions.length=0?[{value:type_id}]:[]
+        const removals = additions.length===0?[{value:type_id}]:[]
         updateUserList({userData,removals, additions,order_changes:[],delete:false, list_info:{list_id}})
         const updatedList = data.map(item => {
             if (item.list_id === list_id) {return { ...item, in_list: !item.in_list };} 
