@@ -16,9 +16,14 @@ const ListHeader = props => {
     }
     const saveChanges = () => {
         if(changes.additions.length>0||changes.removals.length>0||Object.keys(changes.list_info).length>1||changes.order_changes.length>0){
-            updateUserList({...changes}).then(() => {setEdit(!edit);setSearchParams({edit:!edit})}).catch((error) => console.log(error));
+            updateUserList({...changes}).then(() => {setEdit(false);setSearchParams({edit:!edit})}).catch((error) => console.log(error));
             setChanges({additions:[], removals:[],list_info:{list_id:list_id}, order_changes:[]})}}
     const deleteList = () => {updateUserList({...changes, delete:true}).then(()=>navigate("/lists"))}
+    const setPrivate = () => {
+        const priv = info.list_info.list_private
+        setInfo({...info,list_info:{...info.list_info,list_private:!priv}})
+        setChanges({...changes, list_info:{...info.list_list_info,list_id,list_private:!priv}})
+    }
     return (
     <div>
         <div className="list-header">
@@ -26,7 +31,8 @@ const ListHeader = props => {
                 {editable&&<>
                     <button onClick={()=>{setEdit(!edit);setSearchParams({edit:!edit})}} className="edit-btn">&#9998;</button>
                     <button className="delete-btn" onClick={()=>deleteList()}>Delete List</button>
-                    <button className="save-btn" onClick={()=>saveChanges()}>Save Changes</button></>}
+                    <button className="save-btn" onClick={()=>saveChanges()}>Save Changes</button>
+                    <button className="private-btn" onClick={() => setPrivate()}>{info.list_info.list_private===true?"🔒":"🔓"}</button></>}
             </h2>}
             <div className="list-details-statistics">
                 {listInfo&&<ListInteractionsStatistics listInfo={info.list_info}/>}

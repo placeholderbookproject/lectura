@@ -4,19 +4,20 @@ import { useNavigate, Link } from "react-router-dom";
 import ListInteractionsStatistics from "./ListInteractionsStatistics";
 
 const ListsListItem = (props) => {
-    const {img, list_name, list_description, list_id, list_created, list_modified, user_name, user_deleted,list_deleted, tab} = props.list_data
+    const {img, list_name, list_description, list_id, list_created, list_modified,list_private, user_name, user_deleted,list_deleted, tab} = props.list_data
     const [info, setInfo] = useState({list_info:props.list_data})
     const url = `${(list_id+"_"+list_name)}`
     const navigate = useNavigate();
     const dateOptions = { year: "numeric", month: "long", day: "numeric" };
     const dates = [{label:"Created ", content:list_created}, {label:"Mod. ", content: list_created!==list_modified&&list_modified}]
+    const listPrivate = user_name===props.userData.user_name?true:list_private?false:true
     return (
-    !list_deleted&&
+    !list_deleted&&(listPrivate)&&
         <div className="list-item">
             <div className="list-image">{img&&<img src={img} alt = {list_description}/>}</div>
             <div className="list-of-list-header">
                 <h3 className={`list-title${tab==="official"?"-official":""}`}>
-                    <a onClick={()=>navigate(`/lists/${tab}/${url}`)} href={`/lists/${tab}/${url}`}>{`${tab==="official"?"Official: ":""}${list_name}`}</a>
+                    <a onClick={()=>navigate(`/lists/${tab}/${url}`)} href={`/lists/${tab}/${url}`}>{`${tab==="official"?"Official: ":""}${list_name}${list_private===true?"🔒":""}`}</a>
                 </h3>
                 <p className="list-description">{list_description}</p>
             </div>

@@ -452,12 +452,12 @@ select:hover {cursor:pointer; border:1px solid black;}
 .pw-error, .email-error, .list-error {color:red;}
 .create-account-header, .create-list-header {margin:5px 5px; border-bottom: 0.5px solid black;}
 .return-login-btn, .return-register-btn, .edit-btn, .delete-btn {background-color:white; border:none;}
-.return-login-btn:hover, .return-register-btn:hover, .login-container button:hover, .create-user:hover, .submit-btn[type=submit]:hover, .save-btn:hover 
+.return-login-btn:hover, .return-register-btn:hover, .login-container button:hover, .create-user:hover, .submit-btn[type=submit]:hover, .save-btn:hover, .private-btn:hover 
     {border-bottom:1px solid black; cursor:pointer}
 .login-container p, .login-container button, .form-container p, .form-container button, .form-container label, .form-container input
 ,.sign-in, .sign-in button {font-size: 16px; margin:5px 5px;}
 .login-container input {border-radius: 25px; border: 0.5px solid black; padding:5px;}
-.login-container button, .create-user, .submit-btn[type=submit], .return-login-btn, .save-btn
+.login-container button, .create-user, .submit-btn[type=submit], .return-login-btn, .save-btn, .private-btn
   {border:none;background-color:white;font-weight: 700; margin:5px 5px;}
 .submit-btn[type=submit], .save-btn {border: 1px solid black; border-radius:25px;margin-top:5px;}
 .submit-btn[type=submit]:hover, .save-btn:hover {background-color:#ccc;}

@@ -38,6 +38,10 @@ const CreateNewList = (props) => {
         createNewList({...changes,...info})
             .then(result => {navigate(`/lists/${info.list_info.list_type}/${result.list_id+"_"+info.list_info.list_title}`)})
     }
+    const changePrivate = (event) => {
+        const newInfo = { ...info.list_info, [event.target.name]: event.target.checked }; // Use checked property
+        setInfo({ ...info, list_info: newInfo });
+      };
     return (
         <div className="list-tab">
             <div className="list-tab-header"><span><button onClick = {() => navigate("/lists/")} className="return-btn">&#8592; Return to List Overview</button></span></div>
@@ -53,9 +57,10 @@ const CreateNewList = (props) => {
                                 :<textarea id={inp.id} name={inp.id} key={inp.id+"-textarea"} onChange={(e)=>changeInput (info, setInfo, e)}/>}
                             </React.Fragment>
                         :inp.type==="radio"&&<RadioComponent setInfo={setInfo} info={info} key={inp.id+"-radio"}/>))}
-                    {info.list_info.list_type!==""&&<ListAddElement properties = {{type:info.list_info.list_type, info, setInfo, filters, changes, setChanges}}/>}
-                    {info.list_detail.length>0&&info.list_info.list_type&&<ListElements properties = {{edit:'true', info, setInfo, changes, setChanges, userData, filters, setFilters}}/>}
-                    <button type="submit" className="submit-btn" onClick = {handleSubmit}>Create List</button>
+                <label>Private<input type="checkbox" id="list_private" name="list_private" checked={info.list_info.list_private} onChange={(e)=>changePrivate (e)}/></label>
+                {info.list_info.list_type!==""&&<ListAddElement properties = {{type:info.list_info.list_type, info, setInfo, filters, changes, setChanges}}/>}
+                {info.list_detail.length>0&&info.list_info.list_type&&<ListElements properties = {{edit:'true', info, setInfo, changes, setChanges, userData, filters, setFilters}}/>}
+                <button type="submit" className="submit-btn" onClick = {handleSubmit}>Create List</button>
             </form>
             {error!==""&&<p className="list-error">{errorMsg[error]}</p>}
         </>}
