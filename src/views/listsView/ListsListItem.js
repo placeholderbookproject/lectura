@@ -10,7 +10,7 @@ const ListsListItem = (props) => {
     const navigate = useNavigate();
     const dateOptions = { year: "numeric", month: "long", day: "numeric" };
     const dates = [{label:"Created ", content:list_created}, {label:"Mod. ", content: list_created!==list_modified&&list_modified}]
-    const listPrivate = user_name===props.userData.user_name?true:list_private?false:true
+    const listPrivate = (user_name===props.userData.user_name||props.userData.user_role==="administrator")?true:list_private?false:true
     return (
     !list_deleted&&(listPrivate)&&
         <div className="list-item">

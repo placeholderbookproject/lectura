@@ -1,11 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import Tooltip from '@mui/material/Tooltip';
 import { filterArray } from '../formattingFuncs.js';
-import ComponentPopup from '../../old/Popup.js';
 import Paging from '../Paging.js';
 
 const SearchResults = (props) => {
-    const {searchResults, searchType, lang, searchParams, setSearchParams} = props.values
+    const {searchResults, searchType, searchParams, setSearchParams, userData, lang} = props.values
     const removals = ["author_id","text_id","value","type"]
     const filters = filterArray(props.values.filters,removals)
     const [results, setResults] = useState(searchResults)
@@ -32,33 +31,44 @@ const SearchResults = (props) => {
         sortedData = sortedData.sort(compare)
         setResults(sortedData);
     }
+    const renderTableHeaders = () => {
+        return (
+            <tr>
+                {filters.map((filter) => (
+                    <Tooltip key={filter.value} title="Click to sort" placement="top" arrow followCursor>
+                        <th onClick={sortFunction}>{filter.label}</th>
+                    </Tooltip>))}
+            </tr>);
+    };
+    const renderTableRow = (result) => {
+        return (
+            <tr key={searchType === "authors" ? result.author_id : result.text_id}>
+                {Object.keys(result).map((col) => {
+                    if (removals.includes(col)) {return null;} 
+                    else if (col === "label") {
+                        return (
+                            <td key={col + result[col] + result["author_id"]} className="search-result-label">
+                                <p><a href={`${result["author_id"] ? "/author/" + result["author_id"] : ""}${searchType !== "authors" ? "/text/" + result["text_id"] : ""}`}>{result[col]}</a></p>
+                            </td>
+                        );}
+                    else if (result[col] === null) {return <td key={col + result[searchType]}></td>;}
+                    else {return <td key={col + result[col] + result[searchType]}>{result[col]}</td>;}
+                })}
+            </tr>
+        );
+    };
     useEffect(()=>setResults(searchResults),[searchResults])
     return (results&&results.length>0&&<div>
     {searchType!=="all"
         ?<table id = "detailed-search-results"><tbody>
-            <tr>{filters.length>0 && filters.map((filter) => ( //Headers mapping with tooltip
-                    <Tooltip sx = {{fontSize:15}} key={filter.value} title="Click to sort" placement="top" arrow followCursor>
-                        <th onClick={sortFunction}>{filter.label}</th>
-                    </Tooltip>))}
-            </tr>
-            {results.length>0&&
-                results.slice(pageLength.value*page-pageLength.value,pageLength.value*page).map //Limitation to first page_length values
-                    (result => (
-                        <tr key = {searchType === "authors"?result.author_id:result.text_id}>
-                            {Object.keys(result).map((col) => {
-                                if(removals.includes(col)){return null}
-                                else if (col === "label") {
-                                    return <td key={col+result[col]+result["author_id"]} className="search-result-label">
-                                        <p><a href={`${result["author_id"]?"/author/"+result["author_id"]:""}${searchType!=="authors"?"/text/"+result["text_id"]:""}`}>{result[col]}</a></p></td>}
-                                else if (result[col]===null){return <td key={col+result[searchType]}></td>}
-                                else {return <td key={col+result[col]+result[searchType]}>{result[col]}</td>}})}
-                        </tr>))}
+            {renderTableHeaders()}
+            {results.length>0&&results.slice(pageLength.value*page-pageLength.value,pageLength.value*page).map //Limitation to first page_length values
+                    (result => renderTableRow(result))}
         </tbody></table>
         :<div className="search-result-all"> 
         {results.slice(pageLength.value*page-pageLength.value,pageLength.value*page).map((result) => 
             <div className="search-result-all-elements">
                 <p><a className="text-row" href={result.type==="text"?`${result.author_id&&"/author/"+result.author_id}/text/${result.value}`:`/${result.type}/${result.value}`}>{result["label"]}</a></p>
-                <ComponentPopup key={result["label"]} id={result.value} lang={lang} type={result.type}><p style={{fontWeight:600}}> &#x2193;</p></ComponentPopup>        
             </div>)}
         </div>}
         <Paging properties = {{page, setPage, results, pageLength, setPageLength, urlParams:searchParams, setUrlParams:setSearchParams}}/>

@@ -13,7 +13,7 @@ import {options} from '../filters.js';
 import { fetchSearchResults } from '../apiEffects.js';
 import SearchResults from './SearchResults.js';
 
-const SearchDetailed = (props) => {
+const SearchDetailed = ({userData, lang}) => {
     const [searchParams,setSearchParams] = useSearchParams();
     const searchOptions = ["all","authors","texts"]
     const [searchType, setSearchType] = useState("all");
@@ -64,7 +64,7 @@ const SearchDetailed = (props) => {
             {searchType!=="all"&& <Select options = {(searchType === "authors")?options["authors"]:options["texts"]} 
                                     onChange = {(e) => setFilters(e)} value = {filters} placeholder = {"Select search filters"} isMulti/>}
         </div>
-        <SearchResults values = {{filters, searchResults, searchType, lang:props.lang, searchParams, setSearchParams}}/>
+        <SearchResults values = {{filters, searchResults, searchType, lang, searchParams, setSearchParams, userData}}/>
       </div>
     )
   }
