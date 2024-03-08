@@ -1,8 +1,7 @@
 import React,{useState, useEffect, useRef} from "react";
 import Comment from "./Comment";
 
-const CommentsList = (props) => {
-    const {comments, userData, type, type_id} = props;
+const CommentsList = ({comments, userData, type, type_id}) => {
     const [showReplies, setShowReplies] = useState({});
     const commentRefs = useRef({});
     useEffect(() => {

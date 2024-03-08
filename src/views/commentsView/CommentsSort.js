@@ -1,6 +1,5 @@
 import React,{useState, useEffect} from "react";
-const CommentsSort = props => {
-    const {comments, onSortChange} = props;
+const CommentsSort = ({comments, onSortChange}) => {
     const [sortOption, setSortOption] = useState({value:"comment_created_at", label:"Created"})
     const [sortOrder, setSortOrder] = useState("asc");
     useEffect(() => {

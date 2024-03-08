@@ -4,8 +4,7 @@ import Modal from "../Modal";
 import LoginView from "../loginView/LoginForm";
 import Cookies from "js-cookie";
 
-const ProfileDropdown = props => {
-    const {userData, setUserData} = props
+const ProfileDropdown = ({userData, setUserData}) => {
     const navigate = useNavigate();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const handleDropdownToggle = () => {setIsDropdownOpen(!isDropdownOpen);};

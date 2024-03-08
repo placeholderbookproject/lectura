@@ -7,7 +7,7 @@ const AddToListComponent = props => {
     const {data, setData, userData, list_type, type_id} = props.properties
     const [newList, setNewList] = useState("");
     const createList = () => {
-        const listData = {list_info:{user_id:userData.user_id,hash:userData.hash, list_name:newList,list_description:"",list_type},
+        const listData = {list_info:{user_id:userData.user_id,hash:userData.hash, list_name:newList,list_description:"",list_type, list_private:true},
                     additions:[{value:type_id}], removals:[], order_changes:[],delete:false}
         createNewList(listData).then(result => setData([...data,{list_name:newList, in_list:true, list_type, value:type_id, list_id:result.list_id} ]))
     }

@@ -11,9 +11,9 @@ const element = (e, index, data, setData, type) => {
     }};  
 
 export const WatchListTextElement = props => {
-    const { text_language, article, text_q, author_id, text_id, authorLabel, bookLabel, inceptionYear, text_title} = props.element
+    const { text_language, article, text_q, author_id, text_id, authorLabel, bookLabel, inceptionYear} = props.element
     const language = text_language ? ` (${text_language})`:''
-    return (<p>{`#${props.index+1} `}<a href={`/author/${author_id}/text/${text_id}`}>{`${/^Q\d/.test(bookLabel)?text_title:bookLabel} - ${authorLabel} ${inceptionYear?'('+transformYear(inceptionYear,'')+')':''}`}</a>
+    return (<p>{`#${props.index+1} `}<a href={`/author/${author_id}/text/${text_id}`}>{`${bookLabel} - ${authorLabel} ${inceptionYear?'('+transformYear(inceptionYear,'')+')':''}`}</a>
             {language} <a href={`${article?article:'http://www.wikidata.org/entity/'+text_q}`}>(Wiki)</a></p>)    
 }
 const WatchListAuthorElement = props => {
@@ -36,7 +36,7 @@ const UserElementInteractions = props => {
         else if (type==="list_favorites") {updateListInteraction({type:"like", list_id:id, user_id:userData.user_id, hash:userData.hash, delete:true})}
         else if (type==="list_dislikes") {updateListInteraction({type:"dislike", list_id:id, user_id:userData.user_id, hash:userData.hash, delete:true})}
     else {postTextInteraction({condition: false, user_id: userData.user_id, id, type, hash:userData.hash});}}   
-    useEffect(()=>setData(props.data),[props.data])
+    useEffect(()=>setData(props.data),[type])
     return (<div>
                 <UserElementSearch originData={props.data} setData={setData}/>
                 {data.map((e,index) => <div className="watchlist-element-container" key={String(index)+e[id_type_list]}>

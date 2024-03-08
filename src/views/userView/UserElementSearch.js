@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
-const UserElementSearch = props => {
-    const {originData, setData} = props 
+const UserElementSearch = ({originData, setData}) => {
     const [query, setQuery] = useState("")
     useEffect(() => {
         if (query.length > 3) {

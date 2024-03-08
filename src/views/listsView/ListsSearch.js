@@ -1,8 +1,7 @@
 import React from "react";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from '@material-ui/icons/Clear';
-const ListsSearch = props => {
-    const {searchType, setSearchType, setQuery, query, labels} = props
+const ListsSearch = ({searchType, setSearchType, setQuery, query, labels}) => {
     const searchOptions = ["all","authors","texts"]
     const clickRadio = (option) => {setSearchType(option);}
     return (<>

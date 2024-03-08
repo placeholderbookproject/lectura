@@ -9,7 +9,7 @@ import { setTab } from '../commonFuncs.js';
 import { fetchUserData, wikidataEffectProfile } from "../apiEffects";
 import AdminView from "./AdminView";
 
-const extract_q = (list_of_dicts) => {
+export const extract_q = (list_of_dicts) => {
     const authorQs = [];
     const textQs = [];
     Object.values(list_of_dicts).forEach(list => {
@@ -21,7 +21,7 @@ const extract_q = (list_of_dicts) => {
     return { author_q: authorQs, text_q: textQs };
 };
 
-const processLists = (data, wiki) => {
+export const processLists = (data, wiki) => {
     const processedLists = {};
     const textMap = new Map(wiki.texts.map(text => [text.text_q, text]));
     const authorMap = new Map(wiki.authors.map(author => [author.author_q, author]));

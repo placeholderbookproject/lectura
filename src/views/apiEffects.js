@@ -98,8 +98,7 @@ export const wikidataEffectProfile = ({ results, language }) => () => {
         .then(([authors, texts]) => ({ authors, texts }));
 }
 
-export const wikidataEffect = props => () => {
-    const {type, q_number, setWikidata, language} = props
+export const wikidataEffect = ({type, q_number, setWikidata, language}) => () => {
     const headers = { Accept: "application/sparql-results+json" };
     const lang = language?`${language}`:'[en]'
     let query;
@@ -128,8 +127,8 @@ export const extractWiki = (results,q, type, language,key) => {
     return q?wikidataEffect({results,q_number, type, setWikidata:null,language})().then(wiki => combineLists(wiki, results,key)):results
 }
 
-export const archiveEffect = props => () => {
-    const {bookLabel, authorLabel, titleLabel} = props.data, {setData} = props;
+export const archiveEffect = ({data, setData}) => () => {
+    const {bookLabel, authorLabel, titleLabel} = data;
     const title = bookLabel.split(", "[0])
     const searchUrl = 'https://archive.org/advancedsearch.php';
     const lastName = authorLabel.split(/[, ]+/).pop();
@@ -141,8 +140,8 @@ export const archiveEffect = props => () => {
       .catch(error => console.error(error));
 }
 
-export const googleEffect = props => () => {
-    const {bookLabel, authorLabel, titleLabel} = props.data, {setData} = props;
+export const googleEffect = ({data, setData}) => () => {
+    const {bookLabel, authorLabel, titleLabel} = data
     const title = bookLabel.split(", "[0])
     const lastName = authorLabel.split(/[, ]+/).pop();
     const query = `https://www.googleapis.com/books/v1/volumes?q=inauthor:${authorLabel}+intitle:${title}+intitle:${titleLabel}+inauthor:${lastName}&key=${googleAPIKey}`
@@ -150,4 +149,4 @@ export const googleEffect = props => () => {
         .catch(error => console.error(error));
 }
 
-export const fetchSourceData = (props) => {fetchFunc(`${server}source_data?author=${props.data.authorLabel}&title=${props.data.titleLabel}&label=${props.data.bookLabel.split(", "[0])}&type=${props.type}`,props.setData)} //BNF or Gutenberg
+export const fetchSourceData = ({data, type, setData}) => {fetchFunc(`${server}source_data?author=${data.authorLabel}&title=${data.titleLabel}&label=${data.bookLabel.split(", "[0])}&type=${type}`,setData)} //BNF or Gutenberg

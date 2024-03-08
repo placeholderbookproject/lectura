@@ -2,7 +2,7 @@ import labels from './labels.js';
 import {useState, useEffect} from 'react';
 import {fetchDataEffect} from './apiEffects.js'
 
-export const IntroPage = (props) => {return (<LatestChanges lang = {props.lang}/>)}
+export const IntroPage = ({lang}) => {return (<LatestChanges lang = {lang}/>)}
 export const LatestChanges = () => {
     const [data, setData] = useState();
     useEffect(() => fetchDataEffect({setData}),[])

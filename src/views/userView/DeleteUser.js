@@ -3,8 +3,7 @@ import { loginUser, deleteUser } from "../apiEffects";
 import { useNavigate } from "react-router-dom";
 const bcrypt = require("bcryptjs");
 
-const DeleteUser = (props) => {
-    const {userData,setUserData,setDeleteUser} = props
+const DeleteUser = ({userData, setUserData, setDeleteUser}) => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
     const navigate = useNavigate();

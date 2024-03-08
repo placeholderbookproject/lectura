@@ -4,8 +4,7 @@ import { languages } from '../../div/languages';
 import { fetchList } from '../apiEffects';
 import DropdownMenu from './DropdownMenu';
 
-const AuthorsByBooksTable = (props) => {
-    const type = props.type
+const AuthorsByBooksTable = ({type}) => {
     const [filters, setFilters] = useState({"country":"All", "language":"All"});
     const [data, setData] = useState();
     const country = filters.country==="All"?"":" from " + filters.country

@@ -4,8 +4,7 @@ import ListsOfLists from './ListOfLists';
 import { fetchAllLists } from '../apiEffects';
 import ListsSearch from './ListsSearch';
 
-const ListsTab = (props) => {
-    const {userData, setUserData, labels} = props
+const ListsTab = ({userData, setUserData, labels}) => {
     const navigate = useNavigate();
     const [lists,setLists] = useState([])
     const [searchType, setSearchType] = useState("all")

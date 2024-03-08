@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-const DropdownMenu = props => {
+const DropdownMenu = ({name, options, setFilters, filters}) => {
     const [selected, setSelected] = useState("all");
-    const {name, options, setFilters, filters} = props;
     const handleChange = e => {
         setSelected(e.target.value)
         const newFilters = {...filters, [name]:e.target.value}

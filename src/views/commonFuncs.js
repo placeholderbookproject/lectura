@@ -22,5 +22,4 @@ export const createCommentUrl = (comment_data) => {
 export const transformDate = (date) => {
     const dateOptions = { year: "numeric", month: "long", day: "numeric" };
     return new Date(date).toLocaleDateString(undefined, dateOptions)
-
 }

@@ -7,8 +7,7 @@ import ListHeader from './ListHeader';
 import CommentSection from '../commentsView/CommentSection';
 import OfficialLists from './OfficialLists';
 
-const ListItem = props => {
-    const {lang, userData} = props;
+const ListItem = ({lang, userData}) => {
     let {listname, type} = useParams();
     const [info, setInfo] = useState(false);
     const [searchParams,setSearchParams] = useSearchParams();
@@ -18,8 +17,8 @@ const ListItem = props => {
     const list_id = !isNaN(listname.split("_")[0])&&listname.split("_")[0];
     const [changes,setChanges] = useState({additions:[], removals:[],list_info:{list_id:list_id}, order_changes:[], delete:false, userData})
     const [filters, setFilters] = useState([])
-    useEffect(() => {if(list_id){fetchUserList(list_id, props.userData&&props.userData.user_id,props.userData&&props.userData.hash,setInfo)}},[])
-    useEffect(() => {if(info&&(userData.user_id===info.list_info.user_id||userData.user_role==='administrator')){setEditable(true)} else{setEditable(false)}},[info])
+    useEffect(() => {if(list_id){fetchUserList(list_id, userData&&userData.user_id,userData&&userData.hash,setInfo)}},[])
+    useEffect(() => {if(info&&type!=='official'&&(userData.user_id===info.list_info.user_id||userData.user_role==='administrator')){setEditable(true)} else{setEditable(false)}},[info])
     return (
         info&&
         <div className="list-tab">

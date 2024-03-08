@@ -1,8 +1,7 @@
 import React, {useState} from "react";
 import { postCommentInteraction } from "../apiEffects";
 const parse = require('html-react-parser');
-const CommentInteractions = props => {
-    const {user_interaction, interactions, setInteractions, user_id, hash, comment_id} = props
+const CommentInteractions = ({user_interaction, interactions, setInteractions, user_id, hash, comment_id}) => {
     const interactionButtons = [{label:"&#128077; Like", value:"like"},{label:"&#128078; Dislike", value:"dislike"}]
     const [commentInteractions, setCommentInteractions] = useState(user_interaction)
     const interact = (btn) => {

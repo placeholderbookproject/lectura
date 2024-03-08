@@ -9,13 +9,13 @@ const changeInput = (info, setInfo, event) => {
     setInfo({...info, list_info:newInfo})
 }
 
-const RadioComponent = (props) => {
+const RadioComponent = ({info, setInfo}) => {
     const inps = [{id:"texts",label:"Texts "},{id:"authors", label:"Authors "}];
     return (
         <div className="radio-container">
             {inps.map((inp) => <React.Fragment key={inp.label}><label>{inp.label}</label>
                 <input id={inp.id} name="list_type" type="radio" value={inp.id} key={inp.label+"-input"}
-                    onChange={(e)=>{changeInput(props.info,props.setInfo,e);}}/></React.Fragment>)}
+                    onChange={(e)=>{changeInput(info,setInfo,e);}}/></React.Fragment>)}
         </div>
     )
 }
