@@ -1,12 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import ClearIcon from '@material-ui/icons/Clear';
 import IconButton from "@mui/material/IconButton";
-import FormControl from "@mui/material/FormControl";
-import FormHelperText from '@mui/material/FormHelperText';
 import Select from 'react-select';
 import {useSearchParams} from 'react-router-dom';
 import {options} from '../filters.js';
@@ -39,16 +34,11 @@ const SearchDetailed = ({userData, lang}) => {
     return (
       <div className = "detailed-search">
         <div className = "detailed-search-header">
-            <FormControl sx={{ m: 1, width: "50ch" }} variant="outlined">
-                <InputLabel>Search</InputLabel>
-                <OutlinedInput type="text" inputProps={{style: {fontSize: 20, height: 10}}}
-                    endAdornment={<InputAdornment position="end">
-                                    <IconButton onClick = {() => searchFunction()} aria-label="Search Button" edge="end"><SearchIcon/></IconButton>
-                                    <IconButton onClick = {clearSearch} aria-label="Clear Search Button" edge="end"><ClearIcon/></IconButton>
-                                </InputAdornment>}
-                    label="Search" value = {search} onChange={(e) => setSearch(e.target.value)} onKeyDown = {onEnter}/>
-                <FormHelperText>{(searchResults.length > 0) ? `Your query returned ${searchResults.length} results` : ""}</FormHelperText>
-            </FormControl>
+            <div className="detailed-search-bar">
+                <input type="text" placeholder={"Search"} value = {search} onChange = {(e) => setSearch(e.target.value)} onKeyDown={onEnter} className="search-input"/>
+                <IconButton onClick = {() => searchFunction()} aria-label="Search Button" edge="end"><SearchIcon/></IconButton>
+                <IconButton onClick = {clearSearch} aria-label="Clear Search Button" edge="end"><ClearIcon style={{paddingRight:5}}/></IconButton>
+            </div>
             <fieldset className="search-type">
                     {["all", "authors", "texts"].map((option) =>
                         <><input type="radio" id={option} name="search-type" checked={option === searchType} key={option}
@@ -60,7 +50,8 @@ const SearchDetailed = ({userData, lang}) => {
                                     searchFunction(search,option);
                                 }}/>
                             <label>{option.charAt(0).toUpperCase() + option.slice(1)}</label></>)}
-            </fieldset>            
+            </fieldset>
+            <p className="search-result-length">{(searchResults.length > 0) ? `Your query returned ${searchResults.length} results` : ""}</p>
             {searchType!=="all"&& <Select options = {(searchType === "authors")?options["authors"]:options["texts"]} 
                 onChange = {(e) => setFilters(e)} value = {filters} placeholder = {"Select search filters"} isMulti/>}
         </div>

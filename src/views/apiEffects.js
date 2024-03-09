@@ -48,8 +48,7 @@ export const fetchList = props => () => {
     fetchFunc(server+query, setData)
 }
 
-export const fetchSearchResults = props => () => {
-    const {setSearchResults, query, type, filters, signal} = props
+export const fetchSearchResults = ({setSearchResults, query, type, filters, signal}) => () => {
     const searchType = type===undefined||type===null?"":"&searchtype="+type
     if(query!==undefined && query.trim().length>3) {
         fetchFunc(server+'search?query='+query+searchType+"&filters="+JSON.stringify(filters), setSearchResults, signal)}

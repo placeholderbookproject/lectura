@@ -300,7 +300,13 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
   flex-direction:row;
   display: flex;
 }
+.detailed-search-bar {
+  max-width: 577px;
+  border:1px solid black;
+  margin: 5px;
+}
 .list-search-bar {max-width:500px;}
+.search-result-length {margin:5px;opacity:50%; font-size:12px;}
 .clear-search {padding-right:5px;}
 .list-add-element-container{
   max-height: 300px; /* set the maximum height */
