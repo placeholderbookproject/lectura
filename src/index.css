@@ -66,7 +66,6 @@ textarea {margin:5px 5px; margin-left:2px;}
 .search-dropdown-popup {
   position: absolute;
   top: 50px; /* adjust this value to position the filter component vertically */
-  left: 250px;
   z-index: 1;
   background-color: white;
   border: 1px solid black;
@@ -291,8 +290,8 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
 .remove-col-btn{border-radius: 25px; border: 0.5px solid white; margin-left:10px;}
 .remove-col-btn:hover {background-color:white; cursor:pointer; color: black;}
 
-.search-result {cursor:pointer; margin:8px; padding-left:0px;}
-.search-result:hover {background-color:#bebebe}
+.search-result,.search-result-selected {cursor:pointer; margin:8px; padding-left:0px;}
+.search-result:hover, .search-result-selected {background-color:#bebebe}
 .search-bar, .list-search-bar {
   border: 1px solid black;
   border-radius: 4px;

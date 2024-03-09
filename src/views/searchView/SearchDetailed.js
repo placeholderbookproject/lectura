@@ -15,16 +15,16 @@ import SearchResults from './SearchResults.js';
 
 const SearchDetailed = ({userData, lang}) => {
     const [searchParams,setSearchParams] = useSearchParams();
-    const searchOptions = ["all","authors","texts"]
-    const [searchType, setSearchType] = useState("all");
+    const [searchType, setSearchType] = useState(searchParams.get("type") || "all");
     const [filters, setFilters] = useState([]);
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState(searchParams.get("query") || "");
     const [searchResults,setSearchResults] = useState([]);
     const searchFunction = (searchVar, type=searchType) => {
         const searchFilters = options[type].slice(0,6);
-        const existingParams = new URLSearchParams(searchParams.toString());
+        const existingParams = new URLSearchParams();
         existingParams.set('query', searchVar);existingParams.set('type',type);
         setSearchParams(existingParams)
+        setFilters(searchFilters);
         fetchSearchResults({setSearchResults, query:searchVar, type:type==="all"?null:type, filters:type!=="all"?searchFilters:""})();
     }
     const onEnter = (e) => {if(e.key==="Enter"){searchFunction(search)}}
@@ -32,16 +32,10 @@ const SearchDetailed = ({userData, lang}) => {
     useEffect (() => {//Search if a search query parameter exists in the url
         const searchQuery = [...searchParams];
         if(searchQuery.length>0 && searchQuery[0][0]==="query" && searchQuery[0][1] !== "") {
-            searchFunction(searchQuery[0][1]);
             setSearch(searchQuery[0][1]);
+            setSearchType(searchParams.get("type") || "all");
+            searchFunction(searchQuery[0][1], searchParams.get("type") || "all");
         }},[]) // eslint-disable-line react-hooks/exhaustive-deps
-    const clickRadio = (option) => {
-        setSearchResults([])
-        setSearchParams({'query':search,'type':option})
-        setFilters(options[option].slice(0,6));
-        setSearchType(option);
-        searchFunction(search,option)
-    }
     return (
       <div className = "detailed-search">
         <div className = "detailed-search-header">
@@ -53,16 +47,22 @@ const SearchDetailed = ({userData, lang}) => {
                                     <IconButton onClick = {clearSearch} aria-label="Clear Search Button" edge="end"><ClearIcon/></IconButton>
                                 </InputAdornment>}
                     label="Search" value = {search} onChange={(e) => setSearch(e.target.value)} onKeyDown = {onEnter}/>
-                <FormHelperText>{(searchResults.length>0)?"Your query returned #" + searchResults.length +" results":""}</FormHelperText>
+                <FormHelperText>{(searchResults.length > 0) ? `Your query returned ${searchResults.length} results` : ""}</FormHelperText>
             </FormControl>
-            <fieldset className="search-type">{searchOptions.map((option) => 
-                <><input type = "radio" id={option} name="search-type" key={option} onClick={()=>clickRadio(option)} 
-                        checked={option===searchType} onChange={() => clickRadio(option)}/>
-                    <label>{option.charAt(0).toUpperCase()+option.slice(1)}</label>
-                </>)}
-            </fieldset>
+            <fieldset className="search-type">
+                    {["all", "authors", "texts"].map((option) =>
+                        <><input type="radio" id={option} name="search-type" checked={option === searchType} key={option}
+                                onChange={() => {
+                                    setSearchResults([]);
+                                    setSearchParams({ 'query': search, 'type': option });
+                                    setFilters(options[option].slice(0, 6));
+                                    setSearchType(option);
+                                    searchFunction(search,option);
+                                }}/>
+                            <label>{option.charAt(0).toUpperCase() + option.slice(1)}</label></>)}
+            </fieldset>            
             {searchType!=="all"&& <Select options = {(searchType === "authors")?options["authors"]:options["texts"]} 
-                                    onChange = {(e) => setFilters(e)} value = {filters} placeholder = {"Select search filters"} isMulti/>}
+                onChange = {(e) => setFilters(e)} value = {filters} placeholder = {"Select search filters"} isMulti/>}
         </div>
         <SearchResults values = {{filters, searchResults, searchType, lang, searchParams, setSearchParams, userData}}/>
       </div>
