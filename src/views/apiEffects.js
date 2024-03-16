@@ -26,6 +26,7 @@ export const postTextInteraction = data => postFetch(data,'element_interaction')
 export const createNewList = (list_info) => postFetch(list_info, 'create_list')
 export const updateUserList = (input) => postFetch(input, 'update_user_list')
 export const updateListInteraction = (input) => postFetch(input, 'user_list_interaction')
+export const getTexts = input => postFetch(input,'get_texts')
 
 export const fetchUserList = (list_id, user_id, hash,setData) => fetchFunc(`${server}get_user_list?list_id=${list_id}${user_id?"&user_id="+user_id+"&hash="+hash:""}`, setData)
 export const fetchAllLists = (user_id=null,setData) => {fetchFunc(`${server}get_all_lists${user_id?'?user_id='+user_id:""}`,setData);}

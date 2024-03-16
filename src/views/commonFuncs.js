@@ -1,3 +1,6 @@
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
+
 export const setTab = (value,tabOpen,setTabOpen) => {
     const oldTab = tabOpen,tab = value
     setTabOpen({...oldTab, [tab]:!tabOpen[tab]})
@@ -22,4 +25,17 @@ export const createCommentUrl = (comment_data) => {
 export const transformDate = (date) => {
     const dateOptions = { year: "numeric", month: "long", day: "numeric" };
     return new Date(date).toLocaleDateString(undefined, dateOptions)
+}
+export const transformXLSX = (obj) => {
+    const headers = Object.keys(obj[0]);
+    const dataArray = [
+        headers, // Include header row
+        ...obj.map(item => Object.values(item))
+      ];
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet(dataArray);
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    const excelBuffer = XLSX.write(wb, { type: 'array', bookType: 'xlsx' });
+    const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+    saveAs(blob, 'texts.xlsx');
 }
