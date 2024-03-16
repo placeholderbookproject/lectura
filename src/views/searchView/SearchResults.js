@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Tooltip from '@mui/material/Tooltip';
 import { filterArray } from '../formattingFuncs.js';
 import Paging from '../Paging.js';
+import { fetchUserData } from '../apiEffects.js';
 
 const SearchResults = (props) => {
     const {searchResults, searchType, searchParams, setSearchParams, userData, lang} = props.values
@@ -11,6 +12,7 @@ const SearchResults = (props) => {
     const [searchOrder, setSearchOrder] = useState("asc");
     const [page, setPage] = useState(searchParams.has("page")?searchParams.get("page"):1);
     const [pageLength, setPageLength] = useState({label:'10', value:10})
+    const [interactions, setInteractions] = useState({});
     const sortFunction = (event) => {
         if (searchOrder==="asc"){setSearchOrder("desc")}
         else {setSearchOrder("asc")}
@@ -57,7 +59,8 @@ const SearchResults = (props) => {
             </tr>
         );
     };
-    useEffect(()=>setResults(searchResults),[searchResults])
+    useEffect(()=>{setResults(searchResults)},[searchResults])
+    useEffect(() => {if (userData) {fetchUserData(userData.user_id, setInteractions)};},[userData])
     return (results&&results.length>0&&<div>
     {searchType!=="all"
         ?<table id = "detailed-search-results"><tbody>

@@ -13,6 +13,7 @@ import ProfileView from './views/userView/ProfileView';
 import CreateNewList from './views/listsView/CreateNewList';
 import Cookies from 'js-cookie';
 import { fetchLabels } from './views/apiEffects.js';
+import AddNewView from './views/addNewView/AddNewView.js';
 
 const RouteList = () => {
   const userCookie = Cookies.get('user')
@@ -21,6 +22,7 @@ const RouteList = () => {
   const [labels,setLabels] = useState(false);
   useEffect(() => {lang&&fetchLabels(lang.value,setLabels)},[lang])
   const routes = [{path:"/", element: <IntroPage lang = {lang} labels = {labels}/>},
+      userData&&{path:"/add",element:<AddNewView lang={lang} userData={userData} labels={labels}/>},
       {path:"/text/:id",element:<TextComponent lang={lang} userData={userData} labels = {labels}/>},
       {path:"/author/:id",element:<AuthorComponent lang = {lang} userData={userData} setUserData={setUserData} labels = {labels}/>},
       {path:"/author/:id/text/:text_id",element:<AuthorComponent lang = {lang}  userData={userData} setUserData={setUserData} labels={labels}/>},

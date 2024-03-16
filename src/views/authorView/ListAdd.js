@@ -45,6 +45,7 @@ const ListAdd = props => {
             </div>
             {isDropdownOpen && userData &&
             <div className="dropdown-content">
+                <p className="list-length" onClick={handleClick}>{`Contained in ${data.filter(item => item.in_list).length} lists`}</p>
                 {data.map(list => <div className="element-list-element" key={list.list_id}>
                                     <p className="list-name" onClick={handleClick}>{list.list_name}</p>
                                     <p><a href={`/lists/personal/${list.list_id}`}>&#8594;</a></p>

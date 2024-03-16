@@ -90,24 +90,22 @@ export const combineWiki = (wiki, type) => {
     }; return output
 }
 
-export const dateCoalesce = (date1, date2, date3) => {
-    let selectedDate
-    if (date1) {selectedDate = date1.split(", ")[0];
-    } else if (date2) {selectedDate = date2.split(", ")[0];
-    } else if (date3){selectedDate = date3.split(", ")[0];}
-    return selectedDate
+export const dateCoalesce = (date1, date2, date3, delimiter=', ') => {
+    if (date1&&date1!==undefined) {return date1.split(delimiter)[0];
+    } else if (date2&&date2!==undefined) {return date2.split(delimiter)[0];
+    } else if (date3&&date3!==undefined){return date3.split(delimiter)[0];}
 }
 
 export const removeWorksOutOfBounds = (works, birth, death) => {
     const newBirth = Math.floor(birth/100)*100, newDeath = Math.ceil(death/100)*100, newWorks = []
     for (const work in works) {
         const text = works[work]
-        const dateToCheck = dateCoalesce(text.publYear,text.dopYear, text.inceptionYear)
+        const dateToCheck = dateCoalesce(text.publYear,text.dopYear, text.inceptionYear, " | ")
         if ((dateToCheck>=newBirth&&dateToCheck<=newDeath)||dateToCheck===null||dateToCheck===undefined) {newWorks.push(text)}
         else if ((dateToCheck>=newBirth&&newDeath===null)||dateToCheck===null||dateToCheck===undefined) {newWorks.push(text)}
         else if ((newBirth===null&&newDeath===null)) {newWorks.push(text)}
         else if ((newDeath===0)){newWorks.push(text)}
-    }return newWorks
+    } return newWorks
 }
 
 export const getUniquePropertyValues = (objects, property) =>  {

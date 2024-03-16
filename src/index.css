@@ -367,6 +367,7 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
   white-space: nowrap;
 }
 .list-dropdown-trigger {border-radius:0px;margin-left:5px;}
+.list-length {margin:0px;font-size:12px; margin-top:5px; text-decoration: underline;}
 .header-btn button {background: none;}
 .header-btn:hover, .changeSearchVersionBtn:hover,.resetEditBtn:hover, .addNewBtn:hover, .listsBtn:hover, .collapsible:hover
 ,.dropdown-toggle:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover

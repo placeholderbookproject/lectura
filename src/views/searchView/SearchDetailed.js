@@ -55,7 +55,7 @@ const SearchDetailed = ({userData, lang}) => {
             {searchType!=="all"&& <Select options = {(searchType === "authors")?options["authors"]:options["texts"]} 
                 onChange = {(e) => setFilters(e)} value = {filters} placeholder = {"Select search filters"} isMulti/>}
         </div>
-        <SearchResults values = {{filters, searchResults, searchType, lang, searchParams, setSearchParams, userData}}/>
+        {searchResults.length>0&&<SearchResults values = {{filters, searchResults, searchType, lang, searchParams, setSearchParams, userData}}/>}
       </div>
     )
   }
