@@ -23,7 +23,7 @@ const ListItem = ({lang, userData}) => {
         info&&
         <div className="list-tab">
             <div className="list-tab-header"><span><button onClick = {() => navigate("/lists/")} className="return-btn">&#8592; Return to List Overview</button></span></div>
-            <ListHeader data={{listInfo:info.list_info, userData, edit, setEdit, changes, setChanges, info, setInfo, list_id, navigate, type:type.replace("s",""), setSearchParams, editable}}/>
+            <ListHeader data={{listInfo:info.list_info, userData, edit, setEdit, changes, setChanges, info, setInfo, list_id, navigate, type:type.replace("s",""), setSearchParams, editable, lang}}/>
             {(["all","official"].includes(type)&&info)&&<OfficialLists url={info.list_info.list_url} lang={lang} userData={userData}/>}
             {editable&&edit&&<ListAddElement properties = {{type:info.list_info.list_type, info, setInfo, changes, setChanges, filters}}/>}
             {type!=="official"&&<ListElements properties = {{edit, info, setInfo, changes, setChanges, userData, filters, setFilters}}/>}

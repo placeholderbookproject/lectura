@@ -1,12 +1,11 @@
 import React from "react";
 import ListInteractionButtons from "./ListInteractionButtons";
-import { updateUserList, getTexts } from '../apiEffects';
+import TextsExtraction from "./TextsExtraction";
+import { updateUserList } from '../apiEffects';
 import ListInteractionsStatistics from "./ListInteractionsStatistics";
-import { transformXLSX } from "../commonFuncs";
 
 const ListHeader = props => {
-    const {edit, setEdit,editable, listInfo, userData, changes,setChanges, info, setInfo, list_id, navigate, setSearchParams} = props.data
-    console.log(edit)
+    const {edit, setEdit,editable, listInfo, userData, changes,setChanges, info, setInfo, list_id, navigate, setSearchParams, lang} = props.data
     const dateOptions = { year: "numeric", month: "long", day: "numeric" };
     const changeInfo = (event) => {
         setInfo(prevInfo => {
@@ -26,10 +25,6 @@ const ListHeader = props => {
         setInfo({...info,list_info:{...info.list_info,list_private:!priv}})
         setChanges({...changes, list_info:{...info.list_list_info,list_id,list_private:!priv}})
     }
-    const printTexts = () => {
-        getTexts({authors:info.list_detail.map(item => `'${item.value}'`)})
-        .then(result => transformXLSX(result))
-    }
     return (
     <div>
         <div className="list-header">
@@ -39,7 +34,7 @@ const ListHeader = props => {
                     <button className="delete-btn" onClick={()=>deleteList()}>Delete List</button>
                     <button className="save-btn" onClick={()=>saveChanges()}>Save Changes</button>
                     <button className="private-btn" onClick={() => setPrivate()}>{info.list_info.list_private===true?"🔒":"🔓"}</button>
-                    {listInfo.list_type==="authors"&&<button className="extract-texts-btn" onClick={()=>printTexts()}>Extract Texts</button>}
+                    {listInfo.list_type==="authors"&&<TextsExtraction authors={info.list_detail.map(item => `'${item.value}'`)} lang={lang.value}/>}
                     </>}
             </h2>}
             <div className="list-details-statistics">

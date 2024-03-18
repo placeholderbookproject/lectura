@@ -70,7 +70,7 @@ const wikiFetch = (query, type) => {
             .then (data => combineWiki(data,type))
 }
 
-const fetchWikiData = (qNumbers, type, language) => {
+export const fetchWikiData = (qNumbers, type, language) => {
     const langTag = language === 'en' ? 'en_fixed' : language;
     const sparqlQuery = buildSparqlQuery(qNumbers, type, langTag);
     return wikiFetch(sparqlQuery, type);
