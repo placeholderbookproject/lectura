@@ -24,17 +24,19 @@ const AuthorComponent = (props) => {
     useEffect(() => {
         if(id) {
             fetchDataEffect({type:'authors', id, setData:setAuthor,user_id:userData.user_id})()
-            .then(results => extractWiki(results,results.author_q, "author",lang.value,"author_q")).then(wiki => {setAuthor(wiki); return wiki})
-            .then(authors => fetchDataEffect({setData:setTexts, id:authors.author_id, type:'texts', by: "author", user_id:userData.user_id})())
+            .then(results => extractWiki(results,results.author_q, "author",lang.value,"author_q")).then(wiki => {setAuthor(wiki)})
+            fetchDataEffect({setData:setTexts, id, type:'texts', by: "author", user_id:userData.user_id})()
             .then(results => {if(results.length>0){return extractWiki(results,results[0].author_q, "author_texts",lang.value, "text_q")} else {return false}})
             .then(wiki => {if(wiki===false){return wiki} return removeDuplicatesList(wiki,"text_q")})
             .then(final => {setTexts(final)});
-            if(text_id) {
-                fetchDataEffect({type:'texts', id:text_id, setData:setText, user_id:userData?userData.user_id:0})()
-                .then(results => extractWiki(results,results.text_q, "texts", lang.value,"text_q")).then(wiki => setText(wiki));
-                setTabOpen({...tabOpen, det:true});}
-            else {setTabOpen({...tabOpen, det:false})}
-        }},[id, text_id, userData, lang])
+        }},[id, userData.user_id, lang.value])
+    useEffect(() => {
+        if(text_id) {
+            fetchDataEffect({type:'texts', id:text_id, setData:setText, user_id:userData?userData.user_id:0})()
+            .then(results => extractWiki(results,results.text_q, "texts", lang.value,"text_q")).then(wiki => setText(wiki));
+            setTabOpen({...tabOpen, det:true});}
+        else {setTabOpen({...tabOpen, det:false})}  
+        },[text_id, lang.value, userData.user_id])
     const getTabs = () => {return tabOpen.det === true ? [...tabs].reverse() : tabs;};
     return (
     <div className="author-container">
@@ -46,13 +48,13 @@ const AuthorComponent = (props) => {
                     </h2>
                 </div>}
         <div className="author-component-container">
-            {getTabs().map((tab) => tab.value&&(
+            {getTabs().map((tab) => tab.value&&tabOpen[tab.value]&&(
                 <div key={tab.tabName}>
                     <div className={`tab-container${tabOpen[tab.value]?'':"-inactive"}`}>
                         {tab.tabName}
                         <button className="tab-button" onClick={()=>setTab(tab.value,tabOpen,setTabOpen)}>{tabOpen[tab.value]?parse("&#8593;"):parse("&#8595;")}</button>
                     </div>
-                    {tabOpen[tab.value]&&tab.component}
+                    {tab.component}
                 </div>))}
         </div>
     </div>)

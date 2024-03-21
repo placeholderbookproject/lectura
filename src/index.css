@@ -515,6 +515,10 @@ select:hover {cursor:pointer; border:1px solid black;}
 .watchlist-element-container p {margin:5px;}
 .profile-header-btn, .profile-header-btn-active,.author-text-row-btn  {border:none;background-color:white;}
 .profile-header-btn:hover, .profile-header-btn-active:hover,.profile-header-btn-active {border-bottom:0.5px solid black;cursor:pointer;background-color: rgb(242, 239, 239);}
+.header, .header-active {background-color:white;min-width: 250px;}
+.header:hover, .header-active {background-color:#dedbdb; cursor:pointer;}
+.add-header {margin-top: 5px;}
+
 /* CSS for modal */
 .modal-overlay {
   position: fixed;

@@ -20,7 +20,7 @@ const RouteList = () => {
   const [lang, setLang] = useState({value:navigator.language});
   const [userData, setUserData] = useState(userCookie?JSON.parse(userCookie):false);
   const [labels,setLabels] = useState(false);
-  useEffect(() => {lang&&fetchLabels(lang.value,setLabels)},[lang])
+  useEffect(() => {fetchLabels(lang.value,setLabels)},[lang.value])
   const routes = [{path:"/", element: <IntroPage lang = {lang} labels = {labels}/>},
       userData&&{path:"/add",element:<AddNewView lang={lang} userData={userData} labels={labels}/>},
       {path:"/text/:id",element:<TextComponent lang={lang} userData={userData} labels = {labels}/>},
@@ -32,8 +32,8 @@ const RouteList = () => {
       {path:"/lists/:type/:listname", element:<ListItem lang={lang} userData={userData} labels = {labels}/>},
       {path:"/login", element:<LoginView setUserData={setUserData} labels = {labels}/>},
       !userData&&{path:"/register",element:<CreateUserForm setUserData={setUserData} labels = {labels}/>},
-      {path:"/user/show/:user_site", element:<ProfileView setUserData={setUserData} userData={userData} lang={lang} labels={labels}/>}
-  ]
+      userData&&{path:"/user/show/:user_site", element:<ProfileView setUserData={setUserData} userData={userData} lang={lang} labels={labels}/>}
+  ].filter(Boolean)
   return (
     <BrowserRouter>
     <Routes>
