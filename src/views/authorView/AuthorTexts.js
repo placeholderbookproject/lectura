@@ -3,7 +3,7 @@ import {removeWorksOutOfBounds, getUniquePropertyValues} from '../formattingFunc
 import Filters from '../Filter.js';
 import SubTextsTable from './SubTextsTable.js';
 import AuthorTextSearch from './AuthorTextSearch.js';
-import AuthorTextSort,{sortList} from './AuthorTextSort.js';
+import Sort,{sortList} from '../Sorting.js';
 
 const AuthorTexts = (props) => {
     const {author, handleClick, userData, setUserData} = props.properties
@@ -24,8 +24,8 @@ const AuthorTexts = (props) => {
         <div className="person-texts">
             <h3 onClick = {() => setExpandTexts(!expandTexts)}>{`${author.author_name}'s Works `}{`(${texts.length})`}</h3>
             <div className="filterTexts">
-                <AuthorTextSort properties={{sortKey, setSortKey}}/>
-                <AuthorTextSearch properties={{originTexts, setTexts}}/>
+                <Sort sortKey={sortKey} setSortKey={setSortKey}/>
+                <AuthorTextSearch originData={originTexts} setData={setTexts}/>
                 <Filters texts={texts} setTexts={setTexts} filterOptions = {filterOptions} originTexts = {originTexts}/>
             </div>
             {sortList(texts,sortKey.keys, sortKey.descending).slice(0,(!expandTexts?5:texts.length)).map(

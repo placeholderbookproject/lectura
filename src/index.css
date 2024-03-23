@@ -518,6 +518,7 @@ select:hover {cursor:pointer; border:1px solid black;}
 .header, .header-active {background-color:white;min-width: 250px;}
 .header:hover, .header-active {background-color:#dedbdb; cursor:pointer;}
 .add-header {margin-top: 5px;}
+.checklist-header {display:flex;flex-direction:row;}
 
 /* CSS for modal */
 .modal-overlay {

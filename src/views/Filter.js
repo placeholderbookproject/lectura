@@ -30,7 +30,7 @@ const Filters = ({setTexts, filterOptions, originTexts}) => {
         <div className="dropdown">
             <div className="filters">
                 <div className="dropdown-toggle" onClick={() => setIsOpen(!isOpen)}>Filters <span className="dropdown-arrow">&#9660;</span></div>
-                <button className="clearDropdown" onClick={() => {setTexts(originTexts);setSelectedFilters([])}}>Clear Search</button>
+                <button className="clearDropdown" onClick={() => {setTexts(originTexts);setSelectedFilters([])}}>Clear Filters</button>
             </div>
             {isOpen && (
                 <div className="dropdown-popup">

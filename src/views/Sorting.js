@@ -11,9 +11,8 @@ export const sortList = (list,keys, descending) => {
       });
 }
 
-const AuthorTextSort = props => {
-    const {sortKey, setSortKey} = props.properties
-    const handleSortChange = () => {setSortKey({ ...sortKey, descending: !sortKey.descending });};  
-    return (<button className="reorderBtn" value={sortKey.keys} onClick={handleSortChange}>{`Sort by Publ. (${sortKey.descending?"Desc":"Asc"})`}</button>)
+const Sort = ({sortKey, setSortKey}) => {
+  const handleSortChange = () => {setSortKey({ ...sortKey, descending: !sortKey.descending });}; 
+  return (<button className="reorderBtn" value={sortKey.keys} onClick={handleSortChange}>{`Sort (${sortKey.descending?"Desc":"Asc"})`}</button>)
 }
-export default AuthorTextSort;
+export default Sort;
