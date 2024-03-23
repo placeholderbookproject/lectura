@@ -5,7 +5,7 @@ import { setTab } from '../commonFuncs.js';
 import DeleteData from './DeleteData';
 import AuthorGeneral from './AuthorGeneral';
 import { fetchDataEffect, extractWiki} from '../apiEffects';
-import {removeDuplicatesList} from '../formattingFuncs.js';
+import {removeDuplicatesList, combineLists} from '../formattingFuncs.js';
 import TextHeader from './TextHeader';
 import ListAdd from './ListAdd.js';
 const parse = require('html-react-parser');
@@ -24,11 +24,10 @@ const AuthorComponent = (props) => {
     useEffect(() => {
         if(id) {
             fetchDataEffect({type:'authors', id, setData:setAuthor,user_id:userData.user_id})()
-            .then(results => extractWiki(results,results.author_q, "author",lang.value,"author_q")).then(wiki => {setAuthor(wiki)})
-            fetchDataEffect({setData:setTexts, id, type:'texts', by: "author", user_id:userData.user_id})()
-            .then(results => {if(results.length>0){return extractWiki(results,results[0].author_q, "author_texts",lang.value, "text_q")} else {return false}})
-            .then(wiki => {if(wiki===false){return wiki} return removeDuplicatesList(wiki,"text_q")})
-            .then(final => {setTexts(final)});
+            .then(results => Promise.all([extractWiki(results,results.author_q, "author",lang.value,"author_q"),
+                            extractWiki([],results.author_q, "author_texts",lang.value, "text_q"),
+                            fetchDataEffect({setData:setTexts, id, type:'texts', by: "author", user_id:userData.user_id})()]))
+            .then(([authors, texts, textsDB]) => {setAuthor(authors); setTexts(removeDuplicatesList(combineLists(texts, textsDB, 'text_q'),"text_q"))})
         }},[id, userData.user_id, lang.value])
     useEffect(() => {
         if(text_id) {

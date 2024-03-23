@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import SearchIcon from "@material-ui/icons/Search";
-import ClearIcon from '@material-ui/icons/Clear';
+import Search from "@mui/icons-material/Search";
+import Clear from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
 import Select from 'react-select';
 import {useSearchParams} from 'react-router-dom';
@@ -36,8 +36,8 @@ const SearchDetailed = ({userData, lang}) => {
         <div className = "detailed-search-header">
             <div className="detailed-search-bar">
                 <input type="text" placeholder={"Search"} value = {search} onChange = {(e) => setSearch(e.target.value)} onKeyDown={onEnter} className="search-input"/>
-                <IconButton onClick = {() => searchFunction()} aria-label="Search Button" edge="end"><SearchIcon/></IconButton>
-                <IconButton onClick = {clearSearch} aria-label="Clear Search Button" edge="end"><ClearIcon style={{paddingRight:5}}/></IconButton>
+                <IconButton onClick = {() => searchFunction()} aria-label="Search Button" edge="end"><Search/></IconButton>
+                <IconButton onClick = {clearSearch} aria-label="Clear Search Button" edge="end"><Clear style={{paddingRight:5}}/></IconButton>
             </div>
             <fieldset className="search-type">
                     {["all", "authors", "texts"].map((option) =>

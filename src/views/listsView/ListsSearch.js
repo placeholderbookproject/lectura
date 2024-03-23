@@ -1,13 +1,13 @@
 import React from "react";
 import IconButton from "@mui/material/IconButton";
-import ClearIcon from '@material-ui/icons/Clear';
+import Clear from "@mui/icons-material/Clear"
 const ListsSearch = ({searchType, setSearchType, setQuery, query, labels}) => {
     const searchOptions = ["all","authors","texts"]
     const clickRadio = (option) => {setSearchType(option);}
     return (<>
         <div className="list-search-bar">
             <input type="text" placeholder={labels.searchLabel} value={query} onChange={(e)=>setQuery(e.target.value)} className="search-input"/>
-            <IconButton onClick={() => setQuery("")} aria-label="Clear Search Button" edge="end"><ClearIcon style={{paddingRight:5}}/></IconButton>
+            <IconButton onClick={() => setQuery("")} aria-label="Clear Search Button" edge="end"><Clear style={{paddingRight:5}}/></IconButton>
         </div>
         <div>
         <fieldset className="list-search-type">{searchOptions.map((option) => 

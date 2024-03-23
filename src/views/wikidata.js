@@ -151,7 +151,7 @@ WHERE
                              wd:Q482 wd:Q856713 wd:Q1318295 wd:Q59126 wd:Q25372 wd:Q37484 wd:Q58854 
                              wd:Q241996 wd:Q8242 wd:Q40831 wd:Q182659 wd:Q24723 wd:Q80930 wd:Q182357 
                              wd:Q44342 wd:Q128758 wd:Q114375 wd:Q208628 wd:Q1640824 wd:Q179461 wd:Q17518870
-                             wd:Q116476516
+                             wd:Q116476516 wd:Q1517777 wd:Q193121 wd:Q861911 wd:Q17537576
 }.
   ?book wdt:P50 ?author.
   VALUES ?author {wd:q_number}

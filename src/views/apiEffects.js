@@ -117,7 +117,7 @@ export const wikidataEffect = ({type, q_number, setWikidata, language}) => () =>
     const url = `https://query.wikidata.org/sparql?query=${encodeURIComponent(query)}`;
     return fetch(url, {headers})
     .then(response => {if (response.ok) {return response.json()} throw response;})
-    .then (data => {if(type==="author_texts"){if(setWikidata) {setWikidata(reformatWikitexts(data))}; return reformatWikitexts(data)}
+    .then (data => {if(type==="author_texts"){if(setWikidata) {setWikidata(reformatWikitexts(data))};return reformatWikitexts(data)}
                     else if (type==="externals") {setWikidata(data)}
                     else {return reformatWikidata(data)}
                 })

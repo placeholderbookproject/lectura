@@ -2,8 +2,8 @@ import {useNavigate} from 'react-router-dom'
 import React, {useState, useEffect, useRef} from 'react';
 import {fetchSearchResults} from '../apiEffects.js'
 import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@material-ui/icons/Search";
-import ClearIcon from '@material-ui/icons/Clear';
+import Search from "@mui/icons-material/Search";
+import Clear from "@mui/icons-material/Clear"
 
 const MainSearch = (props) => {
     let controller = useRef(new AbortController());
@@ -38,8 +38,8 @@ const MainSearch = (props) => {
           <div className="search-dropdown-popup">{searchResults.slice(0,10).map((result,index) => 
             <p className={`search-result${index === selectedResultIndex ? '-selected' : ''}`} key={result.label} onClick = {() => enterLink(result)}>{result.label}</p>)}
           </div>}
-          <IconButton onClick = {() => {setQuery("");navigate(`/search?query=${query}`)}} aria-label="Search Button" edge="end"><SearchIcon/></IconButton>
-          <IconButton onClick = {() => {setQuery("");setSearchResults([])}} aria-label="Clear Search Button" edge="end"><ClearIcon style={{paddingRight:5}}/></IconButton>
+          <IconButton onClick = {() => {setQuery("");navigate(`/search?query=${query}`)}} aria-label="Search Button" edge="end"><Search/></IconButton>
+          <IconButton onClick = {() => {setQuery("");setSearchResults([])}} aria-label="Clear Search Button" edge="end"><Clear style={{paddingRight:5}}/></IconButton>
         </div>
     )
 }
