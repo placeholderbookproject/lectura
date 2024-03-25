@@ -4,7 +4,6 @@ const textFilters = [
     {value:'label',label:"Label"},
     {value: 'text_title', label: 'Title'},
     {value: 'text_author', label: 'Author'},
-    {value: 'author_id', label:'author_id'},
     {value: 'text_original_publication_year',label: 'Publication Year'},
     {value: 'text_language', label: 'Language'},
     {value: 'text_type', label: 'Type'},
