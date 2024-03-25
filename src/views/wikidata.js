@@ -145,17 +145,11 @@ SELECT distinct (?book as ?text_q)
 ?lengthLabel
 WHERE
 {
-  VALUES ?instance { wd:Q7725634 wd:Q47461344 wd:Q571 wd:Q5185279 wd:Q49084 wd:Q8261 
-                             wd:Q20540385 wd:Q25379 wd:Q386724 wd:Q23622 wd:Q149537 
-                             wd:Q36279 wd:Q699 wd:Q4184 wd:Q112983 wd:Q25839930 wd:Q17518461 
-                             wd:Q482 wd:Q856713 wd:Q1318295 wd:Q59126 wd:Q25372 wd:Q37484 wd:Q58854 
-                             wd:Q241996 wd:Q8242 wd:Q40831 wd:Q182659 wd:Q24723 wd:Q80930 wd:Q182357 
-                             wd:Q44342 wd:Q128758 wd:Q114375 wd:Q208628 wd:Q1640824 wd:Q179461 wd:Q17518870
-                             wd:Q116476516 wd:Q1517777 wd:Q193121 wd:Q861911 wd:Q17537576
-}.
   ?book wdt:P50 ?author.
   VALUES ?author {wd:q_number}
-  ?book wdt:P31 ?instance.
+  OPTIONAL {?book wdt:P31 ?instance.}
+  FILTER (!(BOUND(?instance) && ?instance IN (wd:Q13442814, wd:Q13433827, wd:Q7318358, wd:Q1935136
+      ,wd:Q1907875, wd:Q19389637, wd:Q3331189, wd:Q191067, wd:Q1980247, wd:Q18918145, wd:Q1504425)))
   OPTIONAL{?book schema:description ?bookdesc.
   FILTER(LANG(?bookdesc)= "[en]").}
   OPTIONAL {?book skos:altLabel ?akaLabel. FILTER (lang(?akaLabel) = "[en]").}
@@ -253,10 +247,9 @@ WHERE
     FILTER (SUBSTR(str(?article), 1, 25) = "https://[en].wikipedia.org/")
   }
   OPTIONAL {
-    ?source schema:about ?author .
+    ?source schema:about ?book .
     ?source schema:inLanguage "[en]" .
-    FILTER (SUBSTR(str(?article), 1, 25) = "https://[en].wikisource.org/")
-  } 
+    FILTER (STRSTARTS(STR(?source), "https://[en].wikisource.org/"))  } 
 [nativeHeader]
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[en]". }
   #BIND(COALESCE(YEAR(?publication), YEAR(?dop), YEAR(?inception), 9999) as ?orderDate)

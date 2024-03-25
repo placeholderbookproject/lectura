@@ -44,6 +44,7 @@ const TextSources = props => {
     useEffect(()=>{if(props.text!==undefined){setData(props.text)}},[props.text])    
     return (<>
     {data.text_q&&<WikiExternalsLabels q_number={data.text_q} language={props.lang.value}/>}
+    {data.source&&<p className="viewRow"><a href={data.source}>WikiSource</a></p>}
     {Object.keys(data).length>0&&<div className="source-container">
         {sources.map(source => <SourceList info={data} func={source.func} source={source.name} Component={source.component} type={source.type}/>)}
     </div>}</>)

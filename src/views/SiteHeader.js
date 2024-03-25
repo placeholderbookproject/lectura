@@ -18,7 +18,8 @@ const SiteHeader = (props) => {
           <select value = {lang.value} label={lang.value} onChange = {handleChange} className="language-select">
               {langCodes.map((option) => (<option key = {option.value+option.label} value = {option.value}>{option.label}</option>) )}
           </select>
-          <Link className="header-btn" to = "/add"><button>+</button></Link>
+          <Link className="header-btn" to="/add"><button>+</button></Link>
+          <Link className="header-btn" to="/blog"><button>Blog</button></Link>
       </Navbar>
     </Container>
   )
