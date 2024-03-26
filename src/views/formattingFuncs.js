@@ -127,5 +127,6 @@ export const removeDuplicatesList = (obj, key) => {
     list.forEach((element) => {uniqueElements.set(element[key], element);});
     return Array.from(uniqueElements.values());
 };
+export const skimList = (list, key, substring) => {return list.filter(obj => !obj.hasOwnProperty(key) || obj[key] === substring);};
 
 export const filterArray = (array, removals) => {return array.filter(item => !removals.includes(item.value));}

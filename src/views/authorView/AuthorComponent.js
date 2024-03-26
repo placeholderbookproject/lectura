@@ -5,7 +5,7 @@ import { setTab } from '../commonFuncs.js';
 import DeleteData from './DeleteData';
 import AuthorGeneral from './AuthorGeneral';
 import { fetchDataEffect, extractWiki} from '../apiEffects';
-import {removeDuplicatesList, combineLists} from '../formattingFuncs.js';
+import {removeDuplicatesList, combineLists, skimList} from '../formattingFuncs.js';
 import TextHeader from './TextHeader';
 import ListAdd from './ListAdd.js';
 const parse = require('html-react-parser');
@@ -27,7 +27,7 @@ const AuthorComponent = (props) => {
             .then(results => Promise.all([extractWiki(results,results.author_q, "author",lang.value,"author_q"),
                             extractWiki([],results.author_q, "author_texts",lang.value, "text_q"),
                             fetchDataEffect({setData:setTexts, id, type:'texts', by: "author", user_id:userData.user_id})()]))
-            .then(([authors, texts, textsDB]) => {setAuthor(authors); setTexts(removeDuplicatesList(combineLists(texts, textsDB, 'text_q'),"text_q"))})
+            .then(([authors, texts, textsDB]) => {setAuthor(authors); setTexts(skimList(removeDuplicatesList(combineLists(texts, textsDB, 'text_q'),"text_q"),'languageLabel',authors.languagesLabel))})
         }},[id, userData.user_id, lang.value])
     useEffect(() => {
         if(text_id) {
