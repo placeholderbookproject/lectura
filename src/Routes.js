@@ -15,6 +15,7 @@ import Cookies from 'js-cookie';
 import { fetchLabels } from './views/apiEffects.js';
 import AddNewView from './views/addNewView/AddNewView.js';
 import BlogView from './views/blogView/BlogView.js';
+import BrowseView from './views/browseView/BrowseView.js';
 
 const RouteList = () => {
   const userCookie = Cookies.get('user')
@@ -28,6 +29,7 @@ const RouteList = () => {
       {path:"/author/:id",element:<AuthorComponent lang = {lang} userData={userData} setUserData={setUserData} labels = {labels}/>},
       {path:"/author/:id/text/:text_id",element:<AuthorComponent lang = {lang}  userData={userData} setUserData={setUserData} labels={labels}/>},
       {path:"/search", element:<SearchDetailed lang={lang} userData={userData} labels = {labels}/>},
+      {path:"/browse", element:<BrowseView lang={lang} labels={labels}/>},
       {path:"/lists",element:<ListsTab lang={lang} userData={userData} setUserData={setUserData} labels = {labels}/>},
       {path:"/lists/create_new", element:<CreateNewList lang={lang} userData={userData} labels = {labels}/>},
       {path:"/lists/:type/:listname", element:<ListItem lang={lang} userData={userData} labels = {labels}/>},

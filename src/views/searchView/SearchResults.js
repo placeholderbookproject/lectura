@@ -74,7 +74,7 @@ const SearchResults = (props) => {
                 <p><a className="text-row" href={result.type==="text"?`${result.author_id&&"/author/"+result.author_id}/text/${result.value}`:`/${result.type}/${result.value}`}>{result["label"]}</a></p>
             </div>)}
         </div>}
-        <Paging properties = {{page, setPage, results, pageLength, setPageLength, urlParams:searchParams, setUrlParams:setSearchParams}}/>
+        <Paging properties = {{page, setPage, results,numberOfPages:Math.ceil(results.length/pageLength.value), pageLength, setPageLength, urlParams:searchParams, setUrlParams:setSearchParams}}/>
     </div>)
 }
 

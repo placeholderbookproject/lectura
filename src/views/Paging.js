@@ -1,7 +1,7 @@
 import React from "react";
 
 const Paging = props => {
-    const {results, page,setPage, pageLength, setPageLength, urlParams, setUrlParams} = props.properties
+    const {results,numberOfPages, page,setPage, pageLength, setPageLength, urlParams, setUrlParams} = props.properties
     const pageLengthOptions = [{label:'10', value:10},{label:'25',value:25},{label:'50', value:50},{label:'100', value:100},{label:"max", value:results.length}]
     const handleChange = (e) => {setPageLength({value:e.target.value, label:e.target.label})}
     const handleClick = (page) => {
@@ -17,7 +17,7 @@ const Paging = props => {
         </select>
         <div>
         <label>Pages </label>
-            {Array.from({ length: Math.ceil(results.length/pageLength.value) }).map((_, index) => (
+            {Array.from({ length: numberOfPages }).map((_, index) => (
             <button key={index} onClick={() => handleClick(index+1)} className={page===index+1?"page-btn-active":"page-btn"}>{index + 1}</button>))}
         </div>
     </div>

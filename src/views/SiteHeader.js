@@ -13,13 +13,14 @@ const SiteHeader = (props) => {
       <Navbar style = {{paddingBottom: 5,}}>
           <Link className="header-btn" to="/"><button>{labels.homeBtn}</button></Link>
           <MainSearch labels={labels}/>
+          <Link className="header-btn" to="/browse"><button>Browse</button></Link>
           <Link className="header-btn" to ="/lists"><button>{labels.lists}</button></Link>
           <ProfileDropdown userData={userData} setUserData={setUserData}/>
+          <Link className="header-btn" to="/add"><button>+</button></Link>
+          <Link className="header-btn" to="/blog"><button>Blog</button></Link>
           <select value = {lang.value} label={lang.value} onChange = {handleChange} className="language-select">
               {langCodes.map((option) => (<option key = {option.value+option.label} value = {option.value}>{option.label}</option>) )}
           </select>
-          <Link className="header-btn" to="/add"><button>+</button></Link>
-          <Link className="header-btn" to="/blog"><button>Blog</button></Link>
       </Navbar>
     </Container>
   )

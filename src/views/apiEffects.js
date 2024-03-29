@@ -22,6 +22,7 @@ export const getComments = (comment_type, comment_type_id, user_id, setData) =>
 export const postCommentInteraction = (data) => postFetch(data,'comment_interaction')
 
 export const postTextInteraction = data => postFetch(data,'element_interaction');
+export const fetchBrowse = data => postFetch(data, 'browse');
 
 export const createNewList = (list_info) => postFetch(list_info, 'create_list')
 export const updateUserList = (input) => postFetch(input, 'update_user_list')
