@@ -8,7 +8,8 @@ export const sortOptions = type => type==="authors"?sortAuthor():sortText()
 const BrowserSort = ({lang, labels, sort,setSort, type}) => {
     const handleChange = e => {setSort({value:e.target.value, label:e.target.label});}
     const options = type==="authors"?sortAuthor():sortText()
-    return (<div>
+    return (<div className="sort-container">
+    <p>Sort By</p>
     <select value = {sort.value} label={sort.value} onChange = {handleChange} className="sort-select">
         {options.map((option) => (<option key = {option.value+option.label} value = {option.value}>{option.label}</option>) )}
     </select>

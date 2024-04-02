@@ -9,6 +9,7 @@ const SearchResults = (props) => {
     const removals = ["author_id","text_id","value","type"]
     const filters = filterArray(props.values.filters,removals)
     const [results, setResults] = useState(searchResults)
+    console.log(results)
     const [searchOrder, setSearchOrder] = useState("asc");
     const [page, setPage] = useState(searchParams.has("page")?searchParams.get("page"):1);
     const [pageLength, setPageLength] = useState({label:'10', value:10})
@@ -69,7 +70,7 @@ const SearchResults = (props) => {
                     (result => renderTableRow(result))}
         </tbody></table>
         :<div className="search-result-all"> 
-        {results.slice(pageLength.value*page-pageLength.value,pageLength.value*page).map((result) => 
+        {results.slice(pageLength.value*page-pageLength.value,pageLength.value*page).map((result) =>
             <div className="search-result-all-elements">
                 <p><a className="text-row" href={result.type==="text"?`${result.author_id&&"/author/"+result.author_id}/text/${result.value}`:`/${result.type}/${result.value}`}>{result["label"]}</a></p>
             </div>)}

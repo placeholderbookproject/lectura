@@ -102,14 +102,17 @@ ul,li {list-style: none;}
   margin:5px;
 }
 
-.dropdown-popup {
-  position: absolute;
-  top: 90px; /* adjust this value to position the filter component vertically */
-  right: -30px;
+.dropdown-popup,.dropdown-popup-browse {
   z-index: 1;
   background-color: white;
   border: 1px solid black;
   padding: 10px;
+}
+.dropdown-popup-browse {position:relative;}
+.dropdown-popup{
+  position: absolute;
+  top: 90px; /* adjust this value to position the filter component vertically */
+  right: -30px;
 }
 
 .dropdown-menu-label {
@@ -518,7 +521,15 @@ select:hover {cursor:pointer; border:1px solid black;}
 .header, .header-active {background-color:white;min-width: 250px;}
 .header:hover, .header-active {background-color:#dedbdb; cursor:pointer;}
 .add-header {margin-top: 5px;}
-.checklist-header {display:flex;flex-direction:row;}
+.checklist-header, .sort-container, .browser-header {display:flex;flex-direction:row;}
+.checkbox-list {
+  max-height: 200px; /* Adjust height as needed */
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.checkbox-list input[type="checkbox"] {margin-right: 5px;}
 
 /* CSS for modal */
 .modal-overlay {

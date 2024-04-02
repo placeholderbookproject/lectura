@@ -20,7 +20,8 @@ const SearchDetailed = ({userData, lang}) => {
         existingParams.set('query', searchVar);existingParams.set('type',type);
         setSearchParams(existingParams)
         setFilters(searchFilters);
-        fetchSearchResults({setSearchResults, query:searchVar, type:type==="all"?null:type, filters:type!=="all"?searchFilters:""})();
+        fetchSearchResults({setSearchResults, query:searchVar, type:type==="all"?null:type, filters:type!=="all"?searchFilters:""})()
+        .then(results => setSearchResults(results.filter(obj => obj.label !== null)));
     }
     const onEnter = (e) => {if(e.key==="Enter"){searchFunction(search)}}
     const clearSearch = () => {setSearch("");setSearchResults([]);}
