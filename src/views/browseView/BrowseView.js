@@ -12,18 +12,18 @@ const BrowseView = ({labels, lang}) => {
     const [results, setResults] = useState([]);
     const [resultLength, setResultLength] = useState(0)
     const [type, setType] = useState("texts");
-    const [sort, setSort] = useState(type==="authors"?{value:"author_id", label:"Author Id"}:{value:"text_id", label:"Text Id"});
+    const [sort, setSort] = useState(type==="authors"?{value:"author_id", label:"Author Id",order:'asc'}:{value:"text_id", label:"Text Id", order:'asc'});
     const [selectedFilters, setSelectedFilters] = useState({});
     const options = [{label:"Authors", value:"authors"},{label:"Texts", value:"texts"}]
-    const changeType = (opt) => {setSort(opt.value==="authors"?{value:"author_id", label:"Author Id"}:{value:"text_id", label:"Text Id"});
+    const changeType = (opt) => {setSort(opt.value==="authors"?{value:"author_id", label:"Author Id", order:sort.order}:{value:"text_id", label:"Text Id", order:sort.order});
                                 setType(opt.value);setResults([]);setSelectedFilters({})}
     //Sorting, filtering, paging, getData (dépendent des sorting, filtering & paging)
     //Filtering: langue, pays, année de naissance, année de mort
     useEffect(() => {fetchBrowse({type, sort, page, pageLength:pageLength.value, selectedFilters}).then(result => {setResults(result.result);setResultLength(result.result_length)})}
         ,[sort, page, pageLength, type, selectedFilters])
-    return (<div>
+    return (<div className="browser-view-container">
     <div className="browse-options">
-        {options.map((opt) => <button onClick={()=>changeType(opt)}>{opt.label}</button>)}
+        {options.map((opt) => <button className={`browser-type${type===opt.value?'-active':''}`} onClick={()=>changeType(opt)}>{opt.label}</button>)}
     </div>
     <div className="browser-header">
         <BrowserSort setSort={setSort} sort={sort} labels={labels} lang={lang} type={type}/>

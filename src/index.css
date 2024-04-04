@@ -109,6 +109,9 @@ ul,li {list-style: none;}
   padding: 10px;
 }
 .dropdown-popup-browse {position:relative;}
+.dropdown-popup-browse {position:absolute; top:160px;left: 50%; /* Position the left edge of the box at the horizontal center of the screen */
+  transform: translateX(-50%); /* Move the box back by half of its own width */
+  max-width: calc(100% - 20px);}
 .dropdown-popup{
   position: absolute;
   top: 90px; /* adjust this value to position the filter component vertically */
@@ -133,7 +136,7 @@ ul,li {list-style: none;}
 }
 .author-header {color: #000000; text-decoration: none;}
 .tab-container {display:flex; flex-direction:row;justify-content: center; align-items:center;cursor:pointer}
-.tab-container, .lists-tab,.create-new-list-tab, .lists-tab-open {
+.tab-container, .lists-tab,.create-new-list-tab, .lists-tab-open,.browser-type, .browser-type-active {
   background-color: #fff;
   color: #000;
   border: none; border-bottom: 0.5px solid #a8a7a7;
@@ -147,7 +150,10 @@ ul,li {list-style: none;}
 .tab-button, .tab-button-inactive {border:none;background-color:white;font-size:16px;}
 .tab-button:hover, .tab-button-inactive:hover {cursor:pointer; background-color:rgb(95, 94, 93); color:white;}
 .tab-button-inactive{background-color: #7b0505; color: white;}
-.lists-tab-open {background-color:rgb(95, 94, 93); color:white;}
+.lists-tab-open,.browser-type-active {background-color:rgb(95, 94, 93); color:white;}
+.browse-options,.browser-header {margin-top:5px;max-width:500px;}
+.browser-order {background-color: white; border:none; padding:0px; margin-left:5px;}
+.browser-order:hover{cursor:pointer;}
 
 .tab-content {display: none;}
 .tab-content.active {display: block;}
@@ -373,8 +379,8 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
 .list-length {margin:0px;font-size:12px; margin-top:5px; text-decoration: underline;}
 .header-btn button {background: none;}
 .header-btn:hover, .changeSearchVersionBtn:hover,.resetEditBtn:hover, .addNewBtn:hover, .listsBtn:hover, .collapsible:hover
-,.dropdown-toggle:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover
-,.lists-tab:hover, .lists-tab-open:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover
+,.dropdown-toggle:hover,.browser-order:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover
+,.lists-tab:hover, .lists-tab-open:hover,.browser-type:hover, .browser-type-active:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover
 .header-btn:active button, .editBtn:active, .submitEditBtn:active, .changeSearchVersionBtn:active, .addNewBtn:active, .listsBtn:active
 ,.profile-header-btn:hover, .profile-header-btn-active:hover, .modal-entry-btn:hover {
   background-color: rgb(242, 239, 239);}
@@ -409,8 +415,8 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
   overflow-y:auto;
 }
 
-.dropdown {display: flex; flex-direction: column;align-items: center;}
-
+.dropdown{display: flex; flex-direction: column;align-items: center;}
+.dropdown-browse {display:flex;}
 .absolute {position:absolute;}
 
 .dropdown-label {
@@ -441,6 +447,7 @@ select {
   margin-top:10px;
   border:none;
 }
+.sort-select {padding:0px;margin-left:5px;}
 select:hover {cursor:pointer; border:1px solid black;}
 
 .login-container, .register-container {
@@ -522,6 +529,7 @@ select:hover {cursor:pointer; border:1px solid black;}
 .header:hover, .header-active {background-color:#dedbdb; cursor:pointer;}
 .add-header {margin-top: 5px;}
 .checklist-header, .sort-container, .browser-header {display:flex;flex-direction:row;}
+.range-container {display:flex; flex-direction:column;}
 .checkbox-list {
   max-height: 200px; /* Adjust height as needed */
   overflow-y: auto;

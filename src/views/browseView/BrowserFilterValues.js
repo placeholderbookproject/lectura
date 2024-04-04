@@ -1,16 +1,16 @@
 import React,{useState} from "react";
 
-const ValueSearchBox = ({selectedFilters, setSelectedFilters, filter, optionValues}) => {
+const BrowserFilterValues = ({selectedFilters, setSelectedFilters, filter, optionValues}) => {
     const [searchTerm, setSearchTerm] = useState('');
     const filteredOptions = optionValues.filter(option => option.toLowerCase().includes(searchTerm.toLowerCase()));
     const [checkFilters, setCheckFilters] = useState([])
     const handleInputChange = (event) => {setSearchTerm(event.target.value);};
-    const handleFilterClick = (property, option) => {
+    const handleFilterClick = (filter, option) => {
         let updatedFilters = [...checkFilters]
         const index = checkFilters.indexOf(option);
         if(index !==-1) {updatedFilters.splice(index, 1)}
         else{updatedFilters.push(option)};
-        setSelectedFilters({...selectedFilters,[property.property]:updatedFilters})
+        setSelectedFilters({...selectedFilters,[filter.property]:updatedFilters})
         setCheckFilters(updatedFilters)
     };
     return (<div>
@@ -26,10 +26,4 @@ const ValueSearchBox = ({selectedFilters, setSelectedFilters, filter, optionValu
         </div>
       </div>)
 };
-
-const BrowserFilterValues = ({filter, optionValues, selectedFilters, setSelectedFilters}) => {
-    return (
-        <ValueSearchBox selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} optionValues={optionValues} filter={filter}/>
-        )
-}
 export default BrowserFilterValues;
