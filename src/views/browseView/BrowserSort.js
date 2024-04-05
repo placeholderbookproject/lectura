@@ -1,6 +1,6 @@
 import React from "react";
 const sortAuthor = () => [{label: 'Language', value:'author_name_language'},{label:'Birth Year', value:'author_birth_year'}
-            , {label:'Death Year', value:'author_death_year'}]
+            , {label:'Death Year', value:'author_death_year'},{label:'Number of Texts', value:"book_cnt"}]
 const sortText = () => [{label: 'Language', value:'text_language'},{label:'Publication Year', value:'text_original_publication_year'}
 , {label:'Text Author', value:'text_author'}]
 export const sortOptions = type => type==="authors"?sortAuthor():sortText()

@@ -6,7 +6,7 @@ const BrowserResults = ({results, type}) => {
     return (
     <div className="search-result-all">
         {results.map((result) => result.label&& <p>
-        <a className="text-row" href={url(result, type)}>{result["label"]}</a>
+        <a className="text-row" href={url(result, type)}>{result["label"]}{`${type==="authors"&&result.book_cnt>0?" ("+result.book_cnt + " texts)":""}`}</a>
         </p>)} 
     </div>)
 }
