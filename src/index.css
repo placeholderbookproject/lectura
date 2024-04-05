@@ -135,16 +135,19 @@ ul,li {list-style: none;}
   flex-direction: row;
 }
 .author-header {color: #000000; text-decoration: none;}
-.tab-container {display:flex; flex-direction:row;justify-content: center; align-items:center;cursor:pointer}
-.tab-container, .lists-tab,.create-new-list-tab, .lists-tab-open,.browser-type, .browser-type-active {
+.tab-container, .tab-container-open {display:flex; flex-direction:row;justify-content: center; align-items:center}
+.tab-container,.tab-container-open, .lists-tab,.create-new-list-tab, .lists-tab-open,.browser-type, .browser-type-active {
   background-color: #fff;
   color: #000;
-  border: none; border-bottom: 0.5px solid #a8a7a7;
+  border: none; border-right: 0.5px solid #a8a7a7;
   cursor: pointer;
-  margin:10px;
+  margin:0px; margin-right:10px;
   font-size: 16px; font-weight:600;
   outline: none;
+  padding-right:5px;
+  min-width:200px;
 }
+.tab-container:hover, .tab-container-open {cursor:pointer; background-color:rgb(242, 239, 239);}
 .create-new-list-tab {background-color:#19b019; color:white;}
 .create-new-list-tab:hover {border-bottom: 1px solid black; background-color:#087208;}
 .tab-button, .tab-button-inactive {border:none;background-color:white;font-size:16px;}
@@ -401,12 +404,14 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
   margin-left: 5px;
 }
 
-.dropdowns-container, .dropdown-menu, .filterTexts, .lists-header {
+.profile-dropdown-container,.dropdowns-container, .dropdown-menu, .filterTexts, .lists-header {
   display: flex;
   flex-direction: row;
   justify-content: left;
   overflow-y:auto;
 }
+.profile-dropdown-container {flex-direction:column;}
+.profile-option-box {display:flex;flex-direction:row;border-bottom: 0.5px solid darkgrey; min-height:50px;}
 
 .author-component-container {
   display: flex;

@@ -73,10 +73,10 @@ const ProfileView = ({ userData, setUserData, lang }) => {
             searchParams.forEach((value, key) => {searchParamsDictionary[key] = value;});
             setTabOpen({...defaultTabs, ...searchParamsDictionary})
         }}, [searchParams])
-    return (Object.keys(wiki).length>0&&<div className="dropdowns-container">
+    return (Object.keys(wiki).length>0&&<div className="profile-dropdown-container">
     {tabs.map((tab) => tab.value&&(
-        <div key={tab.tabName}>
-            <div className="tab-container" onClick = {()=>{setNewSearchParams(tab.value);setTab(tab.value, tabOpen, setTabOpen)}}>{tab.tabName}</div>
+        <div key={tab.tabName} className="profile-option-box">
+            <div className={`tab-container${tabOpen[tab.value]?"-open":""}`} onClick = {()=>{setNewSearchParams(tab.value);setTab(tab.value, tabOpen, setTabOpen)}}>{tab.tabName}</div>
             {tabOpen[tab.value]&&tab.component}
         </div>))}
     </div>)
