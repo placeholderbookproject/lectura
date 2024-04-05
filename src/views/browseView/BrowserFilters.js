@@ -4,7 +4,7 @@ import { filterOptions } from "./filters";
 import BrowserFilterValues from "./BrowserFilterValues";
 import BrowserFilterRange from "./BrowserFilterRange";
 
-const BrowserFilters = ({lang, labels, type, selectedFilters,setSelectedFilters}) => {
+const BrowserFilters = ({lang, labels, type, selectedFilters,setSelectedFilters, setPage}) => {
     const filters = filterOptions(type)
     const [isOpen, setIsOpen] = useState(false);
     const [filterOptionData, setFilterOptionData] = useState({});
@@ -21,8 +21,8 @@ const BrowserFilters = ({lang, labels, type, selectedFilters,setSelectedFilters}
                         <div key={filterOption.property}>
                             <div className="dropdown-menu-label">{filterOption.label}</div>
                             {filterOptionData[filterOption.property]&&filterOption.type==="list"&&<BrowserFilterValues filter={filterOption} optionValues={filterOptionData[filterOption.property]} 
-                                selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters}/>}
-                            {filterOption.type==="range"&&<BrowserFilterRange filter={filterOption} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters}/>}
+                                selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} setPage={setPage}/>}
+                            {filterOption.type==="range"&&<BrowserFilterRange filter={filterOption} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} setPage={setPage}/>}
                         </div>))}
                     </div>
                 </div>

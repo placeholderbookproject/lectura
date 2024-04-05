@@ -1,6 +1,6 @@
 import React,{useState} from "react";
 
-const BrowserFilterValues = ({selectedFilters, setSelectedFilters, filter, optionValues}) => {
+const BrowserFilterValues = ({selectedFilters, setSelectedFilters, filter, optionValues, setPage}) => {
     const [searchTerm, setSearchTerm] = useState('');
     const filteredOptions = optionValues.filter(option => option.toLowerCase().includes(searchTerm.toLowerCase()));
     const [checkFilters, setCheckFilters] = useState([])
@@ -11,6 +11,7 @@ const BrowserFilterValues = ({selectedFilters, setSelectedFilters, filter, optio
         if(index !==-1) {updatedFilters.splice(index, 1)}
         else{updatedFilters.push(option)};
         setSelectedFilters({...selectedFilters,[filter.property]:updatedFilters})
+        setPage(1)
         setCheckFilters(updatedFilters)
     };
     return (<div>

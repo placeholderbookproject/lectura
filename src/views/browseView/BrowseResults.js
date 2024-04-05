@@ -1,6 +1,7 @@
 import React from "react";
-const url = (element, type) => {return type==="texts" ?`${element.author_id&&"/author/"+element.author_id}/text/${element.text_id}`
-                                :`/author/${element.author_id}` }
+const url = (element, type) => {
+    const author_id=type==="texts"?element.author_id&&element.author_id.split(", ")[0]:element.author_id
+    return type==="texts" ?author_id&&`${"/author/"+author_id+"/text/"+element.text_id}`:`/author/${author_id}` }
 
 const BrowserResults = ({results, type}) => {
     return (

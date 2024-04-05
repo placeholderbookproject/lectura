@@ -11,12 +11,17 @@ const BrowseView = ({labels, lang}) => {
     const [pageLength, setPageLength] = useState({label:'10', value:10})
     const [results, setResults] = useState([]);
     const [resultLength, setResultLength] = useState(0)
-    const [type, setType] = useState("texts");
-    const [sort, setSort] = useState(type==="authors"?{value:"author_id", label:"Author Id",order:'asc'}:{value:"text_id", label:"Text Id", order:'asc'});
+    const [type, setType] = useState(searchParams.has("type")?searchParams.get("type"):"texts");
+    const [sort, setSort] = useState(searchParams.has("sort")?{value:searchParams.get("sort"), order:searchParams.has("sort_order")?searchParams.get("sort_order"):"asc"}:type==="authors"?{value:"author_id", label:"Author Id",order:'asc'}:{value:"text_id", label:"Text Id", order:'asc'});
     const [selectedFilters, setSelectedFilters] = useState({});
     const options = [{label:"Authors", value:"authors"},{label:"Texts", value:"texts"}]
-    const changeType = (opt) => {setSort(opt.value==="authors"?{value:"author_id", label:"Author Id", order:sort.order}:{value:"text_id", label:"Text Id", order:sort.order});
-                                setType(opt.value);setResults([]);setSelectedFilters({})}
+    const changeType = (opt) => {
+            setSort(opt.value==="authors"?{value:"author_id", label:"Author Id", order:sort.order}:{value:"text_id", label:"Text Id", order:sort.order});
+            setType(opt.value);
+            const existingParams = new URLSearchParams(searchParams.toString());
+            existingParams.set("type", opt.value)
+            setSearchParams(existingParams)
+            setResults([]);setSelectedFilters({})}
     //Sorting, filtering, paging, getData (dépendent des sorting, filtering & paging)
     //Filtering: langue, pays, année de naissance, année de mort
     useEffect(() => {fetchBrowse({type, sort, page, pageLength:pageLength.value, selectedFilters}).then(result => {setResults(result.result);setResultLength(result.result_length)})}
@@ -26,8 +31,8 @@ const BrowseView = ({labels, lang}) => {
         {options.map((opt) => <button className={`browser-type${type===opt.value?'-active':''}`} onClick={()=>changeType(opt)}>{opt.label}</button>)}
     </div>
     <div className="browser-header">
-        <BrowserSort setSort={setSort} sort={sort} labels={labels} lang={lang} type={type}/>
-        <BrowserFilters type={type} labels={labels} lang={lang} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters}/>
+        <BrowserSort setSort={setSort} sort={sort} labels={labels} lang={lang} type={type} params={searchParams} setParams={setSearchParams}/>
+        <BrowserFilters type={type} labels={labels} lang={lang} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} setPage={setPage}/>
     </div>
     <p>{`${resultLength} ${type} exist`}</p>
     <BrowserResults results={results} type={type}/>
