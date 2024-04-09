@@ -12,7 +12,7 @@ const AddComment = props => {
     }
     return (
     <div className="add-comment">
-        <button className="add-comment-btn" onClick={() => {setAddComment(!addComment);setNumComments(numComments+1)}}>
+        <button className="add-comment-btn" onClick={() => {setAddComment(!addComment)/*;setNumComments(numComments+1)*/}}>
             &#128172; {buttonName}
         </button>
         {addComment&&<CommentsInput value={comment} setValue={setComment}/>}

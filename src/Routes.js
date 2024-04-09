@@ -34,7 +34,7 @@ const RouteList = () => {
       {path:"/lists/create_new", element:<CreateNewList lang={lang} userData={userData} labels = {labels}/>},
       {path:"/lists/:type/:listname", element:<ListItem lang={lang} userData={userData} labels = {labels}/>},
       {path:"/login", element:<LoginView setUserData={setUserData} labels = {labels}/>},
-      userData&&{path:"/blog",element:<BlogView userData={userData} labels={labels}/>},
+      {path:"/blog",element:<BlogView userData={userData} labels={labels}/>},
       !userData&&{path:"/register",element:<CreateUserForm setUserData={setUserData} labels = {labels}/>},
       userData&&{path:"/user/show/:user_site", element:<ProfileView setUserData={setUserData} userData={userData} lang={lang} labels={labels}/>}
   ].filter(Boolean)
