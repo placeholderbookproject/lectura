@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { createNewList } from "../apiEffects";
 import { useNavigate } from "react-router-dom";
 import ListAddElement from "./ListAddElement";
-import ListElements from "./ListElement";
+import ListElements from "./ListElements";
 
 const changeInput = (info, setInfo, event) => {
     const newInfo = {...info.list_info,[event.target.name]:event.target.value}

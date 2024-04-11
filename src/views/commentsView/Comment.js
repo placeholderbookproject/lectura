@@ -13,7 +13,8 @@ const Comment = ({data, userData, type, type_id}) => {
     const [edit, setEdit] = useState(false);
     const [deleted, setDeleted] = useState(comment_deleted);
     const [interactions, setInteractions] = useState({likes, dislikes})
-    const deleteComment = () => {postUpdateComment({comment, comment_id,user_id:userData.user_id,hash:userData.user_id, delete:true}).then(() => {setEdit(false);setDeleted(true)})}
+    const deleteComment = () => {postUpdateComment({comment, comment_id,user_id:userData.user_id,hash:userData.user_id, delete:!deleted})
+                    .then(() => {setEdit(false);setDeleted(!deleted)})}
     const url = createCommentUrl(data)
     return (
         <div className="comment-container">

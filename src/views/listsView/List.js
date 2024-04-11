@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { useParams, useNavigate, useSearchParams} from 'react-router-dom';
 import { fetchUserList } from '../apiEffects';
 import ListAddElement from './ListAddElement';
-import ListElements from './ListElement';
+import ListElements from './ListElements';
 import ListHeader from './ListHeader';
 import CommentSection from '../commentsView/CommentSection';
 import OfficialLists from './OfficialLists';

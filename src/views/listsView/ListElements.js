@@ -46,7 +46,7 @@ const ListElements = (props) => {
         })
     }
     useEffect(() => {if(info.list_info){setElements(info.list_detail);setFilters(options[list_type].slice(0,3))}},[info])
-    useEffect(()=>{if(query.length>3){const results = info.list_detail.filter(e => e.label.includes(query));setElements(results)}
+    useEffect(()=>{if(query.length>3){const results = info.list_detail.filter(e => e.label.toLowerCase().includes(query));setElements(results)}
         else if (query.length===0){setElements(info.list_detail)}},[query])
     return (
         <div>

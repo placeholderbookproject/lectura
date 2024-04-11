@@ -17,7 +17,7 @@ export const AuthorTable = (props) => {
     const akaWiki = akaLabel && (akaLabel.split(", ").length > 5 ? akaLabel.split(", ").slice(0, 4).join(", ") : akaLabel);
     return (
         name&&
-        <div id="authorTableWindow" className="person-info" style={{backgroundColor:"white"}}>
+        <div id="author-table-window" className="person-info" style={{backgroundColor:"white"}}>
             {author_q&&<WikiExternalsLabels q_number={author_q} language={language}/>}
             <TableRow label={labels.aka + " "}>{checkData(akaWiki, numNames > 1 ? name.slice(1, numNames).join(", ") : null)}</TableRow>
             {nativenameLabel&&<TableRow label = {labels.nativeName + " "}>{nativenameLabel}{genderLabel&&` (${genderLabel})`}</TableRow>}

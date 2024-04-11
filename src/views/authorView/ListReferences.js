@@ -14,12 +14,13 @@ const ListReference = props => {
             <button className="show-details-btn" onClick={()=>setShowDetails(!showDetails)}>{parse(buttonContent)}</button>
         </div>
         {showDetails&&<div className="list-reference-details"><p>{list_description}</p></div>}
-        </>
-    )
+        </>)
 }
-const ListReferences = props => {
+const ListReferences = ({type, id, userData, tabOpen, setTabOpen}) => {
     const [lists, setLists] = useState([])
-    useEffect(() => {fetchListReferences(props.type, props.id, setLists)},[props])
-    return (<>{lists.length>0&&lists.map((list,index) => <ListReference data={list} index={index}/>)}</>)
+    useEffect(() => {fetchListReferences(type, id, setLists).then((res) => 
+            {res.length>0?setTabOpen({...tabOpen, ["Lists"]:true}):setTabOpen({...tabOpen, ["Lists"]:false})} )},[type, id])
+    return (<>{lists.length>0&&lists.map((list,index) => (!list.private||list.private&&list.user_id===userData.user_id)&& 
+                <ListReference data={list} index={index}/>)}</>)
 }
 export default ListReferences;

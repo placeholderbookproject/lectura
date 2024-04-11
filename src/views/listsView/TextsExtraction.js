@@ -12,6 +12,6 @@ const TextsExtraction = ({lang, authors}) => {
                 })
         .then(final => transformXLSX(combineLists(final[0], final[1],'text_q')))
     }
-    return (<><button className="extract-texts-btn" onClick={()=>printTexts()}>Extract Texts</button></>)
+    return (<><button className="extract-texts-btn" onClick={()=>printTexts()}>Export Texts ⤓</button></>)
 }
 export default TextsExtraction;

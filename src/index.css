@@ -135,7 +135,6 @@ ul,li {list-style: none;}
   flex-direction: row;
 }
 .author-header {color: #000000; text-decoration: none;}
-.tab-container, .tab-container-open {display:flex; flex-direction:row;justify-content: center; align-items:center}
 .tab-container,.tab-container-open, .lists-tab,.create-new-list-tab, .lists-tab-open,.browser-type, .browser-type-active {
   background-color: #fff;
   color: #000;
@@ -147,7 +146,18 @@ ul,li {list-style: none;}
   padding-right:5px;
   min-width:200px;
 }
+.lists-tab-open, .lists-tab {min-width:130px;}
+.tab-container, .tab-container-open {
+  display:flex;
+  flex-direction:row;
+  justify-content: center; 
+  align-items:center;
+  margin-right:0px;
+  padding-right:0px;
+  border:none;
+}
 .tab-container:hover, .tab-container-open {cursor:pointer; background-color:rgb(242, 239, 239);}
+
 .create-new-list-tab {background-color:#19b019; color:white;}
 .create-new-list-tab:hover {border-bottom: 1px solid black; background-color:#087208;}
 .tab-button, .tab-button-inactive {border:none;background-color:white;font-size:16px;}
@@ -161,16 +171,17 @@ ul.comment-list.level-0 {padding:0px};
 .tab-content {display: none;}
 .tab-content.active {display: block;}
 .tab-container-inactive {
-  background-color: #7b0505;
+  background-color: #716d6d;
   color: #ffffff;
   border: none; border-bottom: 1px solid #a8a7a7;
   cursor: pointer;
-  margin:10px; font-size: 16px;
+  margin:0px; font-size: 16px;
   outline: none;
   max-width:100px;
 }
+.tab-button-inactive {background-color: #716d6d; margin:0px;}
 
-.person-info, .person-texts {margin: 10px; min-width: 400px; max-height: 600px;}
+.person-info, .person-texts {margin-left: 10px; min-width: 400px; max-height: 600px;}
 .person-info h2 {margin: 0; font-size: 24px;}
 .person-info p, .person-texts p, .dropdown-menu-option {margin: 5px;}
 .person-info p {margin-left:0;}
@@ -380,8 +391,10 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
 }
 .list-dropdown-trigger {border-radius:0px;margin-left:5px;}
 .list-length {margin:0px;font-size:12px; margin-top:5px; text-decoration: underline;}
+.extract-texts-btn {border: none; padding:0px;padding-bottom:1px; background:none;}
+.extract-texts-btn:hover {cursor:pointer; border-bottom:0.5px solid black;}
 .header-btn button {background: none;}
-.header-btn:hover, .changeSearchVersionBtn:hover,.resetEditBtn:hover, .addNewBtn:hover, .listsBtn:hover, .collapsible:hover
+.header-btn:hover, .changeSearchVersionBtn:hover,.resetEditBtn:hover, .addNewBtn:hover, .listsBtn:hover,.extract-texts-btn:hover ,.collapsible:hover
 ,.dropdown-toggle:hover,.browser-order:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover
 ,.lists-tab:hover, .lists-tab-open:hover,.browser-type:hover, .browser-type-active:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover
 .header-btn:active button, .editBtn:active, .submitEditBtn:active, .changeSearchVersionBtn:active, .addNewBtn:active, .listsBtn:active
@@ -473,6 +486,7 @@ select:hover {cursor:pointer; border:1px solid black;}
 .pw-error, .email-error, .list-error {color:red;}
 .create-account-header, .create-list-header {margin:5px 5px; border-bottom: 0.5px solid black;}
 .return-login-btn, .return-register-btn, .edit-btn, .delete-btn {background-color:white; border:none;}
+.delete-btn {color:darkred; font-weight:700;}
 .return-login-btn:hover, .return-register-btn:hover, .login-container button:hover, .create-user:hover, .submit-btn[type=submit]:hover, .save-btn:hover, .private-btn:hover 
     {border-bottom:1px solid black; cursor:pointer}
 .login-container p, .login-container button, .form-container p, .form-container button, .form-container label, .form-container input
@@ -550,7 +564,7 @@ select:hover {cursor:pointer; border:1px solid black;}
   font-size:16px;
 }
 .add-blog-btn:hover {cursor:pointer; border-bottom: 1px solid black; }
-.edit-btn, .delete-btn {border-radius: 20px; border: 0.5px solid grey}
+/*.edit-btn, .delete-btn {border-radius: 20px; border: 0.5px solid grey}*/
 /* CSS for modal */
 .modal-overlay {
   position: fixed;
