@@ -149,7 +149,7 @@ WHERE
   VALUES ?author {wd:q_number}
   OPTIONAL {?book wdt:P31 ?instance.}
   FILTER (!(BOUND(?instance) && ?instance IN (wd:Q13442814, wd:Q13433827, wd:Q7318358, wd:Q1935136
-      ,wd:Q1907875, wd:Q19389637, wd:Q3331189, wd:Q191067, wd:Q1980247, wd:Q18918145, wd:Q1504425)))
+      ,wd:Q1907875, wd:Q19389637, wd:Q3331189, wd:Q21112633, wd:Q1980247, wd:Q7553, wd:Q7777570, wd:Q191067, wd:Q1980247, wd:Q18918145, wd:Q1504425)))
   OPTIONAL{?book schema:description ?bookdesc.
   FILTER(LANG(?bookdesc)= "[en]").}
   OPTIONAL {?book skos:altLabel ?akaLabel. FILTER (lang(?akaLabel) = "[en]").}

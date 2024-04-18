@@ -12,7 +12,7 @@ const BrowseView = ({labels, lang}) => {
     const [results, setResults] = useState([]);
     const [resultLength, setResultLength] = useState(0)
     const [type, setType] = useState(searchParams.has("type")?searchParams.get("type"):"texts");
-    const [sort, setSort] = useState(searchParams.has("sort")?{value:searchParams.get("sort"), order:searchParams.has("sort_order")?searchParams.get("sort_order"):"asc"}:type==="authors"?{value:"author_id", label:"Author Id",order:'asc'}:{value:"text_id", label:"Text Id", order:'asc'});
+    const [sort, setSort] = useState(searchParams.has("sort")?{value:searchParams.get("sort"), order:searchParams.has("sort_order")?searchParams.get("sort_order"):"desc"}:type==="authors"?{value:"author_id", label:"Author Id",order:'desc'}:{value:"text_id", label:"Text Id", order:'desc'});
     const [selectedFilters, setSelectedFilters] = useState({});
     const options = [{label:"Authors", value:"authors"},{label:"Texts", value:"texts"}]
     const changeType = (opt) => {
@@ -22,8 +22,6 @@ const BrowseView = ({labels, lang}) => {
             existingParams.set("type", opt.value)
             setSearchParams(existingParams)
             setResults([]);setSelectedFilters({})}
-    //Sorting, filtering, paging, getData (dépendent des sorting, filtering & paging)
-    //Filtering: langue, pays, année de naissance, année de mort
     useEffect(() => {fetchBrowse({type, sort, page, pageLength:pageLength.value, selectedFilters}).then(result => {setResults(result.result);setResultLength(result.result_length)})}
         ,[sort, page, pageLength, type, selectedFilters])
     return (<div className="browser-view-container">

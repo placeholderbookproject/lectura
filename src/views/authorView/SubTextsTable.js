@@ -10,7 +10,8 @@ const SubTextsTable = ({data, author, handleClick, userData, setUserData}) => {
     const {bookLabel, text_id, titleLabel, publYear,dopYear, inceptionYear, image} = data
     const bookLabelReform = bookLabel && bookLabel.split(" | ").length>1?bookLabel.split(" | ").pop():bookLabel
     const [detailed, setDetailed] = useState(false);
-    const selectedDate = transformYear(dateCoalesce(publYear, dopYear, inceptionYear));
+    const selectedDate = transformYear(dateCoalesce(publYear, dopYear, inceptionYear," | "));
+    selectedDate!==undefined?console.log(selectedDate):console.log(data)
     return (
         <div className="text-info">
             <div className="textBox">

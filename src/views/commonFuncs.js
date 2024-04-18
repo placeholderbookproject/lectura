@@ -26,6 +26,13 @@ export const transformDate = (date) => {
     const dateOptions = { year: "numeric", month: "long", day: "numeric" };
     return new Date(date).toLocaleDateString(undefined, dateOptions)
 }
+export const reorderList = (table, key, order) => {
+    const sortedItems = [...table].sort((a, b) => {
+      if (a[key] < b[key]) {return order === 'asc' ? -1 : 1;}
+      if (a[key] > b[key]) {return order === 'asc' ? 1 : -1;}
+      return 0;
+    }); return (sortedItems);};
+
 export const transformXLSX = (obj) => {
     const headers = Object.keys(obj[0]);
     const dataArray = [

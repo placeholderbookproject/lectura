@@ -5,7 +5,7 @@ import { updateUserList } from '../apiEffects';
 import ListInteractionsStatistics from "./ListInteractionsStatistics";
 
 const ListHeader = props => {
-    const {edit, setEdit,editable, listInfo, userData, changes,setChanges, info, setInfo, list_id, navigate, setSearchParams, lang} = props.data
+    const {edit, setEdit,editable, listInfo, userData, changes, setChanges, info, setInfo, list_id, navigate, setSearchParams, lang} = props.data
     const dateOptions = { year: "numeric", month: "long", day: "numeric" };
     const changeInfo = (event) => {
         setInfo(prevInfo => {
@@ -19,7 +19,10 @@ const ListHeader = props => {
         if(changes.additions.length>0||changes.removals.length>0||Object.keys(changes.list_info).length>1||changes.order_changes.length>0){
             updateUserList({...changes, userData}).then(() => {setEdit(false);setSearchParams({edit:!edit})}).catch((error) => console.log(error));
             setChanges({additions:[], removals:[],list_info:{list_id:list_id}, order_changes:[]})}}
-    const deleteList = () => {updateUserList({...changes, delete:true}).then(()=>navigate("/lists"))}
+    const deleteList = () => {
+        const oldInfo = info.list_info;
+        if(info.list_info.list_deleted){updateUserList({...changes, delete:false});setInfo({...info, list_info: {...oldInfo, list_deleted: false}})}
+        else {updateUserList({...changes, delete:true});setInfo({...info, list_info: {...oldInfo, list_deleted: true}})}}
     const setPrivate = () => {
         const priv = info.list_info.list_private
         setInfo({...info,list_info:{...info.list_info,list_private:!priv}})
@@ -33,11 +36,11 @@ const ListHeader = props => {
                     <button onClick={()=>{setEdit(!edit);setSearchParams({edit:!edit})}} className="edit-btn">&#9998;</button>
                     <button className="save-btn" onClick={()=>saveChanges()}>Save Changes</button>
                     <button className="private-btn" onClick={() => setPrivate()}>{info.list_info.list_private===true?"🔒":"🔓"}</button>
-                    <button className="delete-btn" onClick={()=>deleteList()}>Delete List</button>
+                    <button className="delete-btn" onClick={()=>deleteList()}>{info.list_info.list_deleted?'Recover List':'Delete List'}</button>
                     </>}
             </h2>}
             <div className="list-details-statistics">
-                {listInfo.list_type==="authors"&&<TextsExtraction authors={info.list_detail.map(item => `'${item.value}'`)} lang={lang.value}/>}
+                {listInfo.list_type==="authors"&&list_id>0&&<TextsExtraction authors={info.list_detail.map(item => `'${item.value}'`)} lang={lang.value}/>}
                 {listInfo&&<ListInteractionsStatistics listInfo={info.list_info}/>}
                 {userData&&<ListInteractionButtons data = {{list_id, userData, navigate, info, setInfo}}/>}
             </div>

@@ -9,7 +9,6 @@ const SearchResults = (props) => {
     const removals = ["author_id","text_id","value","type"]
     const filters = filterArray(props.values.filters,removals)
     const [results, setResults] = useState(searchResults)
-    console.log(results)
     const [searchOrder, setSearchOrder] = useState("asc");
     const [page, setPage] = useState(searchParams.has("page")?searchParams.get("page"):1);
     const [pageLength, setPageLength] = useState({label:'10', value:10})

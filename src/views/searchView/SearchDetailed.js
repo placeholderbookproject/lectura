@@ -15,6 +15,7 @@ const SearchDetailed = ({userData, lang}) => {
     const [search, setSearch] = useState(searchParams.get("query") || "");
     const [searchResults,setSearchResults] = useState([]);
     const searchFunction = (searchVar, type=searchType) => {
+        setSearchResults([])
         const searchFilters = options[type].slice(0,6);
         const existingParams = new URLSearchParams();
         existingParams.set('query', searchVar);existingParams.set('type',type);
