@@ -35,6 +35,7 @@ export const fetchListReferences = (type, id, setData) => {return fetchFunc(`${s
 export const fetchLabels = (lang,setData) => {return fetchFunc(`${server}labels?lang=${lang}`,setData)}
 export const fetchElementLists = (list_type, type_id, user_id, hash, setData) => {return fetchFunc(`${server}get_element_user_lists?list_type=${list_type}&type_id=${type_id}&user_id=${user_id}&hash=${hash}`,setData)}
 export const fetchFilterOptions = (filter_type, setData) => {return fetchFunc(`${server}filters?filter_type=${filter_type}`,setData)}
+export const fetchUserElements = (type,id,detailed,setData) => {return fetchFunc(`${server}get_interactions?type=${type}&id=${id}${detailed?'&detailed=true':''}`, setData)}
 
 export const fetchDataEffect = props => () => {
     const {type, id, setData, by, user_id} = props
