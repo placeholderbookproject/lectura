@@ -11,9 +11,10 @@ const element = (e, index, data, setData, type) => {
     }};  
 
 export const WatchListTextElement = props => {
-    const { text_language, article, text_q, author_id, text_id, authorLabel, bookLabel, inceptionYear} = props.element
+    const { text_language, article, text_q, author_id, text_id, authorLabel, bookLabel, inceptionYear,text_title} = props.element
     const language = text_language ? ` (${text_language})`:''
-    return (<p>{`#${props.index+1} `}<a href={`/author/${author_id}/text/${text_id}`}>{`${bookLabel} - ${authorLabel} ${inceptionYear?'('+transformYear(inceptionYear,'')+')':''}`}</a>
+    const label = /^Q\d+/.test(bookLabel)?text_title:bookLabel;
+    return (<p>{`#${props.index+1} `}<a href={`/author/${author_id}/text/${text_id}`}>{`${label} - ${authorLabel} ${inceptionYear?'('+transformYear(inceptionYear,'')+')':''}`}</a>
             {language} <a href={`${article?article:'http://www.wikidata.org/entity/'+text_q}`}>(Wiki)</a></p>)    
 }
 const WatchListAuthorElement = props => {

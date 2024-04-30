@@ -18,7 +18,7 @@ export const extract_q = (list_of_dicts) => {
             if (element.text_q) textQs.push(element.text_q);
         });
     });
-    return { author_q: authorQs, text_q: textQs };
+    return {author_q: authorQs, text_q: textQs };
 };
 
 export const processLists = (data, wiki) => {
