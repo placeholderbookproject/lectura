@@ -24,7 +24,7 @@ a:hover {text-decoration:underline;}
 .watchlist-btn-active {background-color:#19b019}
 .watchlist-btn-active:hover {background-color:#8a8a8a; color:white;}
 .watchlist-btn:hover {opacity:1;background-color: rgb(242, 239, 239)}
-.latestAdditionsHeader {font-weight:700; font-size: 1.2em;}
+.latestAdditionsHeader {font-weight:700; font-size: 1.2em;text-align:center; margin-top:5px;}
 .list-item {
   border: 0.5px solid black;
   display:flex;
@@ -128,7 +128,7 @@ ul,li {list-style: none;}
 .author-container {border: 0.5px solid black; position:relative;}
 .author-container h2 {
   text-align: center;
-  padding-bottom:5px;
+  padding-top:2px;
   margin: 0;
   font-size: 24px;
   display: flex;
@@ -372,7 +372,7 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
 
 .popup-row:hover {cursor:pointer;}
 
-.header-btn button, .changeSearchVersionBtn, .resetEditBtn, .addNewBtn,.listsBtn, .dropdown-trigger, .modal-entry-btn, .header-btn {
+.header-btn button, .changeSearchVersionBtn, .resetEditBtn, .addNewBtn,.listsBtn, .dropdown-trigger, .modal-entry-btn, .header-btn, .update-btn {
   border-radius: 30px;
   top:0;
   border: none;
@@ -389,16 +389,18 @@ table.drag-table th, .remove-col-btn {background-color: rgb(10, 10, 51); color:w
   vertical-align: baseline;
   white-space: nowrap;
 }
+.update-btn {font-weight:700;}
 .list-dropdown-trigger {border-radius:0px;margin-left:5px;}
 .list-length {margin:0px;font-size:12px; margin-top:5px; text-decoration: underline;}
 .extract-texts-btn {border: none; padding:0px;padding-bottom:1px; background:none;}
 .extract-texts-btn:hover {cursor:pointer; border-bottom:0.5px solid black;}
-.header-btn button {background: none;}
+.header-btn button, .update-btn {background: none;}
 .header-btn:hover, .changeSearchVersionBtn:hover,.resetEditBtn:hover, .addNewBtn:hover, .listsBtn:hover,.extract-texts-btn:hover ,.collapsible:hover
 ,.dropdown-toggle:hover,.browser-order:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover
 ,.lists-tab:hover, .lists-tab-open:hover,.browser-type:hover, .browser-type-active:hover, .reorderBtn:hover, .clearDropdown:hover, .expandBtn:hover
 .header-btn:active button, .editBtn:active, .submitEditBtn:active, .changeSearchVersionBtn:active, .addNewBtn:active, .listsBtn:active
-,.profile-header-btn:hover, .profile-header-btn-active:hover, .modal-entry-btn:hover, .add-blog-btn:hover {
+,.profile-header-btn:hover, .profile-header-btn-active:hover, .modal-entry-btn:hover, .add-blog-btn:hover
+,.update-btn:hover {
   background-color: rgb(242, 239, 239);}
 
 .collapsible {
@@ -598,9 +600,11 @@ select:hover {cursor:pointer; border:1px solid black;}
 
 .commented-element, .commented-comment p {font-style: italic; color: rgb(97, 96, 96);}
 .commented-comment p {margin:0px;}
-.user-container, .profile-row-container {display: flex;flex-direction: row;}
+.user-container, .profile-row-container,.intro-div {display: flex;flex-direction: row;}
 .author-text-row-btn:hover {cursor:pointer;background-color: #f0f0f0;border-bottom:1px solid black;}
 .user-name {margin-left:5px;}
+.latest-updates-div {margin-top: 5px; margin-left:5px; border: 1px solid;}
+.update-row {margin-top:5px;margin-bottom:0px; padding:5px;}
 
 .user-element-wrapper {
   position: fixed;
@@ -617,11 +621,14 @@ select:hover {cursor:pointer; border:1px solid black;}
 
 .user-element-content {
   background-color: #fff; /* White background for the modal */
-  padding: 20px;
-  border-radius: 8px;
+  padding: 10px; padding-top:0px;
+  border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Shadow for the modal */
   z-index: 1; /* Ensure modal is on top of the overlay */
 }
-.interaction-btn {background-color:white; border:none; padding:0; margin:0px;margin-left:5px;}
+.interaction-btn,.fav-dislike-ratio {background-color:white; border:none; padding:0; margin:0px;}
+.fav-dislike-ratio {font-size:16px; padding: 6px 1px 1px 6px; opacity:50%;}
 .interaction-btn:hover{border-bottom: 0.5px solid black; cursor:pointer;}
-.interaction-user-row {margin:0;margin-top:3px; font-size:14px;}
+.interaction-user-row {margin:0;margin-top:3px; font-size:14px;text-align:left;}
+.exit-interactions {background-color:white; border:none; margin:0px; padding:0px;}
+.exit-interactions:hover{background-color:grey; cursor:pointer;}

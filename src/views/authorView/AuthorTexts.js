@@ -20,7 +20,7 @@ const AuthorTexts = (props) => {
         setTexts(worksFiltered)
     },[props.properties.texts])
     return (
-        texts&&texts.length>0&&
+        props.properties.texts&&props.properties.texts.length>0&&
         <div className="person-texts">
             <h3 onClick = {() => setExpandTexts(!expandTexts)}>{`${author.author_name}'s Works `}{`(${texts.length})`}</h3>
             <div className="filterTexts">

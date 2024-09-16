@@ -5,7 +5,7 @@ const sortText = () => [{label: 'Language', value:'text_language'},{label:'Publi
                         ,{label:'Text Author', value:'text_author'}]
 export const sortOptions = type => type==="authors"?sortAuthor():sortText()
 
-const BrowserSort = ({lang, labels, sort,setSort, type, params, setParams}) => {
+const BrowserSort = ({lang, labels, sort, setSort, type, params, setParams}) => {
     const handleChange = e => {setSort({value:e.target.value, label:e.target.label, order:sort.order})
                                 const existingParams = new URLSearchParams(params.toString());
                                 existingParams.set("sort", e.target.value)
@@ -15,7 +15,7 @@ const BrowserSort = ({lang, labels, sort,setSort, type, params, setParams}) => {
                                 const existingParams = new URLSearchParams(params.toString())
                                 existingParams.set("sort_order",sort.order==='asc'?'desc':'asc')
                                 setParams(existingParams);}
-    const options = type==="authors"?sortAuthor():sortText()
+    const options = sortOptions(type)
     return (<div className="sort-container">
     <p>Sort By</p>
     <select value = {sort.value} label={sort.value} onChange = {handleChange} className="sort-select">

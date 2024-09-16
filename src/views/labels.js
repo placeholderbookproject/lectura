@@ -36,7 +36,8 @@ const labels = {
     binding : 'Binding',
     pages : 'pages',
     publication : 'Published',
-    homeBtn: 'Home'
+    homeBtn: 'Home',
+    latestAdditions: 'New Additions',
     }
     
 export default labels;

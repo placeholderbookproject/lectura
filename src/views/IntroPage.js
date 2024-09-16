@@ -1,8 +1,13 @@
 import labels from './labels.js';
 import {useState, useEffect} from 'react';
 import {fetchDataEffect} from './apiEffects.js'
+import LatestUpdates from '../LatestUpdates.js';
 
-export const IntroPage = ({lang}) => {return (<LatestChanges lang = {lang}/>)}
+export const IntroPage = ({lang}) => {return (
+        <div className="intro-div">
+        <LatestChanges lang = {lang}/>
+        <LatestUpdates user_id={null}/>
+        </div>)}
 export const LatestChanges = () => {
     const [data, setData] = useState();
     useEffect(() => fetchDataEffect({setData}),[])

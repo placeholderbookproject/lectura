@@ -8,6 +8,7 @@ import YourComments from "./YourComments";
 import { setTab } from '../commonFuncs.js';
 import { fetchUserData, wikidataEffectProfile } from "../apiEffects";
 import AdminView from "./AdminView";
+import LatestUpdates from "../../LatestUpdates.js";
 
 export const extract_q = (list_of_dicts) => {
     const authorQs = [];
@@ -74,6 +75,7 @@ const ProfileView = ({ userData, setUserData, lang }) => {
             setTabOpen({...defaultTabs, ...searchParamsDictionary})
         }}, [searchParams])
     return (Object.keys(wiki).length>0&&<div className="profile-dropdown-container">
+    <LatestUpdates user_id={userData.user_id}/>
     {tabs.map((tab) => tab.value&&(
         <div key={tab.tabName} className="profile-option-box">
             <div className={`tab-container${tabOpen[tab.value]?"-open":""}`} onClick = {()=>{setNewSearchParams(tab.value);setTab(tab.value, tabOpen, setTabOpen)}}>{tab.tabName}</div>
