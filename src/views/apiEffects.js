@@ -30,7 +30,7 @@ export const updateListInteraction = (input) => postFetch(input, 'user_list_inte
 export const getTexts = input => postFetch(input,'get_texts')
 
 export const fetchUserList = (list_id, user_id, hash,setData) => fetchFunc(`${server}get_user_list?list_id=${list_id}${user_id?"&user_id="+user_id+"&hash="+hash:""}`, setData)
-export const fetchUserUpdates = (user_id=null, setData, length) => fetchFunc(`${server}get_user_updates${'?user_id='+user_id}${'&length='+length}`,setData)
+export const fetchUserUpdates = (user_id=null, setData, length,update_type) => fetchFunc(`${server}get_user_updates${'?user_id='+user_id}${'&length='+length}${'&update_type='+update_type}`,setData)
 export const fetchAllLists = (user_id=null,setData) => {fetchFunc(`${server}get_all_lists${user_id?'?user_id='+user_id:""}`,setData);}
 export const fetchListReferences = (type, id, setData) => {return fetchFunc(`${server}user_list_references?type=${type}&id=${id}`, setData)}
 export const fetchLabels = (lang,setData) => {return fetchFunc(`${server}labels?lang=${lang}`,setData)}

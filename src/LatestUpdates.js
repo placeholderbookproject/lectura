@@ -4,10 +4,17 @@ import { fetchUserUpdates } from "./views/apiEffects";
 const LatestUpdates = ({user_id}) => {
     const [data,setData] = useState([]);
     const [update, setUpdate] = useState(10);
-    useEffect(() => {fetchUserUpdates(user_id, setData, update)},[update])
+    const [updateType, setUpdateType] = useState('all')
+    const options = [{label: 'All', value:'all'},{label:'Checked',value:'checked'},{ label: 'Watchlisted', value: 'watchlisted' }
+        ,{ label: 'Favorited', value: 'favorited' },{ label: 'Disliked', value: 'disliked' }];
+    const handleChange = (e) => {setUpdateType(e.target.value);};        
+    useEffect(() => {fetchUserUpdates(user_id, setData, update, updateType)},[update, updateType])
     return (data&&
     <div className="latest-updates-div">
         <header className="latestAdditionsHeader">Latest User Updates</header>
+        <select value={updateType} onChange={handleChange} className="update-select">
+            {options.map((option) => (<option key={option.value} value={option.value}>{option.label}</option>))}
+        </select>
         {data.map(i => <UpdateRow data={i}/>)}
         <div className="update-interactions-div">
             <button className="update-btn" onClick={() => setUpdate(update+10)}>Show 10 more</button>
