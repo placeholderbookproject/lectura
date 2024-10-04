@@ -1,7 +1,6 @@
 import { authorQuery, authorTextQuery, textQuery, externalsQuery } from "./wikidata";
 import { reformatWikidata, reformatWikitexts, combineLists, combineWiki } from "./formattingFuncs";
 const server = 'http://127.0.0.1:8000/'
-const googleAPIKey = 'AIzaSyBpljudDJKdDAMHnvh50xCTx8YdSWe3_BM'
 
 const fetchFunc = (query, setData, signal) => {
     return fetch(query, {signal}).then(response => {if(response.ok) {return response.json()}throw response}).then(results => {setData(results); return results})
