@@ -143,13 +143,13 @@ export const archiveEffect = ({data, setData}) => () => {
       .catch(error => console.error(error));
 }
 
-export const googleEffect = ({data, setData}) => () => {
+/*export const googleEffect = ({data, setData}) => () => {
     const {bookLabel, authorLabel, titleLabel} = data
     const title = bookLabel.split(", "[0])
     const lastName = authorLabel.split(/[, ]+/).pop();
     const query = `https://www.googleapis.com/books/v1/volumes?q=inauthor:${authorLabel}+intitle:${title}+intitle:${titleLabel}+inauthor:${lastName}&key=${googleAPIKey}`
     fetch(query).then(response => response.json()).then(data => {setData(data.items);})
         .catch(error => console.error(error));
-}
+}*/
 
 export const fetchSourceData = ({data, type, setData}) => {fetchFunc(`${server}source_data?author=${data.authorLabel}&title=${data.titleLabel}&label=${data.bookLabel.split(", "[0])}&type=${type}`,setData)} //BNF or Gutenberg

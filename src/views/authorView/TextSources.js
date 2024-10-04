@@ -8,12 +8,12 @@ const ArchiveResult = props => {
     return (<p key={identifier} className="source-result"><a href={link.value} className="archiveRow">{link.label}</a></p>)
 }
 
-const GoogleResult = props => {
+/*const GoogleResult = props => {
     const {volumeInfo} = props.data
     const {authors, title, language, publishedDate, canonicalVolumeLink, pageCount} = volumeInfo
     const link = {value:canonicalVolumeLink, label:`${title} by ${authors.join()} (${publishedDate}) (${language}) (${pageCount} pages)`}
     return (<p key={canonicalVolumeLink} className="source-result"><a href={link.value} className="archiveRow">{link.label}</a></p>)
-}
+}*/
 
 const BNF = props => {
     const {creator, date, language, publisher, source, title, identifier} = props.data
@@ -38,7 +38,7 @@ const SourceList = props => {
 }
 const TextSources = props => {
     const sources = [{name:"Archive.org", func:archiveEffect, component: ArchiveResult }
-                    ,{name:"Google Books", func:googleEffect, component:GoogleResult}
+                    //,{name:"Google Books", func:googleEffect, component:GoogleResult}
                     ,{name:"BNF", func:fetchSourceData, component:BNF, type:"bnf"}]
     const [data, setData] = useState({})
     useEffect(()=>{if(props.text!==undefined){setData(props.text)}},[props.text])    
